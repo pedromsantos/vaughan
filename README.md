@@ -12,14 +12,14 @@ open Vaughan.Notes
 
 | Example                                   | Output          |
 | ----------------------------------------- | --------------- |
-| <code>noteName C</code>                   | "C"             |
-| <code>noteName CSharp</code>              | "C#"            |
-| <code>noteName DFlat</code>               | "Db"            |
-| <code>sharp EFlat</code>                  | E               |
-| <code>flat E</code>                       | EFlat           |
-| <code>measureAbsoluteSemitones C G</code> | 7               |
-| <code>intervalBetween C FSharp</code>     | DiminishedFifth |
-| <code>transpose C MajorSixth</code>       | A               |
+| ```fsharp noteName C```                   | "C"             |
+| ```fsharp noteName CSharp```              | "C#"            |
+| ```fsharp noteName DFlat```               | "Db"            |
+| ```fsharp sharp EFlat```                  | E               |
+| ```fsharp flat E```                       | EFlat           |
+| ```fsharp measureAbsoluteSemitones C G``` | 7               |
+| ```fsharp intervalBetween C FSharp```     | DiminishedFifth |
+| ```fsharp transpose C MajorSixth```       | A               |
 
 ### Intervals
 
@@ -29,8 +29,8 @@ open Vaughan.Notes
 
 | Example                                   | Output            |
 | ----------------------------------------- | ----------------- |
-| <code>intervalNameDiminishedFifth</code>  | "DiminishedFifth" |
-| <code>fromDistance 6</code>               | "DiminishedFifth" |
+| ```fsharp intervalNameDiminishedFifth```  | "DiminishedFifth" |
+| ```fsharp fromDistance 6```               | "DiminishedFifth" |
 
 ### Keys
 
@@ -41,9 +41,9 @@ open Vaughan.Keys
 
 | Example           | Output                              |
 | ----------------- | ----------------------------------- |
-| notes CMajor      | [ C; D; E; F; G; A; B ]             |
-| notes EFlatMajor  | [ EFlat; F; G; AFlat; BFlat; C; D ] |
-| notes DMinor      | [ D; E; F; G; A; BFlat; C ]         |
+| ```fsharp notes CMajor```      | ```fsharp [ C; D; E; F; G; A; B ]```             |
+| ```fsharp notes EFlatMajor```  | ```fsharp [ EFlat; F; G; AFlat; BFlat; C; D ]``` |
+| ```fsharp notes DMinor```     | ```fsharp [ D; E; F; G; A; BFlat; C ]```         |
 
 ### Scales
 
@@ -54,8 +54,8 @@ open Vaughan.Scales
 
 | Example                       | Output                                     |
 | ----------------------------- | ------------------------------------------ |
-| createScale Phrygian C        | [ C; DFlat; EFlat; F; G; AFlat; BFlat]     |
-| createScale LydianAugmented C | [ C; D; E; FSharp; GSharp; A; B ]          |
+| ```fsharp createScale Phrygian C```        | ```fsharp [ C; DFlat; EFlat; F; G; AFlat; BFlat]```     |
+| ```fsharp createScale LydianAugmented C``` | ```fsharp [ C; D; E; FSharp; GSharp; A; B ]```          |
 
 
 ### Chords
@@ -70,21 +70,21 @@ open Vaughan.Chords
 
 | Example                                        | Output                                            |
 | ---------------------------------------------- | ------------------------------------------------- |
-| noteForFunction cMaj7 Root                     | C                                                 |
-| noteForFunction cMaj7 Third                    | E                                                 |
-| noteForFunction cMaj7 Fifth                    | G                                                 |
-| noteForFunction cMaj7 Sevent                   | B                                                 |
-| noteNames cMaj7                                | ["C"; "E"; "G"; "B"]                              |
-| bass cMaj7                                     | C                                                 |
-| lead cMaj7                                     | B                                                 |
-| name cMaj7                                     | "CMaj7"                                           |
-| chordFromRootAndFunction cMaj7 Major7          | cMaj7                                             |
-| cMaj7.notes                                    | [(C, Root); (E, Third); (G, Fifth); (B, Seventh)] |
-| (cMaj7 |> invert).notes                        | [(E, Third); (G, Fifth); (B, Seventh); (C, Root)] |
-| (cMaj7 |> invert |> invert).notes              | [(G, Fifth); (B, Seventh); (C, Root); (E, Third)] |
-| (cMaj7 |> invert |> invert |> invert).notes    | [(B, Seventh); (C, Root); (E, Third); (G, Fifth)] |
-| (cMaj7 |> toDrop2).notes                       | [(C, Root); (G, Fifth); (B, Seventh); (E, Third)] |
-| (cMaj7 |> toDrop3).notes                       | [(C, Root); (B, Seventh); (E, Third); (G, Fifth)] |
+| ```fsharp noteForFunction cMaj7 Root```                     | ```fsharp C```                                                 |
+| ```fsharp noteForFunction cMaj7 Third```                    | ```fsharp E```                                                 |
+| ```fsharp noteForFunction cMaj7 Fifth```                    | ```fsharp G```                                                 |
+| ```fsharp noteForFunction cMaj7 Sevent```                   | ```fsharp B```                                                 |
+| ```fsharp noteNames cMaj7```                                | ```fsharp ["C"; "E"; "G"; "B"]```                              |
+| ```fsharp bass cMaj7```                                     | ```fsharp C```                                                 |
+| ```fsharp lead cMaj7```                                     | ```fsharp B```                                                 |
+| ```fsharp name cMaj7```                                     | ```fsharp "CMaj7"```                                           |
+| ```fsharp chordFromRootAndFunction cMaj7 Major7```          | ```fsharp cMaj7```                                             |
+| ```fsharp cMaj7.notes```                                    | ```fsharp [(C, Root); (E, Third); (G, Fifth); (B, Seventh)]``` |
+| ```fsharp (cMaj7 |> invert).notes```                        | ```fsharp [(E, Third); (G, Fifth); (B, Seventh); (C, Root)]``` |
+| ```fsharp (cMaj7 |> invert |> invert).notes```              | ```fsharp [(G, Fifth); (B, Seventh); (C, Root); (E, Third)]``` |
+| ```fsharp (cMaj7 |> invert |> invert |> invert).notes```    | ```fsharp [(B, Seventh); (C, Root); (E, Third); (G, Fifth)]``` |
+| ```fsharp (cMaj7 |> toDrop2).notes```                       | ```fsharp [(C, Root); (G, Fifth); (B, Seventh); (E, Third)]``` |
+| ```fsharp (cMaj7 |> toDrop3).notes```                       | ```fsharp [(C, Root); (B, Seventh); (E, Third); (G, Fifth)]``` |
 
 ### Scale harmonizing
 
@@ -100,6 +100,6 @@ let cMin = {notes= [(C, Root); (EFlat, Third); (G, Fifth)]; chordType=Closed}
 
  Example                                       | Output                                 |
 | -------------------------------------------- | -------------------------------------- |
-| thirds ScaleDgrees.I cIonian                 | [ C; E; G; B ]                         |
-| triadsHarmonizer ScaleDgrees.I cIonian       | cMaj                                  |
-| triadsHarmonizer ScaleDgrees.I cMinor        | cMin                                  |
+| ```fsharp thirds ScaleDgrees.I cIonian```                 | ```fsharp [ C; E; G; B ]```                        |
+| ```fsharp triadsHarmonizer ScaleDgrees.I cIonian```       | ```fsharp cMaj```                                  |
+| ```fsharp triadsHarmonizer ScaleDgrees.I cMinor```        | ```fsharp cMin```                                  |
