@@ -26,7 +26,7 @@ Target "Build" (fun _ ->
 )
 
 Target "Test" (fun _ ->
-    !! (buildDir + "Vaughan.dll")
+    !! (buildDir + "VaughanTests.dll")
     |> NUnit (fun p ->
         {p with
             ToolPath = "./packages/NUnit.Runners/tools"
