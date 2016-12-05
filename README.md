@@ -80,11 +80,11 @@ let cMaj = {notes= [(C, Root); (E, Third); (G, Fifth)]; chordType=Closed}
 | name cMaj7                                     | "CMaj7"                                           |
 | chordFromRootAndFunction cMaj7 Major7          | cMaj7                                             |
 | cMaj7.notes                                    | [(C, Root); (E, Third); (G, Fifth); (B, Seventh)] |
-| (cMaj7 |> invert).notes                        | [(E, Third); (G, Fifth); (B, Seventh); (C, Root)] |
-| (cMaj7 |> invert |> invert).notes              | [(G, Fifth); (B, Seventh); (C, Root); (E, Third)] |
-| (cMaj7 |> invert |> invert |> invert).notes    | [(B, Seventh); (C, Root); (E, Third); (G, Fifth)] |
-| (cMaj7 |> toDrop2).notes                       | [(C, Root); (G, Fifth); (B, Seventh); (E, Third)] |
-| (cMaj7 |> toDrop3).notes                       | [(C, Root); (B, Seventh); (E, Third); (G, Fifth)] |
+| (cMaj7 &#124;> invert).notes                        | [(E, Third); (G, Fifth); (B, Seventh); (C, Root)] |
+| (cMaj7 &#124;> invert &#124;> invert).notes              | [(G, Fifth); (B, Seventh); (C, Root); (E, Third)] |
+| (cMaj7 &#124;> invert &#124;> invert &#124;> invert).notes    | [(B, Seventh); (C, Root); (E, Third); (G, Fifth)] |
+| (cMaj7 &#124;> toDrop2).notes                       | [(C, Root); (G, Fifth); (B, Seventh); (E, Third)] |
+| (cMaj7 &#124;> toDrop3).notes                       | [(C, Root); (B, Seventh); (E, Third); (G, Fifth)] |
 
 ### Scale harmonizing
 
