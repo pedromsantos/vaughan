@@ -10,8 +10,8 @@ Vaughan is named after Blues guitarist [Stevie Ray Vaughan](https://en.wikipedia
 open Vaughan.Notes
 ```
 
-| Example                                   | Output          |
-| ----------------------------------------- | --------------- |
+| Example                      | Output          |
+| ---------------------------- | --------------- |
 | noteName C                   | "C"             |
 | noteName CSharp              | "C#"            |
 | noteName DFlat               | "Db"            |
@@ -27,8 +27,8 @@ open Vaughan.Notes
 open Vaughan.Notes
 ```
 
-| Example                                   | Output            |
-| ----------------------------------------- | ----------------- |
+| Example                      | Output            |
+| ---------------------------- | ----------------- |
 | intervalNameDiminishedFifth  | "DiminishedFifth" |
 | fromDistance 6               | "DiminishedFifth" |
 
@@ -43,7 +43,7 @@ open Vaughan.Keys
 | ----------------- | ----------------------------------- |
 | notes CMajor      | [ C; D; E; F; G; A; B ]             |
 | notes EFlatMajor  | [ EFlat; F; G; AFlat; BFlat; C; D ] |
-| notes DMinor     | [ D; E; F; G; A; BFlat; C ]         |
+| notes DMinor      | [ D; E; F; G; A; BFlat; C ]         |
 
 ### Scales
 
@@ -68,23 +68,23 @@ open Vaughan.Chords
 let cMaj7 = {notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh)]; chordType=Closed}
 ```
 
-| Example                                        | Output                                            |
-| ---------------------------------------------- | ------------------------------------------------- |
-| noteForFunction cMaj7 Root                     | C                                                 |
-| noteForFunction cMaj7 Third                    | E                                                 |
-| noteForFunction cMaj7 Fifth                    | G                                                 |
-| noteForFunction cMaj7 Sevent                   | B                                                 |
-| noteNames cMaj7                                | ["C"; "E"; "G"; "B"]                              |
-| bass cMaj7                                     | C                                                 |
-| lead cMaj7                                     | B                                                 |
-| name cMaj7                                     | "CMaj7"                                           |
-| chordFromRootAndFunction cMaj7 Major7          | cMaj7                                             |
-| cMaj7.notes                                    | [(C, Root); (E, Third); (G, Fifth); (B, Seventh)] |
-| (cMaj7 &#124;> invert).notes                        | [(E, Third); (G, Fifth); (B, Seventh); (C, Root)] |
-| (cMaj7 &#124;> invert &#124;> invert).notes              | [(G, Fifth); (B, Seventh); (C, Root); (E, Third)] |
-| (cMaj7 &#124;> invert &#124;> invert &#124;> invert).notes    | [(B, Seventh); (C, Root); (E, Third); (G, Fifth)] |
-| (cMaj7 &#124;> toDrop2).notes                       | [(C, Root); (G, Fifth); (B, Seventh); (E, Third)] |
-| (cMaj7 &#124;> toDrop3).notes                       | [(C, Root); (B, Seventh); (E, Third); (G, Fifth)] |
+| Example                                                     | Output                                            |
+| ----------------------------------------------------------- | ------------------------------------------------- |
+| noteForFunction cMaj7 Root                                  | C                                                 |
+| noteForFunction cMaj7 Third                                 | E                                                 |
+| noteForFunction cMaj7 Fifth                                 | G                                                 |
+| noteForFunction cMaj7 Sevent                                | B                                                 |
+| noteNames cMaj7                                             | ["C"; "E"; "G"; "B"]                              |
+| bass cMaj7                                                  | C                                                 |
+| lead cMaj7                                                  | B                                                 |
+| name cMaj7                                                  | "CMaj7"                                           |
+| chordFromRootAndFunction c Major7                           | cMaj7                                             |
+| cMaj7.notes                                                 | [(C, Root); (E, Third); (G, Fifth); (B, Seventh)] |
+| (cMaj7 &#124;> invert).notes                                | [(E, Third); (G, Fifth); (B, Seventh); (C, Root)] |
+| (cMaj7 &#124;> invert &#124;> invert).notes                 | [(G, Fifth); (B, Seventh); (C, Root); (E, Third)] |
+| (cMaj7 &#124;> invert &#124;> invert &#124;> invert).notes  | [(B, Seventh); (C, Root); (E, Third); (G, Fifth)] |
+| (cMaj7 &#124;> toDrop2).notes                               | [(C, Root); (G, Fifth); (B, Seventh); (E, Third)] |
+| (cMaj7 &#124;> toDrop3).notes                               | [(C, Root); (B, Seventh); (E, Third); (G, Fifth)] |
 
 ### Scale harmonizing
 
@@ -101,8 +101,8 @@ let cIonian = createScale Ionian C
 let cMinor = createScale HarmonicMinor C
 ```
 
- Example                                       | Output                                 |
-| -------------------------------------------- | -------------------------------------- |
-| thirds ScaleDgrees.I cIonian                 | [ C; E; G; B ]                        |
-| triadsHarmonizer ScaleDgrees.I cIonian       | cMaj                                  |
-| triadsHarmonizer ScaleDgrees.I cMinor        | cMin                                  |
+ Example                                       | Output         |
+| -------------------------------------------- | -------------- |
+| thirds ScaleDgrees.I cIonian                 | [ C; E; G; B ] |
+| triadsHarmonizer ScaleDgrees.I cIonian       | cMaj           |
+| triadsHarmonizer ScaleDgrees.I cMinor        | cMin           |
