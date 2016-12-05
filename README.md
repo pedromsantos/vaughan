@@ -96,6 +96,9 @@ open Vaughan.ScaleHarmonizer
 
 let cMaj = {notes= [(C, Root); (E, Third); (G, Fifth)]; chordType=Closed}
 let cMin = {notes= [(C, Root); (EFlat, Third); (G, Fifth)]; chordType=Closed}
+
+let cIonian = createScale Ionian C
+let cMinor = createScale HarmonicMinor C
 ```
 
  Example                                       | Output                                 |
