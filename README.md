@@ -65,7 +65,7 @@ open Vaughan.Notes
 open Vaughan.Scales
 open Vaughan.Chords
 
-let cMaj = {notes= [(C, Root); (E, Third); (G, Fifth)]; chordType=Closed}
+let cMaj7 = {notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh)]; chordType=Closed}
 ```
 
 | Example                                        | Output                                            |
