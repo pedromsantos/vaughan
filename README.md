@@ -10,16 +10,16 @@ Vaughan is named after Blues guitarist [Stevie Ray Vaughan](https://en.wikipedia
 open Vaughan.Notes
 ```
 
-| Example                      | Output          |
-| ---------------------------- | --------------- |
-| noteName C                   | "C"             |
-| noteName CSharp              | "C#"            |
-| noteName DFlat               | "Db"            |
-| sharp EFlat                  | E               |
-| flat E                       | EFlat           |
-| measureAbsoluteSemitones C G | 7               |
-| intervalBetween C FSharp     | DiminishedFifth |
-| transpose C MajorSixth       | A               |
+| Example                                  | Output          |
+| ---------------------------------------- | --------------- |
+| <code>noteName C<code>                   | "C"             |
+| <code>noteName CSharp<code>              | "C#"            |
+| <code>noteName DFlat<code>               | "Db"            |
+| <code>sharp EFlat<code>                  | E               |
+| <code>flat E<code>                       | EFlat           |
+| <code>measureAbsoluteSemitones C G<code> | 7               |
+| <code>intervalBetween C FSharp<code>     | DiminishedFifth |
+| <code>transpose C MajorSixth<code>       | A               |
 
 ### Intervals
 
