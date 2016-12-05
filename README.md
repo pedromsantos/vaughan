@@ -10,16 +10,16 @@ Vaughan is named after Blues guitarist [Stevie Ray Vaughan](https://en.wikipedia
 open Vaughan.Notes
 ```
 
-| Example                                  | Output          |
-| ---------------------------------------- | --------------- |
-| <code>noteName C<code>                   | "C"             |
-| <code>noteName CSharp<code>              | "C#"            |
-| <code>noteName DFlat<code>               | "Db"            |
-| <code>sharp EFlat<code>                  | E               |
-| <code>flat E<code>                       | EFlat           |
-| <code>measureAbsoluteSemitones C G<code> | 7               |
-| <code>intervalBetween C FSharp<code>     | DiminishedFifth |
-| <code>transpose C MajorSixth<code>       | A               |
+| Example                                   | Output          |
+| ----------------------------------------- | --------------- |
+| <code>noteName C</code>                   | "C"             |
+| <code>noteName CSharp</code>              | "C#"            |
+| <code>noteName DFlat</code>               | "Db"            |
+| <code>sharp EFlat</code>                  | E               |
+| <code>flat E</code>                       | EFlat           |
+| <code>measureAbsoluteSemitones C G</code> | 7               |
+| <code>intervalBetween C FSharp</code>     | DiminishedFifth |
+| <code>transpose C MajorSixth</code>       | A               |
 
 ### Intervals
 
@@ -27,10 +27,10 @@ open Vaughan.Notes
 open Vaughan.Notes
 ```
 
-| Example                      | Output            |
-| ---------------------------- | ----------------- |
-| intervalNameDiminishedFifth  | "DiminishedFifth" |
-| fromDistance 6               | "DiminishedFifth" |
+| Example                                   | Output            |
+| ----------------------------------------- | ----------------- |
+| <code>intervalNameDiminishedFifth</code>  | "DiminishedFifth" |
+| <code>fromDistance 6</code>               | "DiminishedFifth" |
 
 ### Keys
 
@@ -65,7 +65,7 @@ open Vaughan.Notes
 open Vaughan.Scales
 open Vaughan.Chords
 
-let cMaj = {notes= [(C, Root); (E, Third); (G, Fifth)]; chordType=Closed}
+    let cMaj = {notes= [(C, Root); (E, Third); (G, Fifth)]; chordType=Closed}
 ```
 
 | Example                                        | Output                                            |
@@ -80,11 +80,11 @@ let cMaj = {notes= [(C, Root); (E, Third); (G, Fifth)]; chordType=Closed}
 | name cMaj7                                     | "CMaj7"                                           |
 | chordFromRootAndFunction cMaj7 Major7          | cMaj7                                             |
 | cMaj7.notes                                    | [(C, Root); (E, Third); (G, Fifth); (B, Seventh)] |
-| (cMaj7 &#124;> invert).notes                        | [(E, Third); (G, Fifth); (B, Seventh); (C, Root)] |
-| (cMaj7 &#124;> invert &#124;> invert).notes              | [(G, Fifth); (B, Seventh); (C, Root); (E, Third)] |
-| (cMaj7 &#124;> invert &#124;> invert &#124;> invert).notes    | [(B, Seventh); (C, Root); (E, Third); (G, Fifth)] |
-| (cMaj7 &#124;> toDrop2).notes                       | [(C, Root); (G, Fifth); (B, Seventh); (E, Third)] |
-| (cMaj7 &#124;> toDrop3).notes                       | [(C, Root); (B, Seventh); (E, Third); (G, Fifth)] |
+| (cMaj7 |> invert).notes                        | [(E, Third); (G, Fifth); (B, Seventh); (C, Root)] |
+| (cMaj7 |> invert |> invert).notes              | [(G, Fifth); (B, Seventh); (C, Root); (E, Third)] |
+| (cMaj7 |> invert |> invert |> invert).notes    | [(B, Seventh); (C, Root); (E, Third); (G, Fifth)] |
+| (cMaj7 |> toDrop2).notes                       | [(C, Root); (G, Fifth); (B, Seventh); (E, Third)] |
+| (cMaj7 |> toDrop3).notes                       | [(C, Root); (B, Seventh); (E, Third); (G, Fifth)] |
 
 ### Scale harmonizing
 
@@ -96,12 +96,10 @@ open Vaughan.ScaleHarmonizer
 
 let cMaj = {notes= [(C, Root); (E, Third); (G, Fifth)]; chordType=Closed}
 let cMin = {notes= [(C, Root); (EFlat, Third); (G, Fifth)]; chordType=Closed}
-let gDom7 = {notes= [(G, Root); (B, Third); (D, Fifth); (F, Seventh)]; chordType=Closed}
 ```
 
- Example                                       | Output              |
-| -------------------------------------------- | --------------------|
-| thirds ScaleDgrees.I cIonian                 | [ C; E; G; B ]      |
-| triadsHarmonizer ScaleDgrees.I cIonian       | cMaj                |
-| triadsHarmonizer ScaleDgrees.I cMinor        | cMin                |
-| seventhsHarmonizer ScaleDgrees.V cIonian     | cDom7               |
+ Example                                       | Output                                 |
+| -------------------------------------------- | -------------------------------------- |
+| thirds ScaleDgrees.I cIonian                 | [ C; E; G; B ]                         |
+| triadsHarmonizer ScaleDgrees.I cIonian       | cMaj                                  |
+| triadsHarmonizer ScaleDgrees.I cMinor        | cMin                                  |
