@@ -412,24 +412,33 @@ namespace Vaughan
             scale 
             |> circularSequenceFromList
             |> Seq.skip (int fromPosition)
-            |> Seq.take 7 
+            |> Seq.take 16 
             |> Seq.mapi (fun i v -> i, v)
             |> Seq.filter (fun (i, _) -> i % 2 = 0)
             |> Seq.map snd
             |> Seq.toList
 
-        let seventhsHarmonizer forDegree scale =
+        let harmonizer forDegree scale =
             let thirdsList = 
                 scale
                 |> thirds forDegree
-                |> List.take 4
+                |> List.take 7
             
             {notes= [(thirdsList.[0], Root); 
                      (thirdsList.[1] , Third); 
                      (thirdsList.[2], Fifth); 
-                     (thirdsList.[3], Seventh)]; 
+                     (thirdsList.[3], Seventh); 
+                     (thirdsList.[4], Ninth); 
+                     (thirdsList.[5], Eleventh); 
+                     (thirdsList.[6], Thirteenth)]; 
              chordType = Closed}
 
+        let reducedHarmonizer forDegree scale notes =
+            let complete = harmonizer forDegree scale
+            {complete with notes = complete.notes |> List.take notes}
+
+        let seventhsHarmonizer forDegree scale =
+             reducedHarmonizer forDegree scale 4
+
         let triadsHarmonizer forDegree scale =
-            let seventh = seventhsHarmonizer forDegree scale
-            {seventh with notes = seventh.notes |> List.take 3}
+            reducedHarmonizer forDegree scale 3
