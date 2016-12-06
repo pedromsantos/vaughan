@@ -132,16 +132,16 @@ namespace Vaughan
             fromDistance (measureAbsoluteSemitones note other)
             
         let transpose noteToTranspose transposingInterval =
-            let rec loop note interval =
+            let rec loop note =
                 let newNote = transposeDirection note transposingInterval
                 let newInterval = intervalBetween noteToTranspose newNote
                 
                 if toDistance newInterval = toDistance transposingInterval then
                     newNote
                 else
-                    loop newNote newInterval
+                    loop newNote
                 
-            loop noteToTranspose transposingInterval
+            loop noteToTranspose
 
     module Scales =
         open Notes
@@ -405,8 +405,6 @@ namespace Vaughan
     module ScaleHarmonizer =
         open Infrastructure
         open Chords
-        open Scales
-        open Notes
         
         type ScaleDgrees = | I = 0 | II = 1 | III = 2 | IV = 3 | V = 4 | VI = 5 | VII = 6
 
@@ -416,7 +414,7 @@ namespace Vaughan
             |> Seq.skip (int fromPosition)
             |> Seq.take 7 
             |> Seq.mapi (fun i v -> i, v)
-            |> Seq.filter (fun (i, v) -> i % 2 = 0)
+            |> Seq.filter (fun (i, _) -> i % 2 = 0)
             |> Seq.map snd
             |> Seq.toList
 
