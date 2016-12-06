@@ -1,0 +1,28 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 14
+VisualStudioVersion = 14.0.25420.1
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Vaughan", "Vaughan\Vaughan.fsproj", "{A9407C42-9D3E-4F65-950A-55D3E803DFE7}"
+EndProject
+Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "VaughanTests", "VaughanTests\VaughanTests.fsproj", "{E4B2D945-F61B-4798-AEB8-76DDDAE525DA}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A9407C42-9D3E-4F65-950A-55D3E803DFE7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{A9407C42-9D3E-4F65-950A-55D3E803DFE7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{A9407C42-9D3E-4F65-950A-55D3E803DFE7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{A9407C42-9D3E-4F65-950A-55D3E803DFE7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E4B2D945-F61B-4798-AEB8-76DDDAE525DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E4B2D945-F61B-4798-AEB8-76DDDAE525DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E4B2D945-F61B-4798-AEB8-76DDDAE525DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E4B2D945-F61B-4798-AEB8-76DDDAE525DA}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal
