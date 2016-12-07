@@ -2,6 +2,13 @@
 
 Vaughan is named after Blues guitarist [Stevie Ray Vaughan](https://en.wikipedia.org/wiki/Stevie_Ray_Vaughan)
 
+## Getting started
+
+1. Clone the repository to your machine
+2. Build
+  1. On Windows execute build.cmd
+  2. On macos / unix execute build.sh (requires mono)
+
 ## Usage
 
 ### Notes
