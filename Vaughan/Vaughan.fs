@@ -424,6 +424,12 @@ namespace Vaughan
             generateChordInversions chord
             |> List.filter (fun c -> isLeadFunctionOnChordDesiredFunction c desiredNoteFunction listFilter)
             |> List.head
+        
+        let private invertionWithNoteClosestToNote chord note chordNote =
+            generateChordInversions chord
+            |> min (fun c1 c2 -> 
+                if (measureAbsoluteSemitones (chordNote c1) note) < (measureAbsoluteSemitones (chordNote c2) note) 
+                then c1 else c2)
 
         let inversionForFunctionAsLead chord desiredNoteFunction =
             inversionForFunction chord desiredNoteFunction List.last
@@ -432,10 +438,10 @@ namespace Vaughan
             inversionForFunction chord desiredNoteFunction List.head
 
         let invertionWithLeadClosestToNote chord note =
-            generateChordInversions chord
-            |> min (fun c1 c2 -> 
-                if (measureAbsoluteSemitones (lead c1) note) < (measureAbsoluteSemitones (lead c2) note) 
-                then c1 else c2)
+            invertionWithNoteClosestToNote chord note lead
+
+        let invertionWithBassClosestToNote chord note =
+            invertionWithNoteClosestToNote chord note bass
 
     module ScaleHarmonizer = 
         open Infrastructure

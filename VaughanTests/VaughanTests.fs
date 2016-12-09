@@ -375,8 +375,14 @@ namespace VaughanTests
         [<Test>]
         let ``Should choose invertion that satisfies having a lead that is closest to a provided note``() =
             test<@ (invertionWithLeadClosestToNote cMaj A).notes = (cMaj).notes @>
-            test<@ (invertionWithLeadClosestToNote cMaj F).notes = (cMaj |> invert |> invert).notes @>
             test<@ (invertionWithLeadClosestToNote cMaj CSharp).notes = (cMaj |> invert).notes @>
+            test<@ (invertionWithLeadClosestToNote cMaj F).notes = (cMaj |> invert |> invert).notes @>
+
+        [<Test>]
+        let ``Should choose invertion that satisfies having a bass that is closest to a provided note``() =
+            test<@ (invertionWithBassClosestToNote cMaj CSharp).notes = (cMaj).notes @>
+            test<@ (invertionWithBassClosestToNote cMaj F).notes = (cMaj |> invert).notes @>
+            test<@ (invertionWithBassClosestToNote cMaj A).notes = (cMaj |> invert |> invert).notes @>           
 
     module ScalesHormonizerTests =
         open NUnit.Framework
