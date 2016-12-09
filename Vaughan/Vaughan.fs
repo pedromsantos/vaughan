@@ -30,8 +30,8 @@ namespace Vaughan
 
         let rec min (minOf:'a->'a->'a) (list:'a list) =
            match list with
-           | [] -> invalidArg "list" "Empty list"
-           | [x] -> x
+           | [] -> None
+           | [x] -> Some(x)
            | c1::c2::rest -> min minOf ((minOf c1 c2)::rest)
 
     module Notes =
@@ -426,10 +426,10 @@ namespace Vaughan
             |> List.head
         
         let private invertionWithNoteClosestToNote chord note chordNote =
-            generateChordInversions chord
+            (generateChordInversions chord
             |> min (fun c1 c2 -> 
                 if (measureAbsoluteSemitones (chordNote c1) note) < (measureAbsoluteSemitones (chordNote c2) note) 
-                then c1 else c2)
+                then c1 else c2)).Value
 
         let inversionForFunctionAsLead chord desiredNoteFunction =
             inversionForFunction chord desiredNoteFunction List.last
