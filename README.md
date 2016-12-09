@@ -92,10 +92,10 @@ let cMaj7 = {notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh)]; chordType
 | (cMaj7 &#124;> invert &#124;> invert &#124;> invert).notes  | [(B, Seventh); (C, Root); (E, Third); (G, Fifth)] |
 | (cMaj7 &#124;> toDrop2).notes                               | [(C, Root); (G, Fifth); (B, Seventh); (E, Third)] |
 | (cMaj7 &#124;> toDrop3).notes                               | [(C, Root); (B, Seventh); (E, Third); (G, Fifth)] |
-| inversionForFunctionAsLead cMaj Third                       | cMaj |> invert |> invert                          |
-| inversionForFunctionAsBass cMaj Fifth                       | cMaj |> invert |> invert                          |
-| invertionWithLeadClosestToNote cMaj CSharp                  | cMaj |> invert                                    |
-| invertionWithBAssdClosestToNote cMaj F                      | cMaj |> invert                                    |
+| inversionForFunctionAsLead cMaj Third                       | cMaj &#124;> invert &#124;> invert                |
+| inversionForFunctionAsBass cMaj Fifth                       | cMaj &#124;> invert &#124;> invert                |
+| invertionWithLeadClosestToNote cMaj CSharp                  | cMaj &#124;> invert                               |
+| invertionWithBAssdClosestToNote cMaj F                      | cMaj &#124;> invert                               |
 
 ### Scale harmonizing
 
