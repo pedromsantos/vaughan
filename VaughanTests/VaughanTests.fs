@@ -338,6 +338,11 @@ namespace VaughanTests
             test <@ (cMin7b5 |> invert |> invert |> invert).notes = [(BFlat, Seventh); (C, Root); (EFlat, Third); (GFlat, Fifth)]  @>
 
         [<Test>]
+        let ``Should loop inversions``() =
+            test <@ cMaj7 |> invert |> invert |> invert |> invert = cMaj7  @>
+            test <@ cAug7 |> invert |> invert |> invert |> invert = cAug7  @>
+
+        [<Test>]
         let ``Should transform chord to drop2``() =
             test <@ (cMaj7 |> toDrop2).notes = [(C, Root); (G, Fifth); (B, Seventh); (E, Third); ]  @>
 
@@ -358,6 +363,20 @@ namespace VaughanTests
             test <@ (cMaj7 |> toDrop3 |> invert |> invert).notes = [(G, Fifth); (E, Third); (B, Seventh); (C, Root);]  @>
             test <@ (cMaj7 |> toDrop3 |> invert |> invert |> invert).notes = [(B, Seventh); (G, Fifth); (C, Root); (E, Third);]  @>
             test <@ (cMaj7 |> toDrop3 |> invert |> invert |> invert |> invert).notes = [(C, Root); (B, Seventh); (E, Third); (G, Fifth)]  @>
+
+        [<Test>]
+        let ``Should choose invertion that satisfies having a specific function as lead``() =
+            test<@ (inversionForFunctionAsLead cMaj Third).notes = (cMaj |> invert |> invert).notes @>
+
+        [<Test>]
+        let ``Should choose invertion that satisfies having a specific function as bass``() =
+            test<@ (inversionForFunctionAsBass cMaj Fifth).notes = (cMaj |> invert |> invert).notes @>
+
+        [<Test>]
+        let ``Should choose invertion that satisfies having a lead that is closest to a provided note``() =
+            test<@ (invertionWithLeadClosestToNote cMaj A).notes = (cMaj).notes @>
+            test<@ (invertionWithLeadClosestToNote cMaj F).notes = (cMaj |> invert |> invert).notes @>
+            test<@ (invertionWithLeadClosestToNote cMaj CSharp).notes = (cMaj |> invert).notes @>
 
     module ScalesHormonizerTests =
         open NUnit.Framework

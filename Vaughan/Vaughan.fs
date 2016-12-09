@@ -28,6 +28,12 @@ namespace Vaughan
                 }
             next()
 
+        let rec min (minOf:'a->'a->'a) (list:'a list) =
+           match list with
+           | [] -> invalidArg "list" "Empty list"
+           | [x] -> x
+           | c1::c2::rest -> min minOf ((minOf c1 c2)::rest)
+
     module Notes =
         type Note = | C | CSharp | DFlat | D | DSharp | EFlat | E | F | FSharp 
                     | GFlat | G | GSharp | AFlat | A | ASharp | BFlat | B
@@ -402,7 +408,36 @@ namespace Vaughan
         let toDrop3 chord =
             {notes= (chord |> toDrop2 |> toDrop2).notes; chordType=Drop3}
 
-    module ScaleHarmonizer =
+        let rec private repeatInversion chord times =
+            match times with
+            | 0 -> chord
+            | _ -> repeatInversion (chord |> invert) (times - 1)
+
+        let private generateChordInversions chord =
+            let notesInChord = chord.notes |> List.length
+            [for index in 1 .. notesInChord do yield repeatInversion chord index]
+
+        let private isLeadFunctionOnChordDesiredFunction chord desiredNoteFunction listFilter =
+            noteFunction (chord.notes |> listFilter) = desiredNoteFunction
+
+        let private inversionForFunction chord desiredNoteFunction listFilter =
+            generateChordInversions chord
+            |> List.filter (fun c -> isLeadFunctionOnChordDesiredFunction c desiredNoteFunction listFilter)
+            |> List.head
+
+        let inversionForFunctionAsLead chord desiredNoteFunction =
+            inversionForFunction chord desiredNoteFunction List.last
+
+        let inversionForFunctionAsBass chord desiredNoteFunction =
+            inversionForFunction chord desiredNoteFunction List.head
+
+        let invertionWithLeadClosestToNote chord note =
+            generateChordInversions chord
+            |> min (fun c1 c2 -> 
+                if (measureAbsoluteSemitones (lead c1) note) < (measureAbsoluteSemitones (lead c2) note) 
+                then c1 else c2)
+
+    module ScaleHarmonizer = 
         open Infrastructure
         open Chords
         
