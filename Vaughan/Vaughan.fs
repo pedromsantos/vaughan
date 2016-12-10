@@ -527,12 +527,14 @@ namespace Vaughan
         let fretForNote note guitarString =
             measureAbsoluteSemitones (guitarStringAttributes guitarString).OpenStringNote note
 
-        let private generateDefaultfredsForChord chord bassString =
+        let private generateDefaultFredsForChord chord bassString =
+            let bassStringIndex = guitarStringIndex bassString
             let notesInChord = (chord.notes |> List.length) - 1
+            let leadStringIndex = (guitarStringIndex bassString) - notesInChord
             [
                 for guitarStringIndex in 
-                    (guitarStringIndex bassString) .. -1 .. ((guitarStringIndex bassString) - notesInChord) 
-                -> 
+                    bassStringIndex .. -1 .. leadStringIndex 
+                    ->
                     {
                         GuitarString = indexToGuitarString guitarStringIndex;
                         Fret = 0 
