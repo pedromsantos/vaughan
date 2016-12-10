@@ -611,7 +611,7 @@ namespace VaughanTests
         [<Test>]
         let ``Should map c major to guitar fretboard``() =
             let cMaj = chordFromRootAndFunction C Major
-            test <@ chordToGuitarFretboard cMaj SixthString  = [
+            test <@ chordToGuitarChord cMaj SixthString  = [
                         {GuitarString=SixthString; Fret=8; Note=C};
                         {GuitarString=FifthString; Fret=7; Note=E};
                         {GuitarString=FourthString; Fret=5; Note=G};
@@ -620,7 +620,7 @@ namespace VaughanTests
         [<Test>]
         let ``Should map c major to guitar fretboard on fifth string``() =
             let cMaj = chordFromRootAndFunction C Major
-            test <@ chordToGuitarFretboard cMaj FifthString  = [
+            test <@ chordToGuitarChord cMaj FifthString  = [
                         {GuitarString=FifthString; Fret=3; Note=C};
                         {GuitarString=FourthString; Fret=2; Note=E};
                         {GuitarString=ThirdString; Fret=0; Note=G};
@@ -629,7 +629,7 @@ namespace VaughanTests
         [<Test>]
         let ``Should map c major to guitar fretboard on fourth string``() =
             let cMaj = chordFromRootAndFunction C Major
-            test <@ chordToGuitarFretboard cMaj FourthString  = [
+            test <@ chordToGuitarChord cMaj FourthString  = [
                         {GuitarString=FourthString; Fret=10; Note=C};
                         {GuitarString=ThirdString; Fret=9; Note=E};
                         {GuitarString=SecondString; Fret=8; Note=G};
@@ -638,8 +638,17 @@ namespace VaughanTests
         [<Test>]
         let ``Should map c major to guitar fretboard on third string``() =
             let cMaj = chordFromRootAndFunction C Major
-            test <@ chordToGuitarFretboard cMaj ThirdString  = [
+            test <@ chordToGuitarChord cMaj ThirdString  = [
                         {GuitarString=ThirdString; Fret=5; Note=C};
                         {GuitarString=SecondString; Fret=5; Note=E};
                         {GuitarString=FirstString; Fret=3; Note=G};
+                    ]@>
+
+        [<Test>]
+        let ``Should map c major to guitar fretboard on fifth string closed``() =
+            let cMaj = chordFromRootAndFunction C Major
+            test <@ chordToGuitarClosedChord cMaj FifthString  = [
+                        {GuitarString=FifthString; Fret=15; Note=C};
+                        {GuitarString=FourthString; Fret=14; Note=E};
+                        {GuitarString=ThirdString; Fret=12; Note=G};
                     ]@>

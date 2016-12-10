@@ -493,6 +493,8 @@ namespace Vaughan
         open Notes
         open Chords
 
+        let maxStrech = 5
+
         type GuitarString = 
             | SixthString 
             | FifthString 
@@ -502,7 +504,10 @@ namespace Vaughan
             | FirstString
         
         type GuitarStringAttributes = {Name:string; OpenStringNote:Note; Index:int}
-        type Fret = {GuitarString:GuitarString; Fret:int; Note:Note}
+        type StringFret = | Muted | Freted
+        type GuitarCordNote = {GuitarString:GuitarString; Fret:int; Note:Note}
+        type GuitarCord = GuitarCordNote list
+
         let private guitarStringAttributes guitarString =
             match guitarString with
             | SixthString -> { Name="Sixth"; OpenStringNote=E; Index=6}
@@ -523,17 +528,13 @@ namespace Vaughan
             | 3 -> ThirdString
             | 2 -> SecondString
             | _ -> FirstString
-        
-        let fretForNote note guitarString =
-            measureAbsoluteSemitones (guitarStringAttributes guitarString).OpenStringNote note
-
         let private generateDefaultFredsForChord chord bassString =
             let bassStringIndex = guitarStringIndex bassString
             let notesInChord = (chord.notes |> List.length) - 1
             let leadStringIndex = (guitarStringIndex bassString) - notesInChord
+            
             [
-                for guitarStringIndex in 
-                    bassStringIndex .. -1 .. leadStringIndex 
+                for guitarStringIndex in bassStringIndex .. -1 .. leadStringIndex 
                     ->
                     {
                         GuitarString = indexToGuitarString guitarStringIndex;
@@ -542,7 +543,41 @@ namespace Vaughan
                     }
             ]
 
-        let chordToGuitarFretboard chord bassString =
+        let private isOpenFret fret =
+            fret.Fret = 0
+
+        let private raiseOctave fret =
+            {fret with Fret= fret.Fret + 12}
+
+        let private raiseOpenFrets frets =
+            frets
+            |> List.map (fun fret -> 
+                    if isOpenFret fret 
+                    then raiseOctave fret
+                    else fret)
+
+        let private isRaised fret =
+            fret.Fret > 11
+
+        let private hasRaised frets =
+            frets
+            |> List.exists isRaised
+        let private raiseUnraisedFreats frets =
+            if hasRaised frets then
+                frets
+                |> List.map (fun fret -> if isRaised fret then fret else raiseOctave fret)
+            else
+                frets
+
+        let fretForNote note guitarString =
+            measureAbsoluteSemitones (guitarStringAttributes guitarString).OpenStringNote note
+
+        let chordToGuitarChord chord bassString =
             generateDefaultFredsForChord chord bassString
             |> List.mapi (fun i fret -> {fret with Note=(rawNoteForIndex i chord)})
             |> List.map (fun fret -> {fret with Fret=(fretForNote fret.Note fret.GuitarString)})
+
+        let chordToGuitarClosedChord chord bassString =
+            chordToGuitarChord chord bassString
+            |> raiseOpenFrets
+            |> raiseUnraisedFreats
