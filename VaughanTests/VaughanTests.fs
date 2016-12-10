@@ -480,3 +480,139 @@ namespace VaughanTests
             test <@ seventhsHarmonizer ScaleDgrees.V cMinor = gDom7 @>
             test <@ seventhsHarmonizer ScaleDgrees.VI cMinor = aFlatMaj7 @>
             test <@ seventhsHarmonizer ScaleDgrees.VII cMinor = bDim7 @>
+
+    module GuitarTests =
+        open NUnit.Framework
+        open Swensen.Unquote
+        open Vaughan.Notes
+        open Vaughan.Chords
+        open Vaughan.Guitar
+
+        [<Test>]
+        let ``Should map note to fret on sixth string``() =
+            test <@ fretForNote E SixthString = 0 @>
+            test <@ fretForNote F SixthString = 1 @>
+            test <@ fretForNote GFlat SixthString = 2 @>
+            test <@ fretForNote FSharp SixthString = 2 @>
+            test <@ fretForNote G SixthString = 3 @>
+            test <@ fretForNote AFlat SixthString = 4 @>
+            test <@ fretForNote GSharp SixthString = 4 @>
+            test <@ fretForNote A SixthString = 5 @>
+            test <@ fretForNote BFlat SixthString = 6 @>
+            test <@ fretForNote ASharp SixthString = 6 @>
+            test <@ fretForNote B SixthString = 7 @>
+            test <@ fretForNote C SixthString = 8 @>
+            test <@ fretForNote DFlat SixthString = 9 @>
+            test <@ fretForNote CSharp SixthString = 9 @>
+            test <@ fretForNote D SixthString = 10 @>
+            test <@ fretForNote EFlat SixthString = 11 @>
+            test <@ fretForNote DSharp SixthString = 11 @>
+
+        [<Test>]
+        let ``Should map note to fret on fifth string``() =
+            test <@ fretForNote A FifthString = 0 @>
+            test <@ fretForNote BFlat FifthString = 1 @>
+            test <@ fretForNote ASharp FifthString = 1 @>
+            test <@ fretForNote B FifthString = 2 @>
+            test <@ fretForNote C FifthString = 3 @>
+            test <@ fretForNote DFlat FifthString = 4 @>
+            test <@ fretForNote CSharp FifthString = 4 @>
+            test <@ fretForNote D FifthString = 5 @>
+            test <@ fretForNote EFlat FifthString = 6 @>
+            test <@ fretForNote DSharp FifthString = 6 @>
+            test <@ fretForNote E FifthString = 7 @>
+            test <@ fretForNote F FifthString = 8 @>
+            test <@ fretForNote GFlat FifthString = 9 @>
+            test <@ fretForNote FSharp FifthString = 9 @>
+            test <@ fretForNote G FifthString = 10 @>
+            test <@ fretForNote AFlat FifthString = 11 @>
+            test <@ fretForNote GSharp FifthString = 11 @>
+
+        [<Test>]
+        let ``Should map note to fret on fourth string``() =
+            test <@ fretForNote D FourthString = 0 @>
+            test <@ fretForNote EFlat FourthString = 1 @>
+            test <@ fretForNote DSharp FourthString = 1 @>
+            test <@ fretForNote E FourthString = 2 @>
+            test <@ fretForNote F FourthString = 3 @>
+            test <@ fretForNote GFlat FourthString = 4 @>
+            test <@ fretForNote FSharp FourthString = 4 @>
+            test <@ fretForNote G FourthString = 5 @>
+            test <@ fretForNote AFlat FourthString = 6 @>
+            test <@ fretForNote GSharp FourthString = 6 @>
+            test <@ fretForNote A FourthString = 7 @>
+            test <@ fretForNote BFlat FourthString = 8 @>
+            test <@ fretForNote ASharp FourthString = 8 @>
+            test <@ fretForNote B FourthString = 9 @>
+            test <@ fretForNote C FourthString = 10 @>
+            test <@ fretForNote DFlat FourthString = 11 @>
+            test <@ fretForNote CSharp FourthString = 11 @>
+
+        [<Test>]
+        let ``Should map note to fret on third string``() =
+            test <@ fretForNote G ThirdString = 0 @>
+            test <@ fretForNote AFlat ThirdString = 1 @>
+            test <@ fretForNote GSharp ThirdString = 1 @>
+            test <@ fretForNote A ThirdString = 2 @>
+            test <@ fretForNote BFlat ThirdString = 3 @>
+            test <@ fretForNote ASharp ThirdString = 3 @>
+            test <@ fretForNote B ThirdString = 4 @>
+            test <@ fretForNote C ThirdString = 5 @>
+            test <@ fretForNote DFlat ThirdString = 6 @>
+            test <@ fretForNote CSharp ThirdString = 6 @>
+            test <@ fretForNote D ThirdString = 7 @>
+            test <@ fretForNote EFlat ThirdString = 8 @>
+            test <@ fretForNote DSharp ThirdString = 8 @>
+            test <@ fretForNote E ThirdString = 9 @>
+            test <@ fretForNote F ThirdString = 10 @>
+            test <@ fretForNote GFlat ThirdString = 11 @>
+            test <@ fretForNote FSharp ThirdString = 11 @>
+
+        [<Test>]
+        let ``Should map note to fret on second string``() =
+            test <@ fretForNote B SecondString = 0 @>
+            test <@ fretForNote C SecondString = 1 @>
+            test <@ fretForNote DFlat SecondString = 2 @>
+            test <@ fretForNote CSharp SecondString = 2 @>
+            test <@ fretForNote D SecondString = 3 @>
+            test <@ fretForNote EFlat SecondString = 4 @>
+            test <@ fretForNote DSharp SecondString = 4 @>
+            test <@ fretForNote E SecondString = 5 @>
+            test <@ fretForNote F SecondString = 6 @>
+            test <@ fretForNote GFlat SecondString = 7 @>
+            test <@ fretForNote FSharp SecondString = 7 @>
+            test <@ fretForNote G SecondString = 8 @>
+            test <@ fretForNote AFlat SecondString = 9 @>
+            test <@ fretForNote GSharp SecondString = 9 @>
+            test <@ fretForNote A SecondString = 10 @>
+            test <@ fretForNote BFlat SecondString = 11 @>
+            test <@ fretForNote ASharp SecondString = 11 @>
+        
+        [<Test>]
+        let ``Should map note to fret on first string``() =
+            test <@ fretForNote E FirstString = 0 @>
+            test <@ fretForNote F FirstString = 1 @>
+            test <@ fretForNote GFlat FirstString = 2 @>
+            test <@ fretForNote FSharp FirstString = 2 @>
+            test <@ fretForNote G FirstString = 3 @>
+            test <@ fretForNote AFlat FirstString = 4 @>
+            test <@ fretForNote GSharp FirstString = 4 @>
+            test <@ fretForNote A FirstString = 5 @>
+            test <@ fretForNote BFlat FirstString = 6 @>
+            test <@ fretForNote ASharp FirstString = 6 @>
+            test <@ fretForNote B FirstString = 7 @>
+            test <@ fretForNote C FirstString = 8 @>
+            test <@ fretForNote DFlat FirstString = 9 @>
+            test <@ fretForNote CSharp FirstString = 9 @>
+            test <@ fretForNote D FirstString = 10 @>
+            test <@ fretForNote EFlat FirstString = 11 @>
+            test <@ fretForNote DSharp FirstString = 11 @>
+
+        [<Test>]
+        let ``Should map chord to fret``() =
+            let cMaj = chordFromRootAndFunction C Major
+            test <@ chordToGuitarFretboard cMaj SixthString  = [
+                        {GuitarString=SixthString; Fret=8; Note=C};
+                        {GuitarString=FifthString; Fret=7; Note=E};
+                        {GuitarString=FourthString; Fret=5; Note=G};
+                    ]@>

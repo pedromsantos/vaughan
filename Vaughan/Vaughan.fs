@@ -483,3 +483,36 @@ namespace Vaughan
 
         let triadsHarmonizer forDegree scale =
             reducedHarmonizer forDegree scale 3
+
+    module Guitar =
+        open Notes
+
+        type GuitarString = 
+            | SixthString 
+            | FifthString 
+            | FourthString 
+            | ThirdString 
+            | SecondString 
+            | FirstString
+        
+        type GuitarStringAttributes = {Name:string; OpenStringNote:Note}
+        type Fret = {GuitarString:GuitarString; Fret:int; Note:Note}
+
+        let private guitarStringAttributes guitarString =
+            match guitarString with
+            | SixthString -> { Name="Sixth"; OpenStringNote=E}
+            | FifthString -> { Name="Fifth"; OpenStringNote=A}
+            | FourthString -> { Name="Fourth"; OpenStringNote=D}
+            | ThirdString -> { Name="Third"; OpenStringNote=G}
+            | SecondString -> { Name="Second"; OpenStringNote=B}
+            | FirstString -> { Name="First"; OpenStringNote=E}
+        
+        let fretForNote note guitarString =
+            measureAbsoluteSemitones (guitarStringAttributes guitarString).OpenStringNote note
+
+        let chordToGuitarFretboard chord guitarString =
+            [
+                {GuitarString=SixthString; Fret=8; Note=C};
+                {GuitarString=FifthString; Fret=7; Note=E};
+                {GuitarString=FourthString; Fret=5; Note=G};
+            ]
