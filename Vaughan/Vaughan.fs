@@ -347,6 +347,11 @@ namespace Vaughan
         let note chordNote =
             fst chordNote
 
+        let private rawNotes chord =
+            chord.notes |>  List.map note
+
+        let rawNoteForIndex nth chord =
+            (List.item nth (rawNotes chord))
         let noteFunction chordNote =
             snd chordNote
 
@@ -486,6 +491,7 @@ namespace Vaughan
 
     module Guitar =
         open Notes
+        open Chords
 
         type GuitarString = 
             | SixthString 
@@ -495,24 +501,46 @@ namespace Vaughan
             | SecondString 
             | FirstString
         
-        type GuitarStringAttributes = {Name:string; OpenStringNote:Note}
+        type GuitarStringAttributes = {Name:string; OpenStringNote:Note; Index:int}
         type Fret = {GuitarString:GuitarString; Fret:int; Note:Note}
-
         let private guitarStringAttributes guitarString =
             match guitarString with
-            | SixthString -> { Name="Sixth"; OpenStringNote=E}
-            | FifthString -> { Name="Fifth"; OpenStringNote=A}
-            | FourthString -> { Name="Fourth"; OpenStringNote=D}
-            | ThirdString -> { Name="Third"; OpenStringNote=G}
-            | SecondString -> { Name="Second"; OpenStringNote=B}
-            | FirstString -> { Name="First"; OpenStringNote=E}
+            | SixthString -> { Name="Sixth"; OpenStringNote=E; Index=6}
+            | FifthString -> { Name="Fifth"; OpenStringNote=A; Index=5}
+            | FourthString -> { Name="Fourth"; OpenStringNote=D; Index=4}
+            | ThirdString -> { Name="Third"; OpenStringNote=G; Index=3}
+            | SecondString -> { Name="Second"; OpenStringNote=B; Index=2}
+            | FirstString -> { Name="First"; OpenStringNote=E; Index=1}
+
+        let private guitarStringIndex guitarString =
+            (guitarStringAttributes guitarString).Index
+
+        let private indexToGuitarString (nth:int) =
+            match nth with
+            | 6 -> SixthString
+            | 5 -> FifthString
+            | 4 -> FourthString
+            | 3 -> ThirdString
+            | 2 -> SecondString
+            | _ -> FirstString
         
         let fretForNote note guitarString =
             measureAbsoluteSemitones (guitarStringAttributes guitarString).OpenStringNote note
 
-        let chordToGuitarFretboard chord guitarString =
+        let private generateDefaultfredsForChord chord bassString =
+            let notesInChord = (chord.notes |> List.length) - 1
             [
-                {GuitarString=SixthString; Fret=8; Note=C};
-                {GuitarString=FifthString; Fret=7; Note=E};
-                {GuitarString=FourthString; Fret=5; Note=G};
+                for guitarStringIndex in 
+                    (guitarStringIndex bassString) .. -1 .. ((guitarStringIndex bassString) - notesInChord) 
+                -> 
+                    {
+                        GuitarString = indexToGuitarString guitarStringIndex;
+                        Fret = 0 
+                        Note = A
+                    }
             ]
+
+        let chordToGuitarFretboard chord bassString =
+            generateDefaultfredsForChord chord bassString
+            |> List.mapi (fun i fret -> {fret with Note=(rawNoteForIndex i chord)})
+            |> List.map (fun fret -> {fret with Fret=(fretForNote fret.Note fret.GuitarString)})

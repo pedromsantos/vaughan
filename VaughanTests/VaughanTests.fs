@@ -609,10 +609,19 @@ namespace VaughanTests
             test <@ fretForNote DSharp FirstString = 11 @>
 
         [<Test>]
-        let ``Should map chord to fret``() =
+        let ``Should map c major to guitar fretboard``() =
             let cMaj = chordFromRootAndFunction C Major
             test <@ chordToGuitarFretboard cMaj SixthString  = [
                         {GuitarString=SixthString; Fret=8; Note=C};
                         {GuitarString=FifthString; Fret=7; Note=E};
                         {GuitarString=FourthString; Fret=5; Note=G};
+                    ]@>
+
+        [<Test>]
+        let ``Should map c major to guitar fretboard on fifth string``() =
+            let cMaj = chordFromRootAndFunction C Major
+            test <@ chordToGuitarFretboard cMaj FifthString  = [
+                        {GuitarString=FifthString; Fret=3; Note=C};
+                        {GuitarString=FourthString; Fret=2; Note=E};
+                        {GuitarString=ThirdString; Fret=0; Note=G};
                     ]@>
