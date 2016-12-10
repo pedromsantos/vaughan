@@ -625,3 +625,21 @@ namespace VaughanTests
                         {GuitarString=FourthString; Fret=2; Note=E};
                         {GuitarString=ThirdString; Fret=0; Note=G};
                     ]@>
+        
+        [<Test>]
+        let ``Should map c major to guitar fretboard on fourth string``() =
+            let cMaj = chordFromRootAndFunction C Major
+            test <@ chordToGuitarFretboard cMaj FourthString  = [
+                        {GuitarString=FourthString; Fret=10; Note=C};
+                        {GuitarString=ThirdString; Fret=9; Note=E};
+                        {GuitarString=SecondString; Fret=8; Note=G};
+                    ]@>
+        
+        [<Test>]
+        let ``Should map c major to guitar fretboard on third string``() =
+            let cMaj = chordFromRootAndFunction C Major
+            test <@ chordToGuitarFretboard cMaj ThirdString  = [
+                        {GuitarString=ThirdString; Fret=5; Note=C};
+                        {GuitarString=SecondString; Fret=5; Note=E};
+                        {GuitarString=FirstString; Fret=3; Note=G};
+                    ]@>
