@@ -543,6 +543,6 @@ namespace Vaughan
             ]
 
         let chordToGuitarFretboard chord bassString =
-            generateDefaultfredsForChord chord bassString
+            generateDefaultFredsForChord chord bassString
             |> List.mapi (fun i fret -> {fret with Note=(rawNoteForIndex i chord)})
             |> List.map (fun fret -> {fret with Fret=(fretForNote fret.Note fret.GuitarString)})
