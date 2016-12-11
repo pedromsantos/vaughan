@@ -727,3 +727,15 @@ namespace VaughanTests
                         {GuitarString=ThirdString; Fret=13; Note=GSharp};
                         {GuitarString=SecondString; Fret=14; Note=CSharp};
                     ]@>
+    
+        [<Test>]
+        let ``Should draw C major 7 drop 2 to guitar fretboard on fifth string closed ``() =
+            let chord = seventhsHarmonizer ScaleDgrees.I cIonian |> toDrop2
+            let mappedChord = chordToGuitarClosedChord chord FifthString
+            test <@ mappedChord |> drawGuitarChordTab  = 
+"E|-----------|
+B|-----5-----|
+G|-----4-----|
+D|-----5-----|
+A|-----3-----|
+E|-----------|"@>

@@ -511,9 +511,9 @@ namespace Vaughan
             | FirstString
         
         type GuitarStringAttributes = {Name:string; OpenStringNote:Note; Index:int}
-        type StringFret = | Muted | Freted
+        type StringFret = | Muted | Freted of int
         type GuitarCordNote = {GuitarString:GuitarString; Fret:int; Note:Note}
-        type GuitarCord = GuitarCordNote list
+        type GuitarChord = GuitarCordNote list
 
         let private guitarStringAttributes guitarString =
             match guitarString with
@@ -526,6 +526,9 @@ namespace Vaughan
 
         let private guitarStringIndex guitarString =
             (guitarStringAttributes guitarString).Index
+
+        let private guitarStringOpenNote guitarString =
+            (guitarStringAttributes guitarString).OpenStringNote
 
         let private indexToGuitarString (nth:int) =
             match nth with
@@ -603,6 +606,9 @@ namespace Vaughan
                | i -> loop (frets |> raiseUnraisedFrets) (i-1)
             loop frets ((frets |> List.length) - 1)
 
+        let private openStringNoteName fret = 
+            fret.GuitarString |> guitarStringOpenNote |> noteName
+
         let fretForNote note guitarString =
             measureAbsoluteSemitones (guitarStringAttributes guitarString).OpenStringNote note
 
@@ -615,3 +621,12 @@ namespace Vaughan
             chordToGuitarChord chord bassString 
             |> raiseOpenFrets
             |> unstretch
+
+        let drawGuitarChordTab (guitarChord:GuitarChord) =
+            "E|-----------|\r\n" + 
+            (guitarChord
+            |> List.map (fun fret -> 
+                sprintf "%s|-----%i-----|\r\n" (openStringNoteName fret) fret.Fret)
+            |> List.rev
+            |> List.fold (+) "")
+            + "E|-----------|"
