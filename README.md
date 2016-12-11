@@ -164,12 +164,14 @@ createScale Ionian C
 |> drawGuitarChordTab
 ```
 Output:
-"E|-----------|
+```
+E|-----------|
 B|-----5-----|
 G|-----4-----|
 D|-----5-----|
 A|-----3-----|
-E|-----------|\r\n"
+E|-----------|
+```
 
 ```fsharp
 createScale Ionian A
@@ -179,13 +181,14 @@ createScale Ionian A
 |> drawGuitarChordTab
 ```
 Output:
-"E|-----------|
+```
+E|-----------|
 B|-----14-----|
 G|-----13-----|
 D|-----14-----|
 A|-----12-----|
-E|-----------|\r\n"
-
+E|-----------|
+```
 ```fsharp
 createScale Ionian F
 |> seventhsHarmonizer ScaleDgrees.I
@@ -193,13 +196,14 @@ createScale Ionian F
 |> drawGuitarChordTab
 ```
 Output:
-"E|-----12-----|
+```
+E|-----12-----|
 B|-----13-----|
 G|-----14-----|
 D|-----15-----|
 A|-----------|
-E|-----------|\r\n"
-
+E|-----------|
+```
 ```fsharp
 createScale Ionian C
 |> triadsHarmonizer ScaleDgrees.I
@@ -207,9 +211,11 @@ createScale Ionian C
 |> drawGuitarChordTab
 ```
 Output:
-"E|-----------|
+```
+E|-----------|
 B|-----------|
 G|-----------|
 D|-----5-----|
 A|-----7-----|
-E|-----8-----|\r\n"
+E|-----8-----|
+```
