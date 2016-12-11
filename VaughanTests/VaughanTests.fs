@@ -661,3 +661,23 @@ namespace VaughanTests
                         {GuitarString=FifthString; Fret=12; Note=A};
                         {GuitarString=FourthString; Fret=10; Note=C};
                     ]@>
+
+        [<Test>]
+        let ``Should map D major 7 to guitar fretboard on fourth string closed``() =
+            let dMaj7 = chordFromRootAndFunction D Major7
+            test <@ chordToGuitarClosedChord dMaj7 FourthString  = [
+                        {GuitarString=FourthString; Fret=12; Note=D};
+                        {GuitarString=ThirdString; Fret=11; Note=FSharp};
+                        {GuitarString=SecondString; Fret=10; Note=A};
+                        {GuitarString=FirstString; Fret=9; Note=DFlat};
+                    ]@>
+
+        [<Test>]
+        let ``Should map EFlat major 7 to guitar fretboard on fourth string closed``() =
+            let ebMaj7 = chordFromRootAndFunction EFlat Major7
+            test <@ chordToGuitarClosedChord ebMaj7 FourthString  = [
+                        {GuitarString=FourthString; Fret=13; Note=EFlat};
+                        {GuitarString=ThirdString; Fret=12; Note=G};
+                        {GuitarString=SecondString; Fret=11; Note=ASharp};
+                        {GuitarString=FirstString; Fret=10; Note=D};
+                    ]@>
