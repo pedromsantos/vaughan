@@ -512,8 +512,8 @@ namespace Vaughan
         
         type GuitarStringAttributes = {Name:string; OpenStringNote:Note; Index:int}
         type StringFret = | Muted | Freted of int
-        type GuitarCordNote = {GuitarString:GuitarString; Fret:int; Note:Note}
-        type GuitarChord = {Chord:Chord; Frets:GuitarCordNote list}
+        type GuitarChordNote = {GuitarString:GuitarString; Fret:int; Note:Note}
+        type GuitarChord = {Chord:Chord; Frets:GuitarChordNote list}
 
         let guitarStringAttributes guitarString =
             match guitarString with
@@ -627,8 +627,10 @@ namespace Vaughan
 
         let private guitarStringOpenNote guitarString =
             (guitarStringAttributes guitarString).OpenStringNote
+            
         let private openStringNoteName fret = 
             fret.GuitarString |> guitarStringOpenNote |> noteName
+
         let private drawTabHigherString guitarChord =
             match (guitarChord.Frets |> List.last).GuitarString with
             | SecondString -> "E|-----------|\r\n"
