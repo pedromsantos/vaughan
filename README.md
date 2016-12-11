@@ -36,8 +36,8 @@ open Vaughan.Notes
 
 | Example                      | Output            |
 | ---------------------------- | ----------------- |
-| intervalNameDiminishedFifth  | "DiminishedFifth" |
-| fromDistance 6               | "DiminishedFifth" |
+| intervalName DiminishedFifth | "DiminishedFifth" |
+| fromDistance 6               | DiminishedFifth   |
 
 ### Keys
 
@@ -126,6 +126,7 @@ let cMinor = createScale HarmonicMinor C
 
 ```fsharp
 open Vaughan.Notes
+open Vaughan.Chords
 open Vaughan.Guitar
 open Vaughan.ScaleHarmonizer
 open Vaughan.Scales
@@ -135,9 +136,11 @@ let cMaj = triadsHarmonizer ScaleDgrees.I cIonian
 let cMaj7Drop2 = seventhsHarmonizer ScaleDgrees.I cIonian |> toDrop2
 ```
 
- Example                                       | Output         |
-| -------------------------------------------- | -------------- |
-| fretForNote AFlat SixthString                | 4              |
-| fretForNote GFlat FifthString                | 9              |
-| chordToGuitarChord cMaj SixthString          | [{GuitarString=SixthString; Fret=8; Note=C}; {GuitarString=FifthString; Fret=7; Note=E};{GuitarString=FourthString; Fret=5; Note=G}]  |
-| chordToGuitarChord cMaj7Drop2 SixthString    | [{GuitarString=FifthString; Fret=3; Note=C}; {GuitarString=FourthString; Fret=5; Note=G};{GuitarString=ThirdString; Fret=4; Note=B}; {GuitarString=SecondString; Fret=5; Note=E}]  |
+ Example                                          | Output         |
+| ----------------------------------------------- | -------------- |
+| fretForNote AFlat SixthString                   | 4              |
+| fretForNote GFlat FifthString                   | 9              |
+| chordToGuitarChord cMaj FifthString             | [{GuitarString=FifthString; Fret=3; Note=C}; {GuitarString=FourthString; Fret=2; Note=E};{GuitarString=ThirdString; Fret=0; Note=G}] |
+| chordToGuitarClosedChord cMaj FifthString       | [{GuitarString=FifthString; Fret=15; Note=C}; {GuitarString=FourthString; Fret=14; Note=E}; {GuitarString=ThirdString; Fret=12; Note=G}] |
+| chordToGuitarClosedChord cMaj SixthString       | [{GuitarString=SixthString; Fret=8; Note=C}; {GuitarString=FifthString; Fret=7; Note=E};{GuitarString=FourthString; Fret=5; Note=G}] |
+| chordToGuitarClosedChord cMaj7Drop2 SixthString | [{GuitarString=FifthString; Fret=3; Note=C}; {GuitarString=FourthString; Fret=5; Note=G};{GuitarString=ThirdString; Fret=4; Note=B}; {GuitarString=SecondString; Fret=5; Note=E}] |
