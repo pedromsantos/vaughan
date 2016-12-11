@@ -609,6 +609,26 @@ namespace Vaughan
         let private openStringNoteName fret = 
             fret.GuitarString |> guitarStringOpenNote |> noteName
 
+        let private padDrawBottomStrings guitarChord =
+            match (guitarChord |> List.last).GuitarString with
+            | SecondString -> "E|-----------|\r\n"
+            | ThirdString -> "E|-----------|\r\n" + "B|-----------|\r\n"
+            | FourthString -> "E|-----------|\r\n" + "B|-----------|\r\n" + "G|-----------|\r\n"
+            | _ -> ""
+
+        let private padDrawTopStrings guitarChord =
+            match (guitarChord |> List.head).GuitarString with
+            | FifthString -> "E|-----------|\r\n"
+            | FourthString  -> "A|-----------|\r\n" + "E|-----------|\r\n"
+            | ThirdString  -> "D|-----------|\r\n" + "A|-----------|\r\n" + "E|-----------|\r\n"
+            | _ -> ""
+
+        let private drawTabForGuitarChord guitarChord = 
+            guitarChord
+            |> List.map (fun fret -> sprintf "%s|-----%i-----|\r\n" (openStringNoteName fret) fret.Fret)
+            |> List.rev
+            |> List.fold (+) ""
+
         let fretForNote note guitarString =
             measureAbsoluteSemitones (guitarStringAttributes guitarString).OpenStringNote note
 
@@ -623,10 +643,8 @@ namespace Vaughan
             |> unstretch
 
         let drawGuitarChordTab (guitarChord:GuitarChord) =
-            "E|-----------|\r\n" + 
-            (guitarChord
-            |> List.map (fun fret -> 
-                sprintf "%s|-----%i-----|\r\n" (openStringNoteName fret) fret.Fret)
-            |> List.rev
-            |> List.fold (+) "")
-            + "E|-----------|"
+            padDrawBottomStrings guitarChord
+            +
+            drawTabForGuitarChord guitarChord
+            +
+            padDrawTopStrings guitarChord
