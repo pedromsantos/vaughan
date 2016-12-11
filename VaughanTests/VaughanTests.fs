@@ -706,3 +706,24 @@ namespace VaughanTests
                         {GuitarString=SecondString; Fret=13; Note=C};
                         {GuitarString=FirstString; Fret=12; Note=E};
                     ]@>
+
+        [<Test>]
+        let ``Should map C major 7 drop 2 to guitar fretboard on fifth string closed``() =
+            let chord = toDrop2(seventhsHarmonizer ScaleDgrees.I cIonian)
+            test <@ chordToGuitarClosedChord chord FifthString = [
+                        {GuitarString=FifthString; Fret=3; Note=C};
+                        {GuitarString=FourthString; Fret=5; Note=G};
+                        {GuitarString=ThirdString; Fret=4; Note=B};
+                        {GuitarString=SecondString; Fret=5; Note=E};
+                    ]@>
+
+        [<Test>]
+        let ``Should map A major 7 drop 2 to guitar fretboard on fifth string closed``() =
+            let scale = createScale Ionian A
+            let chord = toDrop2(seventhsHarmonizer ScaleDgrees.I scale)
+            test <@ chordToGuitarClosedChord chord FifthString = [
+                        {GuitarString=FifthString; Fret=12; Note=A};
+                        {GuitarString=FourthString; Fret=14; Note=E};
+                        {GuitarString=ThirdString; Fret=13; Note=GSharp};
+                        {GuitarString=SecondString; Fret=14; Note=CSharp};
+                    ]@>
