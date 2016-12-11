@@ -140,10 +140,5 @@ let cMaj7Drop2 = toDrop2(seventhsHarmonizer ScaleDgrees.I cIonian)
 | -------------------------------------------- | -------------- |
 | fretForNote AFlat SixthString                | 4              |
 | fretForNote GFlat FifthString                | 9              |
-| chordToGuitarChord cMaj SixthString          | [{GuitarString=SixthString; Fret=8; Note=C}; 
-{GuitarString=FifthString; Fret=7; Note=E};
-{GuitarString=FourthString; Fret=5; Note=G}]  |
-| chordToGuitarChord cMaj7Drop2 SixthString    | [{GuitarString=FifthString; Fret=3; Note=C};
-{GuitarString=FourthString; Fret=5; Note=G};
-{GuitarString=ThirdString; Fret=4; Note=B};
-{GuitarString=SecondString; Fret=5; Note=E}]  |
+| chordToGuitarChord cMaj SixthString          | [{GuitarString=SixthString; Fret=8; Note=C}; {GuitarString=FifthString; Fret=7; Note=E};{GuitarString=FourthString; Fret=5; Note=G}]  |
+| chordToGuitarChord cMaj7Drop2 SixthString    | [{GuitarString=FifthString; Fret=3; Note=C}; {GuitarString=FourthString; Fret=5; Note=G};{GuitarString=ThirdString; Fret=4; Note=B}; {GuitarString=SecondString; Fret=5; Note=E}]  |
