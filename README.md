@@ -177,7 +177,7 @@ createScale Ionian A
 ```
 Output:
 ```
-     AMAj7
+     AMaj7
 E|-----------|
 B|-----14----|
 G|-----13----|
