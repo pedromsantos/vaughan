@@ -528,7 +528,7 @@ namespace Vaughan
             | 3 -> ThirdString
             | 2 -> SecondString
             | _ -> FirstString
-        let private generateDefaultFredsForChord chord bassString =
+        let private defaultGuitarChordForChord chord bassString =
             let bassStringIndex = guitarStringIndex bassString
             let notesInChord = (chord.notes |> List.length) - 1
             let leadStringIndex = (guitarStringIndex bassString) - notesInChord
@@ -573,7 +573,7 @@ namespace Vaughan
             measureAbsoluteSemitones (guitarStringAttributes guitarString).OpenStringNote note
 
         let chordToGuitarChord chord bassString =
-            generateDefaultFredsForChord chord bassString
+            defaultGuitarChordForChord chord bassString
             |> List.mapi (fun i fret -> {fret with Note=(rawNoteForIndex i chord)})
             |> List.map (fun fret -> {fret with Fret=(fretForNote fret.Note fret.GuitarString)})
 
