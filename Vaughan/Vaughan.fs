@@ -34,6 +34,12 @@ namespace Vaughan
            | [x] -> Some(x)
            | c1::c2::rest -> min minOf ((minOf c1 c2)::rest)
 
+        let cappedMinimum number cap =
+            if number < cap then cap else number
+
+        let cappedMaximum number cap =
+            if number > cap then cap else number
+
     module Notes =
         type Note = | C | CSharp | DFlat | D | DSharp | EFlat | E | F | FSharp 
                     | GFlat | G | GSharp | AFlat | A | ASharp | BFlat | B
@@ -492,6 +498,7 @@ namespace Vaughan
     module Guitar =
         open Notes
         open Chords
+        open Infrastructure
 
         let maxStrech = 5
 
@@ -547,7 +554,18 @@ namespace Vaughan
             fret.Fret = 0
 
         let private raiseOctave fret =
-            {fret with Fret= fret.Fret + 12}
+            {fret with Fret = fret.Fret + 12}
+
+        let private fretDistance fret other =
+            abs(fret.Fret - other.Fret)
+
+        let private isStretching fret other =
+            (fretDistance fret other) > maxStrech
+
+        let private raiseOctaveOnStretch previous current next =
+            if (isStretching current previous) || (isStretching current next)
+            then {current with Fret= current.Fret + 12}
+            else current
 
         let private raiseOpenFrets frets =
             frets
@@ -562,13 +580,20 @@ namespace Vaughan
         let private hasRaised frets =
             frets
             |> List.exists isRaised
-        let private raiseUnraisedFreats frets =
+
+        let private raiseUnraisedFrets frets =
             if hasRaised frets then
                 frets
-                |> List.map (fun fret -> if isRaised fret then fret else raiseOctave fret)
+                |> List.mapi (fun i fret -> 
+                    if isRaised fret 
+                    then fret 
+                    else
+                        let minimumIndex = cappedMinimum (i-1) 0
+                        let maxIndex = (frets |> List.length) - 1
+                        let maximumIndex = cappedMaximum (i+1) maxIndex 
+                        raiseOctaveOnStretch frets.[minimumIndex] fret frets.[maximumIndex])
             else
                 frets
-
         let fretForNote note guitarString =
             measureAbsoluteSemitones (guitarStringAttributes guitarString).OpenStringNote note
 
@@ -580,4 +605,5 @@ namespace Vaughan
         let chordToGuitarClosedChord chord bassString =
             chordToGuitarChord chord bassString
             |> raiseOpenFrets
-            |> raiseUnraisedFreats
+            |> raiseUnraisedFrets
+            |> raiseUnraisedFrets

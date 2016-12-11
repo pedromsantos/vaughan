@@ -652,3 +652,12 @@ namespace VaughanTests
                         {GuitarString=FourthString; Fret=14; Note=E};
                         {GuitarString=ThirdString; Fret=12; Note=G};
                     ]@>
+
+        [<Test>]
+        let ``Should map F major to guitar fretboard on sixth string closed``() =
+            let fMaj = chordFromRootAndFunction F Major
+            test <@ chordToGuitarClosedChord fMaj SixthString  = [
+                        {GuitarString=SixthString; Fret=13; Note=F};
+                        {GuitarString=FifthString; Fret=12; Note=A};
+                        {GuitarString=FourthString; Fret=10; Note=C};
+                    ]@>
