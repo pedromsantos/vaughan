@@ -742,9 +742,12 @@ namespace VaughanTests
 
         [<Test>]
         let ``Should draw C major 7 drop 2 to guitar fretboard on fifth string closed ``() =
-            let chord = seventhsHarmonizer ScaleDgrees.I cIonian |> toDrop2
-            let mappedChord = chordToGuitarClosedChord FifthString chord
-            test <@ mappedChord |> drawGuitarChordTab  = 
+            let guitarChord = 
+                (cIonian
+                |> seventhsHarmonizer ScaleDgrees.I
+                |> toDrop2
+                |> chordToGuitarClosedChord FifthString)
+            test <@ guitarChord |> drawGuitarChordTab  = 
 "E|-----------|
 B|-----5-----|
 G|-----4-----|
@@ -754,34 +757,37 @@ E|-----------|\r\n"@>
 
         [<Test>]
         let ``Should draw A major 7 to guitar fretboard on fifth string closed ``() =
-            let scale = createScale Ionian A
-            let chord = seventhsHarmonizer ScaleDgrees.I scale |> toDrop2
-            let mappedChord = chordToGuitarClosedChord FifthString chord
-            test <@ mappedChord |> drawGuitarChordTab  = 
+            let guitarChord = 
+                (createScale Ionian A
+                |> seventhsHarmonizer ScaleDgrees.I
+                |> toDrop2
+                |> chordToGuitarClosedChord FifthString)
+            test <@ guitarChord |> drawGuitarChordTab  = 
 "E|-----------|
-B|-----14-----|
-G|-----13-----|
-D|-----14-----|
-A|-----12-----|
+B|-----14----|
+G|-----13----|
+D|-----14----|
+A|-----12----|
 E|-----------|\r\n"@>
 
         [<Test>]
         let ``Should draw F major 7 to guitar fretboard on fourth string closed``() =
-            let scale = createScale Ionian F
-            let chord = seventhsHarmonizer ScaleDgrees.I scale
-            let mappedChord = chordToGuitarClosedChord FourthString chord
-            test <@ mappedChord |> drawGuitarChordTab  = 
-"E|-----12-----|
-B|-----13-----|
-G|-----14-----|
-D|-----15-----|
+            let guitarChord = 
+                (createScale Ionian F
+                |> seventhsHarmonizer ScaleDgrees.I
+                |> chordToGuitarClosedChord FourthString)
+            test <@ guitarChord |> drawGuitarChordTab  = 
+"E|-----12----|
+B|-----13----|
+G|-----14----|
+D|-----15----|
 A|-----------|
 E|-----------|\r\n"@>
 
         [<Test>]
         let ``Should draw c major to guitar fretboard on sixth string``() =
-            let mappedChord = chordToGuitarClosedChord SixthString cMaj
-            test <@ mappedChord |> drawGuitarChordTab  = 
+            let guitarChord = chordToGuitarClosedChord SixthString cMaj
+            test <@ guitarChord |> drawGuitarChordTab  = 
 "E|-----------|
 B|-----------|
 G|-----------|
