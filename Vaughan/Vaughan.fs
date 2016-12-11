@@ -513,7 +513,7 @@ namespace Vaughan
         type GuitarStringAttributes = {Name:string; OpenStringNote:Note; Index:int}
         type StringFret = | Muted | Freted of int
         type GuitarCordNote = {GuitarString:GuitarString; Fret:int; Note:Note}
-        type GuitarChord = GuitarCordNote list
+        type GuitarChord = {Chord:Chord; Frets:GuitarCordNote list}
 
         let guitarStringAttributes guitarString =
             match guitarString with
@@ -576,11 +576,11 @@ namespace Vaughan
             |> List.exists isRaised
 
         let private raiseOpenFrets frets =
-            frets
+            frets 
             |> List.map (fun fret -> 
-                    if isOpenFret fret 
-                    then raiseOctave fret
-                    else fret)
+                if isOpenFret fret 
+                then raiseOctave fret
+                else fret)
 
         let private raiseUnraisedFrets frets =
             if hasRaised frets then
@@ -607,14 +607,17 @@ namespace Vaughan
             measureAbsoluteSemitones (guitarStringAttributes guitarString).OpenStringNote note
 
         let chordToGuitarChord  bassString chord =
-            defaultGuitarChordForChord bassString chord
-            |> List.mapi (fun i fret -> {fret with Note=(rawNoteForIndex i chord)})
-            |> List.map (fun fret -> {fret with Fret=(fretForNote fret.Note fret.GuitarString)})
+            {
+                Chord=chord;
+                Frets=defaultGuitarChordForChord bassString chord
+                |> List.mapi (fun i fret -> {fret with Note=(rawNoteForIndex i chord)})
+                |> List.map (fun fret -> {fret with Fret=(fretForNote fret.Note fret.GuitarString)})
+            }
 
         let chordToGuitarClosedChord bassString chord =
-            chordToGuitarChord bassString chord 
-            |> raiseOpenFrets
-            |> unstretch
+            let guitarChord = chordToGuitarChord bassString chord 
+            let closedChord = {guitarChord with Frets = raiseOpenFrets guitarChord.Frets}
+            {closedChord with Frets = unstretch closedChord.Frets}
 
     module GuitarTab =
         open Notes
@@ -627,21 +630,21 @@ namespace Vaughan
         let private openStringNoteName fret = 
             fret.GuitarString |> guitarStringOpenNote |> noteName
         let private drawTabHigherString guitarChord =
-            match (guitarChord |> List.last).GuitarString with
+            match (guitarChord.Frets |> List.last).GuitarString with
             | SecondString -> "E|-----------|\r\n"
             | ThirdString -> "E|-----------|\r\n" + "B|-----------|\r\n"
             | FourthString -> "E|-----------|\r\n" + "B|-----------|\r\n" + "G|-----------|\r\n"
             | _ -> ""
 
         let private drawTabLowerString guitarChord =
-            match (guitarChord |> List.head).GuitarString with
+            match (guitarChord.Frets |> List.head).GuitarString with
             | FifthString -> "E|-----------|\r\n"
             | FourthString  -> "A|-----------|\r\n" + "E|-----------|\r\n"
             | ThirdString  -> "D|-----------|\r\n" + "A|-----------|\r\n" + "E|-----------|\r\n"
             | _ -> ""
 
         let private drawTabForGuitarChord guitarChord = 
-            guitarChord
+            guitarChord.Frets
             |> List.map (fun fret -> 
                 if fret.Fret < 10
                     then sprintf "%s|-----%i-----|\r\n" (openStringNoteName fret) fret.Fret
@@ -650,6 +653,8 @@ namespace Vaughan
             |> List.fold (+) ""
 
         let drawGuitarChordTab guitarChord =
+            sprintf "    %s\r\n" (name guitarChord.Chord)
+            +
             drawTabHigherString guitarChord
             +
             drawTabForGuitarChord guitarChord
