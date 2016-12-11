@@ -726,7 +726,20 @@ namespace VaughanTests
                         {GuitarString=ThirdString; Fret=13; Note=GSharp};
                         {GuitarString=SecondString; Fret=14; Note=CSharp};
                     ]@>
-    
+
+    module GuitarTabTests =
+        open NUnit.Framework
+        open Swensen.Unquote
+        open Vaughan.Notes
+        open Vaughan.Chords
+        open Vaughan.Guitar
+        open Vaughan.GuitarTab
+        open Vaughan.ScaleHarmonizer
+        open Vaughan.Scales
+
+        let cIonian = createScale Ionian C
+        let cMaj = triadsHarmonizer ScaleDgrees.I cIonian
+
         [<Test>]
         let ``Should draw C major 7 drop 2 to guitar fretboard on fifth string closed ``() =
             let chord = seventhsHarmonizer ScaleDgrees.I cIonian |> toDrop2

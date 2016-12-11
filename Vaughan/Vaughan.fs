@@ -515,7 +515,7 @@ namespace Vaughan
         type GuitarCordNote = {GuitarString:GuitarString; Fret:int; Note:Note}
         type GuitarChord = GuitarCordNote list
 
-        let private guitarStringAttributes guitarString =
+        let guitarStringAttributes guitarString =
             match guitarString with
             | SixthString -> { Name="Sixth"; OpenStringNote=E; Index=6}
             | FifthString -> { Name="Fifth"; OpenStringNote=A; Index=5}
@@ -524,12 +524,9 @@ namespace Vaughan
             | SecondString -> { Name="Second"; OpenStringNote=B; Index=2}
             | FirstString -> { Name="First"; OpenStringNote=E; Index=1}
 
-        let private guitarStringIndex guitarString =
+        let guitarStringIndex guitarString =
             (guitarStringAttributes guitarString).Index
-
-        let private guitarStringOpenNote guitarString =
-            (guitarStringAttributes guitarString).OpenStringNote
-
+            
         let private indexToGuitarString (nth:int) =
             match nth with
             | 6 -> SixthString
@@ -606,9 +603,29 @@ namespace Vaughan
                | i -> loop (frets |> raiseUnraisedFrets) (i-1)
             loop frets ((frets |> List.length) - 1)
 
+        let fretForNote note guitarString =
+            measureAbsoluteSemitones (guitarStringAttributes guitarString).OpenStringNote note
+
+        let chordToGuitarChord chord bassString =
+            defaultGuitarChordForChord chord bassString
+            |> List.mapi (fun i fret -> {fret with Note=(rawNoteForIndex i chord)})
+            |> List.map (fun fret -> {fret with Fret=(fretForNote fret.Note fret.GuitarString)})
+
+        let chordToGuitarClosedChord chord bassString =
+            chordToGuitarChord chord bassString 
+            |> raiseOpenFrets
+            |> unstretch
+
+    module GuitarTab =
+        open Notes
+        open Chords
+        open Guitar
+        open Infrastructure
+
+        let private guitarStringOpenNote guitarString =
+            (guitarStringAttributes guitarString).OpenStringNote
         let private openStringNoteName fret = 
             fret.GuitarString |> guitarStringOpenNote |> noteName
-
         let private drawTabHigherString guitarChord =
             match (guitarChord |> List.last).GuitarString with
             | SecondString -> "E|-----------|\r\n"
@@ -628,19 +645,6 @@ namespace Vaughan
             |> List.map (fun fret -> sprintf "%s|-----%i-----|\r\n" (openStringNoteName fret) fret.Fret)
             |> List.rev
             |> List.fold (+) ""
-
-        let fretForNote note guitarString =
-            measureAbsoluteSemitones (guitarStringAttributes guitarString).OpenStringNote note
-
-        let chordToGuitarChord chord bassString =
-            defaultGuitarChordForChord chord bassString
-            |> List.mapi (fun i fret -> {fret with Note=(rawNoteForIndex i chord)})
-            |> List.map (fun fret -> {fret with Fret=(fretForNote fret.Note fret.GuitarString)})
-
-        let chordToGuitarClosedChord chord bassString =
-            chordToGuitarChord chord bassString 
-            |> raiseOpenFrets
-            |> unstretch
 
         let drawGuitarChordTab (guitarChord:GuitarChord) =
             drawTabHigherString guitarChord
