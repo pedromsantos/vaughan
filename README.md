@@ -158,6 +158,22 @@ open Vaughan.Scales
 
 ```fsharp
 createScale Ionian C
+|> triadsHarmonizer ScaleDgrees.I
+|> chordToGuitarClosedChord SixthString
+|> drawGuitarChordTab
+```
+Output:
+```
+E|-----------|
+B|-----------|
+G|-----------|
+D|-----5-----|
+A|-----7-----|
+E|-----8-----|
+```
+
+```fsharp
+createScale Ionian C
 |> seventhsHarmonizer ScaleDgrees.I
 |> toDrop2
 |> chordToGuitarClosedChord FifthString
@@ -203,19 +219,4 @@ G|-----14-----|
 D|-----15-----|
 A|-----------|
 E|-----------|
-```
-```fsharp
-createScale Ionian C
-|> triadsHarmonizer ScaleDgrees.I
-|> chordToGuitarClosedChord SixthString
-|> drawGuitarChordTab
-```
-Output:
-```
-E|-----------|
-B|-----------|
-G|-----------|
-D|-----5-----|
-A|-----7-----|
-E|-----8-----|
 ```
