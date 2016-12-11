@@ -627,35 +627,45 @@ namespace Vaughan
 
         let private guitarStringOpenNote guitarString =
             (guitarStringAttributes guitarString).OpenStringNote
-            
+
         let private openStringNoteName fret = 
             fret.GuitarString |> guitarStringOpenNote |> noteName
 
+        let private doubleDigitFret guitarChord = 
+            guitarChord.Frets |> List.exists (fun f -> f.Fret > 9)
+
+        let private padDashes guitarChord = 
+            if doubleDigitFret guitarChord 
+            then "----"
+            else "---"
+
         let private drawTabHigherString guitarChord =
+            let dashes = padDashes guitarChord
             match (guitarChord.Frets |> List.last).GuitarString with
-            | SecondString -> "E|-----------|\r\n"
-            | ThirdString -> "E|-----------|\r\n" + "B|-----------|\r\n"
-            | FourthString -> "E|-----------|\r\n" + "B|-----------|\r\n" + "G|-----------|\r\n"
+            | SecondString -> "E|" + dashes + "|\r\n"
+            | ThirdString -> "E|" + dashes + "|\r\n" + "B|" + dashes + "|\r\n"
+            | FourthString -> "E|" + dashes + "|\r\n" + "B|" + dashes + "|\r\n" + "G|" + dashes + "|\r\n"
             | _ -> ""
 
         let private drawTabLowerString guitarChord =
+            let dashes = padDashes guitarChord
             match (guitarChord.Frets |> List.head).GuitarString with
-            | FifthString -> "E|-----------|\r\n"
-            | FourthString  -> "A|-----------|\r\n" + "E|-----------|\r\n"
-            | ThirdString  -> "D|-----------|\r\n" + "A|-----------|\r\n" + "E|-----------|\r\n"
+            | FifthString -> "E|" + dashes + "|\r\n"
+            | FourthString  -> "A|" + dashes + "|\r\n" + "E|" + dashes + "|\r\n"
+            | ThirdString  -> "D|" + dashes + "|\r\n" + "A|" + dashes + "|\r\n" + "E|" + dashes + "|\r\n"
             | _ -> ""
 
         let private drawTabForGuitarChord guitarChord = 
             guitarChord.Frets
             |> List.map (fun fret -> 
                 if fret.Fret < 10
-                    then sprintf "%s|-----%i-----|\r\n" (openStringNoteName fret) fret.Fret
-                    else sprintf "%s|-----%i----|\r\n" (openStringNoteName fret) fret.Fret)
+                    then sprintf "%s|-%i-|\r\n" (openStringNoteName fret) fret.Fret
+                    else sprintf "%s|-%i-|\r\n" (openStringNoteName fret) fret.Fret)
             |> List.rev
             |> List.fold (+) ""
 
         let drawGuitarChordTab guitarChord =
-            sprintf "    %s\r\n" (name guitarChord.Chord)
+            sprintf "  %s\r\n" (name guitarChord.Chord)
             +
             drawTabHigherString guitarChord
             +

@@ -748,13 +748,13 @@ namespace VaughanTests
                 |> toDrop2
                 |> chordToGuitarClosedChord FifthString)
             test <@ guitarChord |> drawGuitarChordTab  = 
-"    CMaj7
-E|-----------|
-B|-----5-----|
-G|-----4-----|
-D|-----5-----|
-A|-----3-----|
-E|-----------|\r\n"@>
+"  CMaj7
+E|---|
+B|-5-|
+G|-4-|
+D|-5-|
+A|-3-|
+E|---|\r\n"@>
 
         [<Test>]
         let ``Should draw A major 7 to guitar fretboard on fifth string closed ``() =
@@ -764,13 +764,13 @@ E|-----------|\r\n"@>
                 |> toDrop2
                 |> chordToGuitarClosedChord FifthString)
             test <@ guitarChord |> drawGuitarChordTab  = 
-"    AMaj7
-E|-----------|
-B|-----14----|
-G|-----13----|
-D|-----14----|
-A|-----12----|
-E|-----------|\r\n"@>
+"  AMaj7
+E|----|
+B|-14-|
+G|-13-|
+D|-14-|
+A|-12-|
+E|----|\r\n"@>
 
         [<Test>]
         let ``Should draw F major 7 to guitar fretboard on fourth string closed``() =
@@ -779,22 +779,22 @@ E|-----------|\r\n"@>
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> chordToGuitarClosedChord FourthString)
             test <@ guitarChord |> drawGuitarChordTab  = 
-"    FMaj7
-E|-----12----|
-B|-----13----|
-G|-----14----|
-D|-----15----|
-A|-----------|
-E|-----------|\r\n"@>
+"  FMaj7
+E|-12-|
+B|-13-|
+G|-14-|
+D|-15-|
+A|----|
+E|----|\r\n"@>
 
         [<Test>]
         let ``Should draw c major to guitar fretboard on sixth string``() =
             let guitarChord = chordToGuitarClosedChord SixthString cMaj
             test <@ guitarChord |> drawGuitarChordTab  = 
-"    CMaj
-E|-----------|
-B|-----------|
-G|-----------|
-D|-----5-----|
-A|-----7-----|
-E|-----8-----|\r\n"@>
+"  CMaj
+E|---|
+B|---|
+G|---|
+D|-5-|
+A|-7-|
+E|-8-|\r\n"@>
