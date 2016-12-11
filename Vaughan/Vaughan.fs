@@ -526,7 +526,7 @@ namespace Vaughan
 
         let guitarStringIndex guitarString =
             (guitarStringAttributes guitarString).Index
-            
+
         let private indexToGuitarString (nth:int) =
             match nth with
             | 6 -> SixthString
@@ -536,7 +536,7 @@ namespace Vaughan
             | 2 -> SecondString
             | _ -> FirstString
 
-        let private defaultGuitarChordForChord chord bassString =
+        let private defaultGuitarChordForChord bassString chord =
             let bassStringIndex = guitarStringIndex bassString
             let notesInChord = (chord.notes |> List.length) - 1
             let leadStringIndex = (guitarStringIndex bassString) - notesInChord
@@ -606,13 +606,13 @@ namespace Vaughan
         let fretForNote note guitarString =
             measureAbsoluteSemitones (guitarStringAttributes guitarString).OpenStringNote note
 
-        let chordToGuitarChord chord bassString =
-            defaultGuitarChordForChord chord bassString
+        let chordToGuitarChord  bassString chord =
+            defaultGuitarChordForChord bassString chord
             |> List.mapi (fun i fret -> {fret with Note=(rawNoteForIndex i chord)})
             |> List.map (fun fret -> {fret with Fret=(fretForNote fret.Note fret.GuitarString)})
 
-        let chordToGuitarClosedChord chord bassString =
-            chordToGuitarChord chord bassString 
+        let chordToGuitarClosedChord bassString chord =
+            chordToGuitarChord bassString chord 
             |> raiseOpenFrets
             |> unstretch
 
@@ -646,7 +646,7 @@ namespace Vaughan
             |> List.rev
             |> List.fold (+) ""
 
-        let drawGuitarChordTab (guitarChord:GuitarChord) =
+        let drawGuitarChordTab guitarChord =
             drawTabHigherString guitarChord
             +
             drawTabForGuitarChord guitarChord
