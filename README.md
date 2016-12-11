@@ -36,8 +36,8 @@ open Vaughan.Notes
 
 | Example                      | Output            |
 | ---------------------------- | ----------------- |
-| intervalNameDiminishedFifth  | "DiminishedFifth" |
-| fromDistance 6               | "DiminishedFifth" |
+| intervalName DiminishedFifth | "DiminishedFifth" |
+| fromDistance 6               | DiminishedFifth   |
 
 ### Keys
 
