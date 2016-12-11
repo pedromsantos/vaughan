@@ -586,15 +586,22 @@ namespace Vaughan
             if hasRaised frets then
                 frets
                 |> List.mapi (fun i fret -> 
-                    if isRaised fret 
-                    then fret 
-                    else
+                    match isRaised fret with
+                    | true -> fret 
+                    | false ->
                         let minimumIndex = cappedMinimum (i-1) 0
                         let maxIndex = (frets |> List.length) - 1
                         let maximumIndex = cappedMaximum (i+1) maxIndex 
                         raiseOctaveOnStretch frets.[minimumIndex] fret frets.[maximumIndex])
             else
                 frets
+
+        let private unstretch frets =
+            let rec loop frets i =
+               match i with
+               | 0 -> frets
+               | i -> loop (frets |> raiseUnraisedFrets) (i-1)
+            loop frets ((frets |> List.length) - 1)
 
         let fretForNote note guitarString =
             measureAbsoluteSemitones (guitarStringAttributes guitarString).OpenStringNote note
@@ -605,8 +612,6 @@ namespace Vaughan
             |> List.map (fun fret -> {fret with Fret=(fretForNote fret.Note fret.GuitarString)})
 
         let chordToGuitarClosedChord chord bassString =
-            chordToGuitarChord chord bassString
+            chordToGuitarChord chord bassString 
             |> raiseOpenFrets
-            |> raiseUnraisedFrets
-            |> raiseUnraisedFrets
-            |> raiseUnraisedFrets
+            |> unstretch
