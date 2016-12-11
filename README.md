@@ -121,3 +121,24 @@ let cMinor = createScale HarmonicMinor C
 | triadsHarmonizer ScaleDgrees.I cMinor        | cMin           |
 | triadsHarmonizer ScaleDgrees.I cMinor        | cMin           |
 | seventhsHarmonizer ScaleDgrees.I cIonian     | cMaj7          |
+
+### Guitar chord mapping
+
+```fsharp
+open Vaughan.Notes
+open Vaughan.Chords
+open Vaughan.Guitar
+open Vaughan.ScaleHarmonizer
+open Vaughan.Scales
+
+let cIonian = createScale Ionian C
+let cMaj = triadsHarmonizer ScaleDgrees.I cIonian
+let cMaj7Drop2 = toDrop2(seventhsHarmonizer ScaleDgrees.I cIonian)
+```
+
+ Example                                       | Output         |
+| -------------------------------------------- | -------------- |
+| fretForNote AFlat SixthString                | 4              |
+| fretForNote GFlat FifthString                | 9              |
+| chordToGuitarChord cMaj SixthString          | [{GuitarString=SixthString; Fret=8; Note=C}; {GuitarString=FifthString; Fret=7; Note=E};{GuitarString=FourthString; Fret=5; Note=G};]  |
+| chordToGuitarChord cMaj7Drop2 SixthString    | [{{GuitarString=FifthString; Fret=3; Note=C}; {GuitarString=FourthString; Fret=5; Note=G}; {GuitarString=ThirdString; Fret=4; Note=B}; {GuitarString=SecondString; Fret=5; Note=E}]  |
