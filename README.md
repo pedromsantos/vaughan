@@ -133,7 +133,7 @@ open Vaughan.Scales
 
 let cIonian = createScale Ionian C
 let cMaj = triadsHarmonizer ScaleDgrees.I cIonian
-let cMaj7Drop2 = toDrop2(seventhsHarmonizer ScaleDgrees.I cIonian)
+let cMaj7Drop2 = seventhsHarmonizer ScaleDgrees.I cIonian |> toDrop2
 ```
 
  Example                                       | Output         |
