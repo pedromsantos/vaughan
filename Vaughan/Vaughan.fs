@@ -609,14 +609,14 @@ namespace Vaughan
         let private openStringNoteName fret = 
             fret.GuitarString |> guitarStringOpenNote |> noteName
 
-        let private padDrawBottomStrings guitarChord =
+        let private drawTabHigherString guitarChord =
             match (guitarChord |> List.last).GuitarString with
             | SecondString -> "E|-----------|\r\n"
             | ThirdString -> "E|-----------|\r\n" + "B|-----------|\r\n"
             | FourthString -> "E|-----------|\r\n" + "B|-----------|\r\n" + "G|-----------|\r\n"
             | _ -> ""
 
-        let private padDrawTopStrings guitarChord =
+        let private drawTabLowerString guitarChord =
             match (guitarChord |> List.head).GuitarString with
             | FifthString -> "E|-----------|\r\n"
             | FourthString  -> "A|-----------|\r\n" + "E|-----------|\r\n"
@@ -643,8 +643,8 @@ namespace Vaughan
             |> unstretch
 
         let drawGuitarChordTab (guitarChord:GuitarChord) =
-            padDrawBottomStrings guitarChord
+            drawTabHigherString guitarChord
             +
             drawTabForGuitarChord guitarChord
             +
-            padDrawTopStrings guitarChord
+            drawTabLowerString guitarChord
