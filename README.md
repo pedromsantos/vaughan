@@ -141,6 +141,7 @@ createScale Ionian C
 ```
 Output:
 ```
+     CMaj
 E|-----------|
 B|-----------|
 G|-----------|
@@ -158,6 +159,7 @@ createScale Ionian C
 ```
 Output:
 ```
+     CMaj7
 E|-----------|
 B|-----5-----|
 G|-----4-----|
@@ -175,6 +177,7 @@ createScale Ionian A
 ```
 Output:
 ```
+     AMaj7
 E|-----------|
 B|-----14----|
 G|-----13----|
@@ -190,6 +193,7 @@ createScale Ionian F
 ```
 Output:
 ```
+     FMaj7
 E|-----12----|
 B|-----13----|
 G|-----14----|
