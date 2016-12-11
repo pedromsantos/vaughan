@@ -144,3 +144,72 @@ let cMaj7Drop2 = seventhsHarmonizer ScaleDgrees.I cIonian |> toDrop2
 | chordToGuitarClosedChord cMaj FifthString       | [{GuitarString=FifthString; Fret=15; Note=C}; {GuitarString=FourthString; Fret=14; Note=E}; {GuitarString=ThirdString; Fret=12; Note=G}] |
 | chordToGuitarClosedChord cMaj SixthString       | [{GuitarString=SixthString; Fret=8; Note=C}; {GuitarString=FifthString; Fret=7; Note=E};{GuitarString=FourthString; Fret=5; Note=G}] |
 | chordToGuitarClosedChord cMaj7Drop2 SixthString | [{GuitarString=FifthString; Fret=3; Note=C}; {GuitarString=FourthString; Fret=5; Note=G};{GuitarString=ThirdString; Fret=4; Note=B}; {GuitarString=SecondString; Fret=5; Note=E}] |
+
+### Guitar chord tab drawing
+
+```fsharp
+open Vaughan.Notes
+open Vaughan.Chords
+open Vaughan.Guitar
+open Vaughan.GuitarTab
+open Vaughan.ScaleHarmonizer
+open Vaughan.Scales
+```
+
+```fsharp
+createScale Ionian C
+|> seventhsHarmonizer ScaleDgrees.I
+|> toDrop2
+|> chordToGuitarClosedChord FifthString
+|> drawGuitarChordTab
+```
+Output:
+"E|-----------|
+B|-----5-----|
+G|-----4-----|
+D|-----5-----|
+A|-----3-----|
+E|-----------|\r\n"
+
+```fsharp
+createScale Ionian A
+|> seventhsHarmonizer ScaleDgrees.I
+|> toDrop2
+|> chordToGuitarClosedChord FifthString
+|> drawGuitarChordTab
+```
+Output:
+"E|-----------|
+B|-----14-----|
+G|-----13-----|
+D|-----14-----|
+A|-----12-----|
+E|-----------|\r\n"
+
+```fsharp
+createScale Ionian F
+|> seventhsHarmonizer ScaleDgrees.I
+|> chordToGuitarClosedChord FourthString
+|> drawGuitarChordTab
+```
+Output:
+"E|-----12-----|
+B|-----13-----|
+G|-----14-----|
+D|-----15-----|
+A|-----------|
+E|-----------|\r\n"
+
+```fsharp
+createScale Ionian C
+|> triadsHarmonizer ScaleDgrees.I
+|> chordToGuitarClosedChord SixthString
+|> drawGuitarChordTab
+```
+Output:
+"E|-----------|
+B|-----------|
+G|-----------|
+D|-----5-----|
+A|-----7-----|
+E|-----8-----|\r\n"
