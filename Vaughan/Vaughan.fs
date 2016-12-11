@@ -136,9 +136,9 @@ namespace Vaughan
             match interval with
             | Unisson -> note 
             | MajorSecond | AugmentedSecond | PerfectFifth | MajorThird | PerfectForth
-            | AugmentedFifth | MajorSixth | PerfectOctave | AugmentedForth -> sharp note
+            | AugmentedFifth | MajorSixth | PerfectOctave | AugmentedForth | MajorSeventh -> sharp note
             | MinorSecond | DiminishedFifth | MinorThird
-            | MinorSixth | MinorSeventh | MajorSeventh  -> flat note
+            | MinorSixth | MinorSeventh  -> flat note
             
         let intervalBetween note other =
             fromDistance (measureAbsoluteSemitones note other)
@@ -535,6 +535,7 @@ namespace Vaughan
             | 3 -> ThirdString
             | 2 -> SecondString
             | _ -> FirstString
+
         let private defaultGuitarChordForChord chord bassString =
             let bassStringIndex = guitarStringIndex bassString
             let notesInChord = (chord.notes |> List.length) - 1
@@ -567,19 +568,19 @@ namespace Vaughan
             then {current with Fret= current.Fret + 12}
             else current
 
-        let private raiseOpenFrets frets =
-            frets
-            |> List.map (fun fret -> 
-                    if isOpenFret fret 
-                    then raiseOctave fret
-                    else fret)
-
         let private isRaised fret =
             fret.Fret > 11
 
         let private hasRaised frets =
             frets
             |> List.exists isRaised
+
+        let private raiseOpenFrets frets =
+            frets
+            |> List.map (fun fret -> 
+                    if isOpenFret fret 
+                    then raiseOctave fret
+                    else fret)
 
         let private raiseUnraisedFrets frets =
             if hasRaised frets then
@@ -594,6 +595,7 @@ namespace Vaughan
                         raiseOctaveOnStretch frets.[minimumIndex] fret frets.[maximumIndex])
             else
                 frets
+
         let fretForNote note guitarString =
             measureAbsoluteSemitones (guitarStringAttributes guitarString).OpenStringNote note
 
@@ -605,5 +607,6 @@ namespace Vaughan
         let chordToGuitarClosedChord chord bassString =
             chordToGuitarChord chord bassString
             |> raiseOpenFrets
+            |> raiseUnraisedFrets
             |> raiseUnraisedFrets
             |> raiseUnraisedFrets
