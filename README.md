@@ -126,7 +126,6 @@ let cMinor = createScale HarmonicMinor C
 
 ```fsharp
 open Vaughan.Notes
-open Vaughan.Chords
 open Vaughan.Guitar
 open Vaughan.ScaleHarmonizer
 open Vaughan.Scales
