@@ -14,7 +14,7 @@
     <releaseNotes>Initial release</releaseNotes>
     <language>en-us</language>
     <copyright>Copyright 2016</copyright>
-    <tags></tags>
+    <tags>F# Music Guitar</tags>
   </metadata>
   <files>
     <file src="Vaughan.dll" target="lib\net45" />
