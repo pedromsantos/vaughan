@@ -6,12 +6,13 @@
     <title>Vaughan</title>
     <authors>Pedro Moreira Santos</authors>
     <owners>Pedro Moreira Santos</owners>
+    <summary>F# music library</summary>
     <licenseUrl>https://github.com/pedromsantos/vaughan/blob/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/pedromsantos/vaughan</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>F# music library</description>
-    <releaseNotes>
-    </releaseNotes>
+    <releaseNotes>Initial release</releaseNotes>
+    <language>en-us</language>
     <copyright>Copyright 2016</copyright>
     <tags></tags>
   </metadata>
