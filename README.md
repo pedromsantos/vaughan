@@ -3,6 +3,7 @@
 Vaughan is named after Blues guitarist [Stevie Ray Vaughan](https://en.wikipedia.org/wiki/Stevie_Ray_Vaughan)
 
 ![](https://ci.appveyor.com/api/projects/status/github/pedromsantos/vaughan?branch=master&svg=true)
+[![NuGet](http://img.shields.io/nuget/v/Vaughan.svg)](https://www.nuget.org/packages/Vaughan)
 
 ## Getting started
 
