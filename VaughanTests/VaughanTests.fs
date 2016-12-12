@@ -245,7 +245,6 @@ namespace VaughanTests
     module ChordsTests =
         open NUnit.Framework
         open Swensen.Unquote
-        open Vaughan.Scales
         open Vaughan.Notes
         open Vaughan.Chords
 

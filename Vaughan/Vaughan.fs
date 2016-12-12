@@ -382,7 +382,7 @@ namespace Vaughan
             + abreviatedName (functionForIntervals(intervalsForChord chord))
             
         let noteNames chord =
-            chord.notes |> List.map (fun n -> noteName (note n))
+            chord.notes |> List.map (note >> noteName)
             
         let chordFromRootAndFunction root chordFunction =
             {notes=
@@ -623,7 +623,6 @@ namespace Vaughan
         open Notes
         open Chords
         open Guitar
-        open Infrastructure
 
         let private guitarStringOpenNote guitarString =
             (guitarStringAttributes guitarString).OpenStringNote
@@ -635,9 +634,7 @@ namespace Vaughan
             guitarChord.Frets |> List.exists (fun f -> f.Fret > 9)
 
         let private padDashes guitarChord = 
-            if doubleDigitFret guitarChord 
-            then "----"
-            else "---"
+            if doubleDigitFret guitarChord then "----" else "---"
 
         let private drawTabHigherString guitarChord =
             let dashes = padDashes guitarChord
