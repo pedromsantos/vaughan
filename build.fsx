@@ -1,26 +1,23 @@
 // include Fake libs
 #r "./packages/FAKE/tools/FakeLib.dll"
+#r "System.Xml.Linq"
 
 open Fake
+open System.Xml.Linq
 
-// Directories
 let buildDir  = "./build/"
-let deployDir = "./deploy/"
 
-// Filesets
-let appReferences  =
-    !! "/**/*.fsproj"
 
-// version info
-let version = "0.1"  // or retrieve from CI server
+let appReferences  = !! "/**/*.fsproj"
 
-// Targets
+let doc = System.Xml.Linq.XDocument.Load("./Vaughan.nuspec")
+let version = doc.Descendants(XName.Get("version", doc.Root.Name.NamespaceName)) 
+
 Target "Clean" (fun _ ->
-    CleanDirs [buildDir; deployDir]
+    CleanDirs [buildDir]
 )
 
 Target "Build" (fun _ ->
-    // compile all projects below src/app/
     MSBuildDebug buildDir "Build" appReferences
     |> Log "AppBuild-Output: "
 )
@@ -36,17 +33,18 @@ Target "Test" (fun _ ->
         })
 )
 
-Target "Deploy" (fun _ ->
-    !! (buildDir + "/**/*.*")
-    -- "*.zip"
-    |> Zip buildDir (deployDir + "Vaughan." + version + ".zip")
+Target "BuildNuGet" (fun _ ->
+    NuGet (fun p -> 
+    {p with
+        Version = (Seq.head version).Value
+        OutputPath = buildDir
+        WorkingDir = buildDir
+        })  "./Vaughan.nuspec"
 )
 
-// Build order
 "Clean"
   ==> "Build"
   ==> "Test"
-  ==> "Deploy"
+  ==> "BuildNuGet"
 
-// start build
-RunTargetOrDefault "Test"
+RunTargetOrDefault "BuildNuGet"
