@@ -209,7 +209,7 @@ E|----|
 createScale Ionian C
 |> seventhsHarmonizer ScaleDgrees.I
 |> toDrop3
-|> chordToGuitarClosedChord FifthString
+|> chordToGuitarClosedChord SixthString
 |> drawGuitarChordTab
 ```
 Output:
