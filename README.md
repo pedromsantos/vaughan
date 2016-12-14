@@ -214,7 +214,7 @@ createScale Ionian C
 ```
 Output:
 ```
-  FMaj7
+  CMaj7
 E|---|
 B|-8-|
 G|-9-|
