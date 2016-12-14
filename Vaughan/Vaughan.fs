@@ -622,15 +622,13 @@ namespace Vaughan
             mapString bassString chord.notes []
 
         let chordToGuitarChord bassString chord =
-            {
-                Chord=chord;
-                Frets= mapChordToGuitarFrets bassString chord |> List.rev
-            }
+            { Chord=chord; Frets= mapChordToGuitarFrets bassString chord |> List.rev }
 
         let chordToGuitarClosedChord bassString chord =
             let guitarChord = chordToGuitarChord bassString chord 
             let closedChord = {guitarChord with Frets = raiseOpenFrets guitarChord.Frets}
             {closedChord with Frets = unstretch closedChord.Frets}
+
 
     module GuitarTab =
         open Notes
