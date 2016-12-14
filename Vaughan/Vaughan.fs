@@ -595,7 +595,7 @@ namespace Vaughan
             
             loop frets ((frets |> List.length) - 1)
 
-        let private createMutedStringFret guitarString =
+        let private createMutedStringFret guitarString note =
             let note = openStringNote guitarString
             { GuitarString = guitarString; Fret = -1; Note = note }
 
@@ -613,7 +613,7 @@ namespace Vaughan
                 else
                     let nextString = (indexToGuitarString ((guitarStringOrdinal guitarString) - 1))
                     if skipString bassString guitarString chord then
-                        let fret = createMutedStringFret guitarString
+                        let fret = createMutedStringFret guitarString (note chordNotes.[0])
                         mapString nextString chordNotes (fret::frets)
                     else
                         let fret = createFret guitarString (note chordNotes.[0])
