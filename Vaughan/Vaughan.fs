@@ -669,7 +669,8 @@ namespace Vaughan
             guitarChord.Frets
             |> List.map (fun fret ->
                 if fret.Fret = -1 then
-                    sprintf "%s|---|\r\n" (openStringNoteName fret)
+                    let dashes = padDashes guitarChord
+                    sprintf "%s|%s|\r\n" (openStringNoteName fret) dashes
                 else
                     sprintf "%s|-%i-|\r\n" (openStringNoteName fret) fret.Fret)
             |> List.rev
