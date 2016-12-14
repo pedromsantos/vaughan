@@ -204,3 +204,21 @@ D|-15-|
 A|----|
 E|----|
 ```
+
+```fsharp
+createScale Ionian C
+|> seventhsHarmonizer ScaleDgrees.I
+|> toDrop3
+|> chordToGuitarClosedChord FifthString
+|> drawGuitarChordTab
+```
+Output:
+```
+  FMaj7
+E|---|
+B|-8-|
+G|-9-|
+D|-9-|
+A|---|
+E|-8-|
+```
