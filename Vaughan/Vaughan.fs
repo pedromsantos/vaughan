@@ -539,6 +539,9 @@ namespace Vaughan
             | 2 -> SecondString
             | _ -> FirstString 
 
+        let private openStringNote guitarString =
+            (guitarStringAttributes guitarString).OpenStringNote
+
         let private isOpenFret fret =
             fret.Fret = 0
 
@@ -591,20 +594,12 @@ namespace Vaughan
                | i -> loop (frets |> raiseUnraisedFrets) (i-1)
             loop frets ((frets |> List.length) - 1)
 
-        let private createMutedStringFret stringOrdinal =
-            let guitarString = indexToGuitarString stringOrdinal
-            let note = (guitarStringAttributes guitarString).OpenStringNote
-            
+        let private createMutedStringFret guitarString =
+            let note = openStringNote guitarString
             { GuitarString = guitarString; Fret = -1; Note = note }
 
-        let private createFret stringOrdinal note =
-            let guitarString = indexToGuitarString stringOrdinal
-            
-            {
-                GuitarString = indexToGuitarString stringOrdinal;
-                Fret = fretForNote note guitarString;
-                Note = note
-            }
+        let private createFret guitarString note =
+            { GuitarString = guitarString; Fret = fretForNote note guitarString; Note = note }
 
         let private skipStringAfterBass bassString stringOrdinal chord =
             chord.chordType = Drop3 && stringOrdinal = (guitarStringOrdinal bassString) - 1
@@ -619,13 +614,14 @@ namespace Vaughan
                 match noteOrdinal with
                 | n when n = notesInChord -> frets
                 | _ -> 
+                    let guitarString = indexToGuitarString stringOrdinal
                     if skipStringAfterBass bassString stringOrdinal chord then
-                        let fret = createMutedStringFret stringOrdinal
+                        let fret = createMutedStringFret guitarString
                         loop (stringOrdinal - 1) noteOrdinal (fret::frets)
                     else
                         if stringIsHigherThanBassString stringOrdinal bassString then
                             let note = rawNoteForIndex noteOrdinal chord
-                            let fret = createFret stringOrdinal note
+                            let fret = createFret guitarString note
                             loop (stringOrdinal - 1) (noteOrdinal + 1) (fret::frets)
                         else
                             loop (stringOrdinal - 1) noteOrdinal frets
