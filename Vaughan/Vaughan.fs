@@ -358,6 +358,7 @@ namespace Vaughan
 
         let rawNoteForIndex nth chord =
             (List.item nth (rawNotes chord))
+
         let noteFunction chordNote =
             snd chordNote
 
@@ -534,22 +535,7 @@ namespace Vaughan
             | 4 -> FourthString
             | 3 -> ThirdString
             | 2 -> SecondString
-            | _ -> FirstString
-
-        let private defaultGuitarChordForChord bassString chord =
-            let bassStringIndex = guitarStringIndex bassString
-            let notesInChord = (chord.notes |> List.length) - 1
-            let leadStringIndex = (guitarStringIndex bassString) - notesInChord
-            
-            [
-                for guitarStringIndex in bassStringIndex .. -1 .. leadStringIndex 
-                    ->
-                    {
-                        GuitarString = indexToGuitarString guitarStringIndex;
-                        Fret = 0 
-                        Note = A
-                    }
-            ]
+            | _ -> FirstString 
 
         let private isOpenFret fret =
             fret.Fret = 0
@@ -606,12 +592,43 @@ namespace Vaughan
         let fretForNote note guitarString =
             measureAbsoluteSemitones (guitarStringAttributes guitarString).OpenStringNote note
 
-        let chordToGuitarChord  bassString chord =
+        let private mapNotesToGuitarStrings bassString chord =
+            let notesInChord = chord.notes |> List.length
+
+            let rec loop index noteIndex frets =
+                match noteIndex with
+                | n when n = notesInChord -> frets
+                | _ -> 
+                    if chord.chordType = Drop3 && index = ((guitarStringIndex bassString) - 1) then
+                                let guitarString = indexToGuitarString index
+                                let note = (guitarStringAttributes guitarString).OpenStringNote
+                                let fret = {
+                                    GuitarString = guitarString;
+                                    Fret = -1
+                                    Note = note
+                                }
+
+                                loop (index - 1) (noteIndex)(fret::frets)
+                    else
+                        if index <= guitarStringIndex bassString then
+                            let note = rawNoteForIndex noteIndex chord
+                            let guitarString = indexToGuitarString index
+                            let fret = {
+                                GuitarString = indexToGuitarString index;
+                                Fret = fretForNote note guitarString
+                                Note = note
+                            }
+
+                            loop (index - 1) (noteIndex + 1) (fret::frets)
+                        else
+                            loop (index - 1) (noteIndex)(frets)
+
+            loop 6 0 [] 
+
+        let chordToGuitarChord bassString chord =
             {
                 Chord=chord;
-                Frets=defaultGuitarChordForChord bassString chord
-                |> List.mapi (fun i fret -> {fret with Note=(rawNoteForIndex i chord)})
-                |> List.map (fun fret -> {fret with Fret=(fretForNote fret.Note fret.GuitarString)})
+                Frets= mapNotesToGuitarStrings bassString chord |> List.rev
             }
 
         let chordToGuitarClosedChord bassString chord =

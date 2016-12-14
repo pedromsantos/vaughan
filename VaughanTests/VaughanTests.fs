@@ -726,6 +726,17 @@ namespace VaughanTests
                         {GuitarString=SecondString; Fret=14; Note=CSharp};
                     ]@>
 
+        [<Test>]
+        let ``Should map C major 7 drop 3 to guitar fretboard on sixth string closed``() =
+            let chord = seventhsHarmonizer ScaleDgrees.I cIonian |> toDrop3
+            test <@ (chordToGuitarClosedChord SixthString chord).Frets = [
+                        {GuitarString=SixthString; Fret=8; Note=C};
+                        {GuitarString=FifthString; Fret=(-1); Note=A};
+                        {GuitarString=FourthString; Fret=9; Note=B};
+                        {GuitarString=ThirdString; Fret=9; Note=E};
+                        {GuitarString=SecondString; Fret=8; Note=G};
+                    ]@>
+
     module GuitarTabTests =
         open NUnit.Framework
         open Swensen.Unquote
