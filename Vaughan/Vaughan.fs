@@ -588,10 +588,11 @@ namespace Vaughan
                 frets
 
         let private unstretch frets =
-            let rec loop frets i =
+            let rec loop fx i =
                match i with
-               | 0 -> frets
-               | i -> loop (frets |> raiseUnraisedFrets) (i-1)
+               | 0 -> fx
+               | i -> loop (fx |> raiseUnraisedFrets) (i-1)
+            
             loop frets ((frets |> List.length) - 1)
 
         let private createMutedStringFret guitarString =
@@ -610,24 +611,14 @@ namespace Vaughan
                 if List.isEmpty chordNotes then
                     frets
                 else
+                    let nextString = (indexToGuitarString ((guitarStringOrdinal guitarString) - 1))
                     if skipString bassString guitarString chord then
                         let fret = createMutedStringFret guitarString
-                        let nextString = (indexToGuitarString ((guitarStringOrdinal guitarString) - 1))
                         mapString nextString chordNotes (fret::frets)
                     else
                         let fret = createFret guitarString (note chordNotes.[0])
-                        match guitarString with
-                        | SixthString -> 
-                            mapString FifthString (chordNotes |> List.skip 1) (fret::frets)
-                        | FifthString -> 
-                            mapString FourthString (chordNotes |> List.skip 1) (fret::frets)
-                        | FourthString -> 
-                            mapString ThirdString (chordNotes |> List.skip 1) (fret::frets)
-                        | ThirdString -> 
-                            mapString SecondString (chordNotes |> List.skip 1) (fret::frets)
-                        | SecondString -> 
-                            mapString FirstString (chordNotes |> List.skip 1) (fret::frets)
-                        | FirstString -> (fret::frets)
+                        mapString nextString (chordNotes |> List.skip 1) (fret::frets)
+
 
             mapString bassString chord.notes []
 
