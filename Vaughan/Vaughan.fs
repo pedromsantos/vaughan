@@ -619,7 +619,6 @@ namespace Vaughan
                         let fret = createFret guitarString (note chordNotes.[0])
                         mapString nextString (chordNotes |> List.skip 1) (fret::frets)
 
-
             mapString bassString chord.notes []
 
         let chordToGuitarChord bassString chord =
