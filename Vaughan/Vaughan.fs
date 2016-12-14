@@ -667,10 +667,13 @@ namespace Vaughan
 
         let private drawTabForGuitarChord guitarChord = 
             guitarChord.Frets
-            |> List.map (fun fret -> 
-                if fret.Fret < 10
-                    then sprintf "%s|-%i-|\r\n" (openStringNoteName fret) fret.Fret
-                    else sprintf "%s|-%i-|\r\n" (openStringNoteName fret) fret.Fret)
+            |> List.map (fun fret ->
+                if fret.Fret = -1 then
+                    sprintf "%s|---|\r\n" (openStringNoteName fret)
+                else
+                    if fret.Fret < 10
+                        then sprintf "%s|-%i-|\r\n" (openStringNoteName fret) fret.Fret
+                        else sprintf "%s|-%i-|\r\n" (openStringNoteName fret) fret.Fret)
             |> List.rev
             |> List.fold (+) ""
 
