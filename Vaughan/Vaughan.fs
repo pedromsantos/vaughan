@@ -680,3 +680,9 @@ namespace Vaughan
             drawTabForGuitarChord guitarChord
             +
             drawTabLowerString guitarChord
+            
+    module SpeechToMusic =
+        open Notes
+
+        let matchNote text = 
+            A

@@ -757,14 +757,13 @@ namespace VaughanTests
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> toDrop2
                 |> chordToGuitarClosedChord FifthString)
-            test <@ guitarChord |> drawGuitarChordTab  = 
-"  CMaj7
-E|---|
-B|-5-|
-G|-4-|
-D|-5-|
-A|-3-|
-E|---|\r\n"@>
+            test <@ guitarChord |> drawGuitarChordTab = "  CMaj7\r\n"+
+                                                        "E|---|\r\n"+
+                                                        "B|-5-|\r\n"+
+                                                        "G|-4-|\r\n"+
+                                                        "D|-5-|\r\n"+
+                                                        "A|-3-|\r\n"+
+                                                        "E|---|\r\n"@>
 
         [<Test>]
         let ``Should draw A major 7 to guitar fretboard on fifth string closed ``() =
@@ -773,14 +772,13 @@ E|---|\r\n"@>
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> toDrop2
                 |> chordToGuitarClosedChord FifthString)
-            test <@ guitarChord |> drawGuitarChordTab  = 
-"  AMaj7
-E|----|
-B|-14-|
-G|-13-|
-D|-14-|
-A|-12-|
-E|----|\r\n"@>
+            test <@ guitarChord |> drawGuitarChordTab = "  AMaj7\r\n"+
+                                                        "E|----|\r\n"+
+                                                        "B|-14-|\r\n"+
+                                                        "G|-13-|\r\n"+
+                                                        "D|-14-|\r\n"+
+                                                        "A|-12-|\r\n"+
+                                                        "E|----|\r\n"@>
 
         [<Test>]
         let ``Should draw F major 7 to guitar fretboard on fourth string closed``() =
@@ -788,26 +786,24 @@ E|----|\r\n"@>
                 (createScale Ionian F
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> chordToGuitarClosedChord FourthString)
-            test <@ guitarChord |> drawGuitarChordTab  = 
-"  FMaj7
-E|-12-|
-B|-13-|
-G|-14-|
-D|-15-|
-A|----|
-E|----|\r\n"@>
+            test <@ guitarChord |> drawGuitarChordTab = "  FMaj7\r\n"+
+                                                        "E|-12-|\r\n"+
+                                                        "B|-13-|\r\n"+
+                                                        "G|-14-|\r\n"+
+                                                        "D|-15-|\r\n"+
+                                                        "A|----|\r\n"+
+                                                        "E|----|\r\n"@>
 
         [<Test>]
         let ``Should draw c major to guitar fretboard on sixth string``() =
             let guitarChord = chordToGuitarClosedChord SixthString cMaj
-            test <@ guitarChord |> drawGuitarChordTab  = 
-"  CMaj
-E|---|
-B|---|
-G|---|
-D|-5-|
-A|-7-|
-E|-8-|\r\n"@>
+            test <@ guitarChord |> drawGuitarChordTab = "  CMaj\r\n"+
+                                                        "E|---|\r\n"+
+                                                        "B|---|\r\n"+
+                                                        "G|---|\r\n"+
+                                                        "D|-5-|\r\n"+
+                                                        "A|-7-|\r\n"+
+                                                        "E|-8-|\r\n"@>
 
         [<Test>]
         let ``Should draw C major 7 drop 3 to guitar fretboard on sixth string closed``() =
@@ -816,14 +812,13 @@ E|-8-|\r\n"@>
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> toDrop3
                 |> chordToGuitarClosedChord SixthString)
-            test <@ guitarChord |> drawGuitarChordTab  = 
-"  CMaj7
-E|---|
-B|-8-|
-G|-9-|
-D|-9-|
-A|---|
-E|-8-|\r\n"@>
+            test <@ guitarChord |> drawGuitarChordTab = "  CMaj7\r\n"+
+                                                        "E|---|\r\n"+
+                                                        "B|-8-|\r\n"+
+                                                        "G|-9-|\r\n"+
+                                                        "D|-9-|\r\n"+
+                                                        "A|---|\r\n"+
+                                                        "E|-8-|\r\n"@>
 
         [<Test>]
         let ``Should draw C major 7 drop 3 to guitar fretboard on fifth string closed``() =
@@ -832,11 +827,21 @@ E|-8-|\r\n"@>
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> toDrop3
                 |> chordToGuitarClosedChord FifthString)
-            test <@ guitarChord |> drawGuitarChordTab  = 
-"  CMaj7
-E|-3-|
-B|-5-|
-G|-4-|
-D|---|
-A|-3-|
-E|---|\r\n"@>
+            test <@ guitarChord |> drawGuitarChordTab = "  CMaj7\r\n"+
+                                                        "E|-3-|\r\n"+
+                                                        "B|-5-|\r\n"+
+                                                        "G|-4-|\r\n"+
+                                                        "D|---|\r\n"+
+                                                        "A|-3-|\r\n"+
+                                                        "E|---|\r\n"@>
+
+    module SpeechToMusicAcceptanceTests =
+            open NUnit.Framework
+            open Swensen.Unquote
+            open Vaughan.Notes
+            open Vaughan.SpeechToMusic
+
+            [<Test>]
+            let ``Should match note``() =
+                test <@ matchNote "A" = A @>
+            
