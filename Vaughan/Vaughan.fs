@@ -542,6 +542,9 @@ namespace Vaughan
         let private openStringNote guitarString =
             (guitarStringAttributes guitarString).OpenStringNote
 
+        let private nextString guitarString = 
+            indexToGuitarString ((guitarStringOrdinal guitarString) - 1)
+
         let private isOpenFret fret =
             fret.Fret = 0
 
@@ -568,18 +571,14 @@ namespace Vaughan
 
         let private raiseOpenFrets frets =
             frets 
-            |> List.map (fun fret -> 
-                if isOpenFret fret 
-                then raiseOctave fret
-                else fret)
+            |> List.map (fun fret -> if isOpenFret fret then raiseOctave fret else fret)
 
         let private raiseUnraisedFrets frets =
             if hasRaised frets then
                 frets
                 |> List.mapi (fun i fret -> 
-                    match isRaised fret with
-                    | true -> fret 
-                    | false ->
+                    if isRaised fret then fret
+                    else
                         let minimumIndex = cappedMinimum (i-1) 0
                         let maxIndex = (frets |> List.length) - 1
                         let maximumIndex = cappedMaximum (i+1) maxIndex 
@@ -591,7 +590,7 @@ namespace Vaughan
             let rec loop fx i =
                match i with
                | 0 -> fx
-               | i -> loop (fx |> raiseUnraisedFrets) (i-1)
+               | _ -> loop (fx |> raiseUnraisedFrets) (i-1)
             
             loop frets ((frets |> List.length) - 1)
 
@@ -607,19 +606,19 @@ namespace Vaughan
             chord.chordType = Drop3 && guitarString = afterBassString
 
         let private mapChordToGuitarFrets bassString chord =
-            let rec mapString guitarString chordNotes frets =
+            let rec mapChordNoteToString guitarString chordNotes mappedChordNotes =
                 if List.isEmpty chordNotes then
-                    frets
+                    mappedChordNotes
                 else
-                    let nextString = (indexToGuitarString ((guitarStringOrdinal guitarString) - 1))
+                    let nextString = nextString guitarString
                     if skipString bassString guitarString chord then
                         let fret = createMutedStringFret guitarString (note chordNotes.[0])
-                        mapString nextString chordNotes (fret::frets)
+                        mapChordNoteToString nextString chordNotes (fret::mappedChordNotes)
                     else
                         let fret = createFret guitarString (note chordNotes.[0])
-                        mapString nextString (chordNotes |> List.skip 1) (fret::frets)
+                        mapChordNoteToString nextString (chordNotes |> List.skip 1) (fret::mappedChordNotes)
 
-            mapString bassString chord.notes []
+            mapChordNoteToString bassString chord.notes []
 
         let chordToGuitarChord bassString chord =
             { Chord=chord; Frets= mapChordToGuitarFrets bassString chord |> List.rev }
@@ -628,7 +627,6 @@ namespace Vaughan
             let guitarChord = chordToGuitarChord bassString chord 
             let closedChord = {guitarChord with Frets = raiseOpenFrets guitarChord.Frets}
             {closedChord with Frets = unstretch closedChord.Frets}
-
 
     module GuitarTab =
         open Notes
