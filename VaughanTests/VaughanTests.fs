@@ -809,7 +809,6 @@ D|-5-|
 A|-7-|
 E|-8-|\r\n"@>
 
-
         [<Test>]
         let ``Should draw C major 7 drop 3 to guitar fretboard on sixth string closed``() =
             let guitarChord = 
@@ -825,3 +824,19 @@ G|-9-|
 D|-9-|
 A|---|
 E|-8-|\r\n"@>
+
+        [<Test>]
+        let ``Should draw C major 7 drop 3 to guitar fretboard on fifth string closed``() =
+            let guitarChord = 
+                (cIonian
+                |> seventhsHarmonizer ScaleDgrees.I
+                |> toDrop3
+                |> chordToGuitarClosedChord FifthString)
+            test <@ guitarChord |> drawGuitarChordTab  = 
+"  CMaj7
+E|-3-|
+B|-5-|
+G|-4-|
+D|---|
+A|-3-|
+E|---|\r\n"@>
