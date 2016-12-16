@@ -688,7 +688,7 @@ namespace Vaughan
 
         type ChordDefinition = { Root: Note; Quality:Quality; }
 
-        let rec parse chord = function
+        let rec private parse chord = function
         | [] -> chord
         | "C"::xs -> 
             let chord' = { chord with Root = C }
