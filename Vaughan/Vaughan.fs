@@ -52,8 +52,7 @@ namespace Vaughan
         type private NoteAttributes = {Name:string; Sharp:Note; Flat:Note; Pitch:int}
         type private IntervalAttributes = {Name:string; Distance:int}
 
-        let private noteAttributes note =
-            match note with
+        let private noteAttributes = function
             | C -> {Name="C"; Sharp=CSharp; Flat=B; Pitch=0}
             | CSharp -> {Name="C#"; Sharp=D; Flat=C; Pitch=1}
             | DFlat -> {Name="Db"; Sharp=D; Flat=C; Pitch=1}
@@ -84,8 +83,7 @@ namespace Vaughan
         let pitch note =
             (noteAttributes note).Pitch
 
-        let private intervalAttributes interval =
-            match interval with
+        let private intervalAttributes = function
             | Unisson -> {Name="Unisson"; Distance=0} 
             | MinorSecond -> {Name="MinorSecond"; Distance=1} 
             | MajorSecond -> {Name="MajorSecond"; Distance=2} 
@@ -109,8 +107,7 @@ namespace Vaughan
         let toDistance interval =
             (intervalAttributes interval).Distance
             
-        let fromDistance distance =
-            match distance with
+        let fromDistance = function
             | 0 -> Unisson
             | 1 -> MinorSecond
             | 2 -> MajorSecond
@@ -132,8 +129,7 @@ namespace Vaughan
             then (toDistance PerfectOctave) - distance * -1 
             else distance    
                 
-        let private transposeDirection note interval =
-            match interval with
+        let private transposeDirection note = function
             | Unisson -> note 
             | MajorSecond | AugmentedSecond | PerfectFifth | MajorThird | PerfectForth
             | AugmentedFifth | MajorSixth | PerfectOctave | AugmentedForth | MajorSeventh -> sharp note
@@ -165,8 +161,7 @@ namespace Vaughan
             | LydianDominant | Mixolydianb6 | LocrianSharp2
             | AlteredDominant | HalfWholeDiminished | WholeTone
 
-        let formula scale =
-            match scale with
+        let formula = function
             | Ionian -> [Unisson; MajorSecond; MajorThird; PerfectForth; PerfectFifth; MajorSixth; MajorSeventh]
             | Dorian -> [Unisson; MajorSecond; MinorThird; PerfectForth; PerfectFifth; MajorSixth; MinorSeventh]
             | Phrygian -> [Unisson; MinorSecond; MinorThird; PerfectForth; PerfectFifth; MinorSixth; MinorSeventh]
@@ -204,8 +199,7 @@ namespace Vaughan
 
         type private KeyAttributes = {Root:Note; Accidentals:int}
 
-        let private keyAttributes key =
-            match key with
+        let private keyAttributes = function
             | AMajor -> {Root=A; Accidentals=3} 
             | AFlatMajor -> {Root=AFlat; Accidentals=(-4)} 
             | BMajor -> {Root=B; Accidentals=5} 
@@ -289,16 +283,14 @@ namespace Vaughan
 
         type Chord = {notes:ChordNote list; chordType:ChordType;}
         
-        let functionForInterval interval =
-            match interval with
+        let functionForInterval = function
             | Unisson -> Root
             | MajorThird | MinorThird -> Third 
             | PerfectFifth | DiminishedFifth | AugmentedFifth  -> Fifth
             | MajorSeventh | MinorSeventh | MajorSixth -> Seventh
             | _ -> Root
             
-        let intervalsForQuality quality =
-            match quality with
+        let intervalsForQuality = function
             | Major -> [MajorThird; PerfectFifth]
             | Augmented -> [MajorThird; AugmentedFifth]
             | Minor -> [MinorThird; PerfectFifth]
@@ -317,8 +309,7 @@ namespace Vaughan
             | Sus4Diminished -> [PerfectForth; DiminishedFifth]
             | Sus4Augmented -> [PerfectForth; AugmentedFifth]
 
-        let functionForIntervals intervals =
-            match intervals with
+        let functionForIntervals = function
             | [MajorThird; PerfectFifth] -> Major
             | [MajorThird; AugmentedFifth] -> Augmented
             | [MinorThird; PerfectFifth] -> Minor
@@ -338,8 +329,7 @@ namespace Vaughan
             | [PerfectForth; AugmentedFifth] -> Sus4Augmented
             | _ -> Major
 
-        let abreviatedName chordFunction =
-            match chordFunction with
+        let abreviatedName = function
             | Major -> "Maj" | Augmented -> "Aug" | Minor -> "Min" 
             | Diminished -> "Dim" | Major7 -> "Maj7" 
             | Augmented7 -> "Aug7" | Minor7 -> "Min7" 
@@ -515,8 +505,7 @@ namespace Vaughan
         type Fret = {GuitarString:GuitarString; Fret:int; Note:Note}
         type GuitarChord = {Chord:Chord; Frets:Fret list}
 
-        let guitarStringAttributes guitarString =
-            match guitarString with
+        let guitarStringAttributes = function
             | SixthString -> { Name="Sixth"; OpenStringNote=E; Index=6}
             | FifthString -> { Name="Fifth"; OpenStringNote=A; Index=5}
             | FourthString -> { Name="Fourth"; OpenStringNote=D; Index=4}
@@ -686,7 +675,7 @@ namespace Vaughan
         open Notes
         open Chords
 
-        type ChordDefinition = { Root: Note; Quality:Quality; }
+        type ChordIntent = { Root: Note; Quality:Quality; }
 
         let rec private parse chord = function
         | [] -> chord
