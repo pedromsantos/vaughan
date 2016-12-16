@@ -276,7 +276,7 @@ namespace Vaughan
         open Notes
         open Infrastructure
 
-        type ChordFunction = 
+        type Quality = 
             | Major | Augmented | Minor | Diminished
             | Major7 | Augmented7 | Minor7 | Diminished7 
             | Dominant7 | Minor7b5 | MinorMaj7
@@ -297,8 +297,8 @@ namespace Vaughan
             | MajorSeventh | MinorSeventh | MajorSixth -> Seventh
             | _ -> Root
             
-        let intervalsForFunction chordFunction =
-            match chordFunction with
+        let intervalsForQuality quality =
+            match quality with
             | Major -> [MajorThird; PerfectFifth]
             | Augmented -> [MajorThird; AugmentedFifth]
             | Minor -> [MinorThird; PerfectFifth]
@@ -385,10 +385,10 @@ namespace Vaughan
         let noteNames chord =
             chord.notes |> List.map (note >> noteName)
             
-        let chordFromRootAndFunction root chordFunction =
+        let chordFromRootAndFunction root quality =
             {notes=
                 [(root, Root)]@
-                (intervalsForFunction chordFunction
+                (intervalsForQuality quality
                 |> List.map (fun i -> ((transpose root i), functionForInterval i)));
              chordType = Closed}      
 
@@ -682,7 +682,53 @@ namespace Vaughan
             drawTabLowerString guitarChord
             
     module SpeechToMusic =
+        open System.Text.RegularExpressions
         open Notes
+        open Chords
 
-        let matchNote text = 
-            A
+        type ChordDefinition = { Root: Note; Quality:Quality; }
+
+        let rec parse chord = function
+        | [] -> chord
+        | "C"::xs -> 
+            let chord' = { chord with Root = C }
+            parse chord' xs
+        | "MAJOR"::xs | "MAJ"::xs ->
+            let chord' = { chord with Quality = Major }
+            parse chord' xs
+        | "MINOR"::xs | "MIN"::xs ->
+            let chord' = { chord with Quality = Minor }
+            parse chord' xs
+        | "AUGMENTED"::xs | "AUG"::xs ->
+            let chord' = { chord with Quality = Augmented }
+            parse chord' xs
+        | "DIMINISHED"::xs | "DIM"::xs ->
+            let chord' = { chord with Quality = Diminished }
+            parse chord' xs
+        | "DOMINANT"::xs | "DOM"::xs | "DOMINANT7"::xs | "DOM7"::xs ->
+            let chord' = { chord with Quality = Dominant7; }
+            parse chord' xs
+        | "7"::xs | "7TH"::xs | "SEVENTH"::xs | "SEVEN"::xs ->
+            match chord with 
+            | {Quality=Major}  ->
+                let chord' = { chord with Quality = Major7 }
+                parse chord' xs
+            | {Quality=Minor}  ->
+                let chord' = { chord with Quality = Minor7 }
+                parse chord' xs
+            | {Quality=Diminished}  ->
+                let chord' = { chord with Quality = Diminished7 }
+                parse chord' xs
+             | {Quality=Augmented}  ->
+                let chord' = { chord with Quality = Augmented7 }
+                parse chord' xs
+            | {Quality=_}  ->
+                let chord' = { chord with Quality = Dominant7 }
+                parse chord' xs
+        | x::_ -> invalidOp x
+        
+        let parseInput (text:string) =
+            let whitespace = " \t\r\n".ToCharArray()
+            text.ToUpper().Split(whitespace, System.StringSplitOptions.RemoveEmptyEntries)
+            |> Array.toList
+            |> parse { Root=C; Quality=Major; }

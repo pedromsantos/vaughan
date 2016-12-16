@@ -835,13 +835,26 @@ namespace VaughanTests
                                                         "A|-3-|\r\n"+
                                                         "E|---|\r\n"@>
 
-    module SpeechToMusicAcceptanceTests =
+    module SpeechToMusicTests =
             open NUnit.Framework
             open Swensen.Unquote
             open Vaughan.Notes
+            open Vaughan.Chords
             open Vaughan.SpeechToMusic
 
             [<Test>]
-            let ``Should match note``() =
-                test <@ matchNote "A" = A @>
-            
+            let ``Should parse C major 7``() =
+                test <@ (parseInput "C Major") = { Root=C; Quality=Major } @>
+                test <@ (parseInput "C Maj") = { Root=C; Quality=Major } @>
+                test <@ (parseInput "C minor") = { Root=C; Quality=Minor } @>
+                test <@ (parseInput "C min") = { Root=C; Quality=Minor } @>
+                test <@ (parseInput "C augmented") = { Root=C; Quality=Augmented } @>
+                test <@ (parseInput "C Aug") = { Root=C; Quality=Augmented } @>
+                test <@ (parseInput "C diminished") = { Root=C; Quality=Diminished } @>
+                test <@ (parseInput "C dim") = { Root=C; Quality=Diminished } @>
+                test <@ (parseInput "C Major 7") = { Root=C; Quality=Major7 } @>
+                test <@ (parseInput "C Maj 7") = { Root=C; Quality=Major7 } @>
+                test <@ (parseInput "C minor 7") = { Root=C; Quality=Minor7 } @>
+                test <@ (parseInput "C min 7") = { Root=C; Quality=Minor7 } @>
+                test <@ (parseInput "C augmented 7") = { Root=C; Quality=Augmented7 } @>
+                test <@ (parseInput "C aug 7") = { Root=C; Quality=Augmented7 } @>
