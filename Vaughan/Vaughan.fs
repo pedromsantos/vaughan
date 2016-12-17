@@ -740,16 +740,11 @@ namespace Vaughan
 
         let seventh chord =
             match chord with 
-            | {Quality=Major}  ->
-                { chord with Quality = Major7 }
-            | {Quality=Minor}  ->
-                { chord with Quality = Minor7 }
-            | {Quality=Diminished}  ->
-                { chord with Quality = Diminished7 }
-            | {Quality=Augmented}  ->
-                { chord with Quality = Augmented7 }
-            | {Quality=_}  ->
-                { chord with Quality = Dominant7 }
+            | {Quality=Major} -> { chord with Quality = Major7 }
+            | {Quality=Minor} -> { chord with Quality = Minor7 }
+            | {Quality=Diminished} -> { chord with Quality = Diminished7 }
+            | {Quality=Augmented} -> { chord with Quality = Augmented7 }
+            | {Quality=_} -> { chord with Quality = Dominant7 }
 
         let noSeventh chord = 
             chord
