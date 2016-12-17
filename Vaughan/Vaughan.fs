@@ -732,11 +732,15 @@ namespace Vaughan
             <|> (stringCIReturn "dim" Diminished) .>> spaces
 
         let dominantQuality: Parser<_> = 
-            (stringCIReturn "dominant" Dominant7) 
+            (stringCIReturn "7" Dominant7) 
+            <|> (stringCIReturn "7th" Dominant7) 
+            <|> (stringCIReturn "seventh" Dominant7) 
+            <|> (stringCIReturn "seven" Dominant7)
+            <|>(stringCIReturn "dominant" Dominant7) 
             <|> (stringCIReturn "dom" Dominant7) .>> spaces
 
         let quality: Parser<_> = 
-            majorQuality <|> minorQuality <|> augmentedQuality <|> diminishedQuality
+            majorQuality <|> minorQuality <|> augmentedQuality <|> diminishedQuality <|> dominantQuality
 
         let seventh chord =
             match chord with 
