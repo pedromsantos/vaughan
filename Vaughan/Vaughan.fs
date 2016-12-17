@@ -694,49 +694,49 @@ namespace Vaughan
         type UserState = unit
         type Parser<'t> = Parser<'t, UserState>
 
-        let note: Parser<_> = 
+        let note: Parser<_> =
             (stringCIReturn "a" A)
             <|>(stringCIReturn "b" B)
-            <|>(stringCIReturn "c" C) 
+            <|>(stringCIReturn "c" C)
             <|>(stringCIReturn "d" D)
             <|>(stringCIReturn "e" E)
             <|>(stringCIReturn "f" F)
             <|>(stringCIReturn "g" G)
             .>> spaces
 
-        let accident: Parser<_> = 
+        let accident: Parser<_> =
             (stringReturn "#" sharp)
             <|> (stringReturn "b" flat)
-            <|> (notFollowedByString "#" >>% natural) 
+            <|> (notFollowedByString "#" >>% natural)
             <|> (notFollowedByString "b" >>% natural)
             .>> spaces
 
-        let majorQuality: Parser<_> = 
-            (stringCIReturn "major" Major) 
+        let majorQuality: Parser<_> =
+            (stringCIReturn "major" Major)
             <|> (stringCIReturn "maj" Major)
             <|> (stringReturn "M" Major) 
             .>> spaces
 
-        let minorQuality: Parser<_> = 
-            (stringCIReturn "minor" Minor) 
+        let minorQuality: Parser<_> =
+            (stringCIReturn "minor" Minor)
             <|> (stringCIReturn "min" Minor)
             <|> (stringReturn "m" Minor) 
             .>> spaces
 
-        let augmentedQuality: Parser<_> = 
-            (stringCIReturn "augmented" Augmented) 
+        let augmentedQuality: Parser<_> =
+            (stringCIReturn "augmented" Augmented)
             <|> (stringCIReturn "aug" Augmented) .>> spaces
 
-        let diminishedQuality: Parser<_> = 
-            (stringCIReturn "diminished" Diminished) 
+        let diminishedQuality: Parser<_> =
+            (stringCIReturn "diminished" Diminished)
             <|> (stringCIReturn "dim" Diminished) .>> spaces
 
-        let dominantQuality: Parser<_> = 
-            (stringCIReturn "7" Dominant7) 
-            <|> (stringCIReturn "7th" Dominant7) 
-            <|> (stringCIReturn "seventh" Dominant7) 
+        let dominantQuality: Parser<_> =
+            (stringCIReturn "7" Dominant7)
+            <|> (stringCIReturn "7th" Dominant7)
+            <|> (stringCIReturn "seventh" Dominant7)
             <|> (stringCIReturn "seven" Dominant7)
-            <|>(stringCIReturn "dominant" Dominant7) 
+            <|>(stringCIReturn "dominant" Dominant7)
             <|> (stringCIReturn "dom" Dominant7) .>> spaces
 
         let quality: Parser<_> =
