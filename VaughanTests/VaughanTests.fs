@@ -863,6 +863,8 @@ namespace VaughanTests
                 test <@ (parseInput "Cmin7") = { Root=C; Quality=Minor7 } @>
                 test <@ (parseInput "C augmented 7") = { Root=C; Quality=Augmented7 } @>
                 test <@ (parseInput "C aug 7") = { Root=C; Quality=Augmented7 } @>
+                test <@ (parseInput "C diminished 7") = { Root=C; Quality=Diminished7 } @>
+                test <@ (parseInput "C dim 7") = { Root=C; Quality=Diminished7 } @>
                 test <@ (parseInput "Caug7") = { Root=C; Quality=Augmented7 } @>
                 test <@ (parseInput "Cdom7") = { Root=C; Quality=Dominant7 } @>
                 test <@ (parseInput "C7") = { Root=C; Quality=Dominant7 } @>
