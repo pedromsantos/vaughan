@@ -754,6 +754,7 @@ namespace Vaughan
             let inner chord =
                 chord
             inner
+
         let seventhQuality: Parser<_> = 
             (stringCIReturn "7" seventh) 
             <|> (stringCIReturn "7th" seventh) 
@@ -769,11 +770,11 @@ namespace Vaughan
             (majorQuality <|> minorQuality <|> augmentedQuality <|> diminishedQuality)
 
         let chord: Parser<_> = 
-            note .>>. accident .>>. quality .>>. seventhQuality
+            pipe4 note accident quality seventhQuality 
+                (fun n a q s -> s { Root=(a n); Quality=q; })
 
         let parseInput (text:string) =
             let parsed = run chord text
             match parsed with
-            | Success((((note, accidentFunction), quality), sevenFunction), _, _) ->
-                sevenFunction { Root=(accidentFunction note); Quality=quality; }
+            | Success(chordDefinition, _, _) -> chordDefinition
             | Failure(errorMsg, _, _) -> invalidOp errorMsg
