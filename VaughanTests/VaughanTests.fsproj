@@ -67,6 +67,12 @@
     <Reference Include="Unquote">
       <HintPath>..\packages\Unquote\lib\net45\Unquote.dll</HintPath>
     </Reference>
+    <Reference Include="FParsec">
+      <HintPath>..\packages\FParsec\lib\portable-net45+netcore45+wpa81+wp8\FParsec.dll</HintPath>
+    </Reference>
+    <Reference Include="FParsec">
+      <HintPath>..\packages\FParsec\lib\portable-net45+netcore45+wpa81+wp8\FParsecCS.dll</HintPath>
+    </Reference>
     <ProjectReference Include="..\Vaughan\Vaughan.fsproj">
       <Name>Vaughan</Name>
       <Project>{a9407c42-9d3e-4f65-950a-55d3e803dfe7}</Project>

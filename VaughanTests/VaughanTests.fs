@@ -836,6 +836,7 @@ namespace VaughanTests
                                                         "E|---|\r\n"@>
 
     module SpeechToMusicTests =
+            open FParsec
             open NUnit.Framework
             open Swensen.Unquote
             open Vaughan.Notes

@@ -80,6 +80,9 @@ namespace Vaughan
 
         let flat note =
             (noteAttributes note).Flat
+
+        let natural note =
+            note
             
         let pitch note =
             (noteAttributes note).Pitch
@@ -682,53 +685,95 @@ namespace Vaughan
             drawTabLowerString guitarChord
             
     module SpeechToMusic =
-        open System.Text.RegularExpressions
+        open FParsec
         open Notes
         open Chords
 
         type ChordDefinition = { Root: Note; Quality:Quality; }
 
-        let rec private parse chord = function
-        | [] -> chord
-        | "C"::xs -> 
-            let chord' = { chord with Root = C }
-            parse chord' xs
-        | "MAJOR"::xs | "MAJ"::xs ->
-            let chord' = { chord with Quality = Major }
-            parse chord' xs
-        | "MINOR"::xs | "MIN"::xs ->
-            let chord' = { chord with Quality = Minor }
-            parse chord' xs
-        | "AUGMENTED"::xs | "AUG"::xs ->
-            let chord' = { chord with Quality = Augmented }
-            parse chord' xs
-        | "DIMINISHED"::xs | "DIM"::xs ->
-            let chord' = { chord with Quality = Diminished }
-            parse chord' xs
-        | "DOMINANT"::xs | "DOM"::xs | "DOMINANT7"::xs | "DOM7"::xs ->
-            let chord' = { chord with Quality = Dominant7; }
-            parse chord' xs
-        | "7"::xs | "7TH"::xs | "SEVENTH"::xs | "SEVEN"::xs ->
-            match chord with 
-            | {Quality=Major}  ->
-                let chord' = { chord with Quality = Major7 }
-                parse chord' xs
-            | {Quality=Minor}  ->
-                let chord' = { chord with Quality = Minor7 }
-                parse chord' xs
-            | {Quality=Diminished}  ->
-                let chord' = { chord with Quality = Diminished7 }
-                parse chord' xs
-             | {Quality=Augmented}  ->
-                let chord' = { chord with Quality = Augmented7 }
-                parse chord' xs
-            | {Quality=_}  ->
-                let chord' = { chord with Quality = Dominant7 }
-                parse chord' xs
-        | x::_ -> invalidOp x
-        
+        type UserState = unit
+        type Parser<'t> = Parser<'t, UserState>
+
+        let note: Parser<_> = 
+            (stringCIReturn "a" A)
+            <|>(stringCIReturn "b" B)
+            <|>(stringCIReturn "c" C) 
+            <|>(stringCIReturn "d" D)
+            <|>(stringCIReturn "e" E)
+            <|>(stringCIReturn "f" F)
+            <|>(stringCIReturn "g" G)
+            .>> spaces
+
+        let accident: Parser<_> = 
+            (stringReturn "#" sharp)
+            <|> (stringReturn "b" flat)
+            <|> (notFollowedByString "#" >>% natural) 
+            <|> (notFollowedByString "b" >>% natural)
+            .>> spaces
+
+        let majorQuality: Parser<_> = 
+            (stringCIReturn "major" Major) 
+            <|> (stringCIReturn "maj" Major)
+            <|> (stringReturn "M" Major) 
+            .>> spaces
+
+        let minorQuality: Parser<_> = 
+            (stringCIReturn "minor" Minor) 
+            <|> (stringCIReturn "min" Minor)
+            <|> (stringReturn "m" Minor) 
+            .>> spaces
+
+        let augmentedQuality: Parser<_> = 
+            (stringCIReturn "augmented" Augmented) 
+            <|> (stringCIReturn "aug" Augmented) .>> spaces
+
+        let diminishedQuality: Parser<_> = 
+            (stringCIReturn "diminished" Diminished) 
+            <|> (stringCIReturn "dim" Diminished) .>> spaces
+
+        let dominantQuality: Parser<_> = 
+            (stringCIReturn "dominant" Dominant7) 
+            <|> (stringCIReturn "dom" Dominant7) .>> spaces
+
+        let seventh =
+            let inner chord =
+                match chord with 
+                | {Quality=Major}  ->
+                    { chord with Quality = Major7 }
+                | {Quality=Minor}  ->
+                    { chord with Quality = Minor7 }
+                | {Quality=Diminished}  ->
+                    { chord with Quality = Diminished7 }
+                | {Quality=Augmented}  ->
+                    { chord with Quality = Augmented7 }
+                | {Quality=_}  ->
+                    { chord with Quality = Dominant7 }
+            inner
+
+        let noSeventh = 
+            let inner chord =
+                chord
+            inner
+        let seventhQuality: Parser<_> = 
+            (stringCIReturn "7" seventh) 
+            <|> (stringCIReturn "7th" seventh) 
+            <|> (stringCIReturn "seventh" seventh) 
+            <|> (stringCIReturn "seven" seventh)
+            <|> (notFollowedByString "7" >>% noSeventh) 
+            <|> (notFollowedByString "7th" >>% noSeventh)
+            <|> (notFollowedByString "seventh" >>% noSeventh) 
+            <|> (notFollowedByString "seven" >>% noSeventh)
+             .>> spaces
+
+        let quality: Parser<_> = 
+            (majorQuality <|> minorQuality <|> augmentedQuality <|> diminishedQuality)
+
+        let chord: Parser<_> = 
+            note .>>. accident .>>. quality .>>. seventhQuality
+
         let parseInput (text:string) =
-            let whitespace = " \t\r\n".ToCharArray()
-            text.ToUpper().Split(whitespace, System.StringSplitOptions.RemoveEmptyEntries)
-            |> Array.toList
-            |> parse { Root=C; Quality=Major; }
+            let parsed = run chord text
+            match parsed with
+            | Success((((note, accidentFunction), quality), sevenFunction), _, _) ->
+                sevenFunction { Root=(accidentFunction note); Quality=quality; }
+            | Failure(errorMsg, _, _) -> invalidOp errorMsg
