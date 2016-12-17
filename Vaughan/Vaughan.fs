@@ -738,25 +738,21 @@ namespace Vaughan
         let quality: Parser<_> = 
             majorQuality <|> minorQuality <|> augmentedQuality <|> diminishedQuality
 
-        let seventh =
-            let inner chord =
-                match chord with 
-                | {Quality=Major}  ->
-                    { chord with Quality = Major7 }
-                | {Quality=Minor}  ->
-                    { chord with Quality = Minor7 }
-                | {Quality=Diminished}  ->
-                    { chord with Quality = Diminished7 }
-                | {Quality=Augmented}  ->
-                    { chord with Quality = Augmented7 }
-                | {Quality=_}  ->
-                    { chord with Quality = Dominant7 }
-            inner
+        let seventh chord =
+            match chord with 
+            | {Quality=Major}  ->
+                { chord with Quality = Major7 }
+            | {Quality=Minor}  ->
+                { chord with Quality = Minor7 }
+            | {Quality=Diminished}  ->
+                { chord with Quality = Diminished7 }
+            | {Quality=Augmented}  ->
+                { chord with Quality = Augmented7 }
+            | {Quality=_}  ->
+                { chord with Quality = Dominant7 }
 
-        let noSeventh = 
-            let inner chord =
-                chord
-            inner
+        let noSeventh chord = 
+            chord
 
         let seventhQuality: Parser<_> = 
             (stringCIReturn "7" seventh) 
