@@ -739,11 +739,11 @@ namespace Vaughan
             <|>(stringCIReturn "dominant" Dominant7) 
             <|> (stringCIReturn "dom" Dominant7) .>> spaces
 
-        let quality: Parser<_> = 
+        let quality: Parser<_> =
             majorQuality <|> minorQuality <|> augmentedQuality <|> diminishedQuality <|> dominantQuality
 
         let seventh chord =
-            match chord with 
+            match chord with
             | {Quality=Major} -> { chord with Quality = Major7 }
             | {Quality=Minor} -> { chord with Quality = Minor7 }
             | {Quality=Diminished} -> { chord with Quality = Diminished7 }
@@ -753,19 +753,19 @@ namespace Vaughan
         let noSeventh chord = 
             chord
 
-        let seventhQuality: Parser<_> = 
-            (stringCIReturn "7" seventh) 
-            <|> (stringCIReturn "7th" seventh) 
-            <|> (stringCIReturn "seventh" seventh) 
+        let seventhQuality: Parser<_> =
+            (stringCIReturn "7" seventh)
+            <|> (stringCIReturn "7th" seventh)
+            <|> (stringCIReturn "seventh" seventh)
             <|> (stringCIReturn "seven" seventh)
-            <|> (notFollowedByString "7" >>% noSeventh) 
+            <|> (notFollowedByString "7" >>% noSeventh)
             <|> (notFollowedByString "7th" >>% noSeventh)
-            <|> (notFollowedByString "seventh" >>% noSeventh) 
+            <|> (notFollowedByString "seventh" >>% noSeventh)
             <|> (notFollowedByString "seven" >>% noSeventh)
-             .>> spaces
+            .>> spaces
 
-        let chordParser: Parser<_> = 
-            pipe4 note accident quality seventhQuality 
+        let chordParser: Parser<_> =
+            pipe4 note accident quality seventhQuality
                 (fun n a q s -> s { Root=(a n); Quality=q; })
 
         let parseChord (text:string) =
