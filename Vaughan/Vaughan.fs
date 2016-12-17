@@ -735,6 +735,9 @@ namespace Vaughan
             (stringCIReturn "dominant" Dominant7) 
             <|> (stringCIReturn "dom" Dominant7) .>> spaces
 
+        let quality: Parser<_> = 
+            majorQuality <|> minorQuality <|> augmentedQuality <|> diminishedQuality
+
         let seventh =
             let inner chord =
                 match chord with 
@@ -766,15 +769,12 @@ namespace Vaughan
             <|> (notFollowedByString "seven" >>% noSeventh)
              .>> spaces
 
-        let quality: Parser<_> = 
-            (majorQuality <|> minorQuality <|> augmentedQuality <|> diminishedQuality)
-
-        let chord: Parser<_> = 
+        let chordParser: Parser<_> = 
             pipe4 note accident quality seventhQuality 
                 (fun n a q s -> s { Root=(a n); Quality=q; })
 
         let parseInput (text:string) =
-            let parsed = run chord text
+            let parsed = run chordParser text
             match parsed with
             | Success(chordDefinition, _, _) -> chordDefinition
             | Failure(errorMsg, _, _) -> invalidOp errorMsg
