@@ -768,7 +768,7 @@ namespace Vaughan
             pipe4 note accident quality seventhQuality 
                 (fun n a q s -> s { Root=(a n); Quality=q; })
 
-        let parseInput (text:string) =
+        let parseChord (text:string) =
             let parsed = run chordParser text
             match parsed with
             | Success(chordDefinition, _, _) -> chordDefinition
