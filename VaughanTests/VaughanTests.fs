@@ -845,26 +845,26 @@ namespace VaughanTests
 
             [<Test>]
             let ``Should parse textual representation of chord``() =
-                test <@ (parseInput "C Major") = { Root=C; Quality=Major } @>
-                test <@ (parseInput "C Maj") = { Root=C; Quality=Major } @>
-                test <@ (parseInput "C minor") = { Root=C; Quality=Minor } @>
-                test <@ (parseInput "C min") = { Root=C; Quality=Minor } @>
-                test <@ (parseInput "Cmin") = { Root=C; Quality=Minor } @>
-                test <@ (parseInput "Cm") = { Root=C; Quality=Minor } @>
-                test <@ (parseInput "C augmented") = { Root=C; Quality=Augmented } @>
-                test <@ (parseInput "C Aug") = { Root=C; Quality=Augmented } @>
-                test <@ (parseInput "C diminished") = { Root=C; Quality=Diminished } @>
-                test <@ (parseInput "C dim") = { Root=C; Quality=Diminished } @>
-                test <@ (parseInput "C Major 7") = { Root=C; Quality=Major7 } @>
-                test <@ (parseInput "C Maj 7") = { Root=C; Quality=Major7 } @>
-                test <@ (parseInput "CMaj7") = { Root=C; Quality=Major7 } @>
-                test <@ (parseInput "C minor 7") = { Root=C; Quality=Minor7 } @>
-                test <@ (parseInput "C min 7") = { Root=C; Quality=Minor7 } @>
-                test <@ (parseInput "Cmin7") = { Root=C; Quality=Minor7 } @>
-                test <@ (parseInput "C augmented 7") = { Root=C; Quality=Augmented7 } @>
-                test <@ (parseInput "C aug 7") = { Root=C; Quality=Augmented7 } @>
-                test <@ (parseInput "C diminished 7") = { Root=C; Quality=Diminished7 } @>
-                test <@ (parseInput "C dim 7") = { Root=C; Quality=Diminished7 } @>
-                test <@ (parseInput "Caug7") = { Root=C; Quality=Augmented7 } @>
-                test <@ (parseInput "Cdom7") = { Root=C; Quality=Dominant7 } @>
-                test <@ (parseInput "C7") = { Root=C; Quality=Dominant7 } @>
+                test <@ (parseChord "C Major") = { Root=C; Quality=Major } @>
+                test <@ (parseChord "C Maj") = { Root=C; Quality=Major } @>
+                test <@ (parseChord "C minor") = { Root=C; Quality=Minor } @>
+                test <@ (parseChord "C min") = { Root=C; Quality=Minor } @>
+                test <@ (parseChord "Cmin") = { Root=C; Quality=Minor } @>
+                test <@ (parseChord "Cm") = { Root=C; Quality=Minor } @>
+                test <@ (parseChord "C augmented") = { Root=C; Quality=Augmented } @>
+                test <@ (parseChord "C Aug") = { Root=C; Quality=Augmented } @>
+                test <@ (parseChord "C diminished") = { Root=C; Quality=Diminished } @>
+                test <@ (parseChord "C dim") = { Root=C; Quality=Diminished } @>
+                test <@ (parseChord "C Major 7") = { Root=C; Quality=Major7 } @>
+                test <@ (parseChord "C Maj 7") = { Root=C; Quality=Major7 } @>
+                test <@ (parseChord "CMaj7") = { Root=C; Quality=Major7 } @>
+                test <@ (parseChord "C minor 7") = { Root=C; Quality=Minor7 } @>
+                test <@ (parseChord "C min 7") = { Root=C; Quality=Minor7 } @>
+                test <@ (parseChord "Cmin7") = { Root=C; Quality=Minor7 } @>
+                test <@ (parseChord "C augmented 7") = { Root=C; Quality=Augmented7 } @>
+                test <@ (parseChord "C aug 7") = { Root=C; Quality=Augmented7 } @>
+                test <@ (parseChord "C diminished 7") = { Root=C; Quality=Diminished7 } @>
+                test <@ (parseChord "C dim 7") = { Root=C; Quality=Diminished7 } @>
+                test <@ (parseChord "Caug7") = { Root=C; Quality=Augmented7 } @>
+                test <@ (parseChord "Cdom7") = { Root=C; Quality=Dominant7 } @>
+                test <@ (parseChord "C7") = { Root=C; Quality=Dominant7 } @>
