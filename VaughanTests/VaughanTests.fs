@@ -844,7 +844,7 @@ namespace VaughanTests
             open Vaughan.SpeechToMusic
 
             [<Test>]
-            let ``Should parse C major 7``() =
+            let ``Should parse textual representation of chord``() =
                 test <@ (parseInput "C Major") = { Root=C; Quality=Major } @>
                 test <@ (parseInput "C Maj") = { Root=C; Quality=Major } @>
                 test <@ (parseInput "C minor") = { Root=C; Quality=Minor } @>
