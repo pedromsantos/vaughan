@@ -240,3 +240,33 @@ D|---|
 A|-3-|
 E|---|
 ```
+
+### Guitar chord tab drawing from textual chord
+
+```fsharp
+open Vaughan.Notes
+open Vaughan.Chords
+open Vaughan.Scales
+open Vaughan.Guitar
+open Vaughan.GuitarTab
+open Vaughan.ScaleHarmonizer
+open Vaughan.SpeechToMusic
+```
+
+```fsharp
+"C Major"
+|> parseChord
+|> createChord
+|> chordToGuitarClosedChord SixthString
+|> drawGuitarChordTab
+```
+Output:
+```
+  CMaj
+E|---|
+B|---|
+G|---|
+D|-5-|
+A|-7-|
+E|-8-|
+```
