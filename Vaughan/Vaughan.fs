@@ -679,14 +679,12 @@ namespace Vaughan
         open Chords
 
         type ChordIntent = { Root: Note; Quality:Quality; }
-
         type UserState = unit
         type Parser<'t> = Parser<'t, UserState>
 
-        let skip parser skiper =
-            parser .>> skiper
+        let skip parser skiper = parser .>> skiper
 
-        let skipSpaces parser  = skip parser spaces
+        let skipSpaces parser = skip parser spaces
 
         let any parsers = parsers |> List.reduce (<|>)
         
@@ -724,12 +722,16 @@ namespace Vaughan
                 ] |> skipSpaces
 
         let augmentedQuality: Parser<_> =
-            (stringCIReturn "augmented" Augmented)
-            <|> (stringCIReturn "aug" Augmented) .>> spaces
+             any [
+                    (stringCIReturn "augmented" Augmented);
+                    (stringCIReturn "aug" Augmented)
+                 ] |> skipSpaces
 
         let diminishedQuality: Parser<_> =
-            (stringCIReturn "diminished" Diminished)
-            <|> (stringCIReturn "dim" Diminished) .>> spaces
+            any [
+                    (stringCIReturn "diminished" Diminished);
+                    (stringCIReturn "dim" Diminished)
+                ] |> skipSpaces
 
         let dominantQuality: Parser<_> =
             any [
