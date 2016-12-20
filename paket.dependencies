@@ -4,3 +4,4 @@ nuget FSharp.Core
 nuget NUnit = 2.6.4
 nuget Unquote
 nuget NUnit.Runners = 2.6.4
+nuget FParsec 1.0.2
