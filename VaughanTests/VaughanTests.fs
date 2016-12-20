@@ -841,6 +841,9 @@ namespace VaughanTests
             open Swensen.Unquote
             open Vaughan.Notes
             open Vaughan.Chords
+            open Vaughan.Chords
+            open Vaughan.Scales
+            open Vaughan.ScaleHarmonizer
             open Vaughan.SpeechToMusic
 
             [<Test>]
@@ -868,3 +871,22 @@ namespace VaughanTests
                 test <@ (parseChord "Caug7") = { Root=C; Quality=Augmented7 } @>
                 test <@ (parseChord "Cdom7") = { Root=C; Quality=Dominant7 } @>
                 test <@ (parseChord "C7") = { Root=C; Quality=Dominant7 } @>
+                             
+            [<Test>]
+            let ``Should create chord from  chord intent``() =
+                let cIonian = createScale Ionian C
+                let cMaj = triadsHarmonizer ScaleDgrees.I cIonian
+                let dMin = triadsHarmonizer ScaleDgrees.II cIonian
+                let eMin = triadsHarmonizer ScaleDgrees.III cIonian
+                let fMaj = triadsHarmonizer ScaleDgrees.IV cIonian
+                let gMaj = triadsHarmonizer ScaleDgrees.V cIonian
+                let aMin = triadsHarmonizer ScaleDgrees.VI cIonian
+                let bDim = triadsHarmonizer ScaleDgrees.VII cIonian
+
+                test <@ createChord { Root=C; Quality=Major } = cMaj@>
+                test <@ createChord { Root=D; Quality=Minor } = dMin@>
+                test <@ createChord { Root=E; Quality=Minor } = eMin@>
+                test <@ createChord { Root=F; Quality=Major } = fMaj@>
+                test <@ createChord { Root=G; Quality=Major } = gMaj@>
+                test <@ createChord { Root=A; Quality=Minor } = aMin@>
+                test <@ createChord { Root=B; Quality=Diminished } = bDim@>

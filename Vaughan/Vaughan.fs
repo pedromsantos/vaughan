@@ -683,34 +683,45 @@ namespace Vaughan
         type UserState = unit
         type Parser<'t> = Parser<'t, UserState>
 
+        let skip parser skiper =
+            parser .>> skiper
+
+        let skipSpaces parser  = skip parser spaces
+
+        let any parsers = parsers |> List.reduce (<|>)
+        
         let note: Parser<_> =
-            (stringCIReturn "a" A)
-            <|>(stringCIReturn "b" B)
-            <|>(stringCIReturn "c" C)
-            <|>(stringCIReturn "d" D)
-            <|>(stringCIReturn "e" E)
-            <|>(stringCIReturn "f" F)
-            <|>(stringCIReturn "g" G)
-            .>> spaces
+            any [
+                    (stringCIReturn "a" A);
+                    (stringCIReturn "b" B);
+                    (stringCIReturn "c" C);
+                    (stringCIReturn "d" D);
+                    (stringCIReturn "e" E);
+                    (stringCIReturn "f" F);
+                    (stringCIReturn "g" G)
+                ] |> skipSpaces
 
         let accident: Parser<_> =
-            (stringReturn "#" sharp)
-            <|> (stringReturn "b" flat)
-            <|> (notFollowedByString "#" >>% natural)
-            <|> (notFollowedByString "b" >>% natural)
-            .>> spaces
+            any [
+                    (stringReturn "#" sharp);
+                    (stringReturn "b" flat);
+                    (notFollowedByString "#" >>% natural);
+                    (notFollowedByString "b" >>% natural)
+                ] |> skipSpaces
 
         let majorQuality: Parser<_> =
-            (stringCIReturn "major" Major)
-            <|> (stringCIReturn "maj" Major)
-            <|> (stringReturn "M" Major) 
-            .>> spaces
+            any [
+                    (stringCIReturn "major" Major)
+                    (stringCIReturn "maj" Major)
+                    (stringReturn "M" Major) 
+                ] |> skipSpaces
 
         let minorQuality: Parser<_> =
-            (stringCIReturn "minor" Minor)
-            <|> (stringCIReturn "min" Minor)
-            <|> (stringReturn "m" Minor) 
-            .>> spaces
+            any [
+                    (stringCIReturn "minor" Minor);
+                    (stringCIReturn "min" Minor);
+                    (stringReturn "m" Minor);
+                ] |> skipSpaces
 
         let augmentedQuality: Parser<_> =
             (stringCIReturn "augmented" Augmented)
@@ -721,15 +732,23 @@ namespace Vaughan
             <|> (stringCIReturn "dim" Diminished) .>> spaces
 
         let dominantQuality: Parser<_> =
-            (stringCIReturn "7" Dominant7)
-            <|> (stringCIReturn "7th" Dominant7)
-            <|> (stringCIReturn "seventh" Dominant7)
-            <|> (stringCIReturn "seven" Dominant7)
-            <|>(stringCIReturn "dominant" Dominant7)
-            <|> (stringCIReturn "dom" Dominant7) .>> spaces
+            any [
+                    (stringCIReturn "7" Dominant7);
+                    (stringCIReturn "7th" Dominant7);
+                    (stringCIReturn "seventh" Dominant7);
+                    (stringCIReturn "seven" Dominant7);
+                    (stringCIReturn "dominant" Dominant7);
+                    (stringCIReturn "dom" Dominant7)
+                ] |> skipSpaces
 
         let quality: Parser<_> =
-            majorQuality <|> minorQuality <|> augmentedQuality <|> diminishedQuality <|> dominantQuality
+            any [
+                    majorQuality
+                    minorQuality
+                    augmentedQuality
+                    diminishedQuality
+                    dominantQuality
+                ] |> skipSpaces
 
         let seventh chord =
             match chord with
@@ -743,15 +762,16 @@ namespace Vaughan
             chord
 
         let seventhQuality: Parser<_> =
-            (stringCIReturn "7" seventh)
-            <|> (stringCIReturn "7th" seventh)
-            <|> (stringCIReturn "seventh" seventh)
-            <|> (stringCIReturn "seven" seventh)
-            <|> (notFollowedByString "7" >>% noSeventh)
-            <|> (notFollowedByString "7th" >>% noSeventh)
-            <|> (notFollowedByString "seventh" >>% noSeventh)
-            <|> (notFollowedByString "seven" >>% noSeventh)
-            .>> spaces
+            any [
+                    (stringCIReturn "7" seventh);
+                    (stringCIReturn "7th" seventh);
+                    (stringCIReturn "seventh" seventh);
+                    (stringCIReturn "seven" seventh);
+                    (notFollowedByString "7" >>% noSeventh);
+                    (notFollowedByString "7th" >>% noSeventh);
+                    (notFollowedByString "seventh" >>% noSeventh);
+                    (notFollowedByString "seven" >>% noSeventh)
+                ] |> skipSpaces
 
         let chordParser: Parser<_> =
             pipe4 note accident quality seventhQuality
@@ -762,3 +782,6 @@ namespace Vaughan
             match parsed with
             | Success(chordDefinition, _, _) -> chordDefinition
             | Failure(errorMsg, _, _) -> invalidOp errorMsg
+
+        let createChord chordIntent =
+            chordFromRootAndFunction chordIntent.Root chordIntent.Quality
