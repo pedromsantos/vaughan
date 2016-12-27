@@ -664,7 +664,7 @@ namespace Vaughan
             |> List.rev
             |> List.fold (+) ""
 
-        let drawGuitarChordTab guitarChord =
+        let tabify guitarChord =
             sprintf "  %s\r\n" (name guitarChord.Chord)
             +
             drawTabHigherString guitarChord

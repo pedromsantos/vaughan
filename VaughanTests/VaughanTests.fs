@@ -757,7 +757,7 @@ namespace VaughanTests
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> toDrop2
                 |> chordToGuitarClosedChord FifthString)
-            test <@ guitarChord |> drawGuitarChordTab = "  CMaj7\r\n"+
+            test <@ guitarChord |> tabify = "  CMaj7\r\n"+
                                                         "E|---|\r\n"+
                                                         "B|-5-|\r\n"+
                                                         "G|-4-|\r\n"+
@@ -772,7 +772,7 @@ namespace VaughanTests
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> toDrop2
                 |> chordToGuitarClosedChord FifthString)
-            test <@ guitarChord |> drawGuitarChordTab = "  AMaj7\r\n"+
+            test <@ guitarChord |> tabify = "  AMaj7\r\n"+
                                                         "E|----|\r\n"+
                                                         "B|-14-|\r\n"+
                                                         "G|-13-|\r\n"+
@@ -786,7 +786,7 @@ namespace VaughanTests
                 (createScale Ionian F
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> chordToGuitarClosedChord FourthString)
-            test <@ guitarChord |> drawGuitarChordTab = "  FMaj7\r\n"+
+            test <@ guitarChord |> tabify = "  FMaj7\r\n"+
                                                         "E|-12-|\r\n"+
                                                         "B|-13-|\r\n"+
                                                         "G|-14-|\r\n"+
@@ -797,7 +797,7 @@ namespace VaughanTests
         [<Test>]
         let ``Should draw c major to guitar fretboard on sixth string``() =
             let guitarChord = chordToGuitarClosedChord SixthString cMaj
-            test <@ guitarChord |> drawGuitarChordTab = "  CMaj\r\n"+
+            test <@ guitarChord |> tabify = "  CMaj\r\n"+
                                                         "E|---|\r\n"+
                                                         "B|---|\r\n"+
                                                         "G|---|\r\n"+
@@ -812,7 +812,7 @@ namespace VaughanTests
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> toDrop3
                 |> chordToGuitarClosedChord SixthString)
-            test <@ guitarChord |> drawGuitarChordTab = "  CMaj7\r\n"+
+            test <@ guitarChord |> tabify = "  CMaj7\r\n"+
                                                         "E|---|\r\n"+
                                                         "B|-8-|\r\n"+
                                                         "G|-9-|\r\n"+
@@ -827,7 +827,7 @@ namespace VaughanTests
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> toDrop3
                 |> chordToGuitarClosedChord FifthString)
-            test <@ guitarChord |> drawGuitarChordTab = "  CMaj7\r\n"+
+            test <@ guitarChord |> tabify = "  CMaj7\r\n"+
                                                         "E|-3-|\r\n"+
                                                         "B|-5-|\r\n"+
                                                         "G|-4-|\r\n"+
