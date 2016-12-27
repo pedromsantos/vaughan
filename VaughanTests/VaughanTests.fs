@@ -873,7 +873,7 @@ namespace VaughanTests
                 test <@ (parseChord "C7") = { Root=C; Quality=Dominant7 } @>
                              
             [<Test>]
-            let ``Should create chord from  chord intent``() =
+            let ``Should create chord from chord intent``() =
                 let cIonian = createScale Ionian C
                 let cMaj = triadsHarmonizer ScaleDgrees.I cIonian
                 let dMin = triadsHarmonizer ScaleDgrees.II cIonian
