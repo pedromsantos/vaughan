@@ -845,9 +845,12 @@ namespace VaughanTests
             open Vaughan.Scales
             open Vaughan.ScaleHarmonizer
             open Vaughan.SpeechToMusic
+            open Vaughan.Guitar
+            open Vaughan.GuitarTab
+            open Vaughan.ScaleHarmonizer
 
             [<Test>]
-            let ``Should parse textual representation of chord``() =
+            let ``Should parse textual representation Pof chord``() =
                 test <@ (parseChord "C Major") = { Root=C; Quality=Major } @>
                 test <@ (parseChord "C Maj") = { Root=C; Quality=Major } @>
                 test <@ (parseChord "C minor") = { Root=C; Quality=Minor } @>
@@ -890,3 +893,17 @@ namespace VaughanTests
                 test <@ createChord { Root=G; Quality=Major } = gMaj@>
                 test <@ createChord { Root=A; Quality=Minor } = aMin@>
                 test <@ createChord { Root=B; Quality=Diminished } = bDim@>
+                
+            [<Test>]
+            let ``Should tabify chord from text``() =
+                test <@ "C Major"
+                        |> parseChord
+                        |> createChord
+                        |> chordToGuitarClosedChord SixthString
+                        |> tabify= "  CMaj\r\n"+
+                                   "E|---|\r\n"+
+                                   "B|---|\r\n"+
+                                   "G|---|\r\n"+
+                                   "D|-5-|\r\n"+
+                                   "A|-7-|\r\n"+
+                                   "E|-8-|\r\n"@>
