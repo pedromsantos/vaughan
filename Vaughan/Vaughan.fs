@@ -682,13 +682,13 @@ namespace Vaughan
         type UserState = unit
         type Parser<'t> = Parser<'t, UserState>
 
-        let skip parser skiper = parser .>> skiper
+        let private skip parser skiped = parser .>> skiped
 
-        let skipSpaces parser = skip parser spaces
+        let private skipSpaces parser = skip parser spaces
 
-        let any parsers = parsers |> List.reduce (<|>)
+        let private any parsers = parsers |> List.reduce (<|>)
         
-        let note: Parser<_> =
+        let private note: Parser<_> =
             any [
                     (stringCIReturn "a" A);
                     (stringCIReturn "b" B);
@@ -699,7 +699,7 @@ namespace Vaughan
                     (stringCIReturn "g" G)
                 ] |> skipSpaces
 
-        let accident: Parser<_> =
+        let private accident: Parser<_> =
             any [
                     (stringReturn "#" sharp);
                     (stringReturn "b" flat);
@@ -707,33 +707,33 @@ namespace Vaughan
                     (notFollowedByString "b" >>% natural)
                 ] |> skipSpaces
 
-        let majorQuality: Parser<_> =
+        let private majorQuality: Parser<_> =
             any [
                     (stringCIReturn "major" Major)
                     (stringCIReturn "maj" Major)
                     (stringReturn "M" Major) 
                 ] |> skipSpaces
 
-        let minorQuality: Parser<_> =
+        let private minorQuality: Parser<_> =
             any [
                     (stringCIReturn "minor" Minor);
                     (stringCIReturn "min" Minor);
                     (stringReturn "m" Minor);
                 ] |> skipSpaces
 
-        let augmentedQuality: Parser<_> =
+        let private augmentedQuality: Parser<_> =
              any [
                     (stringCIReturn "augmented" Augmented);
                     (stringCIReturn "aug" Augmented)
                  ] |> skipSpaces
 
-        let diminishedQuality: Parser<_> =
+        let private diminishedQuality: Parser<_> =
             any [
                     (stringCIReturn "diminished" Diminished);
                     (stringCIReturn "dim" Diminished)
                 ] |> skipSpaces
 
-        let dominantQuality: Parser<_> =
+        let private dominantQuality: Parser<_> =
             any [
                     (stringCIReturn "7" Dominant7);
                     (stringCIReturn "7th" Dominant7);
@@ -743,7 +743,7 @@ namespace Vaughan
                     (stringCIReturn "dom" Dominant7)
                 ] |> skipSpaces
 
-        let quality: Parser<_> =
+        let private quality: Parser<_> =
             any [
                     majorQuality
                     minorQuality
@@ -752,7 +752,7 @@ namespace Vaughan
                     dominantQuality
                 ] |> skipSpaces
 
-        let seventh chord =
+        let private seventh chord =
             match chord with
             | {Quality=Major} -> { chord with Quality = Major7 }
             | {Quality=Minor} -> { chord with Quality = Minor7 }
@@ -760,10 +760,10 @@ namespace Vaughan
             | {Quality=Augmented} -> { chord with Quality = Augmented7 }
             | {Quality=_} -> { chord with Quality = Dominant7 }
 
-        let noSeventh chord = 
+        let private noSeventh chord = 
             chord
 
-        let seventhQuality: Parser<_> =
+        let private seventhQuality: Parser<_> =
             any [
                     (stringCIReturn "7" seventh);
                     (stringCIReturn "7th" seventh);
@@ -775,7 +775,7 @@ namespace Vaughan
                     (notFollowedByString "seven" >>% noSeventh)
                 ] |> skipSpaces
 
-        let chordParser: Parser<_> =
+        let private chordParser: Parser<_> =
             pipe4 note accident quality seventhQuality
                 (fun n a q s -> s { Root=(a n); Quality=q; })
 

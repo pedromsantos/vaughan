@@ -900,10 +900,10 @@ namespace VaughanTests
                         |> parseChord
                         |> createChord
                         |> chordToGuitarClosedChord SixthString
-                        |> tabify= "  CMaj\r\n"+
-                                   "E|---|\r\n"+
-                                   "B|---|\r\n"+
-                                   "G|---|\r\n"+
-                                   "D|-5-|\r\n"+
-                                   "A|-7-|\r\n"+
-                                   "E|-8-|\r\n"@>
+                        |> tabify = "  CMaj\r\n"+
+                                    "E|---|\r\n"+
+                                    "B|---|\r\n"+
+                                    "G|---|\r\n"+
+                                    "D|-5-|\r\n"+
+                                    "A|-7-|\r\n"+
+                                    "E|-8-|\r\n"@>
