@@ -695,7 +695,8 @@ namespace Vaughan
             @ (drawTabLowerStrings guitarChord)
 
         let private tabifyIndividualChord guitarChord = 
-            seq { for i in 0 .. 5 -> startTab.[i] + (tabifyChord guitarChord).[i] + endTab.[i] }
+            let tabifiedChord = tabifyChord guitarChord
+            seq { for i in 0 .. 5 -> startTab.[i] + tabifiedChord.[i] + endTab.[i] }
             |> Seq.toList
         
         let tabify guitarChord =
