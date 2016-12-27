@@ -140,7 +140,7 @@ open Vaughan.Scales
 createScale Ionian C
 |> triadsHarmonizer ScaleDgrees.I
 |> chordToGuitarClosedChord SixthString
-|> drawGuitarChordTab
+|> tabify
 ```
 Output:
 ```
@@ -158,7 +158,7 @@ createScale Ionian C
 |> seventhsHarmonizer ScaleDgrees.I
 |> toDrop2
 |> chordToGuitarClosedChord FifthString
-|> drawGuitarChordTab
+|> tabify
 ```
 Output:
 ```
@@ -176,7 +176,7 @@ createScale Ionian A
 |> seventhsHarmonizer ScaleDgrees.I
 |> toDrop2
 |> chordToGuitarClosedChord FifthString
-|> drawGuitarChordTab
+|> tabify
 ```
 Output:
 ```
@@ -192,7 +192,7 @@ E|----|
 createScale Ionian F
 |> seventhsHarmonizer ScaleDgrees.I
 |> chordToGuitarClosedChord FourthString
-|> drawGuitarChordTab
+|> tabify
 ```
 Output:
 ```
@@ -210,7 +210,7 @@ createScale Ionian C
 |> seventhsHarmonizer ScaleDgrees.I
 |> toDrop3
 |> chordToGuitarClosedChord SixthString
-|> drawGuitarChordTab
+|> tabify
 ```
 Output:
 ```
@@ -228,7 +228,7 @@ createScale Ionian C
 |> seventhsHarmonizer ScaleDgrees.I
 |> toDrop3
 |> chordToGuitarClosedChord FifthString
-|> drawGuitarChordTab
+|> tabify
 ```
 Output:
 ```
@@ -258,7 +258,7 @@ open Vaughan.SpeechToMusic
 |> parseChord
 |> createChord
 |> chordToGuitarClosedChord SixthString
-|> drawGuitarChordTab
+|> tabify
 ```
 Output:
 ```
