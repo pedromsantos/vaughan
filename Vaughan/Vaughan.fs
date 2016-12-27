@@ -694,13 +694,13 @@ namespace Vaughan
             @ (guitarChord.Frets |> List.map (fun fret -> drawFret fret guitarChord) |> List.rev)
             @ (drawTabLowerStrings guitarChord)
 
-        let private tabifyChordAlone guitarChord = 
+        let private tabifyIndividualChord guitarChord = 
             seq { for i in 0 .. 5 -> startTab.[i] + (tabifyChord guitarChord).[i] + endTab.[i] }
             |> Seq.toList
         
         let tabify guitarChord =
             sprintf "  %s\r\n" (name guitarChord.Chord) 
-            + (tabifyChordAlone guitarChord |> List.fold (+) "")
+            + (tabifyIndividualChord guitarChord |> List.fold (+) "")
             
     module SpeechToMusic =
         open FParsec
