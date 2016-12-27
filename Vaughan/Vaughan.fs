@@ -678,10 +678,11 @@ namespace Vaughan
         open Notes
         open Chords
 
-        type ChordIntent = { Root: Note; Quality:Quality; }
-        type UserState = unit
-        type Parser<'t> = Parser<'t, UserState>
+        type private UserState = unit
+        type private Parser<'t> = Parser<'t, UserState>
 
+        type ChordIntent = { Root: Note; Quality:Quality; }
+        
         let private skip parser skiped = parser .>> skiped
 
         let private skipSpaces parser = skip parser spaces
