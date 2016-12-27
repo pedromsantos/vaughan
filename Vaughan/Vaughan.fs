@@ -625,12 +625,6 @@ namespace Vaughan
         open Chords
         open Guitar
 
-        let private doubleDigitFret guitarChord = 
-            guitarChord.Frets |> List.exists (fun f -> f.Fret > 9)
-
-        let private padDashes guitarChord = 
-            if doubleDigitFret guitarChord then "----" else "---"
-
         let private startTab = 
                     [
                         "E|-";
@@ -661,25 +655,33 @@ namespace Vaughan
                         "-|\r\n"
                     ]
 
+        let private doubleDigitFret guitarChord = 
+            guitarChord.Frets |> List.exists (fun f -> f.Fret > 9)
+
+        let private dashes guitarChord = 
+            if doubleDigitFret guitarChord then "----" else "---"
+
         let private tabifyMutedHigherStrings guitarChord =
-            let dashes = padDashes guitarChord
-            match (guitarChord.Frets |> List.last).GuitarString with
-            | SecondString -> [dashes]
-            | ThirdString -> [dashes; dashes]
-            | FourthString -> [dashes; dashes; dashes]
-            | _ -> []
+            let mutedStrings = 
+                match (guitarChord.Frets |> List.last).GuitarString with
+                | SecondString -> 1
+                | ThirdString -> 2
+                | FourthString -> 3
+                | _ -> 0
+            List.replicate mutedStrings (dashes guitarChord)
 
         let private tabifyMutedLowerStrings guitarChord =
-            let dashes = padDashes guitarChord
-            match (guitarChord.Frets |> List.head).GuitarString with
-            | FifthString -> [dashes]
-            | FourthString  -> [dashes; dashes]
-            | ThirdString  -> [dashes; dashes; dashes]
-            | _ -> []
+            let mutedStrings = 
+                match (guitarChord.Frets |> List.head).GuitarString with
+                | FifthString -> 1
+                | FourthString  -> 2
+                | ThirdString  -> 3
+                | _ -> 0
+            List.replicate mutedStrings (dashes guitarChord)
 
         let private tabifyFret fret guitarChord =
             if fret.Fret = -1 then
-                sprintf "%s" (padDashes guitarChord)
+                sprintf "%s" (dashes guitarChord)
             else
                 sprintf "-%i-" fret.Fret
 
