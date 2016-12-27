@@ -625,12 +625,6 @@ namespace Vaughan
         open Chords
         open Guitar
 
-        let private guitarStringOpenNote guitarString =
-            (guitarStringAttributes guitarString).OpenStringNote
-
-        let private openStringNoteName fret = 
-            fret.GuitarString |> guitarStringOpenNote |> noteName
-
         let private doubleDigitFret guitarChord = 
             guitarChord.Frets |> List.exists (fun f -> f.Fret > 9)
 
