@@ -661,7 +661,7 @@ namespace Vaughan
                         "-|\r\n"
                     ]
 
-        let private drawTabHigherStrings guitarChord =
+        let private tabifyMutedHigherStrings guitarChord =
             let dashes = padDashes guitarChord
             match (guitarChord.Frets |> List.last).GuitarString with
             | SecondString -> [dashes]
@@ -669,7 +669,7 @@ namespace Vaughan
             | FourthString -> [dashes; dashes; dashes]
             | _ -> []
 
-        let private drawTabLowerStrings guitarChord =
+        let private tabifyMutedLowerStrings guitarChord =
             let dashes = padDashes guitarChord
             match (guitarChord.Frets |> List.head).GuitarString with
             | FifthString -> [dashes]
@@ -677,16 +677,19 @@ namespace Vaughan
             | ThirdString  -> [dashes; dashes; dashes]
             | _ -> []
 
-        let private drawFret fret guitarChord =
+        let private tabifyFret fret guitarChord =
             if fret.Fret = -1 then
                 sprintf "%s" (padDashes guitarChord)
             else
                 sprintf "-%i-" fret.Fret
 
+        let private tabifyFrets guitarChord =
+            guitarChord.Frets |> List.map (fun fret -> tabifyFret fret guitarChord) |> List.rev
+
         let private tabifyChord guitarChord = 
-            (drawTabHigherStrings guitarChord) 
-            @ (guitarChord.Frets |> List.map (fun fret -> drawFret fret guitarChord) |> List.rev)
-            @ (drawTabLowerStrings guitarChord)
+            (tabifyMutedHigherStrings guitarChord) 
+            @ (tabifyFrets guitarChord)
+            @ (tabifyMutedLowerStrings guitarChord)
 
         let private tabifyIndividualChord guitarChord = 
             let tabifiedChord = tabifyChord guitarChord
