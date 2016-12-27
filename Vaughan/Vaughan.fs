@@ -637,41 +637,70 @@ namespace Vaughan
         let private padDashes guitarChord = 
             if doubleDigitFret guitarChord then "----" else "---"
 
-        let private drawTabHigherString guitarChord =
+        let private startTab = 
+                    [
+                        "E|-";
+                        "B|-";
+                        "G|-";
+                        "D|-";
+                        "A|-";
+                        "E|-"
+                    ]
+
+        let private bar = 
+                    [
+                        "-|-";
+                        "-|-";
+                        "-|-";
+                        "-|-";
+                        "-|-";
+                        "-|-"
+                    ]
+
+        let private endTab = 
+                    [
+                        "-|\r\n";
+                        "-|\r\n";
+                        "-|\r\n";
+                        "-|\r\n";
+                        "-|\r\n";
+                        "-|\r\n"
+                    ]
+
+        let private drawTabHigherStrings guitarChord =
             let dashes = padDashes guitarChord
             match (guitarChord.Frets |> List.last).GuitarString with
-            | SecondString -> "E|" + dashes + "|\r\n"
-            | ThirdString -> "E|" + dashes + "|\r\n" + "B|" + dashes + "|\r\n"
-            | FourthString -> "E|" + dashes + "|\r\n" + "B|" + dashes + "|\r\n" + "G|" + dashes + "|\r\n"
-            | _ -> ""
+            | SecondString -> [dashes]
+            | ThirdString -> [dashes; dashes]
+            | FourthString -> [dashes; dashes; dashes]
+            | _ -> []
 
-        let private drawTabLowerString guitarChord =
+        let private drawTabLowerStrings guitarChord =
             let dashes = padDashes guitarChord
             match (guitarChord.Frets |> List.head).GuitarString with
-            | FifthString -> "E|" + dashes + "|\r\n"
-            | FourthString  -> "A|" + dashes + "|\r\n" + "E|" + dashes + "|\r\n"
-            | ThirdString  -> "D|" + dashes + "|\r\n" + "A|" + dashes + "|\r\n" + "E|" + dashes + "|\r\n"
-            | _ -> ""
+            | FifthString -> [dashes]
+            | FourthString  -> [dashes; dashes]
+            | ThirdString  -> [dashes; dashes; dashes]
+            | _ -> []
 
-        let private drawTabForGuitarChord guitarChord = 
-            guitarChord.Frets
-            |> List.map (fun fret ->
-                if fret.Fret = -1 then
-                    let dashes = padDashes guitarChord
-                    sprintf "%s|%s|\r\n" (openStringNoteName fret) dashes
-                else
-                    sprintf "%s|-%i-|\r\n" (openStringNoteName fret) fret.Fret)
-            |> List.rev
-            |> List.fold (+) ""
+        let private drawFret fret guitarChord =
+            if fret.Fret = -1 then
+                sprintf "%s" (padDashes guitarChord)
+            else
+                sprintf "-%i-" fret.Fret
 
+        let private tabifyChord guitarChord = 
+            (drawTabHigherStrings guitarChord) 
+            @ (guitarChord.Frets |> List.map (fun fret -> drawFret fret guitarChord) |> List.rev)
+            @ (drawTabLowerStrings guitarChord)
+
+        let private tabifyChordAlone guitarChord = 
+            seq { for i in 0 .. 5 -> startTab.[i] + (tabifyChord guitarChord).[i] + endTab.[i] }
+            |> Seq.toList
+        
         let tabify guitarChord =
-            sprintf "  %s\r\n" (name guitarChord.Chord)
-            +
-            drawTabHigherString guitarChord
-            +
-            drawTabForGuitarChord guitarChord
-            +
-            drawTabLowerString guitarChord
+            sprintf "  %s\r\n" (name guitarChord.Chord) 
+            + (tabifyChordAlone guitarChord |> List.fold (+) "")
             
     module SpeechToMusic =
         open FParsec
@@ -682,7 +711,7 @@ namespace Vaughan
         type private Parser<'t> = Parser<'t, UserState>
 
         type ChordIntent = { Root: Note; Quality:Quality; }
-        
+
         let private skip parser skiped = parser .>> skiped
 
         let private skipSpaces parser = skip parser spaces
