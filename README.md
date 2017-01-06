@@ -241,6 +241,29 @@ A|-3-|
 E|---|
 ```
 
+```fsharp
+let cIonian = createScale Ionian C
+let cMaj = seventhsHarmonizer ScaleDgrees.I cIonian
+let dMin = seventhsHarmonizer ScaleDgrees.II cIonian
+let eMin = seventhsHarmonizer ScaleDgrees.III cIonian
+let fMaj = seventhsHarmonizer ScaleDgrees.IV cIonian
+
+let guitarChords =  [cMaj; dMin; eMin; fMaj] 
+                    |> List.map toDrop2 
+                    |> List.map (chordToGuitarClosedChord FifthString)
+
+tabifyAll guitarChords
+```
+Output:
+```
+E|----------------------|
+B|----5---6---8---10----|
+G|----4---5---7---9-----|
+D|----5---7---9---10----|
+A|----3---5---7---8-----|
+E|----------------------|
+```
+
 ### Guitar chord tab drawing from textual chord
 
 ```fsharp
