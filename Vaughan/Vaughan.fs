@@ -698,12 +698,13 @@ namespace Vaughan
             @ (tabifyMutedLowerStrings guitarChord)
 
         let private groupByString (tabifiedChords: string list list) =
-            [0 .. 5] |> List.map (fun index -> tabifiedChords |> List.map (fun l -> l.[index]))
+            [0 .. 5] 
+            |> List.map (fun index -> tabifiedChords |> List.map (fun l -> l.[index]))
         
         let private tabifyStrings guitarStrings =
             guitarStrings 
-            |> List.map (fun guitarString -> guitarString |> List.fold (fun acc fret -> acc + fret + "---" ) "---")
-            |> List.mapi (fun index guitarString -> startTab.[index] + guitarString + endTab.[index])
+            |> List.map (fun tabifiedFrets -> tabifiedFrets |> List.fold (fun acc fret -> acc + fret + "---" ) "---")
+            |> List.mapi (fun index tabifiedFrets -> startTab.[index] + tabifiedFrets + endTab.[index])
         
         let tabifyChordNames guitarChords = 
             let chordNameSeparator = "   "
