@@ -844,8 +844,9 @@ namespace VaughanTests
             let fMaj = seventhsHarmonizer ScaleDgrees.IV cIonian
 
             let guitarChords =  
-                List.map (toDrop2 
-                >> (chordToGuitarClosedChord FifthString)) [cMaj; dMin; eMin; fMaj]
+                [cMaj; dMin; eMin; fMaj] 
+                |> List.map (
+                    toDrop2 >> (chordToGuitarClosedChord FifthString))
             
             test <@ tabifyAll guitarChords = 
                                 "      CMaj7   DMin7   EMin7   FMaj7   \r\n" +
