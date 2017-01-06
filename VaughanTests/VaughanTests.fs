@@ -838,13 +838,13 @@ namespace VaughanTests
         [<Test>]
         let ``Should tabify multiple chords``() =
             let cIonian = createScale Ionian C
-            let cMaj = seventhsHarmonizer ScaleDgrees.I cIonian
-            let dMin = seventhsHarmonizer ScaleDgrees.II cIonian
-            let eMin = seventhsHarmonizer ScaleDgrees.III cIonian
-            let fMaj = seventhsHarmonizer ScaleDgrees.IV cIonian
+            let cMaj7 = seventhsHarmonizer ScaleDgrees.I cIonian
+            let dMin7 = seventhsHarmonizer ScaleDgrees.II cIonian
+            let eMin7 = seventhsHarmonizer ScaleDgrees.III cIonian
+            let fMaj7 = seventhsHarmonizer ScaleDgrees.IV cIonian
 
             let guitarChords =  
-                [cMaj; dMin; eMin; fMaj] 
+                [cMaj7; dMin7; eMin7; fMaj7] 
                 |> List.map (
                     toDrop2 >> (chordToGuitarClosedChord FifthString))
             

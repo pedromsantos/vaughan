@@ -654,8 +654,6 @@ namespace Vaughan
                         "-|\r\n";
                         "-|\r\n"
                     ]
-    
-        let chordNameSeparator = "   "
 
         let private doubleDigitFret guitarChord = 
             guitarChord.Frets |> List.exists (fun f -> f.Fret > 9)
@@ -707,13 +705,17 @@ namespace Vaughan
             |> List.mapi (fun index guitarString -> startTab.[index] + guitarString + endTab.[index])
         
         let tabifyChordNames chordNames = 
-            [chordNameSeparator] @ chordNames @ [chordNameSeparator + "\r\n"]
+            let chordNameSeparator = "   "
+            let separatedChordNames = 
+                chordNames 
+                |> List.map (fun chordName -> chordNameSeparator + chordName) 
+
+            [chordNameSeparator] @ separatedChordNames @ [chordNameSeparator + "\r\n"]
             
         let tabifyAll guitarChords = 
             let tabifiedChordNames = 
                         guitarChords
-                        |> List.map (fun guitarChord -> 
-                            chordNameSeparator + (name guitarChord.Chord)) 
+                        |> List.map (fun guitarChord -> name guitarChord.Chord) 
                         |> tabifyChordNames
                             
             let tabifiedChords = 
