@@ -705,14 +705,14 @@ namespace Vaughan
             |> List.map (fun guitarString -> guitarString |> List.fold (fun acc fret -> acc + fret + "---" ) "---")
             |> List.mapi (fun index guitarString -> startTab.[index] + guitarString + endTab.[index])
         
-        let tabifyAll (guitarChords:GuitarChord list) = 
+        let tabifyAll guitarChords = 
             guitarChords 
             |> List.map tabifyChord
             |> groupByString
             |> tabifyStrings
             |> List.fold (+) ""
         
-        let tabify (guitarChord:GuitarChord) =
+        let tabify guitarChord =
             sprintf "  %s\r\n%s" (name guitarChord.Chord) (tabifyAll [guitarChord])
             
     module SpeechToMusic =
