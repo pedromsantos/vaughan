@@ -725,8 +725,8 @@ namespace Vaughan
             (tabifiedChordNames @ tabifiedChords) |> List.fold (+) ""
         
         let tabify guitarChord =
-            sprintf "  %s%s\r\n" (name guitarChord.Chord) (tabifyAll [guitarChord])
-        
+            tabifyAll [guitarChord]
+
     module SpeechToMusic =
         open FParsec
         open Notes
