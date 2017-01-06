@@ -711,7 +711,7 @@ namespace Vaughan
                 guitarChords
                 |> List.map (fun guitarChord -> chordNameSeparator + name guitarChord.Chord)  
 
-            [chordNameSeparator] @ separatedChordNames @ [chordNameSeparator; System.Environment.NewLine;]
+            [chordNameSeparator] @ separatedChordNames @ [chordNameSeparator; Environment.NewLine;]
             
         let tabifyAll guitarChords = 
             let tabifiedChordNames = guitarChords |> tabifyChordNames
