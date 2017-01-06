@@ -738,6 +738,7 @@ namespace VaughanTests
                     ]@>
 
     module GuitarTabTests =
+        open System
         open NUnit.Framework
         open Swensen.Unquote
         open Vaughan.Notes
@@ -757,13 +758,13 @@ namespace VaughanTests
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> toDrop2
                 |> chordToGuitarClosedChord FifthString)
-            test <@ guitarChord |> tabify = "      CMaj7   \r\n"+
-                                            "E|-------------|\r\n"+
-                                            "B|----5--------|\r\n"+
-                                            "G|----4--------|\r\n"+
-                                            "D|----5--------|\r\n"+
-                                            "A|----3--------|\r\n"+
-                                            "E|-------------|\r\n"@>
+            test <@ guitarChord |> tabify = "      CMaj7   " + Environment.NewLine+
+                                            "E|-------------|" + Environment.NewLine+
+                                            "B|----5--------|" + Environment.NewLine+
+                                            "G|----4--------|" + Environment.NewLine+
+                                            "D|----5--------|" + Environment.NewLine+
+                                            "A|----3--------|" + Environment.NewLine+
+                                            "E|-------------|" + Environment.NewLine@>
 
         [<Test>]
         let ``Should draw A major 7 to guitar fretboard on fifth string closed ``() =
@@ -772,13 +773,13 @@ namespace VaughanTests
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> toDrop2
                 |> chordToGuitarClosedChord FifthString)
-            test <@ guitarChord |> tabify = "      AMaj7   \r\n"+
-                                            "E|-------------|\r\n"+
-                                            "B|----14-------|\r\n"+
-                                            "G|----13-------|\r\n"+
-                                            "D|----14-------|\r\n"+
-                                            "A|----12-------|\r\n"+
-                                            "E|-------------|\r\n"@>
+            test <@ guitarChord |> tabify = "      AMaj7   " + Environment.NewLine+
+                                            "E|-------------|" + Environment.NewLine+
+                                            "B|----14-------|" + Environment.NewLine+
+                                            "G|----13-------|" + Environment.NewLine+
+                                            "D|----14-------|" + Environment.NewLine+
+                                            "A|----12-------|" + Environment.NewLine+
+                                            "E|-------------|" + Environment.NewLine@>
 
         [<Test>]
         let ``Should draw F major 7 to guitar fretboard on fourth string closed``() =
@@ -786,24 +787,24 @@ namespace VaughanTests
                 (createScale Ionian F
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> chordToGuitarClosedChord FourthString)
-            test <@ guitarChord |> tabify = "      FMaj7   \r\n"+
-                                            "E|----12-------|\r\n"+
-                                            "B|----13-------|\r\n"+
-                                            "G|----14-------|\r\n"+
-                                            "D|----15-------|\r\n"+
-                                            "A|-------------|\r\n"+
-                                            "E|-------------|\r\n"@>
+            test <@ guitarChord |> tabify = "      FMaj7   " + Environment.NewLine+
+                                            "E|----12-------|" + Environment.NewLine+
+                                            "B|----13-------|" + Environment.NewLine+
+                                            "G|----14-------|" + Environment.NewLine+
+                                            "D|----15-------|" + Environment.NewLine+
+                                            "A|-------------|" + Environment.NewLine+
+                                            "E|-------------|" + Environment.NewLine@>
 
         [<Test>]
         let ``Should draw c major to guitar fretboard on sixth string``() =
             let guitarChord = chordToGuitarClosedChord SixthString cMaj
-            test <@ guitarChord |> tabify = "      CMaj   \r\n"+
-                                            "E|------------|\r\n"+
-                                            "B|------------|\r\n"+
-                                            "G|------------|\r\n"+
-                                            "D|----5-------|\r\n"+
-                                            "A|----7-------|\r\n"+
-                                            "E|----8-------|\r\n"@>
+            test <@ guitarChord |> tabify = "      CMaj   " + Environment.NewLine+
+                                            "E|------------|" + Environment.NewLine+
+                                            "B|------------|" + Environment.NewLine+
+                                            "G|------------|" + Environment.NewLine+
+                                            "D|----5-------|" + Environment.NewLine+
+                                            "A|----7-------|" + Environment.NewLine+
+                                            "E|----8-------|" + Environment.NewLine@>
 
         [<Test>]
         let ``Should draw C major 7 drop 3 to guitar fretboard on sixth string closed``() =
@@ -812,13 +813,13 @@ namespace VaughanTests
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> toDrop3
                 |> chordToGuitarClosedChord SixthString)
-            test <@ guitarChord |> tabify = "      CMaj7   \r\n"+
-                                            "E|-------------|\r\n"+
-                                            "B|----8--------|\r\n"+
-                                            "G|----9--------|\r\n"+
-                                            "D|----9--------|\r\n"+
-                                            "A|-------------|\r\n"+
-                                            "E|----8--------|\r\n"@>
+            test <@ guitarChord |> tabify = "      CMaj7   " + Environment.NewLine+
+                                            "E|-------------|" + Environment.NewLine+
+                                            "B|----8--------|" + Environment.NewLine+
+                                            "G|----9--------|" + Environment.NewLine+
+                                            "D|----9--------|" + Environment.NewLine+
+                                            "A|-------------|" + Environment.NewLine+
+                                            "E|----8--------|" + Environment.NewLine@>
 
         [<Test>]        
         let ``Should draw C major 7 drop 3 to guitar fretboard on fifth string closed``() =
@@ -827,13 +828,13 @@ namespace VaughanTests
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> toDrop3
                 |> chordToGuitarClosedChord FifthString)
-            test <@ guitarChord |> tabify = "      CMaj7   \r\n"+
-                                            "E|----3--------|\r\n"+
-                                            "B|----5--------|\r\n"+
-                                            "G|----4--------|\r\n"+
-                                            "D|-------------|\r\n"+
-                                            "A|----3--------|\r\n"+
-                                            "E|-------------|\r\n"@>
+            test <@ guitarChord |> tabify = "      CMaj7   " + Environment.NewLine+
+                                            "E|----3--------|" + Environment.NewLine+
+                                            "B|----5--------|" + Environment.NewLine+
+                                            "G|----4--------|" + Environment.NewLine+
+                                            "D|-------------|" + Environment.NewLine+
+                                            "A|----3--------|" + Environment.NewLine+
+                                            "E|-------------|" + Environment.NewLine@>
                                                         
         [<Test>]
         let ``Should tabify multiple chords``() =
@@ -849,15 +850,16 @@ namespace VaughanTests
                     toDrop2 >> (chordToGuitarClosedChord FifthString))
             
             test <@ tabifyAll guitarChords = 
-                                "      CMaj7   DMin7   EMin7   FMaj7   \r\n" +
-                                "E|-------------------------------------|\r\n" +
-                                "B|----5-------6-------8-------10-------|\r\n" +
-                                "G|----4-------5-------7-------9--------|\r\n" +
-                                "D|----5-------7-------9-------10-------|\r\n" +
-                                "A|----3-------5-------7-------8--------|\r\n" +
-                                "E|-------------------------------------|\r\n"@> 
+                                "      CMaj7   DMin7   EMin7   FMaj7   " + Environment.NewLine +
+                                "E|-------------------------------------|" + Environment.NewLine +
+                                "B|----5-------6-------8-------10-------|" + Environment.NewLine +
+                                "G|----4-------5-------7-------9--------|" + Environment.NewLine +
+                                "D|----5-------7-------9-------10-------|" + Environment.NewLine +
+                                "A|----3-------5-------7-------8--------|" + Environment.NewLine +
+                                "E|-------------------------------------|" + Environment.NewLine@> 
 
     module SpeechToMusicTests =
+            open System
             open FParsec
             open NUnit.Framework
             open Swensen.Unquote
@@ -922,10 +924,10 @@ namespace VaughanTests
                         |> parseChord
                         |> createChord
                         |> chordToGuitarClosedChord SixthString
-                        |> tabify = "      AMaj   \r\n"+
-                                    "E|------------|\r\n" +
-                                    "B|------------|\r\n" +
-                                    "G|------------|\r\n" + 
-                                    "D|----2-------|\r\n" + 
-                                    "A|----4-------|\r\n" + 
-                                    "E|----5-------|\r\n"@>
+                        |> tabify = "      AMaj   " + Environment.NewLine+
+                                    "E|------------|" + Environment.NewLine +
+                                    "B|------------|" + Environment.NewLine +
+                                    "G|------------|" + Environment.NewLine + 
+                                    "D|----2-------|" + Environment.NewLine + 
+                                    "A|----4-------|" + Environment.NewLine + 
+                                    "E|----5-------|" + Environment.NewLine@>

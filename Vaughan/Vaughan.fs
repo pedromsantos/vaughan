@@ -621,6 +621,7 @@ namespace Vaughan
             {closedChord with Frets = unstretch closedChord.Frets}
 
     module GuitarTab =
+        open System
         open Notes
         open Chords
         open Guitar
@@ -647,12 +648,12 @@ namespace Vaughan
 
         let private endTab = 
                     [
-                        "-|\r\n";
-                        "-|\r\n";
-                        "-|\r\n";
-                        "-|\r\n";
-                        "-|\r\n";
-                        "-|\r\n"
+                        "-|" + Environment.NewLine;
+                        "-|" + Environment.NewLine;
+                        "-|" + Environment.NewLine;
+                        "-|" + Environment.NewLine;
+                        "-|" + Environment.NewLine;
+                        "-|" + Environment.NewLine;
                     ]
 
         let private doubleDigitFret guitarChord = 
@@ -710,7 +711,7 @@ namespace Vaughan
                 guitarChords
                 |> List.map (fun guitarChord -> chordNameSeparator + name guitarChord.Chord)  
 
-            [chordNameSeparator] @ separatedChordNames @ [chordNameSeparator + "\r\n"]
+            [chordNameSeparator] @ separatedChordNames @ [chordNameSeparator; System.Environment.NewLine;]
             
         let tabifyAll guitarChords = 
             let tabifiedChordNames = guitarChords |> tabifyChordNames
