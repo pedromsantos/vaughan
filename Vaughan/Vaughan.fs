@@ -704,20 +704,16 @@ namespace Vaughan
             |> List.map (fun guitarString -> guitarString |> List.fold (fun acc fret -> acc + fret + "---" ) "---")
             |> List.mapi (fun index guitarString -> startTab.[index] + guitarString + endTab.[index])
         
-        let tabifyChordNames chordNames = 
+        let tabifyChordNames guitarChords = 
             let chordNameSeparator = "   "
             let separatedChordNames = 
-                chordNames 
-                |> List.map (fun chordName -> chordNameSeparator + chordName) 
+                guitarChords
+                |> List.map (fun guitarChord -> chordNameSeparator + name guitarChord.Chord)  
 
             [chordNameSeparator] @ separatedChordNames @ [chordNameSeparator + "\r\n"]
             
         let tabifyAll guitarChords = 
-            let tabifiedChordNames = 
-                        guitarChords
-                        |> List.map (fun guitarChord -> name guitarChord.Chord) 
-                        |> tabifyChordNames
-                            
+            let tabifiedChordNames = guitarChords |> tabifyChordNames
             let tabifiedChords = 
                         guitarChords 
                         |> List.map tabifyChord
