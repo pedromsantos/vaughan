@@ -626,14 +626,14 @@ namespace Vaughan
         open Guitar
 
         let private startTab = 
-                    [
-                        "E|-";
-                        "B|-";
-                        "G|-";
-                        "D|-";
-                        "A|-";
-                        "E|-"
-                    ]
+                [
+                    "E|-";
+                    "B|-";
+                    "G|-";
+                    "D|-";
+                    "A|-";
+                    "E|-"
+                ]
 
         let private bar = 
                     [
@@ -654,15 +654,17 @@ namespace Vaughan
                         "-|\r\n";
                         "-|\r\n"
                     ]
+    
+        let chordNameSeparator = "   "
 
         let private doubleDigitFret guitarChord = 
             guitarChord.Frets |> List.exists (fun f -> f.Fret > 9)
 
         let private dashes guitarChord = 
-            if doubleDigitFret guitarChord then "--" else "-"
+            String.replicate (name guitarChord.Chord).Length "-"
             
         let private paddingDash guitarChord fret = 
-            if doubleDigitFret guitarChord && fret < 10 then "-" else ""
+            String.replicate ((name guitarChord.Chord).Length - (string(fret)).Length) "-"
 
         let private tabifyMutedHigherStrings guitarChord =
             let mutedStrings = 
@@ -697,24 +699,34 @@ namespace Vaughan
             @ (tabifyMutedLowerStrings guitarChord)
 
         let private groupByString (tabifiedChords: string list list) =
-            [0 .. 5]
-            |> List.map (fun index -> tabifiedChords |> List.map (fun l -> l.[index]))
+            [0 .. 5] |> List.map (fun index -> tabifiedChords |> List.map (fun l -> l.[index]))
         
         let private tabifyStrings guitarStrings =
             guitarStrings 
             |> List.map (fun guitarString -> guitarString |> List.fold (fun acc fret -> acc + fret + "---" ) "---")
             |> List.mapi (fun index guitarString -> startTab.[index] + guitarString + endTab.[index])
         
+        let tabifyChordNames chordNames = 
+            [chordNameSeparator] @ chordNames @ [chordNameSeparator + "\r\n"]
+            
         let tabifyAll guitarChords = 
-            guitarChords 
-            |> List.map tabifyChord
-            |> groupByString
-            |> tabifyStrings
-            |> List.fold (+) ""
+            let tabifiedChordNames = 
+                            guitarChords
+                            |> List.map (fun guitarChord -> name guitarChord.Chord)
+                            |> List.map (fun chordName -> chordNameSeparator + chordName)
+                            |> tabifyChordNames
+                            
+            let tabifiedChords = 
+                        guitarChords 
+                        |> List.map tabifyChord
+                        |> groupByString
+                        |> tabifyStrings
+                
+            (tabifiedChordNames @ tabifiedChords) |> List.fold (+) ""
         
         let tabify guitarChord =
-            sprintf "  %s\r\n%s" (name guitarChord.Chord) (tabifyAll [guitarChord])
-            
+            sprintf "  %s%s\r\n" (name guitarChord.Chord) (tabifyAll [guitarChord])
+        
     module SpeechToMusic =
         open FParsec
         open Notes
