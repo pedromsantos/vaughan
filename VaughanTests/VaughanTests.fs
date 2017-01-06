@@ -820,7 +820,8 @@ namespace VaughanTests
                                             "A|-------------|\r\n"+
                                             "E|----8--------|\r\n"@>
 
-        [<Test>]        let ``Should draw C major 7 drop 3 to guitar fretboard on fifth string closed``() =
+        [<Test>]        
+        let ``Should draw C major 7 drop 3 to guitar fretboard on fifth string closed``() =
             let guitarChord = 
                 (cIonian
                 |> seventhsHarmonizer ScaleDgrees.I
@@ -842,9 +843,9 @@ namespace VaughanTests
             let eMin = seventhsHarmonizer ScaleDgrees.III cIonian
             let fMaj = seventhsHarmonizer ScaleDgrees.IV cIonian
 
-            let guitarChords =  [cMaj; dMin; eMin; fMaj] 
-                                |> List.map toDrop2 
-                                |> List.map (chordToGuitarClosedChord FifthString)
+            let guitarChords =  
+                List.map (toDrop2 
+                >> (chordToGuitarClosedChord FifthString)) [cMaj; dMin; eMin; fMaj]
             
             test <@ tabifyAll guitarChords = 
                                 "      CMaj7   DMin7   EMin7   FMaj7   \r\n" +
