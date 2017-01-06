@@ -656,13 +656,10 @@ namespace Vaughan
                         "-|" + Environment.NewLine;
                     ]
 
-        let private doubleDigitFret guitarChord = 
-            guitarChord.Frets |> List.exists (fun f -> f.Fret > 9)
-
-        let private dashes guitarChord = 
+        let private mutedStringDashes guitarChord = 
             String.replicate (name guitarChord.Chord).Length "-"
             
-        let private paddingDash guitarChord fret = 
+        let private fretedStringDashes guitarChord fret = 
             String.replicate ((name guitarChord.Chord).Length - (string(fret)).Length) "-"
 
         let private tabifyMutedHigherStrings guitarChord =
@@ -672,7 +669,7 @@ namespace Vaughan
                 | ThirdString -> 2
                 | FourthString -> 3
                 | _ -> 0
-            List.replicate mutedStrings (dashes guitarChord)
+            List.replicate mutedStrings (mutedStringDashes guitarChord)
 
         let private tabifyMutedLowerStrings guitarChord =
             let mutedStrings = 
@@ -681,13 +678,13 @@ namespace Vaughan
                 | FourthString  -> 2
                 | ThirdString  -> 3
                 | _ -> 0
-            List.replicate mutedStrings (dashes guitarChord)
+            List.replicate mutedStrings (mutedStringDashes guitarChord)
 
         let private tabifyFret fret guitarChord =
             if fret.Fret = -1 then
-                sprintf "%s" (dashes guitarChord)
+                sprintf "%s" (mutedStringDashes guitarChord)
             else
-                sprintf "%i%s" fret.Fret (paddingDash guitarChord fret.Fret)
+                sprintf "%i%s" fret.Fret (fretedStringDashes guitarChord fret.Fret)
 
         let private tabifyFrets guitarChord =
             guitarChord.Frets |> List.map (fun fret -> tabifyFret fret guitarChord) |> List.rev
