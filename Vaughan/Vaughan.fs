@@ -659,7 +659,10 @@ namespace Vaughan
             guitarChord.Frets |> List.exists (fun f -> f.Fret > 9)
 
         let private dashes guitarChord = 
-            if doubleDigitFret guitarChord then "----" else "---"
+            if doubleDigitFret guitarChord then "--" else "-"
+            
+        let private paddingDash guitarChord fret = 
+            if doubleDigitFret guitarChord && fret < 10 then "-" else ""
 
         let private tabifyMutedHigherStrings guitarChord =
             let mutedStrings = 
@@ -683,7 +686,7 @@ namespace Vaughan
             if fret.Fret = -1 then
                 sprintf "%s" (dashes guitarChord)
             else
-                sprintf "-%i-" fret.Fret
+                sprintf "%i%s" fret.Fret (paddingDash guitarChord fret.Fret)
 
         let private tabifyFrets guitarChord =
             guitarChord.Frets |> List.map (fun fret -> tabifyFret fret guitarChord) |> List.rev
@@ -693,14 +696,24 @@ namespace Vaughan
             @ (tabifyFrets guitarChord)
             @ (tabifyMutedLowerStrings guitarChord)
 
-        let private tabifyIndividualChord guitarChord = 
-            let tabifiedChord = tabifyChord guitarChord
-            seq { for i in 0 .. 5 -> startTab.[i] + tabifiedChord.[i] + endTab.[i] }
-            |> Seq.toList
+        let private groupByString (tabifiedChords: string list list) =
+            [0 .. 5]
+            |> List.map (fun index -> tabifiedChords |> List.map (fun l -> l.[index]))
         
-        let tabify guitarChord =
-            sprintf "  %s\r\n" (name guitarChord.Chord) 
-            + (tabifyIndividualChord guitarChord |> List.fold (+) "")
+        let private tabifyStrings guitarStrings =
+            guitarStrings 
+            |> List.map (fun guitarString -> guitarString |> List.fold (fun acc fret -> acc + fret + "---" ) "---")
+            |> List.mapi (fun index guitarString -> startTab.[index] + guitarString + endTab.[index])
+        
+        let tabifyAll (guitarChords:GuitarChord list) = 
+            guitarChords 
+            |> List.map tabifyChord
+            |> groupByString
+            |> tabifyStrings
+            |> List.fold (+) ""
+        
+        let tabify (guitarChord:GuitarChord) =
+            sprintf "  %s\r\n%s" (name guitarChord.Chord) (tabifyAll [guitarChord])
             
     module SpeechToMusic =
         open FParsec

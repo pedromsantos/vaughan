@@ -758,12 +758,12 @@ namespace VaughanTests
                 |> toDrop2
                 |> chordToGuitarClosedChord FifthString)
             test <@ guitarChord |> tabify = "  CMaj7\r\n"+
-                                                        "E|-----|\r\n"+
-                                                        "B|--5--|\r\n"+
-                                                        "G|--4--|\r\n"+
-                                                        "D|--5--|\r\n"+
-                                                        "A|--3--|\r\n"+
-                                                        "E|-----|\r\n"@>
+                                                        "E|---------|\r\n"+
+                                                        "B|----5----|\r\n"+
+                                                        "G|----4----|\r\n"+
+                                                        "D|----5----|\r\n"+
+                                                        "A|----3----|\r\n"+
+                                                        "E|---------|\r\n"@>
 
         [<Test>]
         let ``Should draw A major 7 to guitar fretboard on fifth string closed ``() =
@@ -773,12 +773,12 @@ namespace VaughanTests
                 |> toDrop2
                 |> chordToGuitarClosedChord FifthString)
             test <@ guitarChord |> tabify = "  AMaj7\r\n"+
-                                                        "E|------|\r\n"+
-                                                        "B|--14--|\r\n"+
-                                                        "G|--13--|\r\n"+
-                                                        "D|--14--|\r\n"+
-                                                        "A|--12--|\r\n"+
-                                                        "E|------|\r\n"@>
+                                                        "E|----------|\r\n"+
+                                                        "B|----14----|\r\n"+
+                                                        "G|----13----|\r\n"+
+                                                        "D|----14----|\r\n"+
+                                                        "A|----12----|\r\n"+
+                                                        "E|----------|\r\n"@>
 
         [<Test>]
         let ``Should draw F major 7 to guitar fretboard on fourth string closed``() =
@@ -787,23 +787,23 @@ namespace VaughanTests
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> chordToGuitarClosedChord FourthString)
             test <@ guitarChord |> tabify = "  FMaj7\r\n"+
-                                                        "E|--12--|\r\n"+
-                                                        "B|--13--|\r\n"+
-                                                        "G|--14--|\r\n"+
-                                                        "D|--15--|\r\n"+
-                                                        "A|------|\r\n"+
-                                                        "E|------|\r\n"@>
+                                                        "E|----12----|\r\n"+
+                                                        "B|----13----|\r\n"+
+                                                        "G|----14----|\r\n"+
+                                                        "D|----15----|\r\n"+
+                                                        "A|----------|\r\n"+
+                                                        "E|----------|\r\n"@>
 
         [<Test>]
         let ``Should draw c major to guitar fretboard on sixth string``() =
             let guitarChord = chordToGuitarClosedChord SixthString cMaj
             test <@ guitarChord |> tabify = "  CMaj\r\n"+
-                                                        "E|-----|\r\n"+
-                                                        "B|-----|\r\n"+
-                                                        "G|-----|\r\n"+
-                                                        "D|--5--|\r\n"+
-                                                        "A|--7--|\r\n"+
-                                                        "E|--8--|\r\n"@>
+                                                        "E|---------|\r\n"+
+                                                        "B|---------|\r\n"+
+                                                        "G|---------|\r\n"+
+                                                        "D|----5----|\r\n"+
+                                                        "A|----7----|\r\n"+
+                                                        "E|----8----|\r\n"@>
 
         [<Test>]
         let ``Should draw C major 7 drop 3 to guitar fretboard on sixth string closed``() =
@@ -813,12 +813,12 @@ namespace VaughanTests
                 |> toDrop3
                 |> chordToGuitarClosedChord SixthString)
             test <@ guitarChord |> tabify = "  CMaj7\r\n"+
-                                                        "E|-----|\r\n"+
-                                                        "B|--8--|\r\n"+
-                                                        "G|--9--|\r\n"+
-                                                        "D|--9--|\r\n"+
-                                                        "A|-----|\r\n"+
-                                                        "E|--8--|\r\n"@>
+                                                        "E|---------|\r\n"+
+                                                        "B|----8----|\r\n"+
+                                                        "G|----9----|\r\n"+
+                                                        "D|----9----|\r\n"+
+                                                        "A|---------|\r\n"+
+                                                        "E|----8----|\r\n"@>
 
         [<Test>]
         let ``Should draw C major 7 drop 3 to guitar fretboard on fifth string closed``() =
@@ -828,12 +828,31 @@ namespace VaughanTests
                 |> toDrop3
                 |> chordToGuitarClosedChord FifthString)
             test <@ guitarChord |> tabify = "  CMaj7\r\n"+
-                                                        "E|--3--|\r\n"+
-                                                        "B|--5--|\r\n"+
-                                                        "G|--4--|\r\n"+
-                                                        "D|-----|\r\n"+
-                                                        "A|--3--|\r\n"+
-                                                        "E|-----|\r\n"@>
+                                                        "E|----3----|\r\n"+
+                                                        "B|----5----|\r\n"+
+                                                        "G|----4----|\r\n"+
+                                                        "D|---------|\r\n"+
+                                                        "A|----3----|\r\n"+
+                                                        "E|---------|\r\n"@>
+                                                        
+        [<Test>]
+        let ``Should tabify multiple chords``() =
+            let cIonian = createScale Ionian C
+            let cMaj = seventhsHarmonizer ScaleDgrees.I cIonian
+            let dMin = seventhsHarmonizer ScaleDgrees.II cIonian
+            let eMin = seventhsHarmonizer ScaleDgrees.III cIonian
+            let fMaj = seventhsHarmonizer ScaleDgrees.IV cIonian
+
+            let guitarChords =  [cMaj; dMin; eMin; fMaj] 
+                                |> List.map toDrop2 
+                                |> List.map (chordToGuitarClosedChord FifthString)
+            
+            test <@ tabifyAll guitarChords = "E|----------------------|\r\n"+
+                                                "B|----5---6---8---10----|\r\n"+
+                                                "G|----4---5---7---9-----|\r\n"+
+                                                "D|----5---7---9---10----|\r\n"+
+                                                "A|----3---5---7---8-----|\r\n"+
+                                                "E|----------------------|\r\n"@> 
 
     module SpeechToMusicTests =
             open FParsec
@@ -896,14 +915,14 @@ namespace VaughanTests
                 
             [<Test>]
             let ``Should tabify chord from text``() =
-                test <@ "C Major"
+                test <@ "A Major"
                         |> parseChord
                         |> createChord
                         |> chordToGuitarClosedChord SixthString
-                        |> tabify = "  CMaj\r\n"+
-                                    "E|-----|\r\n"+
-                                    "B|-----|\r\n"+
-                                    "G|-----|\r\n"+
-                                    "D|--5--|\r\n"+
-                                    "A|--7--|\r\n"+
-                                    "E|--8--|\r\n"@>
+                        |> tabify = "  AMaj\r\n"+
+                                    "E|---------|\r\n"+
+                                    "B|---------|\r\n"+
+                                    "G|---------|\r\n"+
+                                    "D|----2----|\r\n"+
+                                    "A|----4----|\r\n"+
+                                    "E|----5----|\r\n"@>
