@@ -4,7 +4,7 @@ cls
 .paket\paket.bootstrapper.exe
 if errorlevel 1 (
   mkdir .paket
-  powershell -command ./build.ps1
+  powershell -command ./paket.ps1
   .paket\paket.bootstrapper.exe
 )
 

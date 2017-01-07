@@ -658,7 +658,7 @@ namespace Vaughan
 
         let private mutedStringDashes guitarChord = 
             String.replicate (name guitarChord.Chord).Length "-"
-            
+
         let private fretedStringDashes guitarChord fret = 
             String.replicate ((name guitarChord.Chord).Length - (string(fret)).Length) "-"
 
