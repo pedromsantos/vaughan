@@ -249,8 +249,7 @@ let eMin = seventhsHarmonizer ScaleDgrees.III cIonian
 let fMaj = seventhsHarmonizer ScaleDgrees.IV cIonian
 
 let guitarChords =  [cMaj; dMin; eMin; fMaj] 
-                    |> List.map toDrop2 
-                    |> List.map (chordToGuitarClosedChord FifthString)
+                    |> List.map (toDrop2 >> (chordToGuitarClosedChord FifthString))
 
 tabifyAll guitarChords
 ```
