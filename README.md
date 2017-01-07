@@ -76,6 +76,7 @@ open Vaughan.Scales
 open Vaughan.Chords
 
 let cMaj7 = {notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh)]; chordType=Closed}
+let cMaj = chordFromRootAndFunction c Major
 ```
 
 | Example                                                     | Output                                            |
@@ -88,7 +89,6 @@ let cMaj7 = {notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh)]; chordType
 | bass cMaj7                                                  | C                                                 |
 | lead cMaj7                                                  | B                                                 |
 | name cMaj7                                                  | "CMaj7"                                           |
-| chordFromRootAndFunction c Major7                           | cMaj7                                             |
 | cMaj7.notes                                                 | [(C, Root); (E, Third); (G, Fifth); (B, Seventh)] |
 | (cMaj7 &#124;> invert).notes                                | [(E, Third); (G, Fifth); (B, Seventh); (C, Root)] |
 | (cMaj7 &#124;> invert &#124;> invert).notes                 | [(G, Fifth); (B, Seventh); (C, Root); (E, Third)] |
