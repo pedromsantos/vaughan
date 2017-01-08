@@ -2,7 +2,7 @@
 <package >
 	<metadata>
     <id>Vaughan</id>
-    <version>0.1.0</version>
+    <version>0.1.1</version>
     <title>Vaughan</title>
     <authors>Pedro Moreira Santos</authors>
     <owners>Pedro Moreira Santos</owners>
@@ -11,9 +11,9 @@
     <projectUrl>https://github.com/pedromsantos/vaughan</projectUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>F# music library</description>
-    <releaseNotes>Initial release</releaseNotes>
+    <releaseNotes>Add guitar tab generation features</releaseNotes>
     <language>en-us</language>
-    <copyright>Copyright 2016</copyright>
+    <copyright>Copyright 2017</copyright>
     <tags>F# Music Guitar</tags>
   </metadata>
   <files>
