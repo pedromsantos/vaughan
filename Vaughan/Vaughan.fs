@@ -379,11 +379,10 @@ namespace Vaughan
             chord.notes |> List.map (note >> noteName)
             
         let chordFromRootAndFunction root quality =
-            {notes=
-                [(root, Root)]@
-                (intervalsForQuality quality
-                |> List.map (fun i -> ((transpose root i), functionForInterval i)));
-             chordType = Closed}      
+            {
+                notes= [(root, Root)] @ (intervalsForQuality quality |> List.map (fun i -> ((transpose root i), functionForInterval i)));
+                chordType = Closed
+            }           
 
         let invertOpenOrClosed chord =
             {notes= rotateByOne chord.notes; chordType=chord.chordType}
