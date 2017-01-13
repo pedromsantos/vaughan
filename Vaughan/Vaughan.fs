@@ -709,12 +709,12 @@ namespace Vaughan
         let private shapifyFrets guitarChord =
             guitarChord.Frets |> List.map (fun fret -> shapifyFret fret guitarChord)
 
-        let tabifyChord guitarChord = 
+        let private tabifyChord guitarChord = 
             (tabifyMutedHigherStrings guitarChord) 
             @ (tabifyFrets guitarChord)
             @ (tabifyMutedLowerStrings guitarChord)
 
-        let shapifyChord guitarChord = 
+        let private shapifyChord guitarChord = 
             (shapifyMutedLowerStrings guitarChord)
             @ (shapifyFrets guitarChord)
             @ (shapifyMutedHigherStrings guitarChord)
@@ -728,7 +728,7 @@ namespace Vaughan
             |> List.map (fun tabifiedFrets -> tabifiedFrets |> List.fold (fun acc fret -> acc + fret + "---" ) "---")
             |> List.mapi (fun index tabifiedFrets -> startTab.[index] + tabifiedFrets + endTab.[index])
 
-        let tabifyChordNames guitarChords = 
+        let private tabifyChordNames guitarChords = 
             let chordNameSeparator = "   "
             let separatedChordNames = 
                 guitarChords
