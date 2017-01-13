@@ -705,7 +705,7 @@ namespace Vaughan
 
         let private tabifyFrets guitarChord =
             guitarChord.Frets |> List.map (fun fret -> tabifyFret fret guitarChord) |> List.rev
-            
+
         let private shapifyFrets guitarChord =
             guitarChord.Frets |> List.map (fun fret -> shapifyFret fret guitarChord)
 
@@ -713,7 +713,7 @@ namespace Vaughan
             (tabifyMutedHigherStrings guitarChord) 
             @ (tabifyFrets guitarChord)
             @ (tabifyMutedLowerStrings guitarChord)
-            
+
         let shapifyChord guitarChord = 
             (shapifyMutedLowerStrings guitarChord)
             @ (shapifyFrets guitarChord)
@@ -722,12 +722,12 @@ namespace Vaughan
         let private groupByString (tabifiedChords: string list list) =
             [0 .. 5] 
             |> List.map (fun index -> tabifiedChords |> List.map (fun l -> l.[index]))
-        
+
         let private tabifyStrings guitarStrings =
             guitarStrings 
             |> List.map (fun tabifiedFrets -> tabifiedFrets |> List.fold (fun acc fret -> acc + fret + "---" ) "---")
             |> List.mapi (fun index tabifiedFrets -> startTab.[index] + tabifiedFrets + endTab.[index])
-        
+
         let tabifyChordNames guitarChords = 
             let chordNameSeparator = "   "
             let separatedChordNames = 
@@ -735,7 +735,7 @@ namespace Vaughan
                 |> List.map (fun guitarChord -> chordNameSeparator + name guitarChord.Chord)  
 
             [chordNameSeparator] @ separatedChordNames @ [chordNameSeparator; Environment.NewLine;]
-            
+
         let tabifyAll guitarChords = 
             let tabifiedChordNames = guitarChords |> tabifyChordNames
             let tabifiedChords = 
@@ -745,10 +745,10 @@ namespace Vaughan
                         |> tabifyStrings
                 
             (tabifiedChordNames @ tabifiedChords) |> List.fold (+) ""
-        
+
         let tabify guitarChord =
             tabifyAll [guitarChord]
-            
+
         let shapify guitarChord =
             "EADGBE" + 
             Environment.NewLine + 
@@ -756,7 +756,6 @@ namespace Vaughan
             |> shapifyChord
             |> List.fold (+) "") +
             Environment.NewLine
-        
 
     module SpeechToMusic =
         open FParsec
