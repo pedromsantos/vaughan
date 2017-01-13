@@ -733,7 +733,6 @@ namespace Vaughan
             let separatedChordNames = 
                 guitarChords
                 |> List.map (fun guitarChord -> chordNameSeparator + name guitarChord.Chord)  
-
             [chordNameSeparator] @ separatedChordNames @ [chordNameSeparator; Environment.NewLine;]
 
         let tabifyAll guitarChords = 
@@ -743,7 +742,6 @@ namespace Vaughan
                         |> List.map tabifyChord
                         |> groupByString
                         |> tabifyStrings
-                
             (tabifiedChordNames @ tabifiedChords) |> List.fold (+) ""
 
         let tabify guitarChord =
@@ -753,8 +751,8 @@ namespace Vaughan
             "EADGBE" + 
             Environment.NewLine + 
             (guitarChord
-            |> shapifyChord
-            |> List.fold (+) "") +
+                |> shapifyChord
+                |> List.fold (+) "") +
             Environment.NewLine
 
     module SpeechToMusic =
