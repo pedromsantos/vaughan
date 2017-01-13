@@ -678,7 +678,7 @@ namespace Vaughan
         let private tabifyMutedHigherStrings guitarChord =
             let mutedStrings = mutedHigherStrings guitarChord
             List.replicate mutedStrings (mutedStringDashes guitarChord)
-            
+
         let private shapifyMutedHigherStrings guitarChord =
             let mutedStrings = mutedHigherStrings guitarChord
             List.replicate mutedStrings "X"
@@ -696,7 +696,7 @@ namespace Vaughan
                 sprintf "%s" (mutedStringDashes guitarChord)
             else
                 sprintf "%i%s" fret.Fret (fretedStringDashes guitarChord fret.Fret)
-                
+
         let private shapifyFret fret guitarChord =
             if fret.Fret = -1 then
                 "X"
@@ -715,9 +715,9 @@ namespace Vaughan
             @ (tabifyMutedLowerStrings guitarChord)
             
         let shapifyChord guitarChord = 
-            (shapifyMutedHigherStrings guitarChord) 
+            (shapifyMutedLowerStrings guitarChord)
             @ (shapifyFrets guitarChord)
-            @ (shapifyMutedLowerStrings guitarChord)
+            @ (shapifyMutedHigherStrings guitarChord)
 
         let private groupByString (tabifiedChords: string list list) =
             [0 .. 5] 
