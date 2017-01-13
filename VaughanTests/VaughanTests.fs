@@ -821,15 +821,28 @@ namespace VaughanTests
                                             "A|-------------|" + Environment.NewLine +
                                             "E|----8--------|" + Environment.NewLine @>
 
+        (*[<Test>]
         let ``Should draw shape of C major 7 drop 3 on sixth string``() =
             let guitarChord = 
                 (cIonian
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> toDrop3
                 |> chordToGuitarClosedChord SixthString)
-            test <@ guitarChord |> shapify = "CMaj7" + Environment.NewLine +
+            test <@ guitarChord |> shapify =
                                             "EADGBE" + Environment.NewLine +
                                             "8X998X" + Environment.NewLine @>
+        *)
+
+        [<Test>]
+        let ``Should draw shape of C major 7 drop 2 on fifth string``() =
+            let guitarChord = 
+                (cIonian
+                |> seventhsHarmonizer ScaleDgrees.I
+                |> toDrop2
+                |> chordToGuitarClosedChord FifthString)
+            test <@ guitarChord |> shapify =
+                                            "EADGBE" + Environment.NewLine +
+                                            "X3545X" + Environment.NewLine @>
 
 
         [<Test>]        
