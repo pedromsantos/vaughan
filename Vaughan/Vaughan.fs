@@ -661,40 +661,34 @@ namespace Vaughan
         let private fretedStringDashes guitarChord fret = 
             String.replicate ((name guitarChord.Chord).Length - (string(fret)).Length) "-"
 
-        let private tabifyMutedHigherStrings guitarChord =
-            let mutedStrings = 
-                match (guitarChord.Frets |> List.last).GuitarString with
+        let private mutedHigherStrings guitarChord =
+            match (guitarChord.Frets |> List.last).GuitarString with
                 | SecondString -> 1
                 | ThirdString -> 2
                 | FourthString -> 3
                 | _ -> 0
-            List.replicate mutedStrings (mutedStringDashes guitarChord)
 
-        let private tabifyMutedLowerStrings guitarChord =
-            let mutedStrings = 
-                match (guitarChord.Frets |> List.head).GuitarString with
-                | FifthString -> 1
-                | FourthString  -> 2
-                | ThirdString  -> 3
-                | _ -> 0
+        let private mutedLowerStrings guitarChord =
+            match (guitarChord.Frets |> List.head).GuitarString with
+            | FifthString -> 1
+            | FourthString  -> 2
+            | ThirdString  -> 3
+            | _ -> 0
+
+        let private tabifyMutedHigherStrings guitarChord =
+            let mutedStrings = mutedHigherStrings guitarChord
             List.replicate mutedStrings (mutedStringDashes guitarChord)
             
         let private shapifyMutedHigherStrings guitarChord =
-            let mutedStrings = 
-                match (guitarChord.Frets |> List.last).GuitarString with
-                | SecondString -> 1
-                | ThirdString -> 2
-                | FourthString -> 3
-                | _ -> 0
+            let mutedStrings = mutedHigherStrings guitarChord
             List.replicate mutedStrings "X"
 
+        let private tabifyMutedLowerStrings guitarChord =
+            let mutedStrings = mutedLowerStrings guitarChord
+            List.replicate mutedStrings (mutedStringDashes guitarChord)
+
         let private shapifyMutedLowerStrings guitarChord =
-            let mutedStrings = 
-                match (guitarChord.Frets |> List.head).GuitarString with
-                | FifthString -> 1
-                | FourthString  -> 2
-                | ThirdString  -> 3
-                | _ -> 0
+            let mutedStrings = mutedLowerStrings guitarChord
             List.replicate mutedStrings "X"
 
         let private tabifyFret fret guitarChord =
