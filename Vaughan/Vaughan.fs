@@ -626,14 +626,14 @@ namespace Vaughan
         open Guitar
 
         let private startTab = 
-                [
-                    "E|-";
-                    "B|-";
-                    "G|-";
-                    "D|-";
-                    "A|-";
-                    "E|-"
-                ]
+            [
+                "E|-";
+                "B|-";
+                "G|-";
+                "D|-";
+                "A|-";
+                "E|-"
+            ]
 
         let private bar = 
                     [
@@ -678,20 +678,52 @@ namespace Vaughan
                 | ThirdString  -> 3
                 | _ -> 0
             List.replicate mutedStrings (mutedStringDashes guitarChord)
+            
+        let private shapifyMutedHigherStrings guitarChord =
+            let mutedStrings = 
+                match (guitarChord.Frets |> List.last).GuitarString with
+                | SecondString -> 1
+                | ThirdString -> 2
+                | FourthString -> 3
+                | _ -> 0
+            List.replicate mutedStrings "X"
+
+        let private shapifyMutedLowerStrings guitarChord =
+            let mutedStrings = 
+                match (guitarChord.Frets |> List.head).GuitarString with
+                | FifthString -> 1
+                | FourthString  -> 2
+                | ThirdString  -> 3
+                | _ -> 0
+            List.replicate mutedStrings "X"
 
         let private tabifyFret fret guitarChord =
             if fret.Fret = -1 then
                 sprintf "%s" (mutedStringDashes guitarChord)
             else
                 sprintf "%i%s" fret.Fret (fretedStringDashes guitarChord fret.Fret)
+                
+        let private shapifyFret fret guitarChord =
+            if fret.Fret = -1 then
+                "X"
+            else
+                sprintf "%i" fret.Fret
 
         let private tabifyFrets guitarChord =
             guitarChord.Frets |> List.map (fun fret -> tabifyFret fret guitarChord) |> List.rev
+            
+        let private shapifyFrets guitarChord =
+            guitarChord.Frets |> List.map (fun fret -> shapifyFret fret guitarChord)
 
-        let private tabifyChord guitarChord = 
+        let tabifyChord guitarChord = 
             (tabifyMutedHigherStrings guitarChord) 
             @ (tabifyFrets guitarChord)
             @ (tabifyMutedLowerStrings guitarChord)
+            
+        let shapifyChord guitarChord = 
+            (shapifyMutedHigherStrings guitarChord) 
+            @ (shapifyFrets guitarChord)
+            @ (shapifyMutedLowerStrings guitarChord)
 
         let private groupByString (tabifiedChords: string list list) =
             [0 .. 5] 
@@ -722,6 +754,15 @@ namespace Vaughan
         
         let tabify guitarChord =
             tabifyAll [guitarChord]
+            
+        let shapify guitarChord =
+            "EADGBE" + 
+            Environment.NewLine + 
+            (guitarChord
+            |> shapifyChord
+            |> List.fold (+) "") +
+            Environment.NewLine
+        
 
     module SpeechToMusic =
         open FParsec
