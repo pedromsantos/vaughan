@@ -865,7 +865,7 @@ namespace VaughanTests
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> toDrop3
                 |> chordToGuitarClosedChord SixthString)
-            test <@ guitarChord |> shapify =
+            test <@ guitarChord |> shapify ="CMaj7" + Environment.NewLine +
                                             "EADGBE" + Environment.NewLine +
                                             "8X998X" + Environment.NewLine @>
 
@@ -877,7 +877,7 @@ namespace VaughanTests
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> toDrop2
                 |> chordToGuitarClosedChord FifthString)
-            test <@ guitarChord |> shapify =
+            test <@ guitarChord |> shapify ="CMaj7" + Environment.NewLine +
                                             "EADGBE" + Environment.NewLine +
                                             "X3545X" + Environment.NewLine @>
 

@@ -748,6 +748,8 @@ namespace Vaughan
             tabifyAll [guitarChord]
 
         let shapify guitarChord =
+            name guitarChord.Chord +
+            Environment.NewLine +
             "EADGBE" + 
             Environment.NewLine + 
             (guitarChord
