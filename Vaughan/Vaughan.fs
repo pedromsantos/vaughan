@@ -1,4 +1,6 @@
 namespace Vaughan
+    
+    //https://repl.it/FJHh/0
 
     module Infrastructure =
         let rotateByOne list =
@@ -697,7 +699,7 @@ namespace Vaughan
             else
                 sprintf "%i%s" fret.Fret (fretedStringDashes guitarChord fret.Fret)
 
-        let private shapifyFret fret guitarChord =
+        let private shapifyFret fret =
             if fret.Fret = -1 then
                 "X"
             else
@@ -707,7 +709,7 @@ namespace Vaughan
             guitarChord.Frets |> List.map (fun fret -> tabifyFret fret guitarChord) |> List.rev
 
         let private shapifyFrets guitarChord =
-            guitarChord.Frets |> List.map (fun fret -> shapifyFret fret guitarChord)
+            guitarChord.Frets |> List.map shapifyFret
 
         let private tabifyChord guitarChord = 
             (tabifyMutedHigherStrings guitarChord) 
