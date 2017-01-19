@@ -5,6 +5,8 @@ Vaughan is named after Blues guitarist [Stevie Ray Vaughan](https://en.wikipedia
 ![](https://ci.appveyor.com/api/projects/status/github/pedromsantos/vaughan?branch=master&svg=true)
 [![NuGet](http://img.shields.io/nuget/v/Vaughan.svg)](https://www.nuget.org/packages/Vaughan)
 
+Build is failing due to API quote being exceeded.
+
 ## Getting started
 
 1. Clone the repository to your machine
