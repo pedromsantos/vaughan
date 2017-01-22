@@ -18,7 +18,7 @@ namespace Vaughan
             match list with
             | [] -> []
             | f::s::t::r -> f::t::s::r
-            | f::s::t -> f::s::t        
+            | f::s::t -> f::s::t
             | f -> f
 
         let circularSequenceFromList (lst:'a list) = 
@@ -287,14 +287,14 @@ namespace Vaughan
         type ChordNote = Note * ChordNoteFunction
 
         type Chord = {notes:ChordNote list; chordType:ChordType;}
-        
+
         let functionForInterval = function
             | Unisson -> Root
             | MajorThird | MinorThird -> Third 
             | PerfectFifth | DiminishedFifth | AugmentedFifth  -> Fifth
             | MajorSeventh | MinorSeventh | MajorSixth -> Seventh
             | _ -> Root
-            
+
         let intervalsForQuality = function
             | Major -> [MajorThird; PerfectFifth]
             | Augmented -> [MajorThird; AugmentedFifth]
