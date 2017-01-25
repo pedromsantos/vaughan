@@ -3,35 +3,31 @@
 #r "System.Xml.Linq"
 
 open Fake
+open Fake.Testing
 open System.Xml.Linq
 
 let buildDir  = "./build/"
-
-
-let appReferences  = !! "/**/*.fsproj"
-
-let doc = System.Xml.Linq.XDocument.Load("./Vaughan.nuspec")
-let version = doc.Descendants(XName.Get("version", doc.Root.Name.NamespaceName)) 
 
 Target "Clean" (fun _ ->
     CleanDirs [buildDir]
 )
 
+let projects  = !! "/**/*.fsproj"
+
 Target "Build" (fun _ ->
-    MSBuildRelease buildDir "Build" appReferences
+    MSBuildRelease buildDir "Build" projects
     |> Log "AppBuild-Output: "
 )
 
+let testAssemblies = !! (buildDir + "*Tests.dll")
+
 Target "Test" (fun _ ->
-    !! (buildDir + "VaughanTests.dll")
-    |> NUnit (fun p ->
-        {p with
-            ToolPath = "./packages/NUnit.Runners/tools"
-            ToolName = "nunit-console.exe"
-            DisableShadowCopy = true;
-            ShowLabels = false;
-        })
+    testAssemblies
+    |> NUnit id
 )
+
+let doc = System.Xml.Linq.XDocument.Load("./Vaughan.nuspec")
+let version = doc.Descendants(XName.Get("version", doc.Root.Name.NamespaceName)) 
 
 Target "BuildNuGet" (fun _ ->
     NuGet (fun p -> 
