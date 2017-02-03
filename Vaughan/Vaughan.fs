@@ -481,7 +481,7 @@ namespace Vaughan
                 |> List.take 7
             
             {Notes= [(thirdsList.[0], Root); 
-                     (thirdsList.[1] , Third); 
+                     (thirdsList.[1], Third); 
                      (thirdsList.[2], Fifth); 
                      (thirdsList.[3], Seventh); 
                      (thirdsList.[4], Ninth); 
@@ -489,22 +489,20 @@ namespace Vaughan
                      (thirdsList.[6], Thirteenth)]; 
              ChordType = Closed}
 
-        let reducedHarmonizer forDegree scale notes =
+        let private harmonizeScaleDegreeWithNotes forDegree scale notes =
             let complete = harmonizer forDegree scale
             {complete with Notes = complete.Notes |> List.take notes}
 
         let seventhsHarmonizer forDegree scale =
-             reducedHarmonizer forDegree scale 4
+             harmonizeScaleDegreeWithNotes forDegree scale 4
 
         let triadsHarmonizer forDegree scale =
-            reducedHarmonizer forDegree scale 3
+            harmonizeScaleDegreeWithNotes forDegree scale 3
 
     module Guitar =
         open Notes
         open Chords
         open Infrastructure
-
-        let maxStrech = 5
 
         type GuitarString = 
             | SixthString 
@@ -557,6 +555,7 @@ namespace Vaughan
             abs(fret.Fret - other.Fret)
 
         let private isStretching fret other =
+            let maxStrech = 5
             (fretDistance fret other) > maxStrech
 
         let private raiseOctaveOnStretch previous current next =
