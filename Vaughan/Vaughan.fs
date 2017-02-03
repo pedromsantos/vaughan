@@ -30,6 +30,15 @@ namespace Vaughan
                 }
             next()
 
+        let sequenceToIndexValueTupleSequence sequence =
+            sequence |> Seq.mapi (fun i v -> i, v)
+
+        let filterEvenIndexElements sequence =
+            sequence 
+            |> sequenceToIndexValueTupleSequence
+            |> Seq.filter (fun (i, _) -> i % 2 = 0)
+            |> Seq.map snd
+
         let rec min (minOf:'a->'a->'a) (list:'a list) =
            match list with
            | [] -> None
@@ -454,14 +463,15 @@ namespace Vaughan
         
         type ScaleDgrees = | I = 0 | II = 1 | III = 2 | IV = 3 | V = 4 | VI = 5 | VII = 6
 
+
         let thirds (fromPosition:ScaleDgrees) scale =
+            let octave = 16
+            
             scale 
             |> circularSequenceFromList
             |> Seq.skip (int fromPosition)
-            |> Seq.take 16 
-            |> Seq.mapi (fun i v -> i, v)
-            |> Seq.filter (fun (i, _) -> i % 2 = 0)
-            |> Seq.map snd
+            |> Seq.take octave
+            |> filterEvenIndexElements
             |> Seq.toList
 
         let harmonizer forDegree scale =
