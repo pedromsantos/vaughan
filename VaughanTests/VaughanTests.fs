@@ -17,6 +17,10 @@ namespace VaughanTests
             test <@ swapFirstTwo [1; 2; 3] = [2; 1; 3] @>
 
         [<Test>]
+        let ``Should filter odd index elements``() =
+            test <@ filterOddIndexElements {1 .. 6} |> List.ofSeq = ({1 .. 2 .. 6} |> List.ofSeq) @>
+        
+        [<Test>]
         let ``Should swap second 2 elements in list``() =
             test <@ swapSecondTwo [1; 2; 3] = [1; 3; 2] @>
 

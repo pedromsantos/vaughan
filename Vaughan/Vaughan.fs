@@ -30,10 +30,10 @@ namespace Vaughan
                 }
             next()
 
-        let sequenceToIndexValueTupleSequence sequence =
+        let private sequenceToIndexValueTupleSequence sequence =
             sequence |> Seq.mapi (fun i v -> i, v)
 
-        let filterEvenIndexElements sequence =
+        let filterOddIndexElements sequence =
             sequence 
             |> sequenceToIndexValueTupleSequence
             |> Seq.filter (fun (i, _) -> i % 2 = 0)
@@ -471,7 +471,7 @@ namespace Vaughan
             |> circularSequenceFromList
             |> Seq.skip (int fromPosition)
             |> Seq.take octave
-            |> filterEvenIndexElements
+            |> filterOddIndexElements
             |> Seq.toList
 
         let harmonizer forDegree scale =
