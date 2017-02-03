@@ -248,15 +248,15 @@ namespace VaughanTests
         open Vaughan.Notes
         open Vaughan.Chords
 
-        let cMaj = {notes= [(C, Root); (E, Third); (G, Fifth)]; chordType=Closed}
-        let cAug = {notes= [(C, Root); (E, Third); (GSharp, Fifth)]; chordType=Closed}
-        let cMin = {notes= [(C, Root); (EFlat, Third); (G, Fifth)]; chordType=Closed}
-        let cDim = {notes= [(C, Root); (EFlat, Third); (GFlat, Fifth)]; chordType=Closed}
-        let cMaj7 = {notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh)]; chordType=Closed}
-        let cAug7 = {notes= [(C, Root); (E, Third); (GSharp, Fifth); (B, Seventh)];chordType=Closed}
-        let cMin7 = {notes= [(C, Root); (EFlat, Third); (G, Fifth); (BFlat, Seventh)]; chordType=Closed}
-        let cDim7 = {notes= [(C, Root); (EFlat, Third); (GFlat, Fifth); (A, Seventh)]; chordType=Closed}
-        let cMin7b5 = {notes= [(C, Root); (EFlat, Third); (GFlat, Fifth); (BFlat, Seventh)]; chordType=Closed}
+        let cMaj = {Notes= [(C, Root); (E, Third); (G, Fifth)]; ChordType=Closed}
+        let cAug = {Notes= [(C, Root); (E, Third); (GSharp, Fifth)]; ChordType=Closed}
+        let cMin = {Notes= [(C, Root); (EFlat, Third); (G, Fifth)]; ChordType=Closed}
+        let cDim = {Notes= [(C, Root); (EFlat, Third); (GFlat, Fifth)]; ChordType=Closed}
+        let cMaj7 = {Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh)]; ChordType=Closed}
+        let cAug7 = {Notes= [(C, Root); (E, Third); (GSharp, Fifth); (B, Seventh)]; ChordType=Closed}
+        let cMin7 = {Notes= [(C, Root); (EFlat, Third); (G, Fifth); (BFlat, Seventh)]; ChordType=Closed}
+        let cDim7 = {Notes= [(C, Root); (EFlat, Third); (GFlat, Fifth); (A, Seventh)]; ChordType=Closed}
+        let cMin7b5 = {Notes= [(C, Root); (EFlat, Third); (GFlat, Fifth); (BFlat, Seventh)]; ChordType=Closed}
                 
         [<Test>]
         let ``Chord should have notes for function``() =
@@ -306,35 +306,35 @@ namespace VaughanTests
 
         [<Test>]
         let ``Should invert chord for first inversion``() =
-            test <@ (invert cMaj).notes = [(E, Third); (G, Fifth); (C, Root)]  @>
-            test <@ (invert cAug).notes = [(E, Third); (GSharp, Fifth); (C, Root)]  @>
-            test <@ (invert cMin).notes = [(EFlat, Third); (G, Fifth); (C, Root)]  @>
-            test <@ (invert cDim).notes = [(EFlat, Third); (GFlat, Fifth); (C, Root)]  @>
-            test <@ (invert cMaj7).notes = [(E, Third); (G, Fifth); (B, Seventh); (C, Root)]  @>
-            test <@ (invert cAug7).notes = [(E, Third); (GSharp, Fifth); (B, Seventh); (C, Root)]  @>
-            test <@ (invert cMin7).notes = [(EFlat, Third); (G, Fifth); (BFlat, Seventh); (C, Root)]  @>
-            test <@ (invert cDim7).notes = [(EFlat, Third); (GFlat, Fifth); (A, Seventh); (C, Root)]  @>
-            test <@ (invert cMin7b5).notes = [(EFlat, Third); (GFlat, Fifth); (BFlat, Seventh); (C, Root)]  @>
+            test <@ (invert cMaj).Notes = [(E, Third); (G, Fifth); (C, Root)]  @>
+            test <@ (invert cAug).Notes = [(E, Third); (GSharp, Fifth); (C, Root)]  @>
+            test <@ (invert cMin).Notes = [(EFlat, Third); (G, Fifth); (C, Root)]  @>
+            test <@ (invert cDim).Notes = [(EFlat, Third); (GFlat, Fifth); (C, Root)]  @>
+            test <@ (invert cMaj7).Notes = [(E, Third); (G, Fifth); (B, Seventh); (C, Root)]  @>
+            test <@ (invert cAug7).Notes = [(E, Third); (GSharp, Fifth); (B, Seventh); (C, Root)]  @>
+            test <@ (invert cMin7).Notes = [(EFlat, Third); (G, Fifth); (BFlat, Seventh); (C, Root)]  @>
+            test <@ (invert cDim7).Notes = [(EFlat, Third); (GFlat, Fifth); (A, Seventh); (C, Root)]  @>
+            test <@ (invert cMin7b5).Notes = [(EFlat, Third); (GFlat, Fifth); (BFlat, Seventh); (C, Root)]  @>
 
         [<Test>]
         let ``Should invert chord for second inversion``() =
-            test <@ (cMaj |> invert |> invert).notes = [(G, Fifth); (C, Root); (E, Third)]  @>
-            test <@ (cAug |> invert |> invert).notes = [(GSharp, Fifth); (C, Root); (E, Third)]  @>
-            test <@ (cMin |> invert |> invert).notes = [(G, Fifth); (C, Root); (EFlat, Third)]  @>
-            test <@ (cDim |> invert |> invert).notes = [(GFlat, Fifth); (C, Root); (EFlat, Third)]  @>
-            test <@ (cMaj7 |> invert |> invert).notes = [(G, Fifth); (B, Seventh); (C, Root); (E, Third)]  @>
-            test <@ (cAug7 |> invert |> invert).notes = [(GSharp, Fifth); (B, Seventh); (C, Root); (E, Third)]  @>
-            test <@ (cMin7 |> invert |> invert).notes = [(G, Fifth); (BFlat, Seventh); (C, Root); (EFlat, Third)]  @>
-            test <@ (cDim7 |> invert |> invert).notes = [(GFlat, Fifth); (A, Seventh); (C, Root); (EFlat, Third)]  @>
-            test <@ (cMin7b5 |> invert |> invert).notes = [(GFlat, Fifth); (BFlat, Seventh); (C, Root); (EFlat, Third)]  @>
+            test <@ (cMaj |> invert |> invert).Notes = [(G, Fifth); (C, Root); (E, Third)]  @>
+            test <@ (cAug |> invert |> invert).Notes = [(GSharp, Fifth); (C, Root); (E, Third)]  @>
+            test <@ (cMin |> invert |> invert).Notes = [(G, Fifth); (C, Root); (EFlat, Third)]  @>
+            test <@ (cDim |> invert |> invert).Notes = [(GFlat, Fifth); (C, Root); (EFlat, Third)]  @>
+            test <@ (cMaj7 |> invert |> invert).Notes = [(G, Fifth); (B, Seventh); (C, Root); (E, Third)]  @>
+            test <@ (cAug7 |> invert |> invert).Notes = [(GSharp, Fifth); (B, Seventh); (C, Root); (E, Third)]  @>
+            test <@ (cMin7 |> invert |> invert).Notes = [(G, Fifth); (BFlat, Seventh); (C, Root); (EFlat, Third)]  @>
+            test <@ (cDim7 |> invert |> invert).Notes = [(GFlat, Fifth); (A, Seventh); (C, Root); (EFlat, Third)]  @>
+            test <@ (cMin7b5 |> invert |> invert).Notes = [(GFlat, Fifth); (BFlat, Seventh); (C, Root); (EFlat, Third)]  @>
 
         [<Test>]
         let ``Should invert chord for third inversion``() =
-            test <@ (cMaj7 |> invert |> invert |> invert).notes = [(B, Seventh); (C, Root); (E, Third); (G, Fifth)]  @>
-            test <@ (cAug7 |> invert |> invert |> invert).notes = [(B, Seventh); (C, Root); (E, Third); (GSharp, Fifth)]  @>
-            test <@ (cMin7 |> invert |> invert |> invert).notes = [(BFlat, Seventh); (C, Root); (EFlat, Third); (G, Fifth)]  @>
-            test <@ (cDim7 |> invert |> invert |> invert).notes = [(A, Seventh); (C, Root); (EFlat, Third); (GFlat, Fifth)]  @>
-            test <@ (cMin7b5 |> invert |> invert |> invert).notes = [(BFlat, Seventh); (C, Root); (EFlat, Third); (GFlat, Fifth)]  @>
+            test <@ (cMaj7 |> invert |> invert |> invert).Notes = [(B, Seventh); (C, Root); (E, Third); (G, Fifth)]  @>
+            test <@ (cAug7 |> invert |> invert |> invert).Notes = [(B, Seventh); (C, Root); (E, Third); (GSharp, Fifth)]  @>
+            test <@ (cMin7 |> invert |> invert |> invert).Notes = [(BFlat, Seventh); (C, Root); (EFlat, Third); (G, Fifth)]  @>
+            test <@ (cDim7 |> invert |> invert |> invert).Notes = [(A, Seventh); (C, Root); (EFlat, Third); (GFlat, Fifth)]  @>
+            test <@ (cMin7b5 |> invert |> invert |> invert).Notes = [(BFlat, Seventh); (C, Root); (EFlat, Third); (GFlat, Fifth)]  @>
 
         [<Test>]
         let ``Should loop inversions``() =
@@ -343,45 +343,45 @@ namespace VaughanTests
 
         [<Test>]
         let ``Should transform chord to drop2``() =
-            test <@ (cMaj7 |> toDrop2).notes = [(C, Root); (G, Fifth); (B, Seventh); (E, Third); ]  @>
+            test <@ (cMaj7 |> toDrop2).Notes = [(C, Root); (G, Fifth); (B, Seventh); (E, Third); ]  @>
 
         [<Test>]
         let ``Should transform chord to drop3``() =
-            test <@ (cMaj7 |> toDrop3).notes = [(C, Root); (B, Seventh); (E, Third); (G, Fifth)]  @>
+            test <@ (cMaj7 |> toDrop3).Notes = [(C, Root); (B, Seventh); (E, Third); (G, Fifth)]  @>
 
         [<Test>]
         let ``Should invert drop2``() =
-            test <@ (cMaj7 |> toDrop2 |> invert).notes = [(E, Third); (B, Seventh); (C, Root); (G, Fifth);]  @>
-            test <@ (cMaj7 |> toDrop2 |> invert |> invert).notes = [(G, Fifth); (C, Root); (E, Third); (B, Seventh);]  @>
-            test <@ (cMaj7 |> toDrop2 |> invert |> invert |> invert ).notes = [(B, Seventh); (E, Third); (G, Fifth); (C, Root); ]  @>
-            test <@ (cMaj7 |> toDrop2 |> invert |> invert |> invert |> invert).notes = [(C, Root); (G, Fifth); (B, Seventh); (E, Third);]  @>
+            test <@ (cMaj7 |> toDrop2 |> invert).Notes = [(E, Third); (B, Seventh); (C, Root); (G, Fifth);]  @>
+            test <@ (cMaj7 |> toDrop2 |> invert |> invert).Notes = [(G, Fifth); (C, Root); (E, Third); (B, Seventh);]  @>
+            test <@ (cMaj7 |> toDrop2 |> invert |> invert |> invert ).Notes = [(B, Seventh); (E, Third); (G, Fifth); (C, Root); ]  @>
+            test <@ (cMaj7 |> toDrop2 |> invert |> invert |> invert |> invert).Notes = [(C, Root); (G, Fifth); (B, Seventh); (E, Third);]  @>
 
         [<Test>]
         let ``Should invert drop3``() =
-            test <@ (cMaj7 |> toDrop3 |> invert).notes = [(E, Third); (C, Root); (G, Fifth); (B, Seventh)]  @>
-            test <@ (cMaj7 |> toDrop3 |> invert |> invert).notes = [(G, Fifth); (E, Third); (B, Seventh); (C, Root);]  @>
-            test <@ (cMaj7 |> toDrop3 |> invert |> invert |> invert).notes = [(B, Seventh); (G, Fifth); (C, Root); (E, Third);]  @>
-            test <@ (cMaj7 |> toDrop3 |> invert |> invert |> invert |> invert).notes = [(C, Root); (B, Seventh); (E, Third); (G, Fifth)]  @>
+            test <@ (cMaj7 |> toDrop3 |> invert).Notes = [(E, Third); (C, Root); (G, Fifth); (B, Seventh)]  @>
+            test <@ (cMaj7 |> toDrop3 |> invert |> invert).Notes = [(G, Fifth); (E, Third); (B, Seventh); (C, Root);]  @>
+            test <@ (cMaj7 |> toDrop3 |> invert |> invert |> invert).Notes = [(B, Seventh); (G, Fifth); (C, Root); (E, Third);]  @>
+            test <@ (cMaj7 |> toDrop3 |> invert |> invert |> invert |> invert).Notes = [(C, Root); (B, Seventh); (E, Third); (G, Fifth)]  @>
 
         [<Test>]
         let ``Should choose invertion that satisfies having a specific function as lead``() =
-            test<@ (inversionForFunctionAsLead cMaj Third).notes = (cMaj |> invert |> invert).notes @>
+            test<@ (inversionForFunctionAsLead cMaj Third).Notes = (cMaj |> invert |> invert).Notes @>
 
         [<Test>]
         let ``Should choose invertion that satisfies having a specific function as bass``() =
-            test<@ (inversionForFunctionAsBass cMaj Fifth).notes = (cMaj |> invert |> invert).notes @>
+            test<@ (inversionForFunctionAsBass cMaj Fifth).Notes = (cMaj |> invert |> invert).Notes @>
 
         [<Test>]
         let ``Should choose invertion that satisfies having a lead that is closest to a provided note``() =
-            test<@ (invertionWithLeadClosestToNote cMaj A).notes = (cMaj).notes @>
-            test<@ (invertionWithLeadClosestToNote cMaj CSharp).notes = (cMaj |> invert).notes @>
-            test<@ (invertionWithLeadClosestToNote cMaj F).notes = (cMaj |> invert |> invert).notes @>
+            test<@ (invertionWithLeadClosestToNote cMaj A).Notes = (cMaj).Notes @>
+            test<@ (invertionWithLeadClosestToNote cMaj CSharp).Notes = (cMaj |> invert).Notes @>
+            test<@ (invertionWithLeadClosestToNote cMaj F).Notes = (cMaj |> invert |> invert).Notes @>
 
         [<Test>]
         let ``Should choose invertion that satisfies having a bass that is closest to a provided note``() =
-            test<@ (invertionWithBassClosestToNote cMaj CSharp).notes = (cMaj).notes @>
-            test<@ (invertionWithBassClosestToNote cMaj F).notes = (cMaj |> invert).notes @>
-            test<@ (invertionWithBassClosestToNote cMaj A).notes = (cMaj |> invert |> invert).notes @>           
+            test<@ (invertionWithBassClosestToNote cMaj CSharp).Notes = (cMaj).Notes @>
+            test<@ (invertionWithBassClosestToNote cMaj F).Notes = (cMaj |> invert).Notes @>
+            test<@ (invertionWithBassClosestToNote cMaj A).Notes = (cMaj |> invert |> invert).Notes @>           
 
     module ScalesHormonizerTests =
         open NUnit.Framework
@@ -391,34 +391,34 @@ namespace VaughanTests
         open Vaughan.Chords
         open Vaughan.Notes
         
-        let cMaj = {notes= [(C, Root); (E, Third); (G, Fifth)]; chordType=Closed}
-        let dMin = {notes= [(D, Root); (F, Third); (A, Fifth)]; chordType=Closed}
-        let eMin = {notes= [(E, Root); (G, Third); (B, Fifth)]; chordType=Closed}
-        let fMaj = {notes= [(F, Root); (A, Third); (C, Fifth)]; chordType=Closed}
-        let gMaj = {notes= [(G, Root); (B, Third); (D, Fifth)]; chordType=Closed}
-        let aMin = {notes= [(A, Root); (C, Third); (E, Fifth)]; chordType=Closed}
-        let bDim = {notes= [(B, Root); (D, Third); (F, Fifth)]; chordType=Closed}
+        let cMaj = {Notes= [(C, Root); (E, Third); (G, Fifth)]; ChordType=Closed}
+        let dMin = {Notes= [(D, Root); (F, Third); (A, Fifth)]; ChordType=Closed}
+        let eMin = {Notes= [(E, Root); (G, Third); (B, Fifth)]; ChordType=Closed}
+        let fMaj = {Notes= [(F, Root); (A, Third); (C, Fifth)]; ChordType=Closed}
+        let gMaj = {Notes= [(G, Root); (B, Third); (D, Fifth)]; ChordType=Closed}
+        let aMin = {Notes= [(A, Root); (C, Third); (E, Fifth)]; ChordType=Closed}
+        let bDim = {Notes= [(B, Root); (D, Third); (F, Fifth)]; ChordType=Closed}
 
-        let cMin = {notes= [(C, Root); (EFlat, Third); (G, Fifth)]; chordType=Closed}
-        let dDim = {notes= [(D, Root); (F, Third); (AFlat, Fifth)]; chordType=Closed}
-        let eFlatAug = {notes= [(EFlat, Root); (G, Third); (B, Fifth)]; chordType=Closed}
-        let fMin = {notes= [(F, Root); (AFlat, Third); (C, Fifth)]; chordType=Closed}
-        let aFlatMaj = {notes= [(AFlat, Root); (C, Third); (EFlat, Fifth)]; chordType=Closed}
+        let cMin = {Notes= [(C, Root); (EFlat, Third); (G, Fifth)]; ChordType=Closed}
+        let dDim = {Notes= [(D, Root); (F, Third); (AFlat, Fifth)]; ChordType=Closed}
+        let eFlatAug = {Notes= [(EFlat, Root); (G, Third); (B, Fifth)]; ChordType=Closed}
+        let fMin = {Notes= [(F, Root); (AFlat, Third); (C, Fifth)]; ChordType=Closed}
+        let aFlatMaj = {Notes= [(AFlat, Root); (C, Third); (EFlat, Fifth)]; ChordType=Closed}
 
-        let cMaj7 = {notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh)]; chordType=Closed}
-        let dMin7 = {notes= [(D, Root); (F, Third); (A, Fifth); (C, Seventh)]; chordType=Closed}
-        let eMin7 = {notes= [(E, Root); (G, Third); (B, Fifth); (D, Seventh)]; chordType=Closed}
-        let fMaj7 = {notes= [(F, Root); (A, Third); (C, Fifth); (E, Seventh)]; chordType=Closed}
-        let gDom7 = {notes= [(G, Root); (B, Third); (D, Fifth); (F, Seventh)]; chordType=Closed}
-        let aMin7 = {notes= [(A, Root); (C, Third); (E, Fifth); (G, Seventh)]; chordType=Closed}
-        let bMin7b5 = {notes= [(B, Root); (D, Third); (F, Fifth); (A, Seventh)]; chordType=Closed}
+        let cMaj7 = {Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh)]; ChordType=Closed}
+        let dMin7 = {Notes= [(D, Root); (F, Third); (A, Fifth); (C, Seventh)]; ChordType=Closed}
+        let eMin7 = {Notes= [(E, Root); (G, Third); (B, Fifth); (D, Seventh)]; ChordType=Closed}
+        let fMaj7 = {Notes= [(F, Root); (A, Third); (C, Fifth); (E, Seventh)]; ChordType=Closed}
+        let gDom7 = {Notes= [(G, Root); (B, Third); (D, Fifth); (F, Seventh)]; ChordType=Closed}
+        let aMin7 = {Notes= [(A, Root); (C, Third); (E, Fifth); (G, Seventh)]; ChordType=Closed}
+        let bMin7b5 = {Notes= [(B, Root); (D, Third); (F, Fifth); (A, Seventh)]; ChordType=Closed}
 
-        let cMinMaj7 = {notes= [(C, Root); (EFlat, Third); (G, Fifth); (B, Seventh)]; chordType=Closed}
-        let dMin7b5 = {notes= [(D, Root); (F, Third); (AFlat, Fifth); (C, Seventh)]; chordType=Closed}
-        let eFlatAug7 = {notes= [(EFlat, Root); (G, Third); (B, Fifth); (D, Seventh)]; chordType=Closed}
-        let fMin7 = {notes= [(F, Root); (AFlat, Third); (C, Fifth); (EFlat, Seventh)]; chordType=Closed}
-        let aFlatMaj7 = {notes= [(AFlat, Root); (C, Third); (EFlat, Fifth); (G, Seventh)]; chordType=Closed}
-        let bDim7 = {notes= [(B, Root); (D, Third); (F, Fifth); (AFlat, Seventh)]; chordType=Closed}
+        let cMinMaj7 = {Notes= [(C, Root); (EFlat, Third); (G, Fifth); (B, Seventh)]; ChordType=Closed}
+        let dMin7b5 = {Notes= [(D, Root); (F, Third); (AFlat, Fifth); (C, Seventh)]; ChordType=Closed}
+        let eFlatAug7 = {Notes= [(EFlat, Root); (G, Third); (B, Fifth); (D, Seventh)]; ChordType=Closed}
+        let fMin7 = {Notes= [(F, Root); (AFlat, Third); (C, Fifth); (EFlat, Seventh)]; ChordType=Closed}
+        let aFlatMaj7 = {Notes= [(AFlat, Root); (C, Third); (EFlat, Fifth); (G, Seventh)]; ChordType=Closed}
+        let bDim7 = {Notes= [(B, Root); (D, Third); (F, Fifth); (AFlat, Seventh)]; ChordType=Closed}
 
         [<Test>]
         let ``Should filter scale in thirds`` () =
@@ -434,7 +434,7 @@ namespace VaughanTests
         [<Test>]
         let ``Should create chord for scale`` () =
             let cMajor = createScale Ionian C
-            test <@ (harmonizer ScaleDgrees.I cMajor).notes = [(C, Root); (E, Third); (G, Fifth); (B, Seventh); (D, Ninth); (F, Eleventh); (A, Thirteenth)] @>
+            test <@ (harmonizer ScaleDgrees.I cMajor).Notes = [(C, Root); (E, Third); (G, Fifth); (B, Seventh); (D, Ninth); (F, Eleventh); (A, Thirteenth)] @>
 
         [<Test>]
         let ``Should create triads for Ionian scale`` () =
