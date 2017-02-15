@@ -240,7 +240,20 @@ D|---|
 A|-3-|
 E|---|
 ```
-
+```fsharp
+createScale Ionian C
+|> seventhsHarmonizer ScaleDgrees.I
+|> toDrop2
+|> chordToGuitarClosedChord FifthString
+|> shapify
+Output:
+```
+Output:
+```
+CMaj7
+EADGBE
+X3545X
+```
 ```fsharp
 let cIonian = createScale Ionian C
 let cMaj = seventhsHarmonizer ScaleDgrees.I cIonian
