@@ -59,9 +59,6 @@ namespace Vaughan
                         | MajorThird | PerfectForth | AugmentedForth | DiminishedFifth
                         | PerfectFifth | AugmentedFifth | MinorSixth | MajorSixth
                         | MinorSeventh | MajorSeventh | PerfectOctave
-        
-        type NoteAttributes = {Name:string; Sharp:Note; Flat:Note; Pitch:int}
-        type IntervalAttributes = {Name:string; Distance:int}
 
         type Scales = 
             | Ionian | Dorian | Phrygian | Lydian | Mixolydian
@@ -77,8 +74,6 @@ namespace Vaughan
             | BMinor | BFlatMinor | CMinor | CSharpMinor | DMinor
             | EMinor | FMinor | FSharpMinor | GMinor 
             | GSharpMinor | EFlatMinor
-
-        type KeyAttributes = {Root:Note; Accidentals:int}
 
         type Quality = 
             | Major | Augmented | Minor | Diminished
@@ -111,6 +106,9 @@ namespace Vaughan
 
     module Notes =
         open Domain
+
+        type private NoteAttributes = {Name:string; Sharp:Note; Flat:Note; Pitch:int}
+        type private IntervalAttributes = {Name:string; Distance:int}
 
         let private noteAttributes = function
             | C -> {Name="C"; Sharp=CSharp; Flat=B; Pitch=0}
@@ -246,6 +244,8 @@ namespace Vaughan
     module Keys =
         open Domain
         open Notes
+
+        type private KeyAttributes = {Root:Note; Accidentals:int}
 
         let private keyAttributes = function
             | AMajor -> {Root=A; Accidentals=3} 
