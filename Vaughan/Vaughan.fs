@@ -163,7 +163,15 @@ namespace Vaughan
             | MinorSeventh -> {Name="MinorSeventh"; Distance=10} 
             | MajorSeventh -> {Name="MajorSeventh"; Distance=11} 
             | PerfectOctave -> {Name="PerfectOctave"; Distance=12} 
-
+        
+        let private transposeDirection note = function
+            | Unisson -> note 
+            | MajorSecond | AugmentedSecond | PerfectFifth | MajorThird 
+            | PerfectForth | AugmentedFifth | MajorSixth | PerfectOctave 
+            | AugmentedForth | MajorSeventh -> sharp note
+            | MinorSecond | DiminishedFifth | MinorThird
+            | MinorSixth | MinorSeventh  -> flat note
+            
         let intervalName interval =
             (intervalAttributes interval).Name
         
@@ -190,14 +198,7 @@ namespace Vaughan
             let distance = (pitch other) - (pitch note)
             if distance < (toDistance Unisson) 
             then (toDistance PerfectOctave) - distance * -1 
-            else distance    
-                
-        let private transposeDirection note = function
-            | Unisson -> note 
-            | MajorSecond | AugmentedSecond | PerfectFifth | MajorThird | PerfectForth
-            | AugmentedFifth | MajorSixth | PerfectOctave | AugmentedForth | MajorSeventh -> sharp note
-            | MinorSecond | DiminishedFifth | MinorThird
-            | MinorSixth | MinorSeventh  -> flat note
+            else distance
             
         let intervalBetween note other =
             fromDistance (measureAbsoluteSemitones note other)
@@ -276,7 +277,7 @@ namespace Vaughan
             | GSharpMinor -> {Root=GSharp; Accidentals=5} 
             | EFlatMinor -> {Root=EFlat; Accidentals=(-6)} 
 
-        let root key =
+        let private root key =
             (keyAttributes key).Root
 
         let private accidentals key =
@@ -529,8 +530,7 @@ namespace Vaughan
         open Infrastructure
 
         type private GuitarStringAttributes = {Name:string; OpenStringNote:Note; Index:int}
-
-        let guitarStringAttributes = function
+        let private guitarStringAttributes = function
             | SixthString -> { Name="Sixth"; OpenStringNote=E; Index=6}
             | FifthString -> { Name="Fifth"; OpenStringNote=A; Index=5}
             | FourthString -> { Name="Fourth"; OpenStringNote=D; Index=4}
@@ -538,11 +538,11 @@ namespace Vaughan
             | SecondString -> { Name="Second"; OpenStringNote=B; Index=2}
             | FirstString -> { Name="First"; OpenStringNote=E; Index=1}
 
-        let guitarStringOrdinal guitarString =
-            (guitarStringAttributes guitarString).Index
-        
         let fretForNote note guitarString =
             measureAbsoluteSemitones (guitarStringAttributes guitarString).OpenStringNote note
+
+        let private guitarStringOrdinal guitarString =
+            (guitarStringAttributes guitarString).Index
       
         let private indexToGuitarString (nth:int) =
             match nth with
@@ -612,7 +612,7 @@ namespace Vaughan
         let private createMutedStringFret guitarString note =
             let note = openStringNote guitarString
             { GuitarString = guitarString; Fret = -1; Note = note }
-
+            
         let private createFret guitarString note =
             { GuitarString = guitarString; Fret = fretForNote note guitarString; Note = note }
 
