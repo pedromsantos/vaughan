@@ -52,13 +52,15 @@ namespace Vaughan
             if number > cap then cap else number
 
     module Domain =
-        type Note = | C | CSharp | DFlat | D | DSharp | EFlat | E | F | FSharp 
-                    | GFlat | G | GSharp | AFlat | A | ASharp | BFlat | B
+        type Note = 
+            | C | CSharp | DFlat | D | DSharp | EFlat | E | F | FSharp 
+            | GFlat | G | GSharp | AFlat | A | ASharp | BFlat | B
                     
-        type Interval = | Unisson | MinorSecond | MajorSecond | AugmentedSecond | MinorThird
-                        | MajorThird | PerfectForth | AugmentedForth | DiminishedFifth
-                        | PerfectFifth | AugmentedFifth | MinorSixth | MajorSixth
-                        | MinorSeventh | MajorSeventh | PerfectOctave
+        type Interval = 
+            | Unisson | MinorSecond | MajorSecond | AugmentedSecond | MinorThird
+            | MajorThird | PerfectForth | AugmentedForth | DiminishedFifth
+            | PerfectFifth | AugmentedFifth | MinorSixth | MajorSixth
+            | MinorSeventh | MajorSeventh | PerfectOctave
 
         type Scales = 
             | Ionian | Dorian | Phrygian | Lydian | Mixolydian
@@ -82,24 +84,24 @@ namespace Vaughan
             | Sus2 | Sus2Diminished | Sus2Augmented
             | Sus4 | Sus4Diminished | Sus4Augmented
             
-        type ChordNoteFunction = | Root | Third | Fifth | Seventh | Ninth | Eleventh | Thirteenth
-        type ChordType = | Open | Closed | Drop2 | Drop3
+        type ChordNoteFunction = 
+            | Root | Third | Fifth | Seventh | Ninth | Eleventh | Thirteenth
+        
         type ChordNote = Note * ChordNoteFunction
+
+        type ChordType = | Open | Closed | Drop2 | Drop3
 
         type Chord = {Notes:ChordNote list; ChordType:ChordType;}
 
-        type ScaleDgrees = | I = 0 | II = 1 | III = 2 | IV = 3 | V = 4 | VI = 5 | VII = 6
+        type ScaleDgrees = 
+            | I = 0 | II = 1 | III = 2 | IV = 3 | V = 4 | VI = 5 | VII = 6
 
         type GuitarString = 
-            | SixthString 
-            | FifthString 
-            | FourthString 
-            | ThirdString 
-            | SecondString 
-            | FirstString
+            | SixthString | FifthString | FourthString 
+            | ThirdString | SecondString | FirstString
         
-        type GuitarStringAttributes = {Name:string; OpenStringNote:Note; Index:int}
         type Fret = {GuitarString:GuitarString; Fret:int; Note:Note}
+        
         type GuitarChord = {Chord:Chord; Frets:Fret list}
 
         type ChordIntent = { Root: Note; Quality:Quality; }
@@ -525,6 +527,8 @@ namespace Vaughan
         open Notes
         open Chords
         open Infrastructure
+
+        type private GuitarStringAttributes = {Name:string; OpenStringNote:Note; Index:int}
 
         let guitarStringAttributes = function
             | SixthString -> { Name="Sixth"; OpenStringNote=E; Index=6}
