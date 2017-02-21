@@ -69,6 +69,8 @@ namespace Vaughan
             | LydianDominant | Mixolydianb6 | LocrianSharp2
             | AlteredDominant | HalfWholeDiminished | WholeTone
 
+        type ScaleFormula = Interval list
+
         type Key = 
             | AMajor | AFlatMajor | BMajor | BFlatMajor | CMajor
             | DMajor | DFlatMajor | EMajor | EFlatMajor
