@@ -33,6 +33,7 @@ namespace VaughanTests
     module NotesTests =
         open NUnit.Framework
         open Swensen.Unquote
+        open Vaughan.Domain
         open Vaughan.Notes
 
         [<Test>]
@@ -185,6 +186,7 @@ namespace VaughanTests
      module KeyTests =
         open NUnit.Framework
         open Swensen.Unquote
+        open Vaughan.Domain
         open Vaughan.Notes
         open Vaughan.Keys
 
@@ -220,6 +222,7 @@ namespace VaughanTests
     module ScaleTests =
         open NUnit.Framework
         open Swensen.Unquote
+        open Vaughan.Domain
         open Vaughan.Notes
         open Vaughan.Scales
 
@@ -249,6 +252,7 @@ namespace VaughanTests
     module ChordsTests =
         open NUnit.Framework
         open Swensen.Unquote
+        open Vaughan.Domain
         open Vaughan.Notes
         open Vaughan.Chords
 
@@ -394,6 +398,7 @@ namespace VaughanTests
         open Vaughan.Scales
         open Vaughan.Chords
         open Vaughan.Notes
+        open Vaughan.Domain
         
         let cMaj = {Notes= [(C, Root); (E, Third); (G, Fifth)]; ChordType=Closed}
         let dMin = {Notes= [(D, Root); (F, Third); (A, Fifth)]; ChordType=Closed}
@@ -487,6 +492,7 @@ namespace VaughanTests
     module GuitarTests =
         open NUnit.Framework
         open Swensen.Unquote
+        open Vaughan.Domain
         open Vaughan.Notes
         open Vaughan.Chords
         open Vaughan.Guitar
@@ -745,6 +751,7 @@ namespace VaughanTests
         open System
         open NUnit.Framework
         open Swensen.Unquote
+        open Vaughan.Domain
         open Vaughan.Notes
         open Vaughan.Chords
         open Vaughan.Guitar
@@ -890,6 +897,7 @@ namespace VaughanTests
             open FParsec
             open NUnit.Framework
             open Swensen.Unquote
+            open Vaughan.Domain
             open Vaughan.Notes
             open Vaughan.Chords
             open Vaughan.Chords

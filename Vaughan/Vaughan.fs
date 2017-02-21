@@ -51,7 +51,7 @@ namespace Vaughan
         let cappedMaximum number cap =
             if number > cap then cap else number
 
-    module Notes =
+    module Domain =
         type Note = | C | CSharp | DFlat | D | DSharp | EFlat | E | F | FSharp 
                     | GFlat | G | GSharp | AFlat | A | ASharp | BFlat | B
                     
@@ -60,8 +60,57 @@ namespace Vaughan
                         | PerfectFifth | AugmentedFifth | MinorSixth | MajorSixth
                         | MinorSeventh | MajorSeventh | PerfectOctave
         
-        type private NoteAttributes = {Name:string; Sharp:Note; Flat:Note; Pitch:int}
-        type private IntervalAttributes = {Name:string; Distance:int}
+        type NoteAttributes = {Name:string; Sharp:Note; Flat:Note; Pitch:int}
+        type IntervalAttributes = {Name:string; Distance:int}
+
+        type Scales = 
+            | Ionian | Dorian | Phrygian | Lydian | Mixolydian
+            | Aolian | Locrian | MajorPentatonic | MinorPentatonic
+            | Blues | HarmonicMinor | MelodicMinor | Dorianb2 | LydianAugmented
+            | LydianDominant | Mixolydianb6 | LocrianSharp2
+            | AlteredDominant | HalfWholeDiminished | WholeTone
+
+        type Key = 
+            | AMajor | AFlatMajor | BMajor | BFlatMajor | CMajor
+            | DMajor | DFlatMajor | EMajor | EFlatMajor
+            | FMajor | FSharpMajor | GMajor | GFlatMajor | AMinor
+            | BMinor | BFlatMinor | CMinor | CSharpMinor | DMinor
+            | EMinor | FMinor | FSharpMinor | GMinor 
+            | GSharpMinor | EFlatMinor
+
+        type KeyAttributes = {Root:Note; Accidentals:int}
+
+        type Quality = 
+            | Major | Augmented | Minor | Diminished
+            | Major7 | Augmented7 | Minor7 | Diminished7 
+            | Dominant7 | Minor7b5 | MinorMaj7
+            | Sus2 | Sus2Diminished | Sus2Augmented
+            | Sus4 | Sus4Diminished | Sus4Augmented
+            
+        type ChordNoteFunction = | Root | Third | Fifth | Seventh | Ninth | Eleventh | Thirteenth
+        type ChordType = | Open | Closed | Drop2 | Drop3
+        type ChordNote = Note * ChordNoteFunction
+
+        type Chord = {Notes:ChordNote list; ChordType:ChordType;}
+
+        type ScaleDgrees = | I = 0 | II = 1 | III = 2 | IV = 3 | V = 4 | VI = 5 | VII = 6
+
+        type GuitarString = 
+            | SixthString 
+            | FifthString 
+            | FourthString 
+            | ThirdString 
+            | SecondString 
+            | FirstString
+        
+        type GuitarStringAttributes = {Name:string; OpenStringNote:Note; Index:int}
+        type Fret = {GuitarString:GuitarString; Fret:int; Note:Note}
+        type GuitarChord = {Chord:Chord; Frets:Fret list}
+
+        type ChordIntent = { Root: Note; Quality:Quality; }
+
+    module Notes =
+        open Domain
 
         let private noteAttributes = function
             | C -> {Name="C"; Sharp=CSharp; Flat=B; Pitch=0}
@@ -166,14 +215,8 @@ namespace Vaughan
             loop noteToTranspose
 
     module Scales =
+        open Domain
         open Notes
-
-        type Scales = 
-            | Ionian | Dorian | Phrygian | Lydian | Mixolydian
-            | Aolian | Locrian | MajorPentatonic | MinorPentatonic
-            | Blues | HarmonicMinor | MelodicMinor | Dorianb2 | LydianAugmented
-            | LydianDominant | Mixolydianb6 | LocrianSharp2
-            | AlteredDominant | HalfWholeDiminished | WholeTone
 
         let formula = function
             | Ionian -> [Unisson; MajorSecond; MajorThird; PerfectForth; PerfectFifth; MajorSixth; MajorSeventh]
@@ -201,17 +244,8 @@ namespace Vaughan
             formula scale |> List.map (fun interval -> transpose root interval)
 
     module Keys =
+        open Domain
         open Notes
-
-        type Key = 
-            | AMajor | AFlatMajor | BMajor | BFlatMajor | CMajor
-            | DMajor | DFlatMajor | EMajor | EFlatMajor
-            | FMajor | FSharpMajor | GMajor | GFlatMajor | AMinor
-            | BMinor | BFlatMinor | CMinor | CSharpMinor | DMinor
-            | EMinor | FMinor | FSharpMinor | GMinor 
-            | GSharpMinor | EFlatMinor
-
-        type private KeyAttributes = {Root:Note; Accidentals:int}
 
         let private keyAttributes = function
             | AMajor -> {Root=A; Accidentals=3} 
@@ -281,21 +315,9 @@ namespace Vaughan
             |> List.takeWhile (fun n -> n <> root scale))  
 
     module Chords =
+        open Domain
         open Notes
         open Infrastructure
-
-        type Quality = 
-            | Major | Augmented | Minor | Diminished
-            | Major7 | Augmented7 | Minor7 | Diminished7 
-            | Dominant7 | Minor7b5 | MinorMaj7
-            | Sus2 | Sus2Diminished | Sus2Augmented
-            | Sus4 | Sus4Diminished | Sus4Augmented
-            
-        type ChordNoteFunction = | Root | Third | Fifth | Seventh | Ninth | Eleventh | Thirteenth
-        type ChordType = | Open | Closed | Drop2 | Drop3
-        type ChordNote = Note * ChordNoteFunction
-
-        type Chord = {Notes:ChordNote list; ChordType:ChordType;}
 
         let functionForInterval = function
             | Unisson -> Root
@@ -459,10 +481,9 @@ namespace Vaughan
 
     module ScaleHarmonizer = 
         open Infrastructure
+        open Domain
         open Chords
         
-        type ScaleDgrees = | I = 0 | II = 1 | III = 2 | IV = 3 | V = 4 | VI = 5 | VII = 6
-
 
         let thirds (fromPosition:ScaleDgrees) scale =
             let octave = 16
@@ -500,21 +521,10 @@ namespace Vaughan
             harmonizeScaleDegreeWithNotes forDegree scale 3
 
     module Guitar =
+        open Domain
         open Notes
         open Chords
         open Infrastructure
-
-        type GuitarString = 
-            | SixthString 
-            | FifthString 
-            | FourthString 
-            | ThirdString 
-            | SecondString 
-            | FirstString
-        
-        type GuitarStringAttributes = {Name:string; OpenStringNote:Note; Index:int}
-        type Fret = {GuitarString:GuitarString; Fret:int; Note:Note}
-        type GuitarChord = {Chord:Chord; Frets:Fret list}
 
         let guitarStringAttributes = function
             | SixthString -> { Name="Sixth"; OpenStringNote=E; Index=6}
@@ -631,6 +641,7 @@ namespace Vaughan
 
     module GuitarTab =
         open System
+        open Domain
         open Notes
         open Chords
         open Guitar
@@ -760,8 +771,8 @@ namespace Vaughan
         let shapify guitarChord =
             name guitarChord.Chord +
             Environment.NewLine +
-            "EADGBE" + 
-            Environment.NewLine + 
+            "EADGBE" +
+            Environment.NewLine +
             (guitarChord
                 |> shapifyChord
                 |> List.fold (+) "") +
@@ -769,14 +780,13 @@ namespace Vaughan
 
     module SpeechToMusic =
         open FParsec
+        open Domain
         open Notes
         open Chords
 
         type private UserState = unit
         type private Parser<'t> = Parser<'t, UserState>
-
-        type ChordIntent = { Root: Note; Quality:Quality; }
-
+        
         let private skip parser skiped = parser .>> skiped
 
         let private skipSpaces parser = skip parser spaces
