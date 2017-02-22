@@ -141,7 +141,7 @@ namespace Vaughan
 
         let flat note =
             (noteAttributes note).Flat
-
+            
         let natural note =
             note
             
@@ -324,14 +324,14 @@ namespace Vaughan
         open Notes
         open Infrastructure
 
-        let functionForInterval = function
+        let private functionForInterval = function
             | Unisson -> Root
             | MajorThird | MinorThird -> Third 
             | PerfectFifth | DiminishedFifth | AugmentedFifth  -> Fifth
             | MajorSeventh | MinorSeventh | MajorSixth -> Seventh
             | _ -> Root
 
-        let intervalsForQuality = function
+        let private intervalsForQuality = function
             | Major -> [MajorThird; PerfectFifth]
             | Augmented -> [MajorThird; AugmentedFifth]
             | Minor -> [MinorThird; PerfectFifth]
@@ -350,7 +350,7 @@ namespace Vaughan
             | Sus4Diminished -> [PerfectForth; DiminishedFifth]
             | Sus4Augmented -> [PerfectForth; AugmentedFifth]
 
-        let functionForIntervals = function
+        let private functionForIntervals = function
             | [MajorThird; PerfectFifth] -> Major
             | [MajorThird; AugmentedFifth] -> Augmented
             | [MinorThird; PerfectFifth] -> Minor
@@ -370,7 +370,7 @@ namespace Vaughan
             | [PerfectForth; AugmentedFifth] -> Sus4Augmented
             | _ -> Major
 
-        let abreviatedName = function
+        let private abreviatedName = function
             | Major -> "Maj" | Augmented -> "Aug" | Minor -> "Min" 
             | Diminished -> "Dim" | Major7 -> "Maj7" 
             | Augmented7 -> "Aug7" | Minor7 -> "Min7" 
@@ -384,16 +384,16 @@ namespace Vaughan
         let note chordNote =
             fst chordNote
 
-        let private rawNotes chord =
-            chord.Notes |>  List.map note
-
-        let rawNoteForIndex nth chord =
-            (List.item nth (rawNotes chord))
-
         let noteFunction chordNote =
             snd chordNote
 
-        let noteForFunction chord chordNoteFunction =
+        let private rawNotes chord =
+            chord.Notes |>  List.map note
+
+        let private rawNoteForIndex nth chord =
+            (List.item nth (rawNotes chord))
+
+        let private noteForFunction chord chordNoteFunction =
             note (chord.Notes |> List.find (fun n -> noteFunction n = chordNoteFunction))
         
         let bass chord =
@@ -402,7 +402,7 @@ namespace Vaughan
         let lead chord =
             note (chord.Notes |> List.last)
         
-        let intervalsForChord chord =
+        let private intervalsForChord chord =
             let root = noteForFunction chord Root
             chord.Notes
             |> List.map (fun n -> intervalBetween root (note n))
@@ -422,10 +422,10 @@ namespace Vaughan
                 ChordType = Closed
             }           
 
-        let invertOpenOrClosed chord =
+        let private invertOpenOrClosed chord =
             {chord with Notes= rotateByOne chord.Notes;}
 
-        let invertDrop2 chord = 
+        let private invertDrop2 chord = 
             {
                 chord with Notes= [chord.Notes |> List.last] 
                                     @ (chord.Notes 
@@ -434,7 +434,7 @@ namespace Vaughan
                                         |> rotateByOne) 
              }     
 
-        let invertDrop3 chord =
+        let private invertDrop3 chord =
             {chord with Notes= chord.Notes |> rotateByOne |> rotateByOne |> swapSecondTwo;}
 
         let invert chord =
