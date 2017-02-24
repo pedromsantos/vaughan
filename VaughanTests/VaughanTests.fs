@@ -424,22 +424,6 @@ namespace VaughanTests
         let bDim7 = {Notes= [(B, Root); (D, Third); (F, Fifth); (AFlat, Seventh)]; ChordType=Closed}
 
         [<Test>]
-        let ``Should filter scale in thirds`` () =
-            let cIonian = createScale Ionian C
-            test <@ thirds ScaleDgrees.I cIonian  = [ C; E; G; B; D; F; A; C ] @>
-            test <@ thirds ScaleDgrees.II cIonian  = [ D; F; A; C; E; G; B; D ] @>
-            test <@ thirds ScaleDgrees.III cIonian  = [ E; G; B; D; F; A; C; E ] @>
-            test <@ thirds ScaleDgrees.IV cIonian  = [ F; A; C; E; G; B; D; F ] @>
-            test <@ thirds ScaleDgrees.V cIonian  = [ G; B; D; F; A; C; E; G ] @>
-            test <@ thirds ScaleDgrees.VI cIonian  = [ A; C; E; G; B; D; F; A ] @>
-            test <@ thirds ScaleDgrees.VII cIonian  = [ B; D; F; A; C; E; G; B ] @>
-            
-        [<Test>]
-        let ``Should create chord for scale`` () =
-            let cMajor = createScale Ionian C
-            test <@ (harmonizer ScaleDgrees.I cMajor).Notes = [(C, Root); (E, Third); (G, Fifth); (B, Seventh); (D, Ninth); (F, Eleventh); (A, Thirteenth)] @>
-
-        [<Test>]
         let ``Should create triads for Ionian scale`` () =
             let cIonian = createScale Ionian C
             test <@ triadsHarmonizer ScaleDgrees.I cIonian = cMaj @>

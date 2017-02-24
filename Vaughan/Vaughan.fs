@@ -132,22 +132,7 @@ namespace Vaughan
             | ASharp -> {Name="A#"; Sharp=B; Flat=A; Pitch=10}
             | BFlat -> {Name="Bb"; Sharp=B; Flat=A; Pitch=10}
             | B -> {Name="B"; Sharp=C; Flat=BFlat; Pitch=11}
-
-        let noteName note =
-            (noteAttributes note).Name
-                
-        let sharp note =
-            (noteAttributes note).Sharp
-
-        let flat note =
-            (noteAttributes note).Flat
-            
-        let natural note =
-            note
-            
-        let pitch note =
-            (noteAttributes note).Pitch
-
+        
         let private intervalAttributes = function
             | Unisson -> {Name="Unisson"; Distance=0} 
             | MinorSecond -> {Name="MinorSecond"; Distance=1} 
@@ -166,6 +151,12 @@ namespace Vaughan
             | MajorSeventh -> {Name="MajorSeventh"; Distance=11} 
             | PerfectOctave -> {Name="PerfectOctave"; Distance=12} 
         
+        let sharp note =
+            (noteAttributes note).Sharp
+
+        let flat note =
+            (noteAttributes note).Flat
+
         let private transposeDirection note = function
             | Unisson -> note 
             | MajorSecond | AugmentedSecond | PerfectFifth | MajorThird 
@@ -173,6 +164,14 @@ namespace Vaughan
             | AugmentedForth | MajorSeventh -> sharp note
             | MinorSecond | DiminishedFifth | MinorThird
             | MinorSixth | MinorSeventh  -> flat note
+        let noteName note =
+            (noteAttributes note).Name
+            
+        let natural note =
+            note
+            
+        let pitch note =
+            (noteAttributes note).Pitch
             
         let intervalName interval =
             (intervalAttributes interval).Name
@@ -494,7 +493,7 @@ namespace Vaughan
         open Domain
         open Chords
 
-        let thirds (fromPosition:ScaleDgrees) scale =
+        let private thirds (fromPosition:ScaleDgrees) scale =
             let octave = 16
             
             scale 
@@ -504,7 +503,7 @@ namespace Vaughan
             |> filterOddIndexElements
             |> Seq.toList
 
-        let harmonizer forDegree scale =
+        let private harmonizer forDegree scale =
             let thirdsList = 
                 scale
                 |> thirds forDegree
@@ -543,9 +542,6 @@ namespace Vaughan
             | ThirdString -> { Name="Third"; OpenStringNote=G; Index=3}
             | SecondString -> { Name="Second"; OpenStringNote=B; Index=2}
             | FirstString -> { Name="First"; OpenStringNote=E; Index=1}
-
-        let fretForNote note guitarString =
-            measureAbsoluteSemitones (guitarStringAttributes guitarString).OpenStringNote note
 
         let private guitarStringOrdinal guitarString =
             (guitarStringAttributes guitarString).Index
@@ -618,9 +614,12 @@ namespace Vaughan
         let private createMutedStringFret guitarString note =
             let note = openStringNote guitarString
             { GuitarString = guitarString; Fret = -1; Note = note }
-            
+
+        let private findFretForNote note guitarString =
+            measureAbsoluteSemitones (guitarStringAttributes guitarString).OpenStringNote note
+
         let private createFret guitarString note =
-            { GuitarString = guitarString; Fret = fretForNote note guitarString; Note = note }
+            { GuitarString = guitarString; Fret = findFretForNote note guitarString; Note = note }
 
         let private skipString bassString guitarString chord =
             let afterBassString = (indexToGuitarString ((guitarStringOrdinal bassString) - 1))
@@ -640,6 +639,9 @@ namespace Vaughan
                         mapChordNoteToString nextString (chordNotes |> List.skip 1) (fret::mappedChordNotes)
 
             mapChordNoteToString bassString chord.Notes []
+
+        let fretForNote note guitarString =
+            findFretForNote note guitarString
 
         let chordToGuitarChord bassString chord =
             { Chord=chord; Frets= mapChordToGuitarFrets bassString chord |> List.rev }
