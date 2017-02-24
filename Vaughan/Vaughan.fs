@@ -381,10 +381,10 @@ namespace Vaughan
             | Sus4 -> "Sus4" | Sus4Diminished -> "SusDim" 
             | Sus4Augmented -> "Sus4Aug"
 
-        let note chordNote =
+        let private note chordNote =
             fst chordNote
 
-        let noteFunction chordNote =
+        let private noteFunction chordNote =
             snd chordNote
 
         let private rawNotes chord =
@@ -392,15 +392,9 @@ namespace Vaughan
 
         let private rawNoteForIndex nth chord =
             (List.item nth (rawNotes chord))
-
-        let noteForFunction chord chordNoteFunction =
+        
+        let private noteForFunction chord chordNoteFunction =
             note (chord.Notes |> List.find (fun n -> noteFunction n = chordNoteFunction))
-        
-        let bass chord =
-            note (chord.Notes |> List.head)
-        
-        let lead chord =
-            note (chord.Notes |> List.last)
         
         let private intervalsForChord chord =
             let root = noteForFunction chord Root
@@ -408,19 +402,6 @@ namespace Vaughan
             |> List.map (fun n -> intervalBetween root (note n))
             |> List.sortBy toDistance
             |> List.skip 1
-            
-        let name chord =
-            noteName (noteForFunction chord Root) 
-            + abreviatedName (functionForIntervals(intervalsForChord chord))
-            
-        let noteNames chord =
-            chord.Notes |> List.map (note >> noteName)
-            
-        let chordFromRootAndFunction root quality =
-            {
-                Notes= [(root, Root)] @ (intervalsForQuality quality |> List.map (fun i -> ((transpose root i), functionForInterval i)));
-                ChordType = Closed
-            }           
 
         let private invertOpenOrClosed chord =
             {chord with Notes= rotateByOne chord.Notes;}
@@ -442,12 +423,39 @@ namespace Vaughan
             | Closed | Open -> invertOpenOrClosed chord
             | Drop2 -> invertDrop2 chord
             | Drop3 -> invertDrop3 chord
+        let bass chord =
+            note (chord.Notes |> List.head)
+        
+        let lead chord =
+            note (chord.Notes |> List.last)
+            
+        let name chord =
+            noteName (noteForFunction chord Root) 
+            + abreviatedName (functionForIntervals(intervalsForChord chord))
+            
+        let noteNames chord =
+            chord.Notes |> List.map (note >> noteName)
+            
+        let chordFromRootAndFunction root quality =
+            {
+                Notes= [(root, Root)] @ (intervalsForQuality quality |> List.map (fun i -> ((transpose root i), functionForInterval i)));
+                ChordType = Closed
+            }
 
         let toDrop2 chord =
             {Notes= chord.Notes |> swapFirstTwo |> rotateByOne; ChordType=Drop2}
 
         let toDrop3 chord =
             {Notes= (chord |> toDrop2 |> toDrop2).Notes; ChordType=Drop3}
+
+    module ChordVoiceLeading =
+        open Chords
+        open Domain
+        open Notes
+        open Infrastructure
+
+        let private isLeadFunctionOnChordDesiredFunction chord desiredNoteFunction listFilter =
+            snd (chord.Notes |> listFilter) = desiredNoteFunction
 
         let rec private repeatInversion chord times =
             match times with
@@ -457,9 +465,6 @@ namespace Vaughan
         let private generateChordInversions chord =
             let notesInChord = chord.Notes |> List.length
             [for index in 1 .. notesInChord do yield repeatInversion chord index]
-
-        let private isLeadFunctionOnChordDesiredFunction chord desiredNoteFunction listFilter =
-            noteFunction (chord.Notes |> listFilter) = desiredNoteFunction
 
         let private inversionForFunction chord desiredNoteFunction listFilter =
             generateChordInversions chord
@@ -488,7 +493,6 @@ namespace Vaughan
         open Infrastructure
         open Domain
         open Chords
-        
 
         let thirds (fromPosition:ScaleDgrees) scale =
             let octave = 16
@@ -629,10 +633,10 @@ namespace Vaughan
                 else
                     let nextString = nextString guitarString
                     if skipString bassString guitarString chord then
-                        let fret = createMutedStringFret guitarString (note chordNotes.[0])
+                        let fret = createMutedStringFret guitarString (fst chordNotes.[0])
                         mapChordNoteToString nextString chordNotes (fret::mappedChordNotes)
                     else
-                        let fret = createFret guitarString (note chordNotes.[0])
+                        let fret = createFret guitarString (fst chordNotes.[0])
                         mapChordNoteToString nextString (chordNotes |> List.skip 1) (fret::mappedChordNotes)
 
             mapChordNoteToString bassString chord.Notes []

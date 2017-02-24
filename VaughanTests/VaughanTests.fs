@@ -255,6 +255,7 @@ namespace VaughanTests
         open Vaughan.Domain
         open Vaughan.Notes
         open Vaughan.Chords
+        open Vaughan.ChordVoiceLeading
 
         let cMaj = {Notes= [(C, Root); (E, Third); (G, Fifth)]; ChordType=Closed}
         let cAug = {Notes= [(C, Root); (E, Third); (GSharp, Fifth)]; ChordType=Closed}
@@ -265,14 +266,7 @@ namespace VaughanTests
         let cMin7 = {Notes= [(C, Root); (EFlat, Third); (G, Fifth); (BFlat, Seventh)]; ChordType=Closed}
         let cDim7 = {Notes= [(C, Root); (EFlat, Third); (GFlat, Fifth); (A, Seventh)]; ChordType=Closed}
         let cMin7b5 = {Notes= [(C, Root); (EFlat, Third); (GFlat, Fifth); (BFlat, Seventh)]; ChordType=Closed}
-                
-        [<Test>]
-        let ``Chord should have notes for function``() =
-            test <@ noteForFunction cMaj7 Root = C @>
-            test <@ noteForFunction cAug Third = E @>
-            test <@ noteForFunction cDim Fifth = GFlat @>
-            test <@ noteForFunction cMin7b5 Seventh = BFlat @>
-            
+
         [<Test>]
         let ``Chord should return note names``() =
             test <@ noteNames cMaj7 = ["C"; "E"; "G"; "B"] @>
