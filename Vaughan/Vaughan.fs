@@ -393,7 +393,7 @@ namespace Vaughan
         let private rawNoteForIndex nth chord =
             (List.item nth (rawNotes chord))
 
-        let private noteForFunction chord chordNoteFunction =
+        let noteForFunction chord chordNoteFunction =
             note (chord.Notes |> List.find (fun n -> noteFunction n = chordNoteFunction))
         
         let bass chord =
