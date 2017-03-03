@@ -963,3 +963,16 @@ namespace VaughanTests
                                     "D|----2-------|" + Environment.NewLine + 
                                     "A|----4-------|" + Environment.NewLine + 
                                     "E|----5-------|" + Environment.NewLine @>
+            [<Test>]
+            let ``Should tabify open chord from text``() =                 
+                test <@ "C Major"
+                        |> parseChord
+                        |> createChord
+                        |> chordToGuitarChord FifthString
+                        |> tabify = "      CMaj   " + Environment.NewLine+
+                                    "E|------------|" + Environment.NewLine +
+                                    "B|------------|" + Environment.NewLine +
+                                    "G|----0-------|" + Environment.NewLine + 
+                                    "D|----2-------|" + Environment.NewLine + 
+                                    "A|----3-------|" + Environment.NewLine + 
+                                    "E|------------|" + Environment.NewLine @>
