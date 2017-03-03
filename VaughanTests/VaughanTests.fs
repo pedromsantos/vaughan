@@ -416,6 +416,14 @@ namespace VaughanTests
         let aMin7 = {Notes= [(A, Root); (C, Third); (E, Fifth); (G, Seventh)]; ChordType=Closed}
         let bMin7b5 = {Notes= [(B, Root); (D, Third); (F, Fifth); (A, Seventh)]; ChordType=Closed}
 
+        let cMaj9 = {Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh); (D, Ninth)]; ChordType=Closed}
+        let dMin9 = {Notes= [(D, Root); (F, Third); (A, Fifth); (C, Seventh); (E, Ninth)]; ChordType=Closed}
+        let eMin9 = {Notes= [(E, Root); (G, Third); (B, Fifth); (D, Seventh); (F, Ninth)]; ChordType=Closed}
+        let fMaj9 = {Notes= [(F, Root); (A, Third); (C, Fifth); (E, Seventh); (G, Ninth)]; ChordType=Closed}
+        let gDom9 = {Notes= [(G, Root); (B, Third); (D, Fifth); (F, Seventh); (A, Ninth)]; ChordType=Closed}
+        let aMin9 = {Notes= [(A, Root); (C, Third); (E, Fifth); (G, Seventh); (B, Ninth)]; ChordType=Closed}
+        let bMin9b5 = {Notes= [(B, Root); (D, Third); (F, Fifth); (A, Seventh); (C, Ninth)]; ChordType=Closed}
+
         let cMinMaj7 = {Notes= [(C, Root); (EFlat, Third); (G, Fifth); (B, Seventh)]; ChordType=Closed}
         let dMin7b5 = {Notes= [(D, Root); (F, Third); (AFlat, Fifth); (C, Seventh)]; ChordType=Closed}
         let eFlatAug7 = {Notes= [(EFlat, Root); (G, Third); (B, Fifth); (D, Seventh)]; ChordType=Closed}
@@ -455,7 +463,7 @@ namespace VaughanTests
             test <@ seventhsHarmonizer ScaleDgrees.V cIonian = gDom7 @>
             test <@ seventhsHarmonizer ScaleDgrees.VI cIonian = aMin7 @>
             test <@ seventhsHarmonizer ScaleDgrees.VII cIonian = bMin7b5 @>
-
+            
         [<Test>]
         let ``Should create seventh chords for Harmonic Minor scale`` () =
             let cMinor = createScale HarmonicMinor C
@@ -466,6 +474,17 @@ namespace VaughanTests
             test <@ seventhsHarmonizer ScaleDgrees.V cMinor = gDom7 @>
             test <@ seventhsHarmonizer ScaleDgrees.VI cMinor = aFlatMaj7 @>
             test <@ seventhsHarmonizer ScaleDgrees.VII cMinor = bDim7 @>
+
+        [<Test>]
+        let ``Should create ninth chords for Ionian scale`` () =
+            let cIonian = createScale Ionian C
+            test <@ ninthsHarmonizer ScaleDgrees.I cIonian = cMaj9 @>
+            test <@ ninthsHarmonizer ScaleDgrees.II cIonian = dMin9 @>
+            test <@ ninthsHarmonizer ScaleDgrees.III cIonian = eMin9 @>
+            test <@ ninthsHarmonizer ScaleDgrees.IV cIonian = fMaj9 @>
+            test <@ ninthsHarmonizer ScaleDgrees.V cIonian = gDom9 @>
+            test <@ ninthsHarmonizer ScaleDgrees.VI cIonian = aMin9 @>
+            test <@ ninthsHarmonizer ScaleDgrees.VII cIonian = bMin9b5 @>
 
     module GuitarTests =
         open NUnit.Framework

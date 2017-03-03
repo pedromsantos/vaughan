@@ -422,6 +422,7 @@ namespace Vaughan
             | Closed | Open -> invertOpenOrClosed chord
             | Drop2 -> invertDrop2 chord
             | Drop3 -> invertDrop3 chord
+            
         let bass chord =
             note (chord.Notes |> List.head)
         
@@ -522,11 +523,20 @@ namespace Vaughan
             let complete = harmonizer forDegree scale
             {complete with Notes = complete.Notes |> List.take notes}
 
+        let harmonize forDegree lastFunction scale =
+            match lastFunction with
+            | Seventh -> harmonizeScaleDegreeWithNotes forDegree scale 4
+            | Ninth -> harmonizeScaleDegreeWithNotes forDegree scale 5
+            | _ -> harmonizeScaleDegreeWithNotes forDegree scale 3
+
+        let ninthsHarmonizer forDegree scale =
+             harmonize forDegree Ninth scale
+
         let seventhsHarmonizer forDegree scale =
-             harmonizeScaleDegreeWithNotes forDegree scale 4
+             harmonize forDegree Seventh scale
 
         let triadsHarmonizer forDegree scale =
-            harmonizeScaleDegreeWithNotes forDegree scale 3
+            harmonize forDegree Fifth scale
 
     module Guitar =
         open Domain
