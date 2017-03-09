@@ -906,11 +906,11 @@ namespace VaughanTests
             open Vaughan.ScaleHarmonizer
 
             [<Test>]
-            let ``Should parse textual representation Pof chord``() =
+            let ``Should parse textual representation of chord``() =
                 test <@ (parseChord "C Major") = { Root=C; Quality=Major } @>
-                test <@ (parseChord "C Maj") = { Root=C; Quality=Major } @>
+                test <@ (parseChord "C# Maj") = { Root=CSharp; Quality=Major } @>
                 test <@ (parseChord "C minor") = { Root=C; Quality=Minor } @>
-                test <@ (parseChord "C min") = { Root=C; Quality=Minor } @>
+                test <@ (parseChord "Db min") = { Root=DFlat; Quality=Minor } @>
                 test <@ (parseChord "Cmin") = { Root=C; Quality=Minor } @>
                 test <@ (parseChord "Cm") = { Root=C; Quality=Minor } @>
                 test <@ (parseChord "C augmented") = { Root=C; Quality=Augmented } @>
@@ -929,7 +929,7 @@ namespace VaughanTests
                 test <@ (parseChord "C dim 7") = { Root=C; Quality=Diminished7 } @>
                 test <@ (parseChord "Caug7") = { Root=C; Quality=Augmented7 } @>
                 test <@ (parseChord "Cdom7") = { Root=C; Quality=Dominant7 } @>
-                test <@ (parseChord "C7") = { Root=C; Quality=Dominant7 } @>
+                test <@ (parseChord "C#7") = { Root=CSharp; Quality=Dominant7 } @>
                              
             [<Test>]
             let ``Should create chord from chord intent``() =
