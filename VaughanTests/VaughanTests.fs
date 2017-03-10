@@ -266,6 +266,18 @@ namespace VaughanTests
         let cMin7 = {Notes= [(C, Root); (EFlat, Third); (G, Fifth); (BFlat, Seventh)]; ChordType=Closed}
         let cDim7 = {Notes= [(C, Root); (EFlat, Third); (GFlat, Fifth); (A, Seventh)]; ChordType=Closed}
         let cMin7b5 = {Notes= [(C, Root); (EFlat, Third); (GFlat, Fifth); (BFlat, Seventh)]; ChordType=Closed}
+        let c6 = {Notes= [(C, Root); (E, Third); (G, Fifth); (A, Sixth)]; ChordType=Closed}
+        let c6add9 = {Notes= [(C, Root); (E, Third); (G, Fifth); (A, Sixth); (D, Ninth)]; ChordType=Closed}
+        let c6flat5add9 = {Notes= [(C, Root); (E, Third); (GFlat, Fifth); (A, Sixth); (D, Ninth)]; ChordType=Closed}
+        let c7 = {Notes= [(C, Root); (E, Third); (G, Fifth); (BFlat, Seventh)]; ChordType=Closed}
+        let c7flat5 = {Notes= [(C, Root); (E, Third); (GFlat, Fifth); (BFlat, Seventh)]; ChordType=Closed}    
+        let c9 = {Notes= [(C, Root); (E, Third); (G, Fifth); (BFlat, Seventh); (D, Ninth)]; ChordType=Closed}
+        let c7flat9 = {Notes= [(C, Root); (E, Third); (G, Fifth); (BFlat, Seventh); (DFlat, Ninth)]; ChordType=Closed}
+        let c7sharp9 = {Notes= [(C, Root); (E, Third); (G, Fifth); (BFlat, Seventh); (DSharp, Ninth)]; ChordType=Closed}
+        let c7flat5flat9 = {Notes= [(C, Root); (E, Third); (GFlat, Fifth); (BFlat, Seventh); (DFlat, Ninth)]; ChordType=Closed}    
+        let c7flat5sharp9 = {Notes= [(C, Root); (E, Third); (GFlat, Fifth); (BFlat, Seventh); (DSharp, Ninth)]; ChordType=Closed}    
+        let c11 = {Notes= [(C, Root); (E, Third); (G, Fifth); (BFlat, Seventh); (D, Ninth); (F, Eleventh)]; ChordType=Closed}
+        let c13 = {Notes= [(C, Root); (E, Third); (G, Fifth); (BFlat, Seventh); (D, Ninth); (F, Eleventh); (A, Thirteenth)]; ChordType=Closed}
 
         [<Test>]
         let ``Chord should return note names``() =
@@ -293,6 +305,7 @@ namespace VaughanTests
             test <@ (name cAug7).StartsWith("CAug7") @>
             test <@ (name cMin7).StartsWith("CMin7") @>
             test <@ (name cDim7).StartsWith("CDim7") @>
+            test <@ (name c6).StartsWith("C6") @>
             
         [<Test>]
         let ``Should create chord from root and function``() =
@@ -305,6 +318,17 @@ namespace VaughanTests
             test <@ chordFromRootAndFunction C Minor7 = cMin7 @>
             test <@ chordFromRootAndFunction C Diminished7 = cDim7 @>
             test <@ chordFromRootAndFunction C Minor7b5 = cMin7b5 @>
+            test <@ chordFromRootAndFunction C Major6 = c6 @>
+            test <@ chordFromRootAndFunction C Major6Add9 = c6add9 @>
+            test <@ chordFromRootAndFunction C Major6Flat5Add9 = c6flat5add9 @>
+            test <@ chordFromRootAndFunction C Dominant7Flat5 = c7flat5 @>
+            test <@ chordFromRootAndFunction C Dominant7Flat9 = c7flat9 @>
+            test <@ chordFromRootAndFunction C Dominant7Sharp9 = c7sharp9 @>
+            test <@ chordFromRootAndFunction C Dominant7Flat5Flat9 = c7flat5flat9 @>
+            test <@ chordFromRootAndFunction C Dominant7Flat5Sharp9 = c7flat5sharp9 @>
+            test <@ chordFromRootAndFunction C Dominant9 = c9 @>
+            test <@ chordFromRootAndFunction C Dominant11 = c11 @>
+            test <@ chordFromRootAndFunction C Dominant13 = c13 @>
 
         [<Test>]
         let ``Should invert chord for first inversion``() =
