@@ -345,17 +345,6 @@ namespace Vaughan
 
         type private ChordAttributes = {Name:string; Quality:Quality; Formula:Interval list}
 
-        let private functionForInterval = function
-            | Unisson -> Root
-            | MajorThird | MinorThird -> Third 
-            | PerfectFifth | DiminishedFifth | AugmentedFifth  -> Fifth
-            | MajorSixth -> Sixth
-            | MajorSeventh | MinorSeventh | DiminishedSeventh -> Seventh
-            | MajorNinth | MinorNinth | AugmentedNinth -> Ninth
-            | PerfectEleventh | AugmentedEleventh -> Eleventh
-            | MajorThirteenth -> Thirteenth
-            | _ -> Root
-
         let private chordAttributes =
             [
                 {Name="Maj"; Quality=Major; Formula=[MajorThird; PerfectFifth]}
@@ -393,7 +382,7 @@ namespace Vaughan
                 {Name="11"; Quality=Dominant11; Formula=[MajorThird; PerfectFifth; MinorSeventh; MajorNinth; PerfectEleventh]}
                 {Name="13"; Quality=Dominant13; Formula=[MajorThird; PerfectFifth; MinorSeventh; MajorNinth; PerfectEleventh; MajorThirteenth]}
             ]
-            
+
         let private qualityForIntervals intervals =
             (chordAttributes
             |> List.filter (fun c -> c.Formula = intervals)
@@ -408,7 +397,18 @@ namespace Vaughan
             (chordAttributes
             |> List.filter (fun c -> c.Quality = quality)
             |> List.head).Name
-        
+
+        let private functionForInterval = function
+            | Unisson -> Root
+            | MajorThird | MinorThird -> Third 
+            | PerfectFifth | DiminishedFifth | AugmentedFifth  -> Fifth
+            | MajorSixth -> Sixth
+            | MajorSeventh | MinorSeventh | DiminishedSeventh -> Seventh
+            | MajorNinth | MinorNinth | AugmentedNinth -> Ninth
+            | PerfectEleventh | AugmentedEleventh -> Eleventh
+            | MajorThirteenth -> Thirteenth
+            | _ -> Root
+
         let private note chordNote =
             fst chordNote
 
