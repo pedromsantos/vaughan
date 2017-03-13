@@ -391,7 +391,7 @@ namespace Vaughan
             | Dominant11 -> {Name="11"; Formula=[MajorThird; PerfectFifth; MinorSeventh; MajorNinth; PerfectEleventh]}
             | Dominant13 -> {Name="13"; Formula=[MajorThird; PerfectFifth; MinorSeventh; MajorNinth; PerfectEleventh; MajorThirteenth]}
 
-        let private functionForIntervals = function
+        let private qualityForIntervals = function
             | [MajorThird; PerfectFifth] -> Major
             | [MajorThird; AugmentedFifth] -> Augmented
             | [MinorThird; PerfectFifth] -> Minor
@@ -475,7 +475,7 @@ namespace Vaughan
             
         let name chord =
             noteName (noteForFunction chord Root) 
-            + nameForQuality (functionForIntervals(intervalsForChord chord))
+            + nameForQuality (qualityForIntervals(intervalsForChord chord))
             
         let noteNames chord =
             chord.Notes |> List.map (note >> noteName)
