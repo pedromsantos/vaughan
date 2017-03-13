@@ -85,7 +85,7 @@ namespace Vaughan
         type Quality = 
             | Major | Augmented
             | Major6 | Major6Add9 | Major6Flat5Add9 
-            | Major7 | Major9 | Major11 | Augmented7
+            | Major7 | Major9 | Major11 | Major13 | Augmented7
             | Dominant7 | Dominant7Flat5 | Dominant7Flat9 | Dominant7Sharp9
             | Dominant7Flat5Flat9 | Dominant7Flat5Sharp9 
             | Dominant9 | Dominant11 | Dominant13
@@ -362,6 +362,7 @@ namespace Vaughan
             | Major7 -> [MajorThird; PerfectFifth; MajorSeventh]
             | Major9 -> [MajorThird; PerfectFifth; MajorSeventh; MajorNinth]
             | Major11 -> [MajorThird; PerfectFifth; MajorSeventh; PerfectEleventh]
+            | Major13 -> [MajorThird; PerfectFifth; MajorSeventh; MajorThirteenth]
             | Augmented7 -> [MajorThird; AugmentedFifth; MajorSeventh]
             | Minor7 -> [MinorThird; PerfectFifth; MinorSeventh]
             | Diminished7 -> [MinorThird; DiminishedFifth; DiminishedSeventh]
@@ -392,6 +393,9 @@ namespace Vaughan
             | [MinorThird; PerfectFifth] -> Minor
             | [MinorThird; DiminishedFifth] -> Diminished
             | [MajorThird; PerfectFifth; MajorSeventh] -> Major7
+            | [MajorThird; PerfectFifth; MajorSeventh; MajorNinth] -> Major9
+            | [MajorThird; PerfectFifth; MajorSeventh; PerfectEleventh] -> Major11
+            | [MajorThird; PerfectFifth; MajorSeventh; MajorThirteenth] -> Major13
             | [MajorThird; PerfectFifth; MajorSixth] -> Major6
             | [MajorThird; AugmentedFifth; MajorSeventh] -> Augmented7
             | [MinorThird; PerfectFifth; MinorSeventh] -> Minor7
@@ -415,6 +419,9 @@ namespace Vaughan
             | Diminished7 -> "Dim7" | Dominant7 -> "Dom7" 
             | Minor7b5 -> "Min7b5" | MinorMaj7 -> "MinMaj7"
             | Major6 -> "6"
+            | Major9 -> "Maj9"
+            | Major11 -> "Maj11"
+            | Major13 -> "Maj13"
             | Major6Add9 -> "6 add 9"
             | Major6Flat5Add9 -> "6 flat5 add 9"
             | Dominant7Flat5 -> "7 flat 5"
