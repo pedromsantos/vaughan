@@ -343,7 +343,7 @@ namespace Vaughan
         open Notes
         open Infrastructure
 
-        type private ChordAttributes = {Name:string; Formula:Interval list}
+        type private ChordAttributes = {Name:string; Quality:Quality; Formula:Interval list}
 
         let private functionForInterval = function
             | Unisson -> Root
@@ -356,73 +356,57 @@ namespace Vaughan
             | MajorThirteenth -> Thirteenth
             | _ -> Root
 
-        let private chordAttributes = function
-            | Major -> {Name="Maj"; Formula=[MajorThird; PerfectFifth]}
-            | Augmented -> {Name="Aug"; Formula=[MajorThird; AugmentedFifth]}
-            | Minor -> {Name="Min"; Formula=[MinorThird; PerfectFifth]}
-            | Diminished -> {Name="Dim"; Formula=[MinorThird; DiminishedFifth]}
-            | Major7 -> {Name="Maj7"; Formula=[MajorThird; PerfectFifth; MajorSeventh]}
-            | Major9 -> {Name="Maj9"; Formula=[MajorThird; PerfectFifth; MajorSeventh; MajorNinth]}
-            | Major9Sharp11 -> {Name="Maj9(#11)"; Formula=[MajorThird; PerfectFifth; MajorSeventh; MajorNinth; AugmentedEleventh]}
-            | Major11 -> {Name="Maj11"; Formula=[MajorThird; PerfectFifth; MajorSeventh; PerfectEleventh]}
-            | Major13 -> {Name="Maj13"; Formula=[MajorThird; PerfectFifth; MajorSeventh; MajorThirteenth]}
-            | Major13Sharp11 -> {Name="Maj13(#11)"; Formula=[MajorThird; PerfectFifth; MajorSeventh; MajorThirteenth; AugmentedEleventh]}
-            | Augmented7 -> {Name="Aug7"; Formula=[MajorThird; AugmentedFifth; MajorSeventh]}
-            | Minor7 -> {Name="Min7"; Formula=[MinorThird; PerfectFifth; MinorSeventh]}
-            | Diminished7 -> {Name="Dim7"; Formula=[MinorThird; DiminishedFifth; DiminishedSeventh]}
-            | Dominant7 -> {Name="Dom7"; Formula=[MajorThird; PerfectFifth; MinorSeventh]}
-            | Minor7b5 -> {Name="MinMaj7"; Formula=[MinorThird; DiminishedFifth; MinorSeventh]}
-            | MinorMaj7 -> {Name="Maj"; Formula=[MinorThird; PerfectFifth; MajorSeventh]}
-            | Major6 -> {Name="6"; Formula=[MajorThird; PerfectFifth; MajorSixth]}
-            | Sus2 -> {Name="Sus2"; Formula=[MajorSecond; PerfectFifth]}
-            | Sus2Diminished -> {Name="Sus2Dim"; Formula=[MajorSecond; DiminishedFifth]}
-            | Sus2Augmented -> {Name="Sus2Aug"; Formula=[MajorSecond; AugmentedFifth]}
-            | Sus4 -> {Name="Sus4"; Formula=[PerfectForth; PerfectFifth]}
-            | Sus4Diminished -> {Name="Sus4Dim"; Formula=[PerfectForth; DiminishedFifth]}
-            | Sus4Augmented -> {Name="Sus4Aug"; Formula=[PerfectForth; AugmentedFifth]}
-            | Major6Add9 -> {Name="6add9"; Formula=[MajorThird; PerfectFifth; MajorSixth; MajorNinth]}
-            | Major6Flat5Add9 -> {Name="6(b5)add9"; Formula=[MajorThird; DiminishedFifth; MajorSixth; MajorNinth]}
-            | Dominant7Flat5 -> {Name="7(b5)"; Formula=[MajorThird; DiminishedFifth; MinorSeventh]}
-            | Dominant7Flat9 -> {Name="7(b9)"; Formula=[MajorThird; PerfectFifth; MinorSeventh; MinorNinth]}
-            | Dominant7Sharp9 -> {Name="7(#9)"; Formula=[MajorThird; PerfectFifth; MinorSeventh; AugmentedNinth]}
-            | Dominant7Flat5Flat9 -> {Name="7(b5b9)"; Formula=[MajorThird; DiminishedFifth; MinorSeventh; MinorNinth]}
-            | Dominant7Flat5Sharp9 -> {Name="7(b5#9)"; Formula=[MajorThird; DiminishedFifth; MinorSeventh; AugmentedNinth]}
-            | Dominant9 -> {Name="9"; Formula=[MajorThird; PerfectFifth; MinorSeventh; MajorNinth]}
-            | Dominant11 -> {Name="11"; Formula=[MajorThird; PerfectFifth; MinorSeventh; MajorNinth; PerfectEleventh]}
-            | Dominant13 -> {Name="13"; Formula=[MajorThird; PerfectFifth; MinorSeventh; MajorNinth; PerfectEleventh; MajorThirteenth]}
-
-        let private qualityForIntervals = function
-            | [MajorThird; PerfectFifth] -> Major
-            | [MajorThird; AugmentedFifth] -> Augmented
-            | [MinorThird; PerfectFifth] -> Minor
-            | [MinorThird; DiminishedFifth] -> Diminished
-            | [MajorThird; PerfectFifth; MajorSeventh] -> Major7
-            | [MajorThird; PerfectFifth; MajorSeventh; MajorNinth] -> Major9
-            | [MajorThird; PerfectFifth; MajorSeventh; MajorNinth; AugmentedEleventh] -> Major9Sharp11
-            | [MajorThird; PerfectFifth; MajorSeventh; PerfectEleventh] -> Major11
-            | [MajorThird; PerfectFifth; MajorSeventh; MajorThirteenth] -> Major13
-            | [MajorThird; PerfectFifth; MajorSeventh; MajorThirteenth; AugmentedEleventh] -> Major13Sharp11
-            | [MajorThird; PerfectFifth; MajorSixth] -> Major6
-            | [MajorThird; AugmentedFifth; MajorSeventh] -> Augmented7
-            | [MinorThird; PerfectFifth; MinorSeventh] -> Minor7
-            | [MinorThird; DiminishedFifth; DiminishedSeventh] 
-                | [MinorThird; DiminishedFifth; MajorSixth] -> Diminished7
-            | [MajorThird; PerfectFifth; MinorSeventh] -> Dominant7
-            | [MinorThird; DiminishedFifth; MinorSeventh] -> Minor7b5
-            | [MinorThird; PerfectFifth; MajorSeventh] -> MinorMaj7
-            | [MajorSecond; PerfectFifth] -> Sus2
-            | [MajorSecond; DiminishedFifth] -> Sus2Diminished 
-            | [MajorSecond; AugmentedFifth] -> Sus2Augmented
-            | [PerfectForth; PerfectFifth] -> Sus4
-            | [PerfectForth; DiminishedFifth] -> Sus4Diminished
-            | [PerfectForth; AugmentedFifth] -> Sus4Augmented
-            | _ -> Major
+        let private chordAttributes =
+            [
+                {Name="Maj"; Quality=Major; Formula=[MajorThird; PerfectFifth]}
+                {Name="Aug"; Quality=Augmented; Formula=[MajorThird; AugmentedFifth]}
+                {Name="Min"; Quality=Minor; Formula=[MinorThird; PerfectFifth]}
+                {Name="Dim"; Quality=Diminished; Formula=[MinorThird; DiminishedFifth]}
+                {Name="Maj7"; Quality=Major7; Formula=[MajorThird; PerfectFifth; MajorSeventh]}
+                {Name="Maj9"; Quality=Major9; Formula=[MajorThird; PerfectFifth; MajorSeventh; MajorNinth]}
+                {Name="Maj9(#11)"; Quality=Major9Sharp11; Formula=[MajorThird; PerfectFifth; MajorSeventh; MajorNinth; AugmentedEleventh]}
+                {Name="Maj11"; Quality=Major11; Formula=[MajorThird; PerfectFifth; MajorSeventh; PerfectEleventh]}
+                {Name="Maj13"; Quality=Major13; Formula=[MajorThird; PerfectFifth; MajorSeventh; MajorThirteenth]}
+                {Name="Maj13(#11)"; Quality=Major13Sharp11; Formula=[MajorThird; PerfectFifth; MajorSeventh; MajorThirteenth; AugmentedEleventh]}
+                {Name="Aug7"; Quality=Augmented7; Formula=[MajorThird; AugmentedFifth; MajorSeventh]}
+                {Name="Min7"; Quality=Minor7; Formula=[MinorThird; PerfectFifth; MinorSeventh]}
+                {Name="Dim7"; Quality=Diminished7; Formula=[MinorThird; DiminishedFifth; DiminishedSeventh]}
+                {Name="Dim7"; Quality=Diminished7; Formula=[MinorThird; DiminishedFifth; MajorSixth]}
+                {Name="Dom7"; Quality=Dominant7; Formula=[MajorThird; PerfectFifth; MinorSeventh]}
+                {Name="MinMaj7"; Quality=Minor7b5; Formula=[MinorThird; DiminishedFifth; MinorSeventh]}
+                {Name="Maj"; Quality=MinorMaj7; Formula=[MinorThird; PerfectFifth; MajorSeventh]}
+                {Name="6"; Quality=Major6; Formula=[MajorThird; PerfectFifth; MajorSixth]}
+                {Name="Sus2"; Quality=Sus2; Formula=[MajorSecond; PerfectFifth]}
+                {Name="Sus2Dim"; Quality=Sus2Diminished; Formula=[MajorSecond; DiminishedFifth]}
+                {Name="Sus2Aug"; Quality=Sus2Augmented; Formula=[MajorSecond; AugmentedFifth]}
+                {Name="Sus4"; Quality=Sus4; Formula=[PerfectForth; PerfectFifth]}
+                {Name="Sus4Dim"; Quality=Sus4Diminished; Formula=[PerfectForth; DiminishedFifth]}
+                {Name="Sus4Aug"; Quality=Sus4Augmented; Formula=[PerfectForth; AugmentedFifth]}
+                {Name="6add9"; Quality=Major6Add9; Formula=[MajorThird; PerfectFifth; MajorSixth; MajorNinth]}
+                {Name="6(b5)add9"; Quality=Major6Flat5Add9; Formula=[MajorThird; DiminishedFifth; MajorSixth; MajorNinth]}
+                {Name="7(b5)"; Quality=Dominant7Flat5; Formula=[MajorThird; DiminishedFifth; MinorSeventh]}
+                {Name="7(b9)"; Quality=Dominant7Flat9; Formula=[MajorThird; PerfectFifth; MinorSeventh; MinorNinth]}
+                {Name="7(#9)"; Quality=Dominant7Sharp9; Formula=[MajorThird; PerfectFifth; MinorSeventh; AugmentedNinth]}
+                {Name="7(b5b9)"; Quality=Dominant7Flat5Flat9; Formula=[MajorThird; DiminishedFifth; MinorSeventh; MinorNinth]}
+                {Name="7(b5#9)"; Quality=Dominant7Flat5Sharp9; Formula=[MajorThird; DiminishedFifth; MinorSeventh; AugmentedNinth]}
+                {Name="9"; Quality=Dominant9; Formula=[MajorThird; PerfectFifth; MinorSeventh; MajorNinth]}
+                {Name="11"; Quality=Dominant11; Formula=[MajorThird; PerfectFifth; MinorSeventh; MajorNinth; PerfectEleventh]}
+                {Name="13"; Quality=Dominant13; Formula=[MajorThird; PerfectFifth; MinorSeventh; MajorNinth; PerfectEleventh; MajorThirteenth]}
+            ]
+        let private qualityForIntervals intervals =
+            (chordAttributes
+            |> List.filter (fun c -> c.Formula = intervals)
+            |> List.head).Quality
             
         let private intervalsForQuality quality =
-           (chordAttributes quality).Formula
+            (chordAttributes
+            |> List.filter (fun c -> c.Quality = quality)
+            |> List.head).Formula
 
         let private nameForQuality quality =
-            (chordAttributes quality).Name
+            (chordAttributes
+            |> List.filter (fun c -> c.Quality = quality)
+            |> List.head).Name
         
         let private note chordNote =
             fst chordNote
