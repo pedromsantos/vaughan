@@ -85,7 +85,7 @@ namespace Vaughan
         type Quality = 
             | Major | Augmented
             | Major6 | Major6Add9 | Major6Flat5Add9 
-            | Major7 | Major9 | Augmented7
+            | Major7 | Major9 | Major11 | Augmented7
             | Dominant7 | Dominant7Flat5 | Dominant7Flat9 | Dominant7Sharp9
             | Dominant7Flat5Flat9 | Dominant7Flat5Sharp9 
             | Dominant9 | Dominant11 | Dominant13
@@ -361,6 +361,7 @@ namespace Vaughan
             | Diminished -> [MinorThird; DiminishedFifth]
             | Major7 -> [MajorThird; PerfectFifth; MajorSeventh]
             | Major9 -> [MajorThird; PerfectFifth; MajorSeventh; MajorNinth]
+            | Major11 -> [MajorThird; PerfectFifth; MajorSeventh; PerfectEleventh]
             | Augmented7 -> [MajorThird; AugmentedFifth; MajorSeventh]
             | Minor7 -> [MinorThird; PerfectFifth; MinorSeventh]
             | Diminished7 -> [MinorThird; DiminishedFifth; DiminishedSeventh]
