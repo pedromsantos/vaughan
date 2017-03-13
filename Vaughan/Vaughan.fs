@@ -1,6 +1,6 @@
 namespace Vaughan
     
-    //https://repl.it/FJHh/2
+    //https://repl.it/FJHh/3
 
     module Infrastructure =
         let rotateByOne list =
@@ -85,7 +85,7 @@ namespace Vaughan
         type Quality = 
             | Major | Augmented
             | Major6 | Major6Add9 | Major6Flat5Add9 
-            | Major7 | Augmented7
+            | Major7 | Major9 | Augmented7
             | Dominant7 | Dominant7Flat5 | Dominant7Flat9 | Dominant7Sharp9
             | Dominant7Flat5Flat9 | Dominant7Flat5Sharp9 
             | Dominant9 | Dominant11 | Dominant13
@@ -347,11 +347,11 @@ namespace Vaughan
             | Unisson -> Root
             | MajorThird | MinorThird -> Third 
             | PerfectFifth | DiminishedFifth | AugmentedFifth  -> Fifth
-            | MajorSeventh | MinorSeventh | DiminishedSeventh -> Seventh
             | MajorSixth -> Sixth
-            | MajorThirteenth -> Thirteenth
+            | MajorSeventh | MinorSeventh | DiminishedSeventh -> Seventh
             | MajorNinth | MinorNinth | AugmentedNinth -> Ninth
             | PerfectEleventh | AugmentedEleventh -> Eleventh
+            | MajorThirteenth -> Thirteenth
             | _ -> Root
 
         let private intervalsForQuality = function
@@ -360,6 +360,7 @@ namespace Vaughan
             | Minor -> [MinorThird; PerfectFifth]
             | Diminished -> [MinorThird; DiminishedFifth]
             | Major7 -> [MajorThird; PerfectFifth; MajorSeventh]
+            | Major9 -> [MajorThird; PerfectFifth; MajorSeventh; MajorNinth]
             | Augmented7 -> [MajorThird; AugmentedFifth; MajorSeventh]
             | Minor7 -> [MinorThird; PerfectFifth; MinorSeventh]
             | Diminished7 -> [MinorThird; DiminishedFifth; DiminishedSeventh]
@@ -390,7 +391,7 @@ namespace Vaughan
             | [MinorThird; PerfectFifth] -> Minor
             | [MinorThird; DiminishedFifth] -> Diminished
             | [MajorThird; PerfectFifth; MajorSeventh] -> Major7
-             | [MajorThird; PerfectFifth; MajorSixth] -> Major6
+            | [MajorThird; PerfectFifth; MajorSixth] -> Major6
             | [MajorThird; AugmentedFifth; MajorSeventh] -> Augmented7
             | [MinorThird; PerfectFifth; MinorSeventh] -> Minor7
             | [MinorThird; DiminishedFifth; DiminishedSeventh] 
