@@ -393,6 +393,7 @@ namespace Vaughan
                 {Name="11"; Quality=Dominant11; Formula=[MajorThird; PerfectFifth; MinorSeventh; MajorNinth; PerfectEleventh]}
                 {Name="13"; Quality=Dominant13; Formula=[MajorThird; PerfectFifth; MinorSeventh; MajorNinth; PerfectEleventh; MajorThirteenth]}
             ]
+            
         let private qualityForIntervals intervals =
             (chordAttributes
             |> List.filter (fun c -> c.Formula = intervals)
