@@ -344,6 +344,7 @@ namespace Vaughan
         open Infrastructure
 
         type private ChordAttributes = {Name:string; Formula:Interval list}
+
         let private functionForInterval = function
             | Unisson -> Root
             | MajorThird | MinorThird -> Third 
@@ -354,6 +355,7 @@ namespace Vaughan
             | PerfectEleventh | AugmentedEleventh -> Eleventh
             | MajorThirteenth -> Thirteenth
             | _ -> Root
+
         let private chordAttributes = function
             | Major -> {Name="Maj"; Formula=[MajorThird; PerfectFifth]}
             | Augmented -> {Name="Aug"; Formula=[MajorThird; AugmentedFifth]}
@@ -415,6 +417,7 @@ namespace Vaughan
             | [PerfectForth; DiminishedFifth] -> Sus4Diminished
             | [PerfectForth; AugmentedFifth] -> Sus4Augmented
             | _ -> Major
+            
         let private intervalsForQuality quality =
            (chordAttributes quality).Formula
 
