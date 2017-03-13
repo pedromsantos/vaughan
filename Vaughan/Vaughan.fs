@@ -343,6 +343,7 @@ namespace Vaughan
         open Notes
         open Infrastructure
 
+        type private ChordAttributes = {Name:string; Formula:Interval list}
         let private functionForInterval = function
             | Unisson -> Root
             | MajorThird | MinorThird -> Third 
@@ -353,42 +354,41 @@ namespace Vaughan
             | PerfectEleventh | AugmentedEleventh -> Eleventh
             | MajorThirteenth -> Thirteenth
             | _ -> Root
+        let private chordAttributes = function
+            | Major -> {Name="Maj"; Formula=[MajorThird; PerfectFifth]}
+            | Augmented -> {Name="Aug"; Formula=[MajorThird; AugmentedFifth]}
+            | Minor -> {Name="Min"; Formula=[MinorThird; PerfectFifth]}
+            | Diminished -> {Name="Dim"; Formula=[MinorThird; DiminishedFifth]}
+            | Major7 -> {Name="Maj7"; Formula=[MajorThird; PerfectFifth; MajorSeventh]}
+            | Major9 -> {Name="Maj9"; Formula=[MajorThird; PerfectFifth; MajorSeventh; MajorNinth]}
+            | Major9Sharp11 -> {Name="Maj9(#11)"; Formula=[MajorThird; PerfectFifth; MajorSeventh; MajorNinth; AugmentedEleventh]}
+            | Major11 -> {Name="Maj11"; Formula=[MajorThird; PerfectFifth; MajorSeventh; PerfectEleventh]}
+            | Major13 -> {Name="Maj13"; Formula=[MajorThird; PerfectFifth; MajorSeventh; MajorThirteenth]}
+            | Major13Sharp11 -> {Name="Maj13(#11)"; Formula=[MajorThird; PerfectFifth; MajorSeventh; MajorThirteenth; AugmentedEleventh]}
+            | Augmented7 -> {Name="Aug7"; Formula=[MajorThird; AugmentedFifth; MajorSeventh]}
+            | Minor7 -> {Name="Min7"; Formula=[MinorThird; PerfectFifth; MinorSeventh]}
+            | Diminished7 -> {Name="Dim7"; Formula=[MinorThird; DiminishedFifth; DiminishedSeventh]}
+            | Dominant7 -> {Name="Dom7"; Formula=[MajorThird; PerfectFifth; MinorSeventh]}
+            | Minor7b5 -> {Name="MinMaj7"; Formula=[MinorThird; DiminishedFifth; MinorSeventh]}
+            | MinorMaj7 -> {Name="Maj"; Formula=[MinorThird; PerfectFifth; MajorSeventh]}
+            | Major6 -> {Name="6"; Formula=[MajorThird; PerfectFifth; MajorSixth]}
+            | Sus2 -> {Name="Sus2"; Formula=[MajorSecond; PerfectFifth]}
+            | Sus2Diminished -> {Name="Sus2Dim"; Formula=[MajorSecond; DiminishedFifth]}
+            | Sus2Augmented -> {Name="Sus2Aug"; Formula=[MajorSecond; AugmentedFifth]}
+            | Sus4 -> {Name="Sus4"; Formula=[PerfectForth; PerfectFifth]}
+            | Sus4Diminished -> {Name="Sus4Dim"; Formula=[PerfectForth; DiminishedFifth]}
+            | Sus4Augmented -> {Name="Sus4Aug"; Formula=[PerfectForth; AugmentedFifth]}
+            | Major6Add9 -> {Name="6add9"; Formula=[MajorThird; PerfectFifth; MajorSixth; MajorNinth]}
+            | Major6Flat5Add9 -> {Name="6(b5)add9"; Formula=[MajorThird; DiminishedFifth; MajorSixth; MajorNinth]}
+            | Dominant7Flat5 -> {Name="7(b5)"; Formula=[MajorThird; DiminishedFifth; MinorSeventh]}
+            | Dominant7Flat9 -> {Name="7(b9)"; Formula=[MajorThird; PerfectFifth; MinorSeventh; MinorNinth]}
+            | Dominant7Sharp9 -> {Name="7(#9)"; Formula=[MajorThird; PerfectFifth; MinorSeventh; AugmentedNinth]}
+            | Dominant7Flat5Flat9 -> {Name="7(b5b9)"; Formula=[MajorThird; DiminishedFifth; MinorSeventh; MinorNinth]}
+            | Dominant7Flat5Sharp9 -> {Name="7(b5#9)"; Formula=[MajorThird; DiminishedFifth; MinorSeventh; AugmentedNinth]}
+            | Dominant9 -> {Name="9"; Formula=[MajorThird; PerfectFifth; MinorSeventh; MajorNinth]}
+            | Dominant11 -> {Name="11"; Formula=[MajorThird; PerfectFifth; MinorSeventh; MajorNinth; PerfectEleventh]}
+            | Dominant13 -> {Name="13"; Formula=[MajorThird; PerfectFifth; MinorSeventh; MajorNinth; PerfectEleventh; MajorThirteenth]}
 
-        let private intervalsForQuality = function
-            | Major -> [MajorThird; PerfectFifth]
-            | Augmented -> [MajorThird; AugmentedFifth]
-            | Minor -> [MinorThird; PerfectFifth]
-            | Diminished -> [MinorThird; DiminishedFifth]
-            | Major7 -> [MajorThird; PerfectFifth; MajorSeventh]
-            | Major9 -> [MajorThird; PerfectFifth; MajorSeventh; MajorNinth]
-            | Major9Sharp11 -> [MajorThird; PerfectFifth; MajorSeventh; MajorNinth; AugmentedEleventh]
-            | Major11 -> [MajorThird; PerfectFifth; MajorSeventh; PerfectEleventh]
-            | Major13 -> [MajorThird; PerfectFifth; MajorSeventh; MajorThirteenth]
-            | Major13Sharp11 -> [MajorThird; PerfectFifth; MajorSeventh; MajorThirteenth; AugmentedEleventh]
-            | Augmented7 -> [MajorThird; AugmentedFifth; MajorSeventh]
-            | Minor7 -> [MinorThird; PerfectFifth; MinorSeventh]
-            | Diminished7 -> [MinorThird; DiminishedFifth; DiminishedSeventh]
-            | Dominant7 -> [MajorThird; PerfectFifth; MinorSeventh]
-            | Minor7b5 -> [MinorThird; DiminishedFifth; MinorSeventh]
-            | MinorMaj7 -> [MinorThird; PerfectFifth; MajorSeventh]
-            | Major6 -> [MajorThird; PerfectFifth; MajorSixth]
-            | Sus2 -> [MajorSecond; PerfectFifth]
-            | Sus2Diminished -> [MajorSecond; DiminishedFifth]
-            | Sus2Augmented -> [MajorSecond; AugmentedFifth]
-            | Sus4 -> [PerfectForth; PerfectFifth]
-            | Sus4Diminished -> [PerfectForth; DiminishedFifth]
-            | Sus4Augmented -> [PerfectForth; AugmentedFifth]
-            | Major6Add9 -> [MajorThird; PerfectFifth; MajorSixth; MajorNinth]
-            | Major6Flat5Add9 -> [MajorThird; DiminishedFifth; MajorSixth; MajorNinth]
-            | Dominant7Flat5 -> [MajorThird; DiminishedFifth; MinorSeventh]
-            | Dominant7Flat9 -> [MajorThird; PerfectFifth; MinorSeventh; MinorNinth]
-            | Dominant7Sharp9 -> [MajorThird; PerfectFifth; MinorSeventh; AugmentedNinth]
-            | Dominant7Flat5Flat9 -> [MajorThird; DiminishedFifth; MinorSeventh; MinorNinth]
-            | Dominant7Flat5Sharp9 -> [MajorThird; DiminishedFifth; MinorSeventh; AugmentedNinth]
-            | Dominant9 -> [MajorThird; PerfectFifth; MinorSeventh; MajorNinth]
-            | Dominant11 -> [MajorThird; PerfectFifth; MinorSeventh; MajorNinth; PerfectEleventh]
-            | Dominant13 -> [MajorThird; PerfectFifth; MinorSeventh; MajorNinth; PerfectEleventh; MajorThirteenth]
-        
         let private functionForIntervals = function
             | [MajorThird; PerfectFifth] -> Major
             | [MajorThird; AugmentedFifth] -> Augmented
@@ -415,34 +415,12 @@ namespace Vaughan
             | [PerfectForth; DiminishedFifth] -> Sus4Diminished
             | [PerfectForth; AugmentedFifth] -> Sus4Augmented
             | _ -> Major
+        let private intervalsForQuality quality =
+           (chordAttributes quality).Formula
 
-        let private abreviatedName = function
-            | Major -> "Maj" | Augmented -> "Aug" | Minor -> "Min" 
-            | Diminished -> "Dim" | Major7 -> "Maj7" 
-            | Augmented7 -> "Aug7" | Minor7 -> "Min7" 
-            | Diminished7 -> "Dim7" | Dominant7 -> "Dom7" 
-            | Minor7b5 -> "Min7b5" | MinorMaj7 -> "MinMaj7"
-            | Major6 -> "6"
-            | Major9 -> "Maj9"
-            | Major9Sharp11 -> "Maj9(#11)"
-            | Major11 -> "Maj11"
-            | Major13 -> "Maj13"
-            | Major13Sharp11 -> "Maj13(#11)"
-            | Major6Add9 -> "6add9"
-            | Major6Flat5Add9 -> "6(b5)add9"
-            | Dominant7Flat5 -> "7(b5)"
-            | Dominant7Flat9 -> "7(b9)"
-            | Dominant7Sharp9 -> "7(#9)"
-            | Dominant7Flat5Flat9 -> "7(b5b9)"
-            | Dominant7Flat5Sharp9 -> "7(b5#9)"
-            | Dominant9 -> "9"
-            | Dominant11 -> "11"
-            | Dominant13-> "13"
-            | Sus2 -> "Sus2" | Sus2Diminished -> "Sus2Dim" 
-            | Sus2Augmented -> "Sus2Aug"
-            | Sus4 -> "Sus4" | Sus4Diminished -> "SusDim" 
-            | Sus4Augmented -> "Sus4Aug"
-
+        let private nameForQuality quality =
+            (chordAttributes quality).Name
+        
         let private note chordNote =
             fst chordNote
 
@@ -494,7 +472,7 @@ namespace Vaughan
             
         let name chord =
             noteName (noteForFunction chord Root) 
-            + abreviatedName (functionForIntervals(intervalsForChord chord))
+            + nameForQuality (functionForIntervals(intervalsForChord chord))
             
         let noteNames chord =
             chord.Notes |> List.map (note >> noteName)
