@@ -85,7 +85,7 @@ namespace Vaughan
         type Quality = 
             | Major | Augmented
             | Major6 | Major6Add9 | Major6Flat5Add9 
-            | Major7 | Major9 | Major9Sharp11 | Major11 | Major13 | Augmented7
+            | Major7 | Major9 | Major9Sharp11 | Major11 | Major13 | Major13Sharp11 | Augmented7
             | Dominant7 | Dominant7Flat5 | Dominant7Flat9 | Dominant7Sharp9
             | Dominant7Flat5Flat9 | Dominant7Flat5Sharp9 
             | Dominant9 | Dominant11 | Dominant13
@@ -364,6 +364,7 @@ namespace Vaughan
             | Major9Sharp11 -> [MajorThird; PerfectFifth; MajorSeventh; MajorNinth; AugmentedEleventh]
             | Major11 -> [MajorThird; PerfectFifth; MajorSeventh; PerfectEleventh]
             | Major13 -> [MajorThird; PerfectFifth; MajorSeventh; MajorThirteenth]
+            | Major13Sharp11 -> [MajorThird; PerfectFifth; MajorSeventh; MajorThirteenth; AugmentedEleventh]
             | Augmented7 -> [MajorThird; AugmentedFifth; MajorSeventh]
             | Minor7 -> [MinorThird; PerfectFifth; MinorSeventh]
             | Diminished7 -> [MinorThird; DiminishedFifth; DiminishedSeventh]
@@ -398,6 +399,7 @@ namespace Vaughan
             | [MajorThird; PerfectFifth; MajorSeventh; MajorNinth; AugmentedEleventh] -> Major9Sharp11
             | [MajorThird; PerfectFifth; MajorSeventh; PerfectEleventh] -> Major11
             | [MajorThird; PerfectFifth; MajorSeventh; MajorThirteenth] -> Major13
+            | [MajorThird; PerfectFifth; MajorSeventh; MajorThirteenth; AugmentedEleventh] -> Major13Sharp11
             | [MajorThird; PerfectFifth; MajorSixth] -> Major6
             | [MajorThird; AugmentedFifth; MajorSeventh] -> Augmented7
             | [MinorThird; PerfectFifth; MinorSeventh] -> Minor7
@@ -422,16 +424,17 @@ namespace Vaughan
             | Minor7b5 -> "Min7b5" | MinorMaj7 -> "MinMaj7"
             | Major6 -> "6"
             | Major9 -> "Maj9"
-            | Major9Sharp11 -> "Maj9 sharp 11"
+            | Major9Sharp11 -> "Maj9(#11)"
             | Major11 -> "Maj11"
             | Major13 -> "Maj13"
-            | Major6Add9 -> "6 add 9"
-            | Major6Flat5Add9 -> "6 flat5 add 9"
-            | Dominant7Flat5 -> "7 flat 5"
-            | Dominant7Flat9 -> "7 flat 9"
-            | Dominant7Sharp9 -> "7 sharp 9"
-            | Dominant7Flat5Flat9 -> "7 flat 5 flat 9"
-            | Dominant7Flat5Sharp9 -> "7 flat 5 sharp 9"
+            | Major13Sharp11 -> "Maj13(#11)"
+            | Major6Add9 -> "6add9"
+            | Major6Flat5Add9 -> "6(b5)add9"
+            | Dominant7Flat5 -> "7(b5)"
+            | Dominant7Flat9 -> "7(b9)"
+            | Dominant7Sharp9 -> "7(#9)"
+            | Dominant7Flat5Flat9 -> "7(b5b9)"
+            | Dominant7Flat5Sharp9 -> "7(b5#9)"
             | Dominant9 -> "9"
             | Dominant11 -> "11"
             | Dominant13-> "13"
