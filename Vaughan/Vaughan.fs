@@ -362,17 +362,6 @@ namespace Vaughan
                 {Name="Dim7"; Quality=Diminished7; Formula=[MinorThird; DiminishedFifth; DiminishedSeventh]}
                 {Name="Dim7"; Quality=Diminished7; Formula=[MinorThird; DiminishedFifth; MajorSixth]}
                 {Name="Dom7"; Quality=Dominant7; Formula=[MajorThird; PerfectFifth; MinorSeventh]}
-                {Name="MinMaj7"; Quality=Minor7b5; Formula=[MinorThird; DiminishedFifth; MinorSeventh]}
-                {Name="Maj"; Quality=MinorMaj7; Formula=[MinorThird; PerfectFifth; MajorSeventh]}
-                {Name="6"; Quality=Major6; Formula=[MajorThird; PerfectFifth; MajorSixth]}
-                {Name="Sus2"; Quality=Sus2; Formula=[MajorSecond; PerfectFifth]}
-                {Name="Sus2Dim"; Quality=Sus2Diminished; Formula=[MajorSecond; DiminishedFifth]}
-                {Name="Sus2Aug"; Quality=Sus2Augmented; Formula=[MajorSecond; AugmentedFifth]}
-                {Name="Sus4"; Quality=Sus4; Formula=[PerfectForth; PerfectFifth]}
-                {Name="Sus4Dim"; Quality=Sus4Diminished; Formula=[PerfectForth; DiminishedFifth]}
-                {Name="Sus4Aug"; Quality=Sus4Augmented; Formula=[PerfectForth; AugmentedFifth]}
-                {Name="6add9"; Quality=Major6Add9; Formula=[MajorThird; PerfectFifth; MajorSixth; MajorNinth]}
-                {Name="6(b5)add9"; Quality=Major6Flat5Add9; Formula=[MajorThird; DiminishedFifth; MajorSixth; MajorNinth]}
                 {Name="7(b5)"; Quality=Dominant7Flat5; Formula=[MajorThird; DiminishedFifth; MinorSeventh]}
                 {Name="7(b9)"; Quality=Dominant7Flat9; Formula=[MajorThird; PerfectFifth; MinorSeventh; MinorNinth]}
                 {Name="7(#9)"; Quality=Dominant7Sharp9; Formula=[MajorThird; PerfectFifth; MinorSeventh; AugmentedNinth]}
@@ -381,6 +370,17 @@ namespace Vaughan
                 {Name="9"; Quality=Dominant9; Formula=[MajorThird; PerfectFifth; MinorSeventh; MajorNinth]}
                 {Name="11"; Quality=Dominant11; Formula=[MajorThird; PerfectFifth; MinorSeventh; MajorNinth; PerfectEleventh]}
                 {Name="13"; Quality=Dominant13; Formula=[MajorThird; PerfectFifth; MinorSeventh; MajorNinth; PerfectEleventh; MajorThirteenth]}
+                {Name="Min7b5"; Quality=Minor7b5; Formula=[MinorThird; DiminishedFifth; MinorSeventh]}
+                {Name="MinMaj7"; Quality=MinorMaj7; Formula=[MinorThird; PerfectFifth; MajorSeventh]}
+                {Name="6"; Quality=Major6; Formula=[MajorThird; PerfectFifth; MajorSixth]}
+                {Name="6add9"; Quality=Major6Add9; Formula=[MajorThird; PerfectFifth; MajorSixth; MajorNinth]}
+                {Name="6(b5)add9"; Quality=Major6Flat5Add9; Formula=[MajorThird; DiminishedFifth; MajorSixth; MajorNinth]}
+                {Name="Sus2"; Quality=Sus2; Formula=[MajorSecond; PerfectFifth]}
+                {Name="Sus2Dim"; Quality=Sus2Diminished; Formula=[MajorSecond; DiminishedFifth]}
+                {Name="Sus2Aug"; Quality=Sus2Augmented; Formula=[MajorSecond; AugmentedFifth]}
+                {Name="Sus4"; Quality=Sus4; Formula=[PerfectForth; PerfectFifth]}
+                {Name="Sus4Dim"; Quality=Sus4Diminished; Formula=[PerfectForth; DiminishedFifth]}
+                {Name="Sus4Aug"; Quality=Sus4Augmented; Formula=[PerfectForth; AugmentedFifth]}
             ]
 
         let private qualityForIntervals intervals =
