@@ -90,7 +90,8 @@ namespace Vaughan
             | Dominant7Flat5Flat9 | Dominant7Flat5Sharp9 
             | Dominant9 | Dominant11 | Dominant13
             | Minor | Diminished 
-            | Minor7 | Minor6 | Minor6Add9 | Minor9 | Diminished7 | Minor7b5 | MinorMaj7
+            | Minor7 | Minor6 | Minor6Add9 | Minor9 | Diminished7 | Minor7b5 
+            | MinorMaj7 | MinorMaj9
             | Sus2 | Sus2Diminished | Sus2Augmented
             | Sus4 | Sus4Diminished | Sus4Augmented
             
@@ -367,6 +368,7 @@ namespace Vaughan
                 {Name="Min6Add9"; Quality=Minor6; Formula=[MinorThird; PerfectFifth; MajorSixth]}
                 {Name="Min7b5"; Quality=Minor7b5; Formula=[MinorThird; DiminishedFifth; MinorSeventh]}
                 {Name="MinMaj7"; Quality=MinorMaj7; Formula=[MinorThird; PerfectFifth; MajorSeventh]} 
+                {Name="MinMaj9"; Quality=MinorMaj9; Formula=[MinorThird; PerfectFifth; MajorSeventh; MajorNinth]} 
                 {Name="Dim7"; Quality=Diminished7; Formula=[MinorThird; DiminishedFifth; DiminishedSeventh]}
                 {Name="Dim7"; Quality=Diminished7; Formula=[MinorThird; DiminishedFifth; MajorSixth]}
                 {Name="Dom7"; Quality=Dominant7; Formula=[MajorThird; PerfectFifth; MinorSeventh]}
