@@ -265,6 +265,7 @@ namespace VaughanTests
         let cAug7 = {Notes= [(C, Root); (E, Third); (GSharp, Fifth); (B, Seventh)]; ChordType=Closed}
         let cMin7 = {Notes= [(C, Root); (EFlat, Third); (G, Fifth); (BFlat, Seventh)]; ChordType=Closed}
         let cMin6 = {Notes= [(C, Root); (EFlat, Third); (G, Fifth); (A, Sixth)]; ChordType=Closed}
+        let cMin6add9 = {Notes= [(C, Root); (EFlat, Third); (G, Fifth); (A, Sixth);(D, Ninth)]; ChordType=Closed}
         let cDim7 = {Notes= [(C, Root); (EFlat, Third); (GFlat, Fifth); (A, Seventh)]; ChordType=Closed}
         let cMin7b5 = {Notes= [(C, Root); (EFlat, Third); (GFlat, Fifth); (BFlat, Seventh)]; ChordType=Closed}
         let c6 = {Notes= [(C, Root); (E, Third); (G, Fifth); (A, Sixth)]; ChordType=Closed}
@@ -341,6 +342,7 @@ namespace VaughanTests
             test <@ chordFromRootAndFunction C Major9Sharp11 = cMaj9Sharp11@>
             test <@ chordFromRootAndFunction C Major13Sharp11 = cMaj13sharp11@>
             test <@ chordFromRootAndFunction C Minor6 = cMin6 @>
+            test <@ chordFromRootAndFunction C Minor6Add9 = cMin6add9 @>
 
         [<Test>]
         let ``Should invert chord for first inversion``() =
