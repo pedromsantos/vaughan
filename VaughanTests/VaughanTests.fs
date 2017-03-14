@@ -794,15 +794,25 @@ namespace VaughanTests
                         {GuitarString=SecondString; Fret=8; Note=G};
                     ]@>
 
-        (*[<Test>]
-        let ``Should map C major9 igoring 5th to guitar fretboard on fifth string closed``() =
+        [<Test>]
+        let ``Should map C major9 ignoring 5th to guitar fretboard on fifth string closed``() =
             let chord = chordFromRootAndFunction C Major9
             test <@ (chordToGuitarClosedChordSkippinkFunction FifthString chord Fifth).Frets = [
                         {GuitarString=FifthString; Fret=3; Note=C};
                         {GuitarString=FourthString; Fret=2; Note=E};
-                        {GuitarString=ThirdString; Fret=3; Note=B};
+                        {GuitarString=ThirdString; Fret=4; Note=B};
                         {GuitarString=SecondString; Fret=3; Note=D};
-                    ]@>*)
+                    ]@>
+        
+        [<Test>]
+        let ``Should map C9 ignoring 5th to guitar fretboard on fifth string closed``() =
+            let chord = chordFromRootAndFunction C Dominant9
+            test <@ (chordToGuitarClosedChordSkippinkFunction FifthString chord Fifth).Frets = [
+                        {GuitarString=FifthString; Fret=3; Note=C};
+                        {GuitarString=FourthString; Fret=2; Note=E};
+                        {GuitarString=ThirdString; Fret=3; Note=BFlat};
+                        {GuitarString=SecondString; Fret=3; Note=D};
+                    ]@>
 
     module GuitarTabTests =
         open System
