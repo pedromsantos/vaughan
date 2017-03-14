@@ -351,6 +351,12 @@ namespace VaughanTests
             test <@ chordFromRootAndFunction C MinorMaj9 = cMinMaj9 @>
 
         [<Test>]
+        let ``Should filter function from chord``() =
+            test <@ (skipFunction c9 Fifth).Notes = [(C, Root); (E, Third); (BFlat, Seventh); (D, Ninth)]  @>
+            test <@ (skipFunction c9 Root).Notes = [(E, Third); (G, Fifth); (BFlat, Seventh); (D, Ninth)]  @>
+            test <@ (skipFunction c9 Seventh).Notes = [(C, Root); (E, Third); (G, Fifth); (D, Ninth)]  @>
+
+        [<Test>]
         let ``Should invert chord for first inversion``() =
             test <@ (invert cMaj).Notes = [(E, Third); (G, Fifth); (C, Root)]  @>
             test <@ (invert cAug).Notes = [(E, Third); (GSharp, Fifth); (C, Root)]  @>
@@ -787,6 +793,16 @@ namespace VaughanTests
                         {GuitarString=ThirdString; Fret=9; Note=E};
                         {GuitarString=SecondString; Fret=8; Note=G};
                     ]@>
+
+        (*[<Test>]
+        let ``Should map C major9 igoring 5th to guitar fretboard on fifth string closed``() =
+            let chord = chordFromRootAndFunction C Major9
+            test <@ (chordToGuitarClosedChordSkippinkFunction FifthString chord Fifth).Frets = [
+                        {GuitarString=FifthString; Fret=3; Note=C};
+                        {GuitarString=FourthString; Fret=2; Note=E};
+                        {GuitarString=ThirdString; Fret=3; Note=B};
+                        {GuitarString=SecondString; Fret=3; Note=D};
+                    ]@>*)
 
     module GuitarTabTests =
         open System
