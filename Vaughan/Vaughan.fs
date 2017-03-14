@@ -482,7 +482,7 @@ namespace Vaughan
         let toDrop3 chord =
             {Notes= (chord |> toDrop2 |> toDrop2).Notes; ChordType=Drop3}
 
-        let skipFunction chord functionToSkipp =
+        let skipFunction functionToSkipp chord =
             {chord with Notes = chord.Notes |> List.filter (fun nf -> snd nf <> functionToSkipp)}
 
     module ChordVoiceLeading =
@@ -696,10 +696,6 @@ namespace Vaughan
             let guitarChord = chordToGuitarChord bassString chord 
             let closedChord = {guitarChord with Frets = raiseOpenFrets guitarChord.Frets}
             {closedChord with Frets = unstretch closedChord.Frets}
-               
-        let chordToGuitarClosedChordSkippinkFunction bassString chord functionToSkipp =
-            let skippedFunctionChord = skipFunction chord functionToSkipp
-            chordToGuitarClosedChord bassString skippedFunctionChord
 
     module GuitarTab =
         open System

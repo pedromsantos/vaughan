@@ -352,9 +352,9 @@ namespace VaughanTests
 
         [<Test>]
         let ``Should filter function from chord``() =
-            test <@ (skipFunction c9 Fifth).Notes = [(C, Root); (E, Third); (BFlat, Seventh); (D, Ninth)]  @>
-            test <@ (skipFunction c9 Root).Notes = [(E, Third); (G, Fifth); (BFlat, Seventh); (D, Ninth)]  @>
-            test <@ (skipFunction c9 Seventh).Notes = [(C, Root); (E, Third); (G, Fifth); (D, Ninth)]  @>
+            test <@ (c9 |> skipFunction Fifth).Notes = [(C, Root); (E, Third); (BFlat, Seventh); (D, Ninth)]  @>
+            test <@ (c9 |> skipFunction Root).Notes = [(E, Third); (G, Fifth); (BFlat, Seventh); (D, Ninth)]  @>
+            test <@ (c9 |> skipFunction Seventh).Notes = [(C, Root); (E, Third); (G, Fifth); (D, Ninth)]  @>
 
         [<Test>]
         let ``Should invert chord for first inversion``() =
@@ -797,7 +797,8 @@ namespace VaughanTests
         [<Test>]
         let ``Should map C major9 ignoring 5th to guitar fretboard on fifth string closed``() =
             let chord = chordFromRootAndFunction C Major9
-            test <@ (chordToGuitarClosedChordSkippinkFunction FifthString chord Fifth).Frets = [
+                        |> skipFunction Fifth
+            test <@ (chordToGuitarClosedChord FifthString chord).Frets = [
                         {GuitarString=FifthString; Fret=3; Note=C};
                         {GuitarString=FourthString; Fret=2; Note=E};
                         {GuitarString=ThirdString; Fret=4; Note=B};
@@ -807,7 +808,8 @@ namespace VaughanTests
         [<Test>]
         let ``Should map C9 ignoring 5th to guitar fretboard on fifth string closed``() =
             let chord = chordFromRootAndFunction C Dominant9
-            test <@ (chordToGuitarClosedChordSkippinkFunction FifthString chord Fifth).Frets = [
+                        |> skipFunction Fifth
+            test <@ (chordToGuitarClosedChord FifthString chord).Frets = [
                         {GuitarString=FifthString; Fret=3; Note=C};
                         {GuitarString=FourthString; Fret=2; Note=E};
                         {GuitarString=ThirdString; Fret=3; Note=BFlat};
