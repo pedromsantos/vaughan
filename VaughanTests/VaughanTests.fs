@@ -187,7 +187,6 @@ namespace VaughanTests
         open NUnit.Framework
         open Swensen.Unquote
         open Vaughan.Domain
-        open Vaughan.Notes
         open Vaughan.Keys
 
         [<Test>]
@@ -223,7 +222,6 @@ namespace VaughanTests
         open NUnit.Framework
         open Swensen.Unquote
         open Vaughan.Domain
-        open Vaughan.Notes
         open Vaughan.Scales
 
         [<Test>]
@@ -253,41 +251,40 @@ namespace VaughanTests
         open NUnit.Framework
         open Swensen.Unquote
         open Vaughan.Domain
-        open Vaughan.Notes
         open Vaughan.Chords
         open Vaughan.ChordVoiceLeading
 
-        let cMaj = {Notes= [(C, Root); (E, Third); (G, Fifth)]; ChordType=Closed}
-        let cAug = {Notes= [(C, Root); (E, Third); (GSharp, Fifth)]; ChordType=Closed}
-        let cMin = {Notes= [(C, Root); (EFlat, Third); (G, Fifth)]; ChordType=Closed}
-        let cDim = {Notes= [(C, Root); (EFlat, Third); (GFlat, Fifth)]; ChordType=Closed}
-        let cMaj7 = {Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh)]; ChordType=Closed}
-        let cAug7 = {Notes= [(C, Root); (E, Third); (GSharp, Fifth); (B, Seventh)]; ChordType=Closed}
-        let cMin7 = {Notes= [(C, Root); (EFlat, Third); (G, Fifth); (BFlat, Seventh)]; ChordType=Closed}
-        let cMin6 = {Notes= [(C, Root); (EFlat, Third); (G, Fifth); (A, Sixth)]; ChordType=Closed}
-        let cMin6add9 = {Notes= [(C, Root); (EFlat, Third); (G, Fifth); (A, Sixth);(D, Ninth)]; ChordType=Closed}
-        let cDim7 = {Notes= [(C, Root); (EFlat, Third); (GFlat, Fifth); (A, Seventh)]; ChordType=Closed}
-        let cMin7b5 = {Notes= [(C, Root); (EFlat, Third); (GFlat, Fifth); (BFlat, Seventh)]; ChordType=Closed}
-        let cMinMaj7 = {Notes= [(C, Root); (EFlat, Third); (G, Fifth); (B, Seventh)]; ChordType=Closed}
-        let cMinMaj9 = {Notes= [(C, Root); (EFlat, Third); (G, Fifth); (B, Seventh); (D, Ninth)]; ChordType=Closed}
-        let cMin9 = {Notes= [(C, Root); (EFlat, Third); (G, Fifth); (BFlat, Seventh); (D, Ninth)]; ChordType=Closed}
-        let c6 = {Notes= [(C, Root); (E, Third); (G, Fifth); (A, Sixth)]; ChordType=Closed}
-        let c6add9 = {Notes= [(C, Root); (E, Third); (G, Fifth); (A, Sixth); (D, Ninth)]; ChordType=Closed}
-        let c6flat5add9 = {Notes= [(C, Root); (E, Third); (GFlat, Fifth); (A, Sixth); (D, Ninth)]; ChordType=Closed}
-        let c7 = {Notes= [(C, Root); (E, Third); (G, Fifth); (BFlat, Seventh)]; ChordType=Closed}
-        let c7flat5 = {Notes= [(C, Root); (E, Third); (GFlat, Fifth); (BFlat, Seventh)]; ChordType=Closed}    
-        let c9 = {Notes= [(C, Root); (E, Third); (G, Fifth); (BFlat, Seventh); (D, Ninth)]; ChordType=Closed}
-        let c7flat9 = {Notes= [(C, Root); (E, Third); (G, Fifth); (BFlat, Seventh); (DFlat, Ninth)]; ChordType=Closed}
-        let c7sharp9 = {Notes= [(C, Root); (E, Third); (G, Fifth); (BFlat, Seventh); (DSharp, Ninth)]; ChordType=Closed}
-        let c7flat5flat9 = {Notes= [(C, Root); (E, Third); (GFlat, Fifth); (BFlat, Seventh); (DFlat, Ninth)]; ChordType=Closed}    
-        let c7flat5sharp9 = {Notes= [(C, Root); (E, Third); (GFlat, Fifth); (BFlat, Seventh); (DSharp, Ninth)]; ChordType=Closed}    
-        let c11 = {Notes= [(C, Root); (E, Third); (G, Fifth); (BFlat, Seventh); (D, Ninth); (F, Eleventh)]; ChordType=Closed}
-        let c13 = {Notes= [(C, Root); (E, Third); (G, Fifth); (BFlat, Seventh); (D, Ninth); (F, Eleventh); (A, Thirteenth)]; ChordType=Closed}
-        let cMaj9 = {Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh); (D, Ninth)]; ChordType=Closed}
-        let cMaj9Sharp11 = {Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh); (D, Ninth); (FSharp, Eleventh)]; ChordType=Closed}
-        let cMaj11 = {Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh); (F, Eleventh)]; ChordType=Closed}
-        let cMaj13 = {Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh); (A, Thirteenth)]; ChordType=Closed}
-        let cMaj13sharp11 = {Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh); (A, Thirteenth); (FSharp, Eleventh)]; ChordType=Closed}
+        let cMaj = {Notes= [(C, Root); (E, Third); (G, Fifth)]; ChordType=Closed; Name=""}
+        let cAug = {Notes= [(C, Root); (E, Third); (GSharp, Fifth)]; ChordType=Closed; Name=""}
+        let cMin = {Notes= [(C, Root); (EFlat, Third); (G, Fifth)]; ChordType=Closed; Name=""}
+        let cDim = {Notes= [(C, Root); (EFlat, Third); (GFlat, Fifth)]; ChordType=Closed; Name=""}
+        let cMaj7 = {Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh)]; ChordType=Closed; Name=""}
+        let cAug7 = {Notes= [(C, Root); (E, Third); (GSharp, Fifth); (B, Seventh)]; ChordType=Closed; Name=""}
+        let cMin7 = {Notes= [(C, Root); (EFlat, Third); (G, Fifth); (BFlat, Seventh)]; ChordType=Closed; Name=""}
+        let cMin6 = {Notes= [(C, Root); (EFlat, Third); (G, Fifth); (A, Sixth)]; ChordType=Closed; Name=""}
+        let cMin6add9 = {Notes= [(C, Root); (EFlat, Third); (G, Fifth); (A, Sixth);(D, Ninth)]; ChordType=Closed; Name=""}
+        let cDim7 = {Notes= [(C, Root); (EFlat, Third); (GFlat, Fifth); (A, Seventh)]; ChordType=Closed; Name=""}
+        let cMin7b5 = {Notes= [(C, Root); (EFlat, Third); (GFlat, Fifth); (BFlat, Seventh)]; ChordType=Closed; Name=""}
+        let cMinMaj7 = {Notes= [(C, Root); (EFlat, Third); (G, Fifth); (B, Seventh)]; ChordType=Closed; Name=""}
+        let cMinMaj9 = {Notes= [(C, Root); (EFlat, Third); (G, Fifth); (B, Seventh); (D, Ninth)]; ChordType=Closed; Name=""}
+        let cMin9 = {Notes= [(C, Root); (EFlat, Third); (G, Fifth); (BFlat, Seventh); (D, Ninth)]; ChordType=Closed; Name=""}
+        let c6 = {Notes= [(C, Root); (E, Third); (G, Fifth); (A, Sixth)]; ChordType=Closed; Name=""}
+        let c6add9 = {Notes= [(C, Root); (E, Third); (G, Fifth); (A, Sixth); (D, Ninth)]; ChordType=Closed; Name=""}
+        let c6flat5add9 = {Notes= [(C, Root); (E, Third); (GFlat, Fifth); (A, Sixth); (D, Ninth)]; ChordType=Closed; Name=""}
+        let c7 = {Notes= [(C, Root); (E, Third); (G, Fifth); (BFlat, Seventh)]; ChordType=Closed; Name=""}
+        let c7flat5 = {Notes= [(C, Root); (E, Third); (GFlat, Fifth); (BFlat, Seventh)]; ChordType=Closed; Name=""}    
+        let c9 = {Notes= [(C, Root); (E, Third); (G, Fifth); (BFlat, Seventh); (D, Ninth)]; ChordType=Closed; Name=""}
+        let c7flat9 = {Notes= [(C, Root); (E, Third); (G, Fifth); (BFlat, Seventh); (DFlat, Ninth)]; ChordType=Closed; Name=""}
+        let c7sharp9 = {Notes= [(C, Root); (E, Third); (G, Fifth); (BFlat, Seventh); (DSharp, Ninth)]; ChordType=Closed; Name=""}
+        let c7flat5flat9 = {Notes= [(C, Root); (E, Third); (GFlat, Fifth); (BFlat, Seventh); (DFlat, Ninth)]; ChordType=Closed; Name=""}    
+        let c7flat5sharp9 = {Notes= [(C, Root); (E, Third); (GFlat, Fifth); (BFlat, Seventh); (DSharp, Ninth)]; ChordType=Closed; Name=""}
+        let c11 = {Notes= [(C, Root); (E, Third); (G, Fifth); (BFlat, Seventh); (D, Ninth); (F, Eleventh)]; ChordType=Closed; Name=""}
+        let c13 = {Notes= [(C, Root); (E, Third); (G, Fifth); (BFlat, Seventh); (D, Ninth); (F, Eleventh); (A, Thirteenth)]; ChordType=Closed; Name=""}
+        let cMaj9 = {Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh); (D, Ninth)]; ChordType=Closed; Name=""}
+        let cMaj9Sharp11 = {Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh); (D, Ninth); (FSharp, Eleventh)]; ChordType=Closed; Name=""}
+        let cMaj11 = {Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh); (F, Eleventh)]; ChordType=Closed; Name=""}
+        let cMaj13 = {Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh); (A, Thirteenth)]; ChordType=Closed; Name=""}
+        let cMaj13sharp11 = {Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh); (A, Thirteenth); (FSharp, Eleventh)]; ChordType=Closed; Name=""}
 
         [<Test>]
         let ``Chord should return note names``() =
@@ -319,36 +316,36 @@ namespace VaughanTests
             
         [<Test>]
         let ``Should create chord from root and function``() =
-            test <@ chordFromRootAndFunction C Major = cMaj @>
-            test <@ chordFromRootAndFunction C Augmented = cAug @>
-            test <@ chordFromRootAndFunction C Minor = cMin @>
-            test <@ chordFromRootAndFunction C Diminished = cDim @>
-            test <@ chordFromRootAndFunction C Major7 = cMaj7 @>
-            test <@ chordFromRootAndFunction C Augmented7 = cAug7 @>
-            test <@ chordFromRootAndFunction C Minor7 = cMin7 @>
-            test <@ chordFromRootAndFunction C Diminished7 = cDim7 @>
-            test <@ chordFromRootAndFunction C Minor7b5 = cMin7b5 @>
-            test <@ chordFromRootAndFunction C Major6 = c6 @>
-            test <@ chordFromRootAndFunction C Major6Add9 = c6add9 @>
-            test <@ chordFromRootAndFunction C Major6Flat5Add9 = c6flat5add9 @>
-            test <@ chordFromRootAndFunction C Dominant7Flat5 = c7flat5 @>
-            test <@ chordFromRootAndFunction C Dominant7Flat9 = c7flat9 @>
-            test <@ chordFromRootAndFunction C Dominant7Sharp9 = c7sharp9 @>
-            test <@ chordFromRootAndFunction C Dominant7Flat5Flat9 = c7flat5flat9 @>
-            test <@ chordFromRootAndFunction C Dominant7Flat5Sharp9 = c7flat5sharp9 @>
-            test <@ chordFromRootAndFunction C Dominant9 = c9 @>
-            test <@ chordFromRootAndFunction C Dominant11 = c11 @>
-            test <@ chordFromRootAndFunction C Dominant13 = c13 @>
-            test <@ chordFromRootAndFunction C Major9 = cMaj9@>
-            test <@ chordFromRootAndFunction C Major11 = cMaj11@>
-            test <@ chordFromRootAndFunction C Major13 = cMaj13@>
-            test <@ chordFromRootAndFunction C Major9Sharp11 = cMaj9Sharp11@>
-            test <@ chordFromRootAndFunction C Major13Sharp11 = cMaj13sharp11@>
-            test <@ chordFromRootAndFunction C Minor6 = cMin6 @>
-            test <@ chordFromRootAndFunction C Minor6Add9 = cMin6add9 @>
-            test <@ chordFromRootAndFunction C MinorMaj7 = cMinMaj7 @>
-            test <@ chordFromRootAndFunction C Minor9 = cMin9 @>
-            test <@ chordFromRootAndFunction C MinorMaj9 = cMinMaj9 @>
+            test <@ (chordFromRootAndFunction C Major).Notes = cMaj.Notes @>
+            test <@ (chordFromRootAndFunction C Augmented).Notes = cAug.Notes @>
+            test <@ (chordFromRootAndFunction C Minor).Notes = cMin.Notes @>
+            test <@ (chordFromRootAndFunction C Diminished).Notes = cDim.Notes @>
+            test <@ (chordFromRootAndFunction C Major7).Notes = cMaj7.Notes @>
+            test <@ (chordFromRootAndFunction C Augmented7).Notes = cAug7.Notes @>
+            test <@ (chordFromRootAndFunction C Minor7).Notes = cMin7.Notes @>
+            test <@ (chordFromRootAndFunction C Diminished7).Notes = cDim7.Notes @>
+            test <@ (chordFromRootAndFunction C Minor7b5).Notes = cMin7b5.Notes @>
+            test <@ (chordFromRootAndFunction C Major6).Notes = c6.Notes @>
+            test <@ (chordFromRootAndFunction C Major6Add9).Notes = c6add9.Notes @>
+            test <@ (chordFromRootAndFunction C Major6Flat5Add9).Notes = c6flat5add9.Notes @>
+            test <@ (chordFromRootAndFunction C Dominant7Flat5).Notes = c7flat5.Notes @>
+            test <@ (chordFromRootAndFunction C Dominant7Flat9).Notes = c7flat9.Notes @>
+            test <@ (chordFromRootAndFunction C Dominant7Sharp9).Notes = c7sharp9.Notes @>
+            test <@ (chordFromRootAndFunction C Dominant7Flat5Flat9).Notes = c7flat5flat9.Notes @>
+            test <@ (chordFromRootAndFunction C Dominant7Flat5Sharp9).Notes = c7flat5sharp9.Notes @>
+            test <@ (chordFromRootAndFunction C Dominant9).Notes = c9.Notes @>
+            test <@ (chordFromRootAndFunction C Dominant11).Notes = c11.Notes @>
+            test <@ (chordFromRootAndFunction C Dominant13).Notes = c13.Notes @>
+            test <@ (chordFromRootAndFunction C Major9).Notes = cMaj9.Notes @>
+            test <@ (chordFromRootAndFunction C Major11).Notes = cMaj11.Notes @>
+            test <@ (chordFromRootAndFunction C Major13).Notes = cMaj13.Notes @>
+            test <@ (chordFromRootAndFunction C Major9Sharp11).Notes = cMaj9Sharp11.Notes @>
+            test <@ (chordFromRootAndFunction C Major13Sharp11).Notes = cMaj13sharp11.Notes @>
+            test <@ (chordFromRootAndFunction C Minor6).Notes = cMin6.Notes @>
+            test <@ (chordFromRootAndFunction C Minor6Add9).Notes = cMin6add9.Notes @>
+            test <@ (chordFromRootAndFunction C MinorMaj7).Notes = cMinMaj7.Notes @>
+            test <@ (chordFromRootAndFunction C Minor9).Notes = cMin9.Notes @>
+            test <@ (chordFromRootAndFunction C MinorMaj9).Notes = cMinMaj9.Notes @>
 
         [<Test>]
         let ``Should filter function from chord``() =
@@ -438,109 +435,108 @@ namespace VaughanTests
     module ScalesHormonizerTests =
         open NUnit.Framework
         open Swensen.Unquote
+        open Vaughan.Domain
         open Vaughan.ScaleHarmonizer
         open Vaughan.Scales
-        open Vaughan.Chords
-        open Vaughan.Notes
-        open Vaughan.Domain
         
-        let cMaj = {Notes= [(C, Root); (E, Third); (G, Fifth)]; ChordType=Closed}
-        let dMin = {Notes= [(D, Root); (F, Third); (A, Fifth)]; ChordType=Closed}
-        let eMin = {Notes= [(E, Root); (G, Third); (B, Fifth)]; ChordType=Closed}
-        let fMaj = {Notes= [(F, Root); (A, Third); (C, Fifth)]; ChordType=Closed}
-        let gMaj = {Notes= [(G, Root); (B, Third); (D, Fifth)]; ChordType=Closed}
-        let aMin = {Notes= [(A, Root); (C, Third); (E, Fifth)]; ChordType=Closed}
-        let bDim = {Notes= [(B, Root); (D, Third); (F, Fifth)]; ChordType=Closed}
+        let chord = {Notes= []; ChordType=Closed; Name = ""}
+        
+        let cMaj = {chord with Notes= [(C, Root); (E, Third); (G, Fifth)]}
+        let dMin = {chord with Notes= [(D, Root); (F, Third); (A, Fifth)]}
+        let eMin = {chord with Notes= [(E, Root); (G, Third); (B, Fifth)]}
+        let fMaj = {chord with Notes= [(F, Root); (A, Third); (C, Fifth)]}
+        let gMaj = {chord with Notes= [(G, Root); (B, Third); (D, Fifth)]}
+        let aMin = {chord with Notes= [(A, Root); (C, Third); (E, Fifth)]}
+        let bDim = {chord with Notes= [(B, Root); (D, Third); (F, Fifth)]}
 
-        let cMin = {Notes= [(C, Root); (EFlat, Third); (G, Fifth)]; ChordType=Closed}
-        let dDim = {Notes= [(D, Root); (F, Third); (AFlat, Fifth)]; ChordType=Closed}
-        let eFlatAug = {Notes= [(EFlat, Root); (G, Third); (B, Fifth)]; ChordType=Closed}
-        let fMin = {Notes= [(F, Root); (AFlat, Third); (C, Fifth)]; ChordType=Closed}
-        let aFlatMaj = {Notes= [(AFlat, Root); (C, Third); (EFlat, Fifth)]; ChordType=Closed}
+        let cMin = {chord with Notes= [(C, Root); (EFlat, Third); (G, Fifth)]}
+        let dDim = {chord with Notes= [(D, Root); (F, Third); (AFlat, Fifth)]}
+        let eFlatAug = {chord with Notes= [(EFlat, Root); (G, Third); (B, Fifth)]}
+        let fMin = {chord with Notes= [(F, Root); (AFlat, Third); (C, Fifth)]}
+        let aFlatMaj = {chord with Notes= [(AFlat, Root); (C, Third); (EFlat, Fifth)]}
 
-        let cMaj7 = {Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh)]; ChordType=Closed}
-        let dMin7 = {Notes= [(D, Root); (F, Third); (A, Fifth); (C, Seventh)]; ChordType=Closed}
-        let eMin7 = {Notes= [(E, Root); (G, Third); (B, Fifth); (D, Seventh)]; ChordType=Closed}
-        let fMaj7 = {Notes= [(F, Root); (A, Third); (C, Fifth); (E, Seventh)]; ChordType=Closed}
-        let gDom7 = {Notes= [(G, Root); (B, Third); (D, Fifth); (F, Seventh)]; ChordType=Closed}
-        let aMin7 = {Notes= [(A, Root); (C, Third); (E, Fifth); (G, Seventh)]; ChordType=Closed}
-        let bMin7b5 = {Notes= [(B, Root); (D, Third); (F, Fifth); (A, Seventh)]; ChordType=Closed}
+        let cMaj7 = {chord with Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh)]}
+        let dMin7 = {chord with Notes= [(D, Root); (F, Third); (A, Fifth); (C, Seventh)]}
+        let eMin7 = {chord with Notes= [(E, Root); (G, Third); (B, Fifth); (D, Seventh)]}
+        let fMaj7 = {chord with Notes= [(F, Root); (A, Third); (C, Fifth); (E, Seventh)]}
+        let gDom7 = {chord with Notes= [(G, Root); (B, Third); (D, Fifth); (F, Seventh)]}
+        let aMin7 = {chord with Notes= [(A, Root); (C, Third); (E, Fifth); (G, Seventh)]}
+        let bMin7b5 = {chord with Notes= [(B, Root); (D, Third); (F, Fifth); (A, Seventh)]}
 
-        let cMaj9 = {Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh); (D, Ninth)]; ChordType=Closed}
-        let dMin9 = {Notes= [(D, Root); (F, Third); (A, Fifth); (C, Seventh); (E, Ninth)]; ChordType=Closed}
-        let eMin9 = {Notes= [(E, Root); (G, Third); (B, Fifth); (D, Seventh); (F, Ninth)]; ChordType=Closed}
-        let fMaj9 = {Notes= [(F, Root); (A, Third); (C, Fifth); (E, Seventh); (G, Ninth)]; ChordType=Closed}
-        let gDom9 = {Notes= [(G, Root); (B, Third); (D, Fifth); (F, Seventh); (A, Ninth)]; ChordType=Closed}
-        let aMin9 = {Notes= [(A, Root); (C, Third); (E, Fifth); (G, Seventh); (B, Ninth)]; ChordType=Closed}
-        let bMin9b5 = {Notes= [(B, Root); (D, Third); (F, Fifth); (A, Seventh); (C, Ninth)]; ChordType=Closed}
+        let cMaj9 = {chord with Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh); (D, Ninth)]}
+        let dMin9 = {chord with Notes= [(D, Root); (F, Third); (A, Fifth); (C, Seventh); (E, Ninth)]}
+        let eMin9 = {chord with Notes= [(E, Root); (G, Third); (B, Fifth); (D, Seventh); (F, Ninth)]}
+        let fMaj9 = {chord with Notes= [(F, Root); (A, Third); (C, Fifth); (E, Seventh); (G, Ninth)]}
+        let gDom9 = {chord with Notes= [(G, Root); (B, Third); (D, Fifth); (F, Seventh); (A, Ninth)]}
+        let aMin9 = {chord with Notes= [(A, Root); (C, Third); (E, Fifth); (G, Seventh); (B, Ninth)]}
+        let bMin9b5 = {chord with Notes= [(B, Root); (D, Third); (F, Fifth); (A, Seventh); (C, Ninth)]}
 
-        let cMinMaj7 = {Notes= [(C, Root); (EFlat, Third); (G, Fifth); (B, Seventh)]; ChordType=Closed}
-        let dMin7b5 = {Notes= [(D, Root); (F, Third); (AFlat, Fifth); (C, Seventh)]; ChordType=Closed}
-        let eFlatAug7 = {Notes= [(EFlat, Root); (G, Third); (B, Fifth); (D, Seventh)]; ChordType=Closed}
-        let fMin7 = {Notes= [(F, Root); (AFlat, Third); (C, Fifth); (EFlat, Seventh)]; ChordType=Closed}
-        let aFlatMaj7 = {Notes= [(AFlat, Root); (C, Third); (EFlat, Fifth); (G, Seventh)]; ChordType=Closed}
-        let bDim7 = {Notes= [(B, Root); (D, Third); (F, Fifth); (AFlat, Seventh)]; ChordType=Closed}
+        let cMinMaj7 = {chord with Notes= [(C, Root); (EFlat, Third); (G, Fifth); (B, Seventh)]}
+        let dMin7b5 = {chord with Notes= [(D, Root); (F, Third); (AFlat, Fifth); (C, Seventh)]}
+        let eFlatAug7 = {chord with Notes= [(EFlat, Root); (G, Third); (B, Fifth); (D, Seventh)]}
+        let fMin7 = {chord with Notes= [(F, Root); (AFlat, Third); (C, Fifth); (EFlat, Seventh)]}
+        let aFlatMaj7 = {chord with Notes= [(AFlat, Root); (C, Third); (EFlat, Fifth); (G, Seventh)]}
+        let bDim7 = {chord with Notes= [(B, Root); (D, Third); (F, Fifth); (AFlat, Seventh)]}
 
         [<Test>]
         let ``Should create triads for Ionian scale`` () =
             let cIonian = createScale Ionian C
-            test <@ triadsHarmonizer ScaleDgrees.I cIonian = cMaj @>
-            test <@ triadsHarmonizer ScaleDgrees.II cIonian = dMin @>
-            test <@ triadsHarmonizer ScaleDgrees.III cIonian = eMin @>
-            test <@ triadsHarmonizer ScaleDgrees.IV cIonian = fMaj @>
-            test <@ triadsHarmonizer ScaleDgrees.V cIonian = gMaj @>
-            test <@ triadsHarmonizer ScaleDgrees.VI cIonian = aMin @>
-            test <@ triadsHarmonizer ScaleDgrees.VII cIonian = bDim @>
+            test <@ (triadsHarmonizer ScaleDgrees.I cIonian).Notes = cMaj.Notes @>
+            test <@ (triadsHarmonizer ScaleDgrees.II cIonian).Notes = dMin.Notes @>
+            test <@ (triadsHarmonizer ScaleDgrees.III cIonian).Notes = eMin.Notes @>
+            test <@ (triadsHarmonizer ScaleDgrees.IV cIonian).Notes = fMaj.Notes @>
+            test <@ (triadsHarmonizer ScaleDgrees.V cIonian).Notes = gMaj.Notes @>
+            test <@ (triadsHarmonizer ScaleDgrees.VI cIonian).Notes = aMin.Notes @>
+            test <@ (triadsHarmonizer ScaleDgrees.VII cIonian).Notes = bDim.Notes @>
 
         [<Test>]
         let ``Should create triads for Harmonic Minor scale`` () =
             let cMinor = createScale HarmonicMinor C
-            test <@ triadsHarmonizer ScaleDgrees.I cMinor = cMin @>
-            test <@ triadsHarmonizer ScaleDgrees.II cMinor = dDim @>
-            test <@ triadsHarmonizer ScaleDgrees.III cMinor = eFlatAug @>
-            test <@ triadsHarmonizer ScaleDgrees.IV cMinor = fMin @>
-            test <@ triadsHarmonizer ScaleDgrees.V cMinor = gMaj @>
-            test <@ triadsHarmonizer ScaleDgrees.VI cMinor = aFlatMaj @>
-            test <@ triadsHarmonizer ScaleDgrees.VII cMinor = bDim @>
+            test <@ (triadsHarmonizer ScaleDgrees.I cMinor).Notes = cMin.Notes @>
+            test <@ (triadsHarmonizer ScaleDgrees.II cMinor).Notes = dDim.Notes @>
+            test <@ (triadsHarmonizer ScaleDgrees.III cMinor).Notes = eFlatAug.Notes @>
+            test <@ (triadsHarmonizer ScaleDgrees.IV cMinor).Notes = fMin.Notes @>
+            test <@ (triadsHarmonizer ScaleDgrees.V cMinor).Notes = gMaj.Notes @>
+            test <@ (triadsHarmonizer ScaleDgrees.VI cMinor).Notes = aFlatMaj.Notes @>
+            test <@ (triadsHarmonizer ScaleDgrees.VII cMinor).Notes = bDim.Notes @>
 
         [<Test>]
         let ``Should create seventh chords for Ionian scale`` () =
             let cIonian = createScale Ionian C
-            test <@ seventhsHarmonizer ScaleDgrees.I cIonian = cMaj7 @>
-            test <@ seventhsHarmonizer ScaleDgrees.II cIonian = dMin7 @>
-            test <@ seventhsHarmonizer ScaleDgrees.III cIonian = eMin7 @>
-            test <@ seventhsHarmonizer ScaleDgrees.IV cIonian = fMaj7 @>
-            test <@ seventhsHarmonizer ScaleDgrees.V cIonian = gDom7 @>
-            test <@ seventhsHarmonizer ScaleDgrees.VI cIonian = aMin7 @>
-            test <@ seventhsHarmonizer ScaleDgrees.VII cIonian = bMin7b5 @>
+            test <@ (seventhsHarmonizer ScaleDgrees.I cIonian).Notes = cMaj7.Notes @>
+            test <@ (seventhsHarmonizer ScaleDgrees.II cIonian).Notes = dMin7.Notes @>
+            test <@ (seventhsHarmonizer ScaleDgrees.III cIonian).Notes = eMin7.Notes @>
+            test <@ (seventhsHarmonizer ScaleDgrees.IV cIonian).Notes = fMaj7.Notes @>
+            test <@ (seventhsHarmonizer ScaleDgrees.V cIonian).Notes = gDom7.Notes @>
+            test <@ (seventhsHarmonizer ScaleDgrees.VI cIonian).Notes = aMin7.Notes @>
+            test <@ (seventhsHarmonizer ScaleDgrees.VII cIonian).Notes = bMin7b5.Notes @>
             
         [<Test>]
         let ``Should create seventh chords for Harmonic Minor scale`` () =
             let cMinor = createScale HarmonicMinor C
-            test <@ seventhsHarmonizer ScaleDgrees.I cMinor = cMinMaj7 @>
-            test <@ seventhsHarmonizer ScaleDgrees.II cMinor = dMin7b5 @>
-            test <@ seventhsHarmonizer ScaleDgrees.III cMinor = eFlatAug7 @>
-            test <@ seventhsHarmonizer ScaleDgrees.IV cMinor = fMin7 @>
-            test <@ seventhsHarmonizer ScaleDgrees.V cMinor = gDom7 @>
-            test <@ seventhsHarmonizer ScaleDgrees.VI cMinor = aFlatMaj7 @>
-            test <@ seventhsHarmonizer ScaleDgrees.VII cMinor = bDim7 @>
+            test <@ (seventhsHarmonizer ScaleDgrees.I cMinor).Notes = cMinMaj7.Notes @>
+            test <@ (seventhsHarmonizer ScaleDgrees.II cMinor).Notes = dMin7b5.Notes @>
+            test <@ (seventhsHarmonizer ScaleDgrees.III cMinor).Notes = eFlatAug7.Notes @>
+            test <@ (seventhsHarmonizer ScaleDgrees.IV cMinor).Notes = fMin7.Notes @>
+            test <@ (seventhsHarmonizer ScaleDgrees.V cMinor).Notes = gDom7.Notes @>
+            test <@ (seventhsHarmonizer ScaleDgrees.VI cMinor).Notes = aFlatMaj7.Notes @>
+            test <@ (seventhsHarmonizer ScaleDgrees.VII cMinor).Notes = bDim7.Notes @>
 
         [<Test>]
         let ``Should create ninth chords for Ionian scale`` () =
             let cIonian = createScale Ionian C
-            test <@ ninthsHarmonizer ScaleDgrees.I cIonian = cMaj9 @>
-            test <@ ninthsHarmonizer ScaleDgrees.II cIonian = dMin9 @>
-            test <@ ninthsHarmonizer ScaleDgrees.III cIonian = eMin9 @>
-            test <@ ninthsHarmonizer ScaleDgrees.IV cIonian = fMaj9 @>
-            test <@ ninthsHarmonizer ScaleDgrees.V cIonian = gDom9 @>
-            test <@ ninthsHarmonizer ScaleDgrees.VI cIonian = aMin9 @>
-            test <@ ninthsHarmonizer ScaleDgrees.VII cIonian = bMin9b5 @>
+            test <@ (ninthsHarmonizer ScaleDgrees.I cIonian).Notes = cMaj9.Notes @>
+            test <@ (ninthsHarmonizer ScaleDgrees.II cIonian).Notes = dMin9.Notes @>
+            test <@ (ninthsHarmonizer ScaleDgrees.III cIonian).Notes = eMin9.Notes @>
+            test <@ (ninthsHarmonizer ScaleDgrees.IV cIonian).Notes = fMaj9.Notes @>
+            test <@ (ninthsHarmonizer ScaleDgrees.V cIonian).Notes = gDom9.Notes @>
+            test <@ (ninthsHarmonizer ScaleDgrees.VI cIonian).Notes = aMin9.Notes @>
+            test <@ (ninthsHarmonizer ScaleDgrees.VII cIonian).Notes = bMin9b5.Notes @>
 
     module GuitarTests =
         open NUnit.Framework
         open Swensen.Unquote
         open Vaughan.Domain
-        open Vaughan.Notes
         open Vaughan.Chords
         open Vaughan.Guitar
         open Vaughan.ScaleHarmonizer
@@ -821,7 +817,6 @@ namespace VaughanTests
         open NUnit.Framework
         open Swensen.Unquote
         open Vaughan.Domain
-        open Vaughan.Notes
         open Vaughan.Chords
         open Vaughan.Guitar
         open Vaughan.GuitarTab
@@ -917,6 +912,20 @@ namespace VaughanTests
                                             "E|-------------|" + Environment.NewLine @>
                                                         
         [<Test>]
+        let ``Should map C9 ignoring 5th to guitar fretboard on fifth string closed``() =
+            let guitarChord = chordFromRootAndFunction C Dominant9 
+                              |> skipFunction Fifth
+                              |> chordToGuitarClosedChord FifthString
+
+            test <@ guitarChord |> tabify = "      C9   " + Environment.NewLine +
+                                            "E|----------|" + Environment.NewLine +
+                                            "B|----3-----|" + Environment.NewLine +
+                                            "G|----3-----|" + Environment.NewLine +
+                                            "D|----2-----|" + Environment.NewLine +
+                                            "A|----3-----|" + Environment.NewLine +
+                                            "E|----------|" + Environment.NewLine @>
+            
+        [<Test>]
         let ``Should tabify multiple chords``() =
             let cIonian = createScale Ionian C
             let cMaj7 = seventhsHarmonizer ScaleDgrees.I cIonian
@@ -963,15 +972,10 @@ namespace VaughanTests
 
     module SpeechToMusicTests =
             open System
-            open FParsec
             open NUnit.Framework
             open Swensen.Unquote
             open Vaughan.Domain
-            open Vaughan.Notes
-            open Vaughan.Chords
-            open Vaughan.Chords
             open Vaughan.Scales
-            open Vaughan.ScaleHarmonizer
             open Vaughan.SpeechToMusic
             open Vaughan.Guitar
             open Vaughan.GuitarTab

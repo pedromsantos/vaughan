@@ -102,7 +102,7 @@ namespace Vaughan
 
         type ChordType = | Open | Closed | Drop2 | Drop3
 
-        type Chord = {Notes:ChordNote list; ChordType:ChordType;}
+        type Chord = {Notes:ChordNote list; ChordType:ChordType; Name:string}
 
         type ScaleDgrees = 
             | I = 0 | II = 1 | III = 2 | IV = 3 | V = 4 | VI = 5 | VII = 6
@@ -214,6 +214,13 @@ namespace Vaughan
             | 10 -> MinorSeventh
             | 11 -> MajorSeventh
             | 12 -> PerfectOctave
+            | 13 -> MinorNinth
+            | 14 -> MajorNinth
+            | 15 -> AugmentedNinth
+            | 16 -> PerfectEleventh
+            | 17 -> AugmentedEleventh
+            | 18 -> MinorThirteenth
+            | 19 -> MajorThirteenth
             | _ -> Unisson
         
         let measureAbsoluteSemitones note other =
@@ -369,6 +376,8 @@ namespace Vaughan
                 {Name="Min7b5"; Quality=Minor7b5; Formula=[MinorThird; DiminishedFifth; MinorSeventh]}
                 {Name="MinMaj7"; Quality=MinorMaj7; Formula=[MinorThird; PerfectFifth; MajorSeventh]} 
                 {Name="MinMaj9"; Quality=MinorMaj9; Formula=[MinorThird; PerfectFifth; MajorSeventh; MajorNinth]} 
+                {Name="Min7(b9)"; Quality=MinorMaj9; Formula=[MinorThird; PerfectFifth; MinorSeventh; MinorNinth]} 
+                {Name="Min7(b5b9)"; Quality=MinorMaj9; Formula=[MinorThird; DiminishedFifth; MinorSeventh; MinorNinth]} 
                 {Name="Dim7"; Quality=Diminished7; Formula=[MinorThird; DiminishedFifth; DiminishedSeventh]}
                 {Name="Dim7"; Quality=Diminished7; Formula=[MinorThird; DiminishedFifth; MajorSixth]}
                 {Name="Dom7"; Quality=Dominant7; Formula=[MajorThird; PerfectFifth; MinorSeventh]}
@@ -392,7 +401,7 @@ namespace Vaughan
             (chordAttributes
             |> List.filter (fun c -> c.Formula = intervals)
             |> List.head).Quality
-            
+
         let private intervalsForQuality quality =
             (chordAttributes
             |> List.filter (fun c -> c.Quality = quality)
@@ -419,21 +428,19 @@ namespace Vaughan
 
         let private noteFunction chordNote =
             snd chordNote
-
-        let private rawNotes chord =
-            chord.Notes |>  List.map note
-
-        let private rawNoteForIndex nth chord =
-            (List.item nth (rawNotes chord))
-        
+                                
         let private noteForFunction chord chordNoteFunction =
             note (chord.Notes |> List.find (fun n -> noteFunction n = chordNoteFunction))
         
+        let private adjustIntervalForFunctionsAboveSeventh interval noteFunction =
+            match noteFunction with
+            | Ninth | Eleventh | Thirteenth -> fromDistance ((toDistance interval) + 12)
+            | _ -> interval
+
         let private intervalsForChord chord =
             let root = noteForFunction chord Root
             chord.Notes
-            |> List.map (fun n -> intervalBetween root (note n))
-            |> List.sortBy toDistance
+            |> List.map (fun n -> adjustIntervalForFunctionsAboveSeventh (intervalBetween root (note n)) (noteFunction n))
             |> List.skip 1
 
         let private invertOpenOrClosed chord =
@@ -451,6 +458,10 @@ namespace Vaughan
         let private invertDrop3 chord =
             {chord with Notes= chord.Notes |> rotateByOne |> rotateByOne |> swapSecondTwo;}
 
+        let name chord =
+            noteName (noteForFunction chord Root) 
+            + nameForQuality (qualityForIntervals(intervalsForChord chord))
+
         let invert chord =
             match chord.ChordType with
             | Closed | Open -> invertOpenOrClosed chord
@@ -463,10 +474,6 @@ namespace Vaughan
         let lead chord =
             note (chord.Notes |> List.last)
             
-        let name chord =
-            noteName (noteForFunction chord Root) 
-            + nameForQuality (qualityForIntervals(intervalsForChord chord))
-            
         let noteNames chord =
             chord.Notes |> List.map (note >> noteName)
             
@@ -474,13 +481,14 @@ namespace Vaughan
             {
                 Notes= [(root, Root)] @ (intervalsForQuality quality |> List.map (fun i -> ((transpose root i), functionForInterval i)));
                 ChordType = Closed
+                Name =  noteName root + nameForQuality (qualityForIntervals(intervalsForQuality quality))
             }
 
         let toDrop2 chord =
-            {Notes= chord.Notes |> swapFirstTwo |> rotateByOne; ChordType=Drop2}
+            {chord with Notes = chord.Notes |> swapFirstTwo |> rotateByOne; ChordType=Drop2}
 
         let toDrop3 chord =
-            {Notes= (chord |> toDrop2 |> toDrop2).Notes; ChordType=Drop3}
+            {chord with Notes= (chord |> toDrop2 |> toDrop2).Notes; ChordType=Drop3}
 
         let skipFunction functionToSkipp chord =
             {chord with Notes = chord.Notes |> List.filter (fun nf -> snd nf <> functionToSkipp)}
@@ -547,18 +555,22 @@ namespace Vaughan
                 |> thirds forDegree
                 |> List.take 7
             
-            {Notes= [(thirdsList.[0], Root); 
-                     (thirdsList.[1], Third); 
-                     (thirdsList.[2], Fifth); 
-                     (thirdsList.[3], Seventh); 
-                     (thirdsList.[4], Ninth); 
-                     (thirdsList.[5], Eleventh); 
-                     (thirdsList.[6], Thirteenth)]; 
-             ChordType = Closed}
+            {
+                Notes = [(thirdsList.[0], Root); 
+                         (thirdsList.[1], Third); 
+                         (thirdsList.[2], Fifth); 
+                         (thirdsList.[3], Seventh); 
+                         (thirdsList.[4], Ninth); 
+                         (thirdsList.[5], Eleventh); 
+                         (thirdsList.[6], Thirteenth)]; 
+                ChordType = Closed;
+                Name =  ""
+             }
 
         let private harmonizeScaleDegreeWithNotes forDegree scale notes =
             let complete = harmonizer forDegree scale
-            {complete with Notes = complete.Notes |> List.take notes}
+            let chord = {complete with Notes = complete.Notes |> List.take notes}
+            {chord with Name = name chord}
 
         let harmonize forDegree lastFunction scale =
             match lastFunction with
@@ -735,10 +747,10 @@ namespace Vaughan
                     ]
 
         let private mutedStringDashes guitarChord = 
-            String.replicate (name guitarChord.Chord).Length "-"
+            String.replicate (guitarChord.Chord.Name).Length "-"
 
         let private fretedStringDashes guitarChord fret = 
-            String.replicate ((name guitarChord.Chord).Length - (string(fret)).Length) "-"
+            String.replicate ((guitarChord.Chord.Name).Length - (string(fret)).Length) "-"
 
         let private mutedHigherStrings guitarChord =
             match (guitarChord.Frets |> List.last).GuitarString with
@@ -811,7 +823,7 @@ namespace Vaughan
             let chordNameSeparator = "   "
             let separatedChordNames = 
                 guitarChords
-                |> List.map (fun guitarChord -> chordNameSeparator + name guitarChord.Chord)  
+                |> List.map (fun guitarChord -> chordNameSeparator + guitarChord.Chord.Name)  
             [chordNameSeparator] @ separatedChordNames @ [chordNameSeparator; Environment.NewLine;]
 
         let tabifyAll guitarChords = 
@@ -827,7 +839,7 @@ namespace Vaughan
             tabifyAll [guitarChord]
 
         let shapify guitarChord =
-            name guitarChord.Chord +
+            guitarChord.Chord.Name +
             Environment.NewLine +
             "EADGBE" +
             Environment.NewLine +
