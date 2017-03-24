@@ -1,6 +1,6 @@
 namespace Vaughan
     
-    //https://repl.it/FJHh/3
+    //https://repl.it/FJHh/5
 
     module Infrastructure =
         let rotateByOne list =
@@ -160,13 +160,13 @@ namespace Vaughan
             | MinorSeventh -> {Name="MinorSeventh"; Distance=10}
             | MajorSeventh -> {Name="MajorSeventh"; Distance=11}
             | PerfectOctave -> {Name="PerfectOctave"; Distance=12}
-            | MajorNinth -> {Name="PerfectOctave"; Distance=2}
-            | MinorNinth -> {Name="MinorNinth"; Distance=1}
-            | AugmentedNinth -> {Name="AugmentedNinth"; Distance=3}
-            | PerfectEleventh -> {Name="PerfectEleventh"; Distance=5}
-            | AugmentedEleventh -> {Name="AugmentedEleventh"; Distance=6}
-            | MinorThirteenth -> {Name="MinorThirteenth"; Distance=8}
-            | MajorThirteenth -> {Name="MajorThirteenth"; Distance=9}
+            | MinorNinth -> {Name="MinorNinth"; Distance=13}
+            | MajorNinth -> {Name="MajorNinth"; Distance=14}
+            | AugmentedNinth -> {Name="AugmentedNinth"; Distance=15}
+            | PerfectEleventh -> {Name="PerfectEleventh"; Distance=17}
+            | AugmentedEleventh -> {Name="AugmentedEleventh"; Distance=18}
+            | MinorThirteenth -> {Name="MinorThirteenth"; Distance=20}
+            | MajorThirteenth -> {Name="MajorThirteenth"; Distance=21}
         
         let sharp note =
             (noteAttributes note).Sharp
@@ -200,6 +200,10 @@ namespace Vaughan
         let toDistance interval =
             (intervalAttributes interval).Distance
             
+        let toOctaveDistance interval =
+            let distance = toDistance interval
+            if distance > 12 then distance - 12 else distance
+            
         let fromDistance = function
             | 0 -> Unisson
             | 1 -> MinorSecond
@@ -217,15 +221,15 @@ namespace Vaughan
             | 13 -> MinorNinth
             | 14 -> MajorNinth
             | 15 -> AugmentedNinth
-            | 16 -> PerfectEleventh
-            | 17 -> AugmentedEleventh
-            | 18 -> MinorThirteenth
-            | 19 -> MajorThirteenth
+            | 17 -> PerfectEleventh
+            | 18 -> AugmentedEleventh
+            | 20 -> MinorThirteenth
+            | 21 -> MajorThirteenth
             | _ -> Unisson
         
         let measureAbsoluteSemitones note other =
             let distance = (pitch other) - (pitch note)
-            if distance < (toDistance Unisson) 
+            if distance < (toOctaveDistance Unisson) 
             then (toDistance PerfectOctave) - distance * -1 
             else distance
             
@@ -237,7 +241,7 @@ namespace Vaughan
                 let newNote = transposeDirection note transposingInterval
                 let newInterval = intervalBetween noteToTranspose newNote
                 
-                if toDistance newInterval = toDistance transposingInterval then
+                if toOctaveDistance newInterval = toOctaveDistance transposingInterval then
                     newNote
                 else
                     loop newNote
@@ -431,7 +435,7 @@ namespace Vaughan
                                 
         let private noteForFunction chord chordNoteFunction =
             note (chord.Notes |> List.find (fun n -> noteFunction n = chordNoteFunction))
-        
+                
         let private adjustIntervalForFunctionsAboveSeventh interval noteFunction =
             match noteFunction with
             | Ninth | Eleventh | Thirteenth -> fromDistance ((toDistance interval) + 12)
