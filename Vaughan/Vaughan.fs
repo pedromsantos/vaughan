@@ -116,7 +116,7 @@ namespace Vaughan
         type GuitarChord = {Chord:Chord; Frets:Fret list}
 
         type ChordIntent = { Root: Note; Quality:Quality; }
-
+        
     module Notes =
         open Domain
 
@@ -202,7 +202,8 @@ namespace Vaughan
             
         let toOctaveDistance interval =
             let distance = toDistance interval
-            if distance > 12 then distance - 12 else distance
+            let octaveDistance = toDistance PerfectOctave
+            if distance > octaveDistance then distance - octaveDistance else distance
             
         let fromDistance = function
             | 0 -> Unisson
@@ -438,7 +439,7 @@ namespace Vaughan
                 
         let private adjustIntervalForFunctionsAboveSeventh interval noteFunction =
             match noteFunction with
-            | Ninth | Eleventh | Thirteenth -> fromDistance ((toDistance interval) + 12)
+            | Ninth | Eleventh | Thirteenth -> fromDistance ((toDistance interval) + (toDistance PerfectOctave))
             | _ -> interval
 
         let private intervalsForChord chord =
@@ -628,7 +629,7 @@ namespace Vaughan
             fret.Fret = 0
 
         let private raiseOctave fret =
-            {fret with Fret = fret.Fret + 12}
+            {fret with Fret = fret.Fret + (toDistance PerfectOctave)}
 
         let private fretDistance fret other =
             abs(fret.Fret - other.Fret)
@@ -639,7 +640,7 @@ namespace Vaughan
 
         let private raiseOctaveOnStretch previous current next =
             if (isStretching current previous) || (isStretching current next)
-            then {current with Fret= current.Fret + 12}
+            then {current with Fret= current.Fret + (toDistance PerfectOctave)}
             else current
 
         let private isRaised fret =
