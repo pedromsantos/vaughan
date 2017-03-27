@@ -87,6 +87,10 @@ namespace Vaughan
             | AlteredDominant | HalfWholeDiminished | WholeTone
 
         type ScaleFormula = Interval list
+        type ScaleNotes = Note list
+
+        type IScaleFormula = Scale -> ScaleFormula
+        type ICreateScale = Scale -> Note -> ScaleNotes
 
         type Key = 
             | AMajor | AFlatMajor | BMajor | BFlatMajor | CMajor
@@ -266,7 +270,7 @@ namespace Vaughan
         open Domain
         open Notes
 
-        let formula = function
+        let private formula:IScaleFormula = function
             | Ionian -> [Unisson; MajorSecond; MajorThird; PerfectForth; PerfectFifth; MajorSixth; MajorSeventh]
             | Dorian -> [Unisson; MajorSecond; MinorThird; PerfectForth; PerfectFifth; MajorSixth; MinorSeventh]
             | Phrygian -> [Unisson; MinorSecond; MinorThird; PerfectForth; PerfectFifth; MinorSixth; MinorSeventh]
@@ -288,7 +292,7 @@ namespace Vaughan
             | HalfWholeDiminished -> [Unisson; MinorSecond; MinorThird; MajorThird; AugmentedForth;  PerfectFifth; MajorSixth; MinorSeventh]
             | WholeTone -> [Unisson; MajorSecond; MajorThird; DiminishedFifth; AugmentedFifth; MinorSeventh]
         
-        let createScale scale root = 
+        let createScale:ICreateScale = fun scale root ->
             formula scale |> List.map (fun interval -> transpose root interval)
 
     module Keys =
