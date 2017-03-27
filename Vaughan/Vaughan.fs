@@ -86,10 +86,7 @@ namespace Vaughan
             | LydianDominant | Mixolydianb6 | LocrianSharp2
             | AlteredDominant | HalfWholeDiminished | WholeTone
 
-        type ScaleFormula = Interval list
         type ScaleNotes = Note list
-
-        type IScaleFormula = Scale -> ScaleFormula
         type ICreateScale = Scale -> Note -> ScaleNotes
 
         type Key = 
@@ -270,6 +267,9 @@ namespace Vaughan
         open Domain
         open Notes
 
+        type private ScaleFormula = Interval list
+        type private IScaleFormula = Scale -> ScaleFormula
+        
         let private scaleFormula:IScaleFormula = function
             | Ionian -> [Unisson; MajorSecond; MajorThird; PerfectForth; PerfectFifth; MajorSixth; MajorSeventh]
             | Dorian -> [Unisson; MajorSecond; MinorThird; PerfectForth; PerfectFifth; MajorSixth; MinorSeventh]
