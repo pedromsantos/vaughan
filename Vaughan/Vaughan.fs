@@ -270,7 +270,7 @@ namespace Vaughan
         open Domain
         open Notes
 
-        let private formula:IScaleFormula = function
+        let private scaleFormula:IScaleFormula = function
             | Ionian -> [Unisson; MajorSecond; MajorThird; PerfectForth; PerfectFifth; MajorSixth; MajorSeventh]
             | Dorian -> [Unisson; MajorSecond; MinorThird; PerfectForth; PerfectFifth; MajorSixth; MinorSeventh]
             | Phrygian -> [Unisson; MinorSecond; MinorThird; PerfectForth; PerfectFifth; MinorSixth; MinorSeventh]
@@ -293,7 +293,7 @@ namespace Vaughan
             | WholeTone -> [Unisson; MajorSecond; MajorThird; DiminishedFifth; AugmentedFifth; MinorSeventh]
         
         let createScale:ICreateScale = fun scale root ->
-            formula scale |> List.map (fun interval -> transpose root interval)
+            scaleFormula scale |> List.map (fun interval -> transpose root interval)
 
     module Keys =
         open Domain
