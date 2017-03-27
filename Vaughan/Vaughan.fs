@@ -703,6 +703,7 @@ namespace Vaughan
                         mapChordNoteToString nextString (chordNotes |> List.skip 1) (fret::mappedChordNotes)
 
             mapChordNoteToString bassString chord.Notes []
+
         let fretForNote note guitarString =
             findFretForNote note guitarString
 
