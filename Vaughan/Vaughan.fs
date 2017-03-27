@@ -138,7 +138,10 @@ namespace Vaughan
         type private NoteAttributes = {Name:string; Sharp:Note; Flat:Note; Pitch:int}
         type private IntervalAttributes = {Name:string; Distance:int}
         
-        let private noteAttributes = function
+        type private INoteAttributes = Note -> NoteAttributes
+        type private IIntervalAttributes = Interval -> IntervalAttributes
+
+        let private noteAttributes:INoteAttributes = function
             | C -> {Name="C"; Sharp=CSharp; Flat=B; Pitch=0}
             | CSharp -> {Name="C#"; Sharp=D; Flat=C; Pitch=1}
             | DFlat -> {Name="Db"; Sharp=D; Flat=C; Pitch=1}
@@ -157,7 +160,7 @@ namespace Vaughan
             | BFlat -> {Name="Bb"; Sharp=B; Flat=A; Pitch=10}
             | B -> {Name="B"; Sharp=C; Flat=BFlat; Pitch=11}
         
-        let private intervalAttributes = function
+        let private intervalAttributes:IIntervalAttributes = function
             | Unisson -> {Name="Unisson"; Distance=0}
             | MinorSecond -> {Name="MinorSecond"; Distance=1}
             | MajorSecond -> {Name="MajorSecond"; Distance=2}
