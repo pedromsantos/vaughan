@@ -55,6 +55,12 @@ namespace Vaughan
         type Note = 
             | C | CSharp | DFlat | D | DSharp | EFlat | E | F | FSharp 
             | GFlat | G | GSharp | AFlat | A | ASharp | BFlat | B
+
+        type ISharpNote = Note -> Note
+        type IFlatNote = Note -> Note
+        type INaturalNote = Note -> Note
+        type INoteName = Note -> string
+        type IPitchNote = Note -> int
                     
         type Interval = 
             | Unisson | MinorSecond | MajorSecond | AugmentedSecond | MinorThird
@@ -65,7 +71,15 @@ namespace Vaughan
             | PerfectEleventh | AugmentedEleventh
             | MinorThirteenth | MajorThirteenth
 
-        type Scales = 
+        type IIntervalName = Interval -> string
+        type IIntervalToDistance = Interval -> int
+        type IIntervalToOctaveDistance = Interval -> int
+        type IIntervalFromDistance = int -> Interval
+        type IMeasureAbsoluteSemitones = Note -> Note -> int
+        type IIntervalBetween = Note -> Note -> Interval
+        type ITransposeNote = Note -> Interval -> Note
+
+        type Scale = 
             | Ionian | Dorian | Phrygian | Lydian | Mixolydian
             | Aolian | Locrian | MajorPentatonic | MinorPentatonic
             | Blues | HarmonicMinor | MelodicMinor | Dorianb2 | LydianAugmented
@@ -82,7 +96,7 @@ namespace Vaughan
             | EMinor | FMinor | FSharpMinor | GMinor 
             | GSharpMinor | EFlatMinor
 
-        type Quality = 
+        type ChordQuality = 
             | Major | Augmented
             | Major6 | Major6Add9 | Major6Flat5Add9 
             | Major7 | Major9 | Major9Sharp11 | Major11 | Major13 | Major13Sharp11 | Augmented7
@@ -115,14 +129,14 @@ namespace Vaughan
         
         type GuitarChord = {Chord:Chord; Frets:Fret list}
 
-        type ChordIntent = { Root: Note; Quality:Quality; }
+        type ChordIntent = { Root: Note; Quality:ChordQuality; }
         
     module Notes =
         open Domain
 
         type private NoteAttributes = {Name:string; Sharp:Note; Flat:Note; Pitch:int}
         type private IntervalAttributes = {Name:string; Distance:int}
-
+        
         let private noteAttributes = function
             | C -> {Name="C"; Sharp=CSharp; Flat=B; Pitch=0}
             | CSharp -> {Name="C#"; Sharp=D; Flat=C; Pitch=1}
@@ -168,10 +182,10 @@ namespace Vaughan
             | MinorThirteenth -> {Name="MinorThirteenth"; Distance=20}
             | MajorThirteenth -> {Name="MajorThirteenth"; Distance=21}
         
-        let sharp note =
+        let sharp:ISharpNote = fun note ->
             (noteAttributes note).Sharp
 
-        let flat note =
+        let flat:IFlatNote = fun note ->
             (noteAttributes note).Flat
 
         let private transposeDirection note = function
@@ -185,27 +199,26 @@ namespace Vaughan
             | MinorNinth | MinorThirteenth
             | MinorSixth | DiminishedSeventh | MinorSeventh  -> flat note
 
-        let noteName note =
+        let natural:INaturalNote = id
+
+        let noteName:INoteName = fun note ->
             (noteAttributes note).Name
-            
-        let natural note =
-            note
-            
-        let pitch note =
+
+        let pitch:IPitchNote = fun note ->
             (noteAttributes note).Pitch
             
-        let intervalName interval =
+        let intervalName:IIntervalName = fun interval ->
             (intervalAttributes interval).Name
         
-        let toDistance interval =
+        let toDistance:IIntervalToDistance = fun interval ->
             (intervalAttributes interval).Distance
             
-        let toOctaveDistance interval =
+        let toOctaveDistance:IIntervalToDistance = fun interval ->
             let distance = toDistance interval
             let octaveDistance = toDistance PerfectOctave
             if distance > octaveDistance then distance - octaveDistance else distance
             
-        let fromDistance = function
+        let fromDistance:IIntervalFromDistance = function
             | 0 -> Unisson
             | 1 -> MinorSecond
             | 2 -> MajorSecond
@@ -228,16 +241,16 @@ namespace Vaughan
             | 21 -> MajorThirteenth
             | _ -> Unisson
         
-        let measureAbsoluteSemitones note other =
+        let measureAbsoluteSemitones:IMeasureAbsoluteSemitones = fun note other ->
             let distance = (pitch other) - (pitch note)
             if distance < (toOctaveDistance Unisson) 
             then (toDistance PerfectOctave) - distance * -1 
             else distance
             
-        let intervalBetween note other =
+        let intervalBetween:IIntervalBetween = fun note other ->
             fromDistance (measureAbsoluteSemitones note other)
             
-        let transpose noteToTranspose transposingInterval =
+        let transpose:ITransposeNote = fun noteToTranspose transposingInterval ->
             let rec loop note =
                 let newNote = transposeDirection note transposingInterval
                 let newInterval = intervalBetween noteToTranspose newNote
@@ -356,7 +369,7 @@ namespace Vaughan
         open Notes
         open Infrastructure
 
-        type private ChordAttributes = {Name:string; Quality:Quality; Formula:Interval list}
+        type private ChordAttributes = {Name:string; Quality:ChordQuality; Formula:Interval list}
 
         let private chordAttributes =
             [
