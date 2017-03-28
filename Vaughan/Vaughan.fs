@@ -139,10 +139,11 @@ namespace Vaughan
         open Domain
 
         type private NoteAttributes = {Name:string; Sharp:Note; Flat:Note; Pitch:int}
-        type private IntervalAttributes = {Name:string; Distance:int}
+        type private IntervalAttributes = {Name:string; Distance:int; Transpose: (Note -> Note)}
         
         type private INoteAttributes = Note -> NoteAttributes
-        type private IIntervalAttributes = Interval -> IntervalAttributes
+        type private IIntervalAttributes = Interval -> (Note -> Note) -> (Note -> Note) -> (Note -> Note)-> IntervalAttributes
+        type private ITransposeNoteForInterval = Note -> Interval -> Note
 
         let private noteAttributes:INoteAttributes = function
             | C -> {Name="C"; Sharp=CSharp; Flat=B; Pitch=0}
@@ -163,48 +164,44 @@ namespace Vaughan
             | BFlat -> {Name="Bb"; Sharp=B; Flat=A; Pitch=10}
             | B -> {Name="B"; Sharp=C; Flat=BFlat; Pitch=11}
         
-        let private intervalAttributes:IIntervalAttributes = function
-            | Unisson -> {Name="Unisson"; Distance=0}
-            | MinorSecond -> {Name="MinorSecond"; Distance=1}
-            | MajorSecond -> {Name="MajorSecond"; Distance=2}
-            | AugmentedSecond -> {Name="AugmentedSecond"; Distance=3}
-            | MinorThird -> {Name="MinorThird"; Distance=3}
-            | MajorThird -> {Name="MajorThird"; Distance=4}
-            | PerfectForth -> {Name="PerfectForth"; Distance=5}
-            | AugmentedForth -> {Name="AugmentedForth"; Distance=6}
-            | DiminishedFifth -> {Name="DiminishedFifth"; Distance=6}
-            | PerfectFifth -> {Name="PerfectFifth"; Distance=7}
-            | AugmentedFifth -> {Name="AugmentedFifth"; Distance=8}
-            | MinorSixth -> {Name="MinorSixth"; Distance=8}
-            | MajorSixth -> {Name="MajorSixth"; Distance=9}
-            | DiminishedSeventh -> {Name="DiminishSeventh"; Distance=9}
-            | MinorSeventh -> {Name="MinorSeventh"; Distance=10}
-            | MajorSeventh -> {Name="MajorSeventh"; Distance=11}
-            | PerfectOctave -> {Name="PerfectOctave"; Distance=12}
-            | MinorNinth -> {Name="MinorNinth"; Distance=13}
-            | MajorNinth -> {Name="MajorNinth"; Distance=14}
-            | AugmentedNinth -> {Name="AugmentedNinth"; Distance=15}
-            | PerfectEleventh -> {Name="PerfectEleventh"; Distance=17}
-            | AugmentedEleventh -> {Name="AugmentedEleventh"; Distance=18}
-            | MinorThirteenth -> {Name="MinorThirteenth"; Distance=20}
-            | MajorThirteenth -> {Name="MajorThirteenth"; Distance=21}
+        let private intervalAttributes:IIntervalAttributes = fun interval sharp flat natural ->
+            match interval with
+            | Unisson -> {Name="Unisson"; Distance=0; Transpose=natural}
+            | MinorSecond -> {Name="MinorSecond"; Distance=1; Transpose=flat}
+            | MajorSecond -> {Name="MajorSecond"; Distance=2; Transpose=sharp}
+            | AugmentedSecond -> {Name="AugmentedSecond"; Distance=3; Transpose=sharp}
+            | MinorThird -> {Name="MinorThird"; Distance=3; Transpose=flat}
+            | MajorThird -> {Name="MajorThird"; Distance=4; Transpose=sharp}
+            | PerfectForth -> {Name="PerfectForth"; Distance=5; Transpose=sharp}
+            | AugmentedForth -> {Name="AugmentedForth"; Distance=6; Transpose=sharp}
+            | DiminishedFifth -> {Name="DiminishedFifth"; Distance=6; Transpose=flat}
+            | PerfectFifth -> {Name="PerfectFifth"; Distance=7; Transpose=sharp}
+            | AugmentedFifth -> {Name="AugmentedFifth"; Distance=8; Transpose=sharp}
+            | MinorSixth -> {Name="MinorSixth"; Distance=8; Transpose=flat}
+            | MajorSixth -> {Name="MajorSixth"; Distance=9; Transpose=sharp}
+            | DiminishedSeventh -> {Name="DiminishSeventh"; Distance=9; Transpose=flat}
+            | MinorSeventh -> {Name="MinorSeventh"; Distance=10; Transpose=flat}
+            | MajorSeventh -> {Name="MajorSeventh"; Distance=11; Transpose=sharp}
+            | PerfectOctave -> {Name="PerfectOctave"; Distance=12; Transpose=natural}
+            | MinorNinth -> {Name="MinorNinth"; Distance=13; Transpose=flat}
+            | MajorNinth -> {Name="MajorNinth"; Distance=14; Transpose=sharp}
+            | AugmentedNinth -> {Name="AugmentedNinth"; Distance=15; Transpose=sharp}
+            | PerfectEleventh -> {Name="PerfectEleventh"; Distance=17; Transpose=sharp}
+            | AugmentedEleventh -> {Name="AugmentedEleventh"; Distance=18; Transpose=sharp}
+            | MinorThirteenth -> {Name="MinorThirteenth"; Distance=20; Transpose=flat}
+            | MajorThirteenth -> {Name="MajorThirteenth"; Distance=21; Transpose=sharp}
         
+        let private intervalAttributesWithDefaults interval = 
+            (intervalAttributes interval (fun n -> (noteAttributes n).Sharp) (fun n -> (noteAttributes n).Flat) id)
+
+        let private transposeNoteForInterval:ITransposeNoteForInterval = fun note interval ->
+            (intervalAttributesWithDefaults interval).Transpose note
+
         let sharp:ISharpNote = fun note ->
             (noteAttributes note).Sharp
 
         let flat:IFlatNote = fun note ->
             (noteAttributes note).Flat
-
-        let private transposeDirection note = function
-            | Unisson -> note 
-            | MajorSecond | AugmentedSecond | PerfectFifth | MajorThird 
-            | PerfectForth | AugmentedFifth | MajorSixth | PerfectOctave 
-            | MajorNinth | AugmentedNinth | PerfectEleventh | AugmentedEleventh
-            | MajorThirteenth
-            | AugmentedForth | MajorSeventh -> sharp note
-            | MinorSecond | DiminishedFifth | MinorThird
-            | MinorNinth | MinorThirteenth
-            | MinorSixth | DiminishedSeventh | MinorSeventh  -> flat note
 
         let natural:INaturalNote = id
 
@@ -215,10 +212,10 @@ namespace Vaughan
             (noteAttributes note).Pitch
             
         let intervalName:IIntervalName = fun interval ->
-            (intervalAttributes interval).Name
+            (intervalAttributesWithDefaults interval).Name
         
         let toDistance:IIntervalToDistance = fun interval ->
-            (intervalAttributes interval).Distance
+            (intervalAttributesWithDefaults interval).Distance
             
         let toOctaveDistance:IIntervalToDistance = fun interval ->
             let distance = toDistance interval
@@ -259,7 +256,7 @@ namespace Vaughan
             
         let transpose:ITransposeNote = fun noteToTranspose transposingInterval ->
             let rec loop note =
-                let newNote = transposeDirection note transposingInterval
+                let newNote = transposeNoteForInterval note transposingInterval
                 let newInterval = intervalBetween noteToTranspose newNote
                 
                 if toOctaveDistance newInterval = toOctaveDistance transposingInterval then
