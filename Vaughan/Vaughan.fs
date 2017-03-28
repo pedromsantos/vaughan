@@ -97,6 +97,9 @@ namespace Vaughan
             | EMinor | FMinor | FSharpMinor | GMinor 
             | GSharpMinor | EFlatMinor
 
+        type KeyNotes = Note list
+        type IKeyNotes = Key -> KeyNotes
+
         type ChordQuality = 
             | Major | Augmented
             | Major6 | Major6Add9 | Major6Flat5Add9 
@@ -303,6 +306,7 @@ namespace Vaughan
         open Notes
 
         type private KeyAttributes = {Root:Note; Accidentals:int}
+        type private IKeyAttributes = Key -> KeyAttributes
 
         let private keyAttributes = function
             | AMajor -> {Root=A; Accidentals=3} 
@@ -350,9 +354,9 @@ namespace Vaughan
             |> List.take(keyAccidents)
             |> List.map sharp)
         
-        let private rawNotes scale = 
+        let private rawkeyNotes key = 
             let fifths = [F; C; G; D; A; E; B;]
-            let keyAccidents = accidentals scale
+            let keyAccidents = accidentals key
             
             if keyAccidents = 0 then
                 fifths
@@ -362,14 +366,14 @@ namespace Vaughan
                 else
                     sharpedKey fifths keyAccidents
 
-        let notes scale = 
-            (rawNotes scale
+        let keyNotes:IKeyNotes = fun key ->  
+            (rawkeyNotes key
             |> List.sortBy pitch
-            |> List.skipWhile (fun n -> n <> root scale))
+            |> List.skipWhile (fun n -> n <> root key))
             @
-            (rawNotes scale
+            (rawkeyNotes key
             |> List.sortBy pitch
-            |> List.takeWhile (fun n -> n <> root scale))  
+            |> List.takeWhile (fun n -> n <> root key))  
 
     module Chords =
         open Domain

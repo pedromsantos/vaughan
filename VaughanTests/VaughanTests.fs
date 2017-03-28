@@ -191,32 +191,32 @@ namespace VaughanTests
 
         [<Test>]
         let ``Should have notes for key``() =
-            test <@ notes CMajor = [ C; D; E; F; G; A; B ] @>
-            test <@ notes GMajor = [ G; A; B; C; D; E; FSharp ] @>
-            test <@ notes DMajor = [ D; E; FSharp; G; A; B; CSharp ] @>
-            test <@ notes AMajor = [ A; B; CSharp; D; E; FSharp; GSharp ] @>
-            test <@ notes EMajor = [ E; FSharp; GSharp; A; B; CSharp; DSharp ] @>
-            test <@ notes BMajor = [ B; CSharp; DSharp; E; FSharp; GSharp; ASharp ] @>
-            test <@ notes FSharpMajor = [ FSharp; GSharp; ASharp; B; CSharp; DSharp; F ] @>
-            test <@ notes DFlatMajor = [ DFlat; EFlat; F; GFlat; AFlat; BFlat; C ] @>
-            test <@ notes AFlatMajor = [ AFlat; BFlat; C; DFlat; EFlat; F; G ] @>
-            test <@ notes GFlatMajor = [ GFlat; AFlat; BFlat; B; DFlat; EFlat; F ] @>
-            test <@ notes EFlatMajor = [ EFlat; F; G; AFlat; BFlat; C; D ] @>
-            test <@ notes BFlatMajor = [ BFlat; C; D; EFlat; F; G; A ] @>
-            test <@ notes FMajor = [ F; G; A; BFlat; C; D; E ] @>
+            test <@ keyNotes CMajor = [ C; D; E; F; G; A; B ] @>
+            test <@ keyNotes GMajor = [ G; A; B; C; D; E; FSharp ] @>
+            test <@ keyNotes DMajor = [ D; E; FSharp; G; A; B; CSharp ] @>
+            test <@ keyNotes AMajor = [ A; B; CSharp; D; E; FSharp; GSharp ] @>
+            test <@ keyNotes EMajor = [ E; FSharp; GSharp; A; B; CSharp; DSharp ] @>
+            test <@ keyNotes BMajor = [ B; CSharp; DSharp; E; FSharp; GSharp; ASharp ] @>
+            test <@ keyNotes FSharpMajor = [ FSharp; GSharp; ASharp; B; CSharp; DSharp; F ] @>
+            test <@ keyNotes DFlatMajor = [ DFlat; EFlat; F; GFlat; AFlat; BFlat; C ] @>
+            test <@ keyNotes AFlatMajor = [ AFlat; BFlat; C; DFlat; EFlat; F; G ] @>
+            test <@ keyNotes GFlatMajor = [ GFlat; AFlat; BFlat; B; DFlat; EFlat; F ] @>
+            test <@ keyNotes EFlatMajor = [ EFlat; F; G; AFlat; BFlat; C; D ] @>
+            test <@ keyNotes BFlatMajor = [ BFlat; C; D; EFlat; F; G; A ] @>
+            test <@ keyNotes FMajor = [ F; G; A; BFlat; C; D; E ] @>
 
-            test <@ notes AMinor = [ A; B; C; D; E; F; G ] @>
-            test <@ notes EMinor = [ E; FSharp; G; A; B; C; D ] @>
-            test <@ notes BMinor = [ B; CSharp; D; E; FSharp; G; A ] @>
-            test <@ notes FSharpMinor = [ FSharp; GSharp; A; B; CSharp; D; E ] @>
-            test <@ notes CSharpMinor = [ CSharp; DSharp; E; FSharp; GSharp; A; B ] @>
-            test <@ notes GSharpMinor = [ GSharp; ASharp; B; CSharp; DSharp; E; FSharp ] @>
-            test <@ notes EFlatMinor = [ EFlat; F; GFlat; AFlat; BFlat; B; DFlat ] @>
-            test <@ notes BFlatMinor = [ BFlat; C; DFlat; EFlat; F; GFlat; AFlat ] @>
-            test <@ notes FMinor = [ F; G; AFlat; BFlat; C; DFlat; EFlat ] @>
-            test <@ notes CMinor = [ C; D; EFlat; F; G; AFlat; BFlat ] @>
-            test <@ notes GMinor = [ G; A; BFlat; C; D; EFlat; F ] @>
-            test <@ notes DMinor = [ D; E; F; G; A; BFlat; C ] @>
+            test <@ keyNotes AMinor = [ A; B; C; D; E; F; G ] @>
+            test <@ keyNotes EMinor = [ E; FSharp; G; A; B; C; D ] @>
+            test <@ keyNotes BMinor = [ B; CSharp; D; E; FSharp; G; A ] @>
+            test <@ keyNotes FSharpMinor = [ FSharp; GSharp; A; B; CSharp; D; E ] @>
+            test <@ keyNotes CSharpMinor = [ CSharp; DSharp; E; FSharp; GSharp; A; B ] @>
+            test <@ keyNotes GSharpMinor = [ GSharp; ASharp; B; CSharp; DSharp; E; FSharp ] @>
+            test <@ keyNotes EFlatMinor = [ EFlat; F; GFlat; AFlat; BFlat; B; DFlat ] @>
+            test <@ keyNotes BFlatMinor = [ BFlat; C; DFlat; EFlat; F; GFlat; AFlat ] @>
+            test <@ keyNotes FMinor = [ F; G; AFlat; BFlat; C; DFlat; EFlat ] @>
+            test <@ keyNotes CMinor = [ C; D; EFlat; F; G; AFlat; BFlat ] @>
+            test <@ keyNotes GMinor = [ G; A; BFlat; C; D; EFlat; F ] @>
+            test <@ keyNotes DMinor = [ D; E; F; G; A; BFlat; C ] @>
 
     module ScaleTests =
         open NUnit.Framework
