@@ -142,7 +142,7 @@ namespace Vaughan
         type private IntervalAttributes = {Name:string; Distance:int; Transpose: (Note -> Note)}
         
         type private INoteAttributes = Note -> NoteAttributes
-        type private IIntervalAttributes = Interval -> (Note -> Note) -> (Note -> Note) -> (Note -> Note)-> IntervalAttributes
+        type private IIntervalAttributes = Interval -> ISharpNote -> IFlatNote -> INaturalNote -> IntervalAttributes
         type private ITransposeNoteForInterval = Note -> Interval -> Note
 
         let private noteAttributes:INoteAttributes = function
