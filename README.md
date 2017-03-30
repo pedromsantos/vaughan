@@ -7,6 +7,12 @@ Vaughan is named after Blues guitarist [Stevie Ray Vaughan](https://en.wikipedia
 
 ## Getting started
 
+### Online
+
+Navigate to //https://repl.it/FJHh/6 there is some sample code included with the source. The SpeechToMusic module is not available as I have not found a way to add FParsec dependency in repl.it
+
+### On your own evironment
+
 1. Clone the repository to your machine
 2. Build
   1. On Windows execute build.cmd (requires Powershell)
