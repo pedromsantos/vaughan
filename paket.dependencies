@@ -1,7 +1,7 @@
 source https://www.nuget.org/api/v2
 nuget FAKE
 nuget FSharp.Core
-nuget NUnit = 2.6.4
+nuget NUnit
 nuget Unquote
-nuget NUnit.Runners = 2.6.4
-nuget FParsec 1.0.2
+nuget NUnit.Runners
+nuget FParsec

@@ -23,7 +23,7 @@ let testAssemblies = !! (buildDir + "*Tests.dll")
 
 Target "Test" (fun _ ->
     testAssemblies
-    |> NUnit id
+    |> NUnit3 id
 )
 
 let doc = System.Xml.Linq.XDocument.Load("./Vaughan.nuspec")
