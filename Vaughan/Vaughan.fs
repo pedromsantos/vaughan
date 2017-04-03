@@ -658,10 +658,10 @@ namespace Vaughan
                 |> List.mapi (fun i fret -> if isRaised fret then fret else raiseStretchedFret i frets)
 
             let private unstrechFretsTimesFrets frets = 
-                let rec loop fx i =
+                let rec loop lst i =
                     match i with
-                    | 0 -> fx
-                    | _ -> loop (fx |> unstrechFrets) (i-1)
+                    | 0 -> lst
+                    | _ -> loop (lst |> unstrechFrets) (i-1)
                     
                 loop frets ((frets |> List.length) - 1)
 
