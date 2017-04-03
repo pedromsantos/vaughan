@@ -48,8 +48,11 @@ namespace Vaughan
         let cappedMinimum number cap =
             if number < cap then cap else number
 
+        let minimumPositive number = cappedMinimum number 0
+
         let cappedMaximum number cap =
             if number > cap then cap else number
+
 
     module Domain =
         type Note = 
@@ -675,26 +678,26 @@ namespace Vaughan
             frets 
             |> List.map (fun fret -> if isOpenFret fret then raiseOctave fret else fret)
 
-        let private raiseUnraisedFrets frets =
-            if hasRaised frets then
-                frets
-                |> List.mapi (fun i fret -> 
-                    if isRaised fret then fret
-                    else
-                        let minimumIndex = cappedMinimum (i-1) 0
-                        let maxIndex = (frets |> List.length) - 1
-                        let maximumIndex = cappedMaximum (i+1) maxIndex 
-                        raiseOctaveOnStretch frets.[minimumIndex] fret frets.[maximumIndex])
-            else
-                frets
+        let private raiseStretchedFret fretIndex frets =
+            let previousFretIndex = minimumPositive (fretIndex - 1)
+            let maxFretIndex = (frets |> List.length) - 1
+            let nextFretIndex = cappedMaximum (fretIndex + 1) maxFretIndex 
+            raiseOctaveOnStretch frets.[previousFretIndex] frets.[fretIndex] frets.[nextFretIndex]
+
+        let private raiseStretchedFrets frets =
+            frets 
+            |> List.mapi (fun i fret -> if isRaised fret then fret else raiseStretchedFret i frets)
+
+        let private unstrechFrets frets = 
+            let rec loop fx i =
+                match i with
+                | 0 -> fx
+                | _ -> loop (fx |> raiseStretchedFrets) (i-1)
+                
+            loop frets ((frets |> List.length) - 1)
 
         let private unstretch frets =
-            let rec loop fx i =
-               match i with
-               | 0 -> fx
-               | _ -> loop (fx |> raiseUnraisedFrets) (i-1)
-            
-            loop frets ((frets |> List.length) - 1)
+            if hasRaised frets then unstrechFrets frets else frets
 
         let private createMutedStringFret guitarString note =
             let note = openStringNote guitarString
