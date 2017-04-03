@@ -48,7 +48,8 @@ namespace Vaughan
         let cappedMinimum number cap =
             if number < cap then cap else number
 
-        let minimumPositive number = cappedMinimum number 0
+        let minimumPositive number = 
+            cappedMinimum number 0
 
         let cappedMaximum number cap =
             if number > cap then cap else number
@@ -617,9 +618,64 @@ namespace Vaughan
             harmonize forDegree Fifth scale
 
     module Guitar =
+        module private GuitarFrets =
+            open Infrastructure
+            open Domain
+            open Notes
+
+            let private isOpenFret fret =
+                fret.Fret = 0
+
+            let private isRaised fret =
+                fret.Fret > 11
+
+            let private hasRaised frets =
+                frets |> List.exists isRaised
+
+            let private fretDistance fret other =
+                abs(fret.Fret - other.Fret)
+
+            let private isStretched fret other =
+                let maxStrech = 5
+                (fretDistance fret other) > maxStrech
+
+            let private raiseOctave fret =
+                {fret with Fret = fret.Fret + (toDistance PerfectOctave)}
+                
+            let private raiseOctaveOnStretch previous current next =
+                if (isStretched current previous) || (isStretched current next)
+                then raiseOctave current
+                else current
+
+            let private raiseStretchedFret fretIndex frets =
+                let previousFretIndex = minimumPositive (fretIndex - 1)
+                let maxFretIndex = (frets |> List.length) - 1
+                let nextFretIndex = cappedMaximum (fretIndex + 1) maxFretIndex 
+                raiseOctaveOnStretch frets.[previousFretIndex] frets.[fretIndex] frets.[nextFretIndex]
+
+            let private raiseStretchedFrets frets =
+                frets 
+                |> List.mapi (fun i fret -> if isRaised fret then fret else raiseStretchedFret i frets)
+
+            let private unstrechFrets frets = 
+                let rec loop fx i =
+                    match i with
+                    | 0 -> fx
+                    | _ -> loop (fx |> raiseStretchedFrets) (i-1)
+                    
+                loop frets ((frets |> List.length) - 1)
+
+            let raiseOpenFrets frets =
+                frets 
+                |> List.map (fun fret -> if isOpenFret fret then raiseOctave fret else fret)
+
+            let  unstretch frets =
+                if hasRaised frets then unstrechFrets frets else frets
+
         open Domain
         open Notes
         open Chords
+        open GuitarFrets
         open Infrastructure
 
         type private GuitarStringAttributes = {Name:string; OpenStringNote:Note; Index:int}
@@ -648,56 +704,6 @@ namespace Vaughan
 
         let private nextString guitarString = 
             indexToGuitarString ((guitarStringOrdinal guitarString) - 1)
-
-        let private isOpenFret fret =
-            fret.Fret = 0
-
-        let private raiseOctave fret =
-            {fret with Fret = fret.Fret + (toDistance PerfectOctave)}
-
-        let private fretDistance fret other =
-            abs(fret.Fret - other.Fret)
-
-        let private isStretching fret other =
-            let maxStrech = 5
-            (fretDistance fret other) > maxStrech
-
-        let private raiseOctaveOnStretch previous current next =
-            if (isStretching current previous) || (isStretching current next)
-            then {current with Fret= current.Fret + (toDistance PerfectOctave)}
-            else current
-
-        let private isRaised fret =
-            fret.Fret > 11
-
-        let private hasRaised frets =
-            frets
-            |> List.exists isRaised
-
-        let private raiseOpenFrets frets =
-            frets 
-            |> List.map (fun fret -> if isOpenFret fret then raiseOctave fret else fret)
-
-        let private raiseStretchedFret fretIndex frets =
-            let previousFretIndex = minimumPositive (fretIndex - 1)
-            let maxFretIndex = (frets |> List.length) - 1
-            let nextFretIndex = cappedMaximum (fretIndex + 1) maxFretIndex 
-            raiseOctaveOnStretch frets.[previousFretIndex] frets.[fretIndex] frets.[nextFretIndex]
-
-        let private raiseStretchedFrets frets =
-            frets 
-            |> List.mapi (fun i fret -> if isRaised fret then fret else raiseStretchedFret i frets)
-
-        let private unstrechFrets frets = 
-            let rec loop fx i =
-                match i with
-                | 0 -> fx
-                | _ -> loop (fx |> raiseStretchedFrets) (i-1)
-                
-            loop frets ((frets |> List.length) - 1)
-
-        let private unstretch frets =
-            if hasRaised frets then unstrechFrets frets else frets
 
         let private createMutedStringFret guitarString note =
             let note = openStringNote guitarString
