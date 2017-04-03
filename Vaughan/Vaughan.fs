@@ -653,15 +653,15 @@ namespace Vaughan
                 let nextFretIndex = cappedMaximum (fretIndex + 1) maxFretIndex 
                 raiseOctaveOnStretch frets.[previousFretIndex] frets.[fretIndex] frets.[nextFretIndex]
 
-            let private raiseStretchedFrets frets =
+            let private unstrechFrets frets =
                 frets 
                 |> List.mapi (fun i fret -> if isRaised fret then fret else raiseStretchedFret i frets)
 
-            let private unstrechFrets frets = 
+            let private unstrechFretsTimesFrets frets = 
                 let rec loop fx i =
                     match i with
                     | 0 -> fx
-                    | _ -> loop (fx |> raiseStretchedFrets) (i-1)
+                    | _ -> loop (fx |> unstrechFrets) (i-1)
                     
                 loop frets ((frets |> List.length) - 1)
 
@@ -670,7 +670,7 @@ namespace Vaughan
                 |> List.map (fun fret -> if isOpenFret fret then raiseOctave fret else fret)
 
             let  unstretch frets =
-                if hasRaised frets then unstrechFrets frets else frets
+                if hasRaised frets then unstrechFretsTimesFrets frets else frets
 
         open Domain
         open Notes
