@@ -135,8 +135,10 @@ namespace Vaughan
             | ThirdString | SecondString | FirstString
         
         type Fret = {GuitarString:GuitarString; Fret:int; Note:Note}
+
+        type Frets = Fret list
         
-        type GuitarChord = {Chord:Chord; Frets:Fret list}
+        type GuitarChord = {Chord:Chord; Frets:Frets}
 
         type ChordIntent = { Root: Note; Quality:ChordQuality; }
         
@@ -736,12 +738,12 @@ namespace Vaughan
 
         let private mapChordToGuitarFrets bassString chord =
             let rec mapChordNoteToString guitarString chordNotes mappedChordNotes =
-                if List.isEmpty chordNotes then
-                    mappedChordNotes
-                else
-                    let stringSkipper = skipString bassString chord guitarString
-                    let fret = mapNoteToFret guitarString (fst chordNotes.[0]) stringSkipper
-                    let unmapedChordNotes = remainingChordNotesToMap chordNotes stringSkipper
+                match chordNotes with
+                | [] -> mappedChordNotes
+                | _ ->
+                    let shouldSkipString = skipString bassString chord guitarString
+                    let fret = mapNoteToFret guitarString (fst chordNotes.[0]) shouldSkipString
+                    let unmapedChordNotes = remainingChordNotesToMap chordNotes shouldSkipString
                     mapChordNoteToString (nextString guitarString) unmapedChordNotes (fret::mappedChordNotes)
 
             mapChordNoteToString bassString chord.Notes []
