@@ -257,17 +257,16 @@ namespace Vaughan
             
         let intervalBetween:IIntervalBetween = fun note other ->
             fromDistance (measureAbsoluteSemitones note other)
+
+        let private isSameInterval interval otherInterval =
+            toOctaveDistance interval = toOctaveDistance otherInterval
             
         let transpose:ITransposeNote = fun noteToTranspose transposingInterval ->
             let rec loop note =
                 let newNote = transposeNoteForInterval note transposingInterval
                 let newInterval = intervalBetween noteToTranspose newNote
-                
-                if toOctaveDistance newInterval = toOctaveDistance transposingInterval then
-                    newNote
-                else
-                    loop newNote
-                
+                if isSameInterval newInterval transposingInterval then newNote else loop newNote
+            
             loop noteToTranspose
 
     module Scales =
@@ -602,7 +601,7 @@ namespace Vaughan
             let chord = {complete with Notes = complete.Notes |> List.take notes}
             {chord with Name = name chord}
 
-        let harmonize forDegree lastFunction scale =
+        let private harmonize forDegree lastFunction scale =
             match lastFunction with
             | Seventh -> harmonizeScaleDegreeWithNotes forDegree scale 4
             | Ninth -> harmonizeScaleDegreeWithNotes forDegree scale 5
