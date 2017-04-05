@@ -121,10 +121,11 @@ namespace Vaughan
             | Root | Third | Fifth | Sixth | Seventh | Ninth | Eleventh | Thirteenth
         
         type ChordNote = Note * ChordNoteFunction
+        type ChordNotes = ChordNote list
 
         type ChordType = | Open | Closed | Drop2 | Drop3
 
-        type Chord = {Notes:ChordNote list; ChordType:ChordType; Name:string}
+        type Chord = {Notes:ChordNotes; ChordType:ChordType; Name:string}
 
         type ScaleDgrees = 
             | I = 0 | II = 1 | III = 2 | IV = 3 | V = 4 | VI = 5 | VII = 6
@@ -678,6 +679,7 @@ namespace Vaughan
         open Infrastructure
 
         type private GuitarStringAttributes = {Name:string; OpenStringNote:Note; Index:int}
+        
         let private guitarStringAttributes = function
             | SixthString -> { Name="Sixth"; OpenStringNote=E; Index=6}
             | FifthString -> { Name="Fifth"; OpenStringNote=A; Index=5}
@@ -704,7 +706,7 @@ namespace Vaughan
         let private nextString guitarString = 
             indexToGuitarString ((guitarStringOrdinal guitarString) - 1)
 
-        let private createMutedStringFret guitarString note =
+        let private createMutedStringFret guitarString =
             let note = openStringNote guitarString
             { GuitarString = guitarString; Fret = -1; Note = note }
 
@@ -714,22 +716,31 @@ namespace Vaughan
         let private createFret guitarString note =
             { GuitarString = guitarString; Fret = findFretForNote note guitarString; Note = note }
 
-        let private skipString bassString guitarString chord =
-            let afterBassString = (indexToGuitarString ((guitarStringOrdinal bassString) - 1))
-            chord.ChordType = Drop3 && guitarString = afterBassString
+        let private skipString bassString chord guitarString =
+            chord.ChordType = Drop3 && guitarString = nextString bassString
+
+        let private chordNotesTail (chordNotes:ChordNotes) =
+            chordNotes |> List.tail
+
+        let private mapNoteToFret guitarString note shouldSkipString =
+            if shouldSkipString then
+                createMutedStringFret guitarString
+            else
+                createFret guitarString note
 
         let private mapChordToGuitarFrets bassString chord =
             let rec mapChordNoteToString guitarString chordNotes mappedChordNotes =
                 if List.isEmpty chordNotes then
                     mappedChordNotes
                 else
-                    let nextString = nextString guitarString
-                    if skipString bassString guitarString chord then
-                        let fret = createMutedStringFret guitarString (fst chordNotes.[0])
-                        mapChordNoteToString nextString chordNotes (fret::mappedChordNotes)
+                    let currentString = nextString guitarString
+                    if skipString bassString chord guitarString then
+                        let fret = createMutedStringFret guitarString
+                        mapChordNoteToString currentString chordNotes (fret::mappedChordNotes)
                     else
                         let fret = createFret guitarString (fst chordNotes.[0])
-                        mapChordNoteToString nextString (chordNotes |> List.skip 1) (fret::mappedChordNotes)
+                        let unmapedChordNotes = chordNotesTail chordNotes
+                        mapChordNoteToString currentString unmapedChordNotes (fret::mappedChordNotes)
 
             mapChordNoteToString bassString chord.Notes []
 
