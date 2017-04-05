@@ -735,13 +735,13 @@ namespace Vaughan
                 chordNotesTail chordNotes
 
         let private mapChordToGuitarFrets bassString chord =
-            let stringSkipper = skipString bassString chord
             let rec mapChordNoteToString guitarString chordNotes mappedChordNotes =
                 if List.isEmpty chordNotes then
                     mappedChordNotes
                 else
-                    let fret = mapNoteToFret guitarString (fst chordNotes.[0]) (stringSkipper guitarString)
-                    let unmapedChordNotes = remainingChordNotesToMap chordNotes (stringSkipper guitarString)
+                    let stringSkipper = skipString bassString chord guitarString
+                    let fret = mapNoteToFret guitarString (fst chordNotes.[0]) stringSkipper
+                    let unmapedChordNotes = remainingChordNotesToMap chordNotes stringSkipper
                     mapChordNoteToString (nextString guitarString) unmapedChordNotes (fret::mappedChordNotes)
 
             mapChordNoteToString bassString chord.Notes []
