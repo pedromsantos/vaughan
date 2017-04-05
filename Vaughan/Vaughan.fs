@@ -721,26 +721,28 @@ namespace Vaughan
 
         let private chordNotesTail (chordNotes:ChordNotes) =
             chordNotes |> List.tail
-
+    
         let private mapNoteToFret guitarString note shouldSkipString =
-            if shouldSkipString then
+            if shouldSkipString guitarString then
                 createMutedStringFret guitarString
             else
                 createFret guitarString note
+                
+        let private remainingChordNotesToMap guitarString chordNotes shouldSkipString =
+            if shouldSkipString guitarString then
+                chordNotes
+            else
+                chordNotesTail chordNotes
 
         let private mapChordToGuitarFrets bassString chord =
+            let stringSkipper = skipString bassString chord
             let rec mapChordNoteToString guitarString chordNotes mappedChordNotes =
                 if List.isEmpty chordNotes then
                     mappedChordNotes
                 else
-                    let currentString = nextString guitarString
-                    if skipString bassString chord guitarString then
-                        let fret = createMutedStringFret guitarString
-                        mapChordNoteToString currentString chordNotes (fret::mappedChordNotes)
-                    else
-                        let fret = createFret guitarString (fst chordNotes.[0])
-                        let unmapedChordNotes = chordNotesTail chordNotes
-                        mapChordNoteToString currentString unmapedChordNotes (fret::mappedChordNotes)
+                    let fret = mapNoteToFret guitarString (fst chordNotes.[0]) stringSkipper
+                    let unmapedChordNotes = remainingChordNotesToMap guitarString chordNotes stringSkipper
+                    mapChordNoteToString (nextString guitarString) unmapedChordNotes (fret::mappedChordNotes)
 
             mapChordNoteToString bassString chord.Notes []
 
