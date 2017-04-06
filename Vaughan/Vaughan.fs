@@ -68,7 +68,7 @@ namespace Vaughan
                     
         type Interval = 
             | Unisson | MinorSecond | MajorSecond | AugmentedSecond | MinorThird
-            | MajorThird | PerfectFourth | AugmentedForth | DiminishedFifth
+            | MajorThird | PerfectFourth | AugmentedFourth | DiminishedFifth
             | PerfectFifth | AugmentedFifth | MinorSixth | MajorSixth
             | DiminishedSeventh | MinorSeventh | MajorSeventh | PerfectOctave
             | MajorNinth | MinorNinth | AugmentedNinth 
@@ -180,7 +180,7 @@ namespace Vaughan
             | MinorThird -> {Name="MinorThird"; Distance=3; Transpose=flat}
             | MajorThird -> {Name="MajorThird"; Distance=4; Transpose=sharp}
             | PerfectFourth -> {Name="PerfectForth"; Distance=5; Transpose=sharp}
-            | AugmentedForth -> {Name="AugmentedForth"; Distance=6; Transpose=sharp}
+            | AugmentedFourth -> {Name="AugmentedForth"; Distance=6; Transpose=sharp}
             | DiminishedFifth -> {Name="DiminishedFifth"; Distance=6; Transpose=flat}
             | PerfectFifth -> {Name="PerfectFifth"; Distance=7; Transpose=sharp}
             | AugmentedFifth -> {Name="AugmentedFifth"; Distance=8; Transpose=sharp}
@@ -283,7 +283,7 @@ namespace Vaughan
             | Ionian -> [Unisson; MajorSecond; MajorThird; PerfectFourth; PerfectFifth; MajorSixth; MajorSeventh]
             | Dorian -> [Unisson; MajorSecond; MinorThird; PerfectFourth; PerfectFifth; MajorSixth; MinorSeventh]
             | Phrygian -> [Unisson; MinorSecond; MinorThird; PerfectFourth; PerfectFifth; MinorSixth; MinorSeventh]
-            | Lydian -> [Unisson; MajorSecond; MajorThird; AugmentedForth; PerfectFifth; MajorSixth; MajorSeventh]
+            | Lydian -> [Unisson; MajorSecond; MajorThird; AugmentedFourth; PerfectFifth; MajorSixth; MajorSeventh]
             | Mixolydian -> [Unisson; MajorSecond; MajorThird; PerfectFourth; PerfectFifth; MajorSixth; MinorSeventh]
             | Aolian -> [Unisson; MajorSecond; MinorThird; PerfectFourth; PerfectFifth; MinorSixth; MinorSeventh]
             | Locrian -> [Unisson; MinorSecond; MinorThird; PerfectFourth; DiminishedFifth; MinorSixth; MinorSeventh]
@@ -293,12 +293,12 @@ namespace Vaughan
             | HarmonicMinor -> [Unisson; MajorSecond; MinorThird; PerfectFourth; PerfectFifth; MinorSixth; MajorSeventh]
             | MelodicMinor -> [Unisson; MajorSecond; MinorThird; PerfectFourth; PerfectFifth; MajorSixth; MajorSeventh]
             | Dorianb2 -> [Unisson; MinorSecond; MinorThird; PerfectFourth; PerfectFifth; MajorSixth; MinorSeventh]
-            | LydianAugmented -> [Unisson; MajorSecond; MajorThird; AugmentedForth; AugmentedFifth; MajorSixth; MajorSeventh]
-            | LydianDominant -> [Unisson; MajorSecond; MajorThird; AugmentedForth; PerfectFifth; MajorSixth; MinorSeventh]
+            | LydianAugmented -> [Unisson; MajorSecond; MajorThird; AugmentedFourth; AugmentedFifth; MajorSixth; MajorSeventh]
+            | LydianDominant -> [Unisson; MajorSecond; MajorThird; AugmentedFourth; PerfectFifth; MajorSixth; MinorSeventh]
             | Mixolydianb6 -> [Unisson; MajorSecond; MajorThird; PerfectFourth; PerfectFifth; MinorSixth; MinorSeventh]
             | LocrianSharp2 -> [Unisson; MajorSecond; MinorThird; PerfectFourth; DiminishedFifth; MinorSixth; MinorSeventh]
             | AlteredDominant -> [Unisson; MinorSecond; AugmentedSecond; MajorThird; DiminishedFifth;  AugmentedFifth; MinorSeventh]
-            | HalfWholeDiminished -> [Unisson; MinorSecond; MinorThird; MajorThird; AugmentedForth;  PerfectFifth; MajorSixth; MinorSeventh]
+            | HalfWholeDiminished -> [Unisson; MinorSecond; MinorThird; MajorThird; AugmentedFourth;  PerfectFifth; MajorSixth; MinorSeventh]
             | WholeTone -> [Unisson; MajorSecond; MajorThird; DiminishedFifth; AugmentedFifth; MinorSeventh]
         
         let createScale:ICreateScale = fun scale root ->
@@ -446,7 +446,7 @@ namespace Vaughan
 
         let private functionForInterval = function
             | Unisson -> Root
-            | MajorThird | MinorThird -> Third 
+            | MajorThird | MinorThird | MajorSecond | MinorSecond | PerfectFourth | AugmentedFourth -> Third 
             | PerfectFifth | DiminishedFifth | AugmentedFifth  -> Fifth
             | MajorSixth -> Sixth
             | MajorSeventh | MinorSeventh | DiminishedSeventh -> Seventh

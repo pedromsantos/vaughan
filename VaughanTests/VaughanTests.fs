@@ -525,6 +525,11 @@ namespace VaughanTests
             (invert cDim7).Notes =! [(EFlat, Third); (GFlat, Fifth); (A, Seventh); (C, Root)] 
             (invert cMin7b5).Notes =! [(EFlat, Third); (GFlat, Fifth); (BFlat, Seventh); (C, Root)] 
 
+        [<Property>]
+        let ``Should put third on bass for first inversion`` (root :Note) (quality: ChordQuality) =
+            let chord = chordFromRootAndQuality root quality
+            snd (invert chord).Notes.Head = Third
+
         [<Test>]
         let ``Should invert chord for second inversion``() =
             (cMaj |> invert |> invert).Notes =! [(G, Fifth); (C, Root); (E, Third)] 
@@ -537,6 +542,12 @@ namespace VaughanTests
             (cDim7 |> invert |> invert).Notes =! [(GFlat, Fifth); (A, Seventh); (C, Root); (EFlat, Third)] 
             (cMin7b5 |> invert |> invert).Notes =! [(GFlat, Fifth); (BFlat, Seventh); (C, Root); (EFlat, Third)] 
 
+        [<Property>]
+        let ``Should put fifth on bass for second inversion`` (root :Note) (quality: ChordQuality) =
+            let chord = chordFromRootAndQuality root quality
+            snd (chord |> invert |> invert).Notes.Head = Fifth
+
+
         [<Test>]
         let ``Should invert chord for third inversion``() =
             (cMaj7 |> invert |> invert |> invert).Notes =! [(B, Seventh); (C, Root); (E, Third); (G, Fifth)] 
@@ -544,6 +555,15 @@ namespace VaughanTests
             (cMin7 |> invert |> invert |> invert).Notes =! [(BFlat, Seventh); (C, Root); (EFlat, Third); (G, Fifth)] 
             (cDim7 |> invert |> invert |> invert).Notes =! [(A, Seventh); (C, Root); (EFlat, Third); (GFlat, Fifth)] 
             (cMin7b5 |> invert |> invert |> invert).Notes =! [(BFlat, Seventh); (C, Root); (EFlat, Third); (GFlat, Fifth)] 
+
+        [<Property>]
+        let ``Should put sixth or seventh on bass for third inversion`` (root :Note) (quality: ChordQuality) =
+            let chord = chordFromRootAndQuality root quality
+
+            ( chord.Notes.Length > 3)
+                ==> lazy (snd (chord |> invert |> invert |> invert).Notes.Head = Seventh
+                            || snd (chord |> invert |> invert |> invert).Notes.Head = Sixth)
+
 
         [<Test>]
         let ``Should loop inversions``() =
