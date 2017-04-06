@@ -64,20 +64,17 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
-    <Reference Include="Expecto">
-      <HintPath>..\packages\Expecto\lib\net40\Expecto.dll</HintPath>
-    </Reference>
     <Reference Include="FsCheck">
-      <HintPath>....\packages\FsCheck\lib\net452\FsCheck.dll</HintPath>
+      <HintPath>..\packages\FsCheck\lib\net452\FsCheck.dll</HintPath>
+    </Reference>
+    <Reference Include="FsCheck.NUnit">
+      <HintPath>..\packages\FsCheck.Nunit\lib\net452\FsCheck.NUnit.dll</HintPath>
     </Reference>
     <Reference Include="Unquote">
       <HintPath>..\packages\Unquote\lib\net45\Unquote.dll</HintPath>
     </Reference>
     <Reference Include="FParsec">
       <HintPath>..\packages\FParsec\lib\portable-net45+netcore45+wpa81+wp8\FParsec.dll</HintPath>
-    </Reference>
-    <Reference Include="FParsec">
-      <HintPath>..\packages\FParsec\lib\portable-net45+netcore45+wpa81+wp8\FParsecCS.dll</HintPath>
     </Reference>
     <ProjectReference Include="..\Vaughan\Vaughan.fsproj">
       <Name>Vaughan</Name>

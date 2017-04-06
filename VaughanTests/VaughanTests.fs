@@ -2,8 +2,9 @@ namespace VaughanTests
 
     module InfrastructureTests =
         open NUnit.Framework
+        open FsCheck
+        open FsCheck.NUnit 
         open Swensen.Unquote
-        open Expecto
         open Swensen.Unquote.Extensions
         open Vaughan.Infrastructure
 
@@ -14,9 +15,19 @@ namespace VaughanTests
             rotateByOne [1; 2] =! [2; 1]
             rotateByOne [1; 2; 3] =! [2; 3; 1]
 
+        [<Property>]
+        let ``Rotating list puts head in last`` (list :int list)  =
+            ( not (List.isEmpty list) ) 
+                ==> lazy ((list |> rotateByOne |> List.last) = (list |> List.head))
+
         [<Test>]
         let ``Should swap first 2 elements in list``() =
             swapFirstTwo [1; 2; 3] =! [2; 1; 3]
+
+        [<Property>]
+        let ``Swapping first 2 elements in list twice undoes first swap`` (list :int list)  =
+            ( list |> List.length > 2 ) 
+                ==> lazy ((list |> swapFirstTwo |> swapFirstTwo) = list)
 
         [<Test>]
         let ``Should filter odd index elements``() =
@@ -25,6 +36,11 @@ namespace VaughanTests
         [<Test>]
         let ``Should swap second 2 elements in list``() =
             swapSecondTwo [1; 2; 3] =! [1; 3; 2]
+
+        [<Property>]
+        let ``Swapping second two elements in list twice undoes first swap`` (list :int list)  =
+            ( list |> List.length > 2 ) 
+                ==> lazy ((list |> swapSecondTwo |> swapSecondTwo) = list)
 
         [<Test>]
         let ``Should create circular sequence from list``() =
