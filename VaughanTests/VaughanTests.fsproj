@@ -64,6 +64,12 @@
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
+    <Reference Include="Expecto">
+      <HintPath>..\packages\Expecto\lib\net40\Expecto.dll</HintPath>
+    </Reference>
+    <Reference Include="FsCheck">
+      <HintPath>....\packages\FsCheck\lib\net452\FsCheck.dll</HintPath>
+    </Reference>
     <Reference Include="Unquote">
       <HintPath>..\packages\Unquote\lib\net45\Unquote.dll</HintPath>
     </Reference>

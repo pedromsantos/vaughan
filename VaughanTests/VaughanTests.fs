@@ -3,6 +3,7 @@ namespace VaughanTests
     module InfrastructureTests =
         open NUnit.Framework
         open Swensen.Unquote
+        open Expecto
         open Swensen.Unquote.Extensions
         open Vaughan.Infrastructure
 

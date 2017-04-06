@@ -4,4 +4,7 @@ nuget FSharp.Core
 nuget NUnit
 nuget Unquote
 nuget NUnit.Runners
+nuget Expecto
+nuget Expecto.BenchmarkDotNet
+nuget Expecto.FsCheck
 nuget FParsec
