@@ -1,5 +1,4 @@
 namespace VaughanTests
-
     module InfrastructureTests =
         open NUnit.Framework
         open FsCheck
@@ -289,10 +288,13 @@ namespace VaughanTests
             fromDistance 11 =! MajorSeventh
             fromDistance 12 =! PerfectOctave
 
-     module KeyTests =
+    module KeyTests =
         open NUnit.Framework
+        open FsCheck
+        open FsCheck.NUnit
         open Swensen.Unquote
         open Vaughan.Domain
+        open Vaughan.Notes
         open Vaughan.Keys
 
         [<Test>]
@@ -310,7 +312,7 @@ namespace VaughanTests
             keyNotes EFlatMajor =! [ EFlat; F; G; AFlat; BFlat; C; D ]
             keyNotes BFlatMajor =! [ BFlat; C; D; EFlat; F; G; A ]
             keyNotes FMajor =! [ F; G; A; BFlat; C; D; E ]
-
+            
             keyNotes AMinor =! [ A; B; C; D; E; F; G ]
             keyNotes EMinor =! [ E; FSharp; G; A; B; C; D ]
             keyNotes BMinor =! [ B; CSharp; D; E; FSharp; G; A ]
@@ -323,6 +325,22 @@ namespace VaughanTests
             keyNotes CMinor =! [ C; D; EFlat; F; G; AFlat; BFlat ]
             keyNotes GMinor =! [ G; A; BFlat; C; D; EFlat; F ]
             keyNotes DMinor =! [ D; E; F; G; A; BFlat; C ]
+
+        [<Property>]
+        let ``Major keys have formula R, W, W, H, W, W, W, H and Minor keys have formula R, W, H, W, W, H, W, W`` (key :Key) =
+            let majorKeyformula = 
+                [Unisson; MajorSecond; MajorSecond; MinorSecond; MajorSecond; MajorSecond; MajorSecond; MinorSecond]
+            let minorKeyformula = 
+                [Unisson; MajorSecond; MinorSecond; MajorSecond; MajorSecond; MinorSecond; MajorSecond; MajorSecond]
+
+            let notesForKey = keyNotes key
+            let notesForKeyWithOctave = notesForKey@[notesForKey.Head]
+            let intervalsForKey = 
+                notesForKeyWithOctave 
+                |> List.mapi 
+                    (fun i n -> if i = 0 then Unisson else intervalBetween notesForKeyWithOctave.[i - 1] n)
+
+            intervalsForKey = majorKeyformula || intervalsForKey = minorKeyformula
 
     module ScaleTests =
         open NUnit.Framework
