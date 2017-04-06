@@ -3,7 +3,7 @@ namespace VaughanTests
     module InfrastructureTests =
         open NUnit.Framework
         open FsCheck
-        open FsCheck.NUnit 
+        open FsCheck.NUnit
         open Swensen.Unquote
         open Swensen.Unquote.Extensions
         open Vaughan.Infrastructure
@@ -16,8 +16,8 @@ namespace VaughanTests
             rotateByOne [1; 2; 3] =! [2; 3; 1]
 
         [<Property>]
-        let ``Rotating list puts head in last`` (list :int list)  =
-            ( not (List.isEmpty list) ) 
+        let ``Rotating list puts head as last`` (list :int list) =
+            ( not (List.isEmpty list) )
                 ==> lazy ((list |> rotateByOne |> List.last) = (list |> List.head))
 
         [<Test>]
@@ -25,22 +25,22 @@ namespace VaughanTests
             swapFirstTwo [1; 2; 3] =! [2; 1; 3]
 
         [<Property>]
-        let ``Swapping first 2 elements in list twice undoes first swap`` (list :int list)  =
-            ( list |> List.length > 2 ) 
+        let ``Swapping first two elements in list twice undoes first swap`` (list :int list) =
+            ( list |> List.length > 2 )
                 ==> lazy ((list |> swapFirstTwo |> swapFirstTwo) = list)
+ 
+        [<Test>]
+        let ``Should swap second two elements in list``() =
+            swapSecondTwo [1; 2; 3] =! [1; 3; 2]
+
+        [<Property>]
+        let ``Swapping second two elements in list twice undoes first swap`` (list :int list) =
+            ( list |> List.length > 2 ) 
+                ==> lazy ((list |> swapSecondTwo |> swapSecondTwo) = list)
 
         [<Test>]
         let ``Should filter odd index elements``() =
             filterOddIndexElements {1 .. 6} |> List.ofSeq =! ({1 .. 2 .. 6} |> List.ofSeq)
- 
-        [<Test>]
-        let ``Should swap second 2 elements in list``() =
-            swapSecondTwo [1; 2; 3] =! [1; 3; 2]
-
-        [<Property>]
-        let ``Swapping second two elements in list twice undoes first swap`` (list :int list)  =
-            ( list |> List.length > 2 ) 
-                ==> lazy ((list |> swapSecondTwo |> swapSecondTwo) = list)
 
         [<Test>]
         let ``Should create circular sequence from list``() =
@@ -50,6 +50,8 @@ namespace VaughanTests
         
     module NotesTests =
         open NUnit.Framework
+        open FsCheck
+        open FsCheck.NUnit
         open Swensen.Unquote
         open Vaughan.Domain
         open Vaughan.Notes
@@ -113,7 +115,11 @@ namespace VaughanTests
             flat ASharp =! A
             flat BFlat =! A
             flat B =! BFlat
-            
+        
+        [<Property>]
+        let ``Sharping and flating a note should go back to original note pitch`` (note :Note)  =
+            pitch (note |> sharp |> flat) = (pitch note)
+
         [<Test>]
         let ``Should measure semitones distance``() =
             measureAbsoluteSemitones C C =! 0
@@ -133,7 +139,7 @@ namespace VaughanTests
             measureAbsoluteSemitones C ASharp =! 10
             measureAbsoluteSemitones C BFlat =! 10
             measureAbsoluteSemitones C B =! 11
-            
+
         [<Test>]
         let ``Should create interval from distance``() =
             intervalBetween C C =! Unisson
@@ -143,7 +149,7 @@ namespace VaughanTests
             intervalBetween C DSharp =! MinorThird
             intervalBetween C EFlat =! MinorThird
             intervalBetween C E =! MajorThird
-            intervalBetween C F =! PerfectForth
+            intervalBetween C F =! PerfectFourth
             intervalBetween C FSharp =! DiminishedFifth
             intervalBetween C GFlat =! DiminishedFifth
             intervalBetween C G =! PerfectFifth
@@ -153,7 +159,53 @@ namespace VaughanTests
             intervalBetween C ASharp =! MinorSeventh
             intervalBetween C BFlat =! MinorSeventh
             intervalBetween C B =! MajorSeventh
-            
+        
+        [<Property>]
+        let ``Interval between same note is a unisson interval`` (note :Note) =
+            (intervalBetween note note) = Unisson
+
+        [<Property>]
+        let ``Semitone difference between two notes is a minor second interval`` (note :Note) =
+            (intervalBetween note (sharp note)) = MinorSecond
+            &&
+            (intervalBetween (note |> flat) note) = MinorSecond
+
+        [<Property>]
+        let ``Two semi tones difference between two notes is a major second interval`` (note :Note) =
+            (intervalBetween note (note |> sharp |> sharp)) = MajorSecond
+            &&
+            (intervalBetween (note |> flat |> flat) note) = MajorSecond
+
+        [<Property>]
+        let ``Three semi tones difference between two notes is a minor third interval`` (note :Note) =
+            (intervalBetween note (note |> sharp |> sharp |> sharp)) = MinorThird
+            &&
+            (intervalBetween (note |> flat |> flat |> flat) note) = MinorThird
+
+        [<Property>]
+        let ``Four semi tones difference between two notes is a major third interval`` (note :Note) =
+            (intervalBetween note (note |> sharp |> sharp |> sharp |> sharp)) = MajorThird
+            &&
+            (intervalBetween (note |> flat |> flat |> flat |> flat) note) = MajorThird
+
+        [<Property>]
+        let ``Five semi tones difference between two notes is a perfect fourth interval`` (note :Note) =
+            (intervalBetween note (note |> sharp |> sharp |> sharp |> sharp |> sharp)) = PerfectFourth
+            &&
+            (intervalBetween (note |> flat |> flat |> flat |> flat |> flat) note) = PerfectFourth
+
+        [<Property>]
+        let ``Six semi tones difference between two notes is a diminished fifth interval`` (note :Note) =
+            (intervalBetween note (note |> sharp |> sharp |> sharp |> sharp |> sharp |> sharp)) = DiminishedFifth
+            &&
+            (intervalBetween (note |> flat |> flat |> flat |> flat |> flat |> flat) note) = DiminishedFifth
+
+        [<Property>]
+        let ``Seven semi tones difference between two notes is a perfect fifth interval`` (note :Note) =
+            (intervalBetween note (note |> sharp |> sharp |> sharp |> sharp |> sharp |> sharp |> sharp)) = PerfectFifth
+            &&
+            (intervalBetween (note |> flat |> flat |> flat |> flat |> flat |> flat |> flat) note) = PerfectFifth
+
         [<Test>]
         let ``Should transpose note using interval``() =
             transpose C Unisson =! C
@@ -161,14 +213,50 @@ namespace VaughanTests
             transpose C MajorSecond =! D
             transpose C MinorThird =! EFlat
             transpose C MajorThird =! E
-            transpose C PerfectForth =! F
+            transpose C PerfectFourth =! F
             transpose C DiminishedFifth =! GFlat
             transpose C PerfectFifth =! G
             transpose C AugmentedFifth =! GSharp
             transpose C MajorSixth =! A
             transpose C MinorSeventh =! BFlat
             transpose C MajorSeventh =! B
-            
+        
+        [<Property>]
+        let ``Transposing a note by a unisson gives the same the note`` (note :Note) =
+            (transpose note Unisson) = note
+
+        [<Property>]
+        let ``Transposing a note by an augmented fifth gives a note 8 semi tones above`` (note :Note) =
+            let sharpedNote = note |> sharp |> sharp |> sharp |> sharp |> sharp |> sharp |> sharp |> sharp
+            let flatedNote = note |> flat |> flat |> flat |> flat |> flat |> flat |> flat |> flat
+            pitch (transpose note AugmentedFifth) = pitch sharpedNote
+            &&
+            pitch (transpose flatedNote AugmentedFifth) = pitch note
+
+        [<Property>]
+        let ``Transposing a note by an major sixth gives a note 9 semi tones above`` (note :Note) =
+            let sharpedNote = note |> sharp |> sharp |> sharp |> sharp |> sharp |> sharp |> sharp |> sharp |> sharp
+            let flatedNote = note |> flat |> flat |> flat |> flat |> flat |> flat |> flat |> flat |> flat
+            pitch (transpose note MajorSixth) = pitch sharpedNote
+            &&
+            pitch (transpose flatedNote MajorSixth) = pitch note
+
+        [<Property>]
+        let ``Transposing a note by an minor seventh gives a note 10 semi tones above`` (note :Note) =
+            let sharpedNote = note |> sharp |> sharp |> sharp |> sharp |> sharp |> sharp |> sharp |> sharp |> sharp |> sharp
+            let flatedNote = note |> flat |> flat |> flat |> flat |> flat |> flat |> flat |> flat |> flat |> flat
+            pitch (transpose note MinorSeventh) = pitch sharpedNote
+            &&
+            pitch (transpose flatedNote MinorSeventh) = pitch note
+
+        [<Property>]
+        let ``Transposing a note by an major seventh gives a note 11 semi tones above`` (note :Note) =
+            let sharpedNote = note |> sharp |> sharp |> sharp |> sharp |> sharp |> sharp |> sharp |> sharp |> sharp |> sharp |> sharp
+            let flatedNote = note |> flat |> flat |> flat |> flat |> flat |> flat |> flat |> flat |> flat |> flat |> flat
+            pitch (transpose note MajorSeventh) = pitch sharpedNote
+            &&
+            pitch (transpose flatedNote MajorSeventh) = pitch note
+
         [<Test>]
         let ``Should relate interval with its name``() =
             intervalName Unisson =! "Unisson"
@@ -176,7 +264,7 @@ namespace VaughanTests
             intervalName MajorSecond =! "MajorSecond"
             intervalName MinorThird =! "MinorThird"
             intervalName MajorThird =! "MajorThird"
-            intervalName PerfectForth =! "PerfectForth"
+            intervalName PerfectFourth =! "PerfectForth"
             intervalName DiminishedFifth =! "DiminishedFifth"
             intervalName PerfectFifth =! "PerfectFifth"
             intervalName AugmentedFifth =! "AugmentedFifth"
@@ -192,7 +280,7 @@ namespace VaughanTests
             fromDistance 2 =! MajorSecond
             fromDistance 3 =! MinorThird
             fromDistance 4 =! MajorThird
-            fromDistance 5 =! PerfectForth
+            fromDistance 5 =! PerfectFourth
             fromDistance 6 =! DiminishedFifth
             fromDistance 7 =! PerfectFifth
             fromDistance 8 =! AugmentedFifth

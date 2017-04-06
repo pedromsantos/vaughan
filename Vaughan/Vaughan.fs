@@ -68,7 +68,7 @@ namespace Vaughan
                     
         type Interval = 
             | Unisson | MinorSecond | MajorSecond | AugmentedSecond | MinorThird
-            | MajorThird | PerfectForth | AugmentedForth | DiminishedFifth
+            | MajorThird | PerfectFourth | AugmentedForth | DiminishedFifth
             | PerfectFifth | AugmentedFifth | MinorSixth | MajorSixth
             | DiminishedSeventh | MinorSeventh | MajorSeventh | PerfectOctave
             | MajorNinth | MinorNinth | AugmentedNinth 
@@ -179,7 +179,7 @@ namespace Vaughan
             | AugmentedSecond -> {Name="AugmentedSecond"; Distance=3; Transpose=sharp}
             | MinorThird -> {Name="MinorThird"; Distance=3; Transpose=flat}
             | MajorThird -> {Name="MajorThird"; Distance=4; Transpose=sharp}
-            | PerfectForth -> {Name="PerfectForth"; Distance=5; Transpose=sharp}
+            | PerfectFourth -> {Name="PerfectForth"; Distance=5; Transpose=sharp}
             | AugmentedForth -> {Name="AugmentedForth"; Distance=6; Transpose=sharp}
             | DiminishedFifth -> {Name="DiminishedFifth"; Distance=6; Transpose=flat}
             | PerfectFifth -> {Name="PerfectFifth"; Distance=7; Transpose=sharp}
@@ -235,7 +235,7 @@ namespace Vaughan
             | 2 -> MajorSecond
             | 3 -> MinorThird
             | 4 -> MajorThird
-            | 5 -> PerfectForth
+            | 5 -> PerfectFourth
             | 6 -> DiminishedFifth
             | 7 -> PerfectFifth
             | 8 -> AugmentedFifth
@@ -280,23 +280,23 @@ namespace Vaughan
         type private IScaleFormula = Scale -> ScaleFormula
         
         let private scaleFormula:IScaleFormula = function
-            | Ionian -> [Unisson; MajorSecond; MajorThird; PerfectForth; PerfectFifth; MajorSixth; MajorSeventh]
-            | Dorian -> [Unisson; MajorSecond; MinorThird; PerfectForth; PerfectFifth; MajorSixth; MinorSeventh]
-            | Phrygian -> [Unisson; MinorSecond; MinorThird; PerfectForth; PerfectFifth; MinorSixth; MinorSeventh]
+            | Ionian -> [Unisson; MajorSecond; MajorThird; PerfectFourth; PerfectFifth; MajorSixth; MajorSeventh]
+            | Dorian -> [Unisson; MajorSecond; MinorThird; PerfectFourth; PerfectFifth; MajorSixth; MinorSeventh]
+            | Phrygian -> [Unisson; MinorSecond; MinorThird; PerfectFourth; PerfectFifth; MinorSixth; MinorSeventh]
             | Lydian -> [Unisson; MajorSecond; MajorThird; AugmentedForth; PerfectFifth; MajorSixth; MajorSeventh]
-            | Mixolydian -> [Unisson; MajorSecond; MajorThird; PerfectForth; PerfectFifth; MajorSixth; MinorSeventh]
-            | Aolian -> [Unisson; MajorSecond; MinorThird; PerfectForth; PerfectFifth; MinorSixth; MinorSeventh]
-            | Locrian -> [Unisson; MinorSecond; MinorThird; PerfectForth; DiminishedFifth; MinorSixth; MinorSeventh]
+            | Mixolydian -> [Unisson; MajorSecond; MajorThird; PerfectFourth; PerfectFifth; MajorSixth; MinorSeventh]
+            | Aolian -> [Unisson; MajorSecond; MinorThird; PerfectFourth; PerfectFifth; MinorSixth; MinorSeventh]
+            | Locrian -> [Unisson; MinorSecond; MinorThird; PerfectFourth; DiminishedFifth; MinorSixth; MinorSeventh]
             | MajorPentatonic -> [Unisson; MajorSecond; MajorThird; PerfectFifth; MajorSixth]
-            | MinorPentatonic -> [Unisson; MinorThird; PerfectForth; PerfectFifth; MinorSeventh]
-            | Blues -> [Unisson; MinorThird; PerfectForth; DiminishedFifth; PerfectFifth; MinorSeventh]
-            | HarmonicMinor -> [Unisson; MajorSecond; MinorThird; PerfectForth; PerfectFifth; MinorSixth; MajorSeventh]
-            | MelodicMinor -> [Unisson; MajorSecond; MinorThird; PerfectForth; PerfectFifth; MajorSixth; MajorSeventh]
-            | Dorianb2 -> [Unisson; MinorSecond; MinorThird; PerfectForth; PerfectFifth; MajorSixth; MinorSeventh]
+            | MinorPentatonic -> [Unisson; MinorThird; PerfectFourth; PerfectFifth; MinorSeventh]
+            | Blues -> [Unisson; MinorThird; PerfectFourth; DiminishedFifth; PerfectFifth; MinorSeventh]
+            | HarmonicMinor -> [Unisson; MajorSecond; MinorThird; PerfectFourth; PerfectFifth; MinorSixth; MajorSeventh]
+            | MelodicMinor -> [Unisson; MajorSecond; MinorThird; PerfectFourth; PerfectFifth; MajorSixth; MajorSeventh]
+            | Dorianb2 -> [Unisson; MinorSecond; MinorThird; PerfectFourth; PerfectFifth; MajorSixth; MinorSeventh]
             | LydianAugmented -> [Unisson; MajorSecond; MajorThird; AugmentedForth; AugmentedFifth; MajorSixth; MajorSeventh]
             | LydianDominant -> [Unisson; MajorSecond; MajorThird; AugmentedForth; PerfectFifth; MajorSixth; MinorSeventh]
-            | Mixolydianb6 -> [Unisson; MajorSecond; MajorThird; PerfectForth; PerfectFifth; MinorSixth; MinorSeventh]
-            | LocrianSharp2 -> [Unisson; MajorSecond; MinorThird; PerfectForth; DiminishedFifth; MinorSixth; MinorSeventh]
+            | Mixolydianb6 -> [Unisson; MajorSecond; MajorThird; PerfectFourth; PerfectFifth; MinorSixth; MinorSeventh]
+            | LocrianSharp2 -> [Unisson; MajorSecond; MinorThird; PerfectFourth; DiminishedFifth; MinorSixth; MinorSeventh]
             | AlteredDominant -> [Unisson; MinorSecond; AugmentedSecond; MajorThird; DiminishedFifth;  AugmentedFifth; MinorSeventh]
             | HalfWholeDiminished -> [Unisson; MinorSecond; MinorThird; MajorThird; AugmentedForth;  PerfectFifth; MajorSixth; MinorSeventh]
             | WholeTone -> [Unisson; MajorSecond; MajorThird; DiminishedFifth; AugmentedFifth; MinorSeventh]
@@ -424,9 +424,9 @@ namespace Vaughan
                 {Name="Sus2"; Quality=Sus2; Formula=[MajorSecond; PerfectFifth]}
                 {Name="Sus2Dim"; Quality=Sus2Diminished; Formula=[MajorSecond; DiminishedFifth]}
                 {Name="Sus2Aug"; Quality=Sus2Augmented; Formula=[MajorSecond; AugmentedFifth]}
-                {Name="Sus4"; Quality=Sus4; Formula=[PerfectForth; PerfectFifth]}
-                {Name="Sus4Dim"; Quality=Sus4Diminished; Formula=[PerfectForth; DiminishedFifth]}
-                {Name="Sus4Aug"; Quality=Sus4Augmented; Formula=[PerfectForth; AugmentedFifth]}
+                {Name="Sus4"; Quality=Sus4; Formula=[PerfectFourth; PerfectFifth]}
+                {Name="Sus4Dim"; Quality=Sus4Diminished; Formula=[PerfectFourth; DiminishedFifth]}
+                {Name="Sus4Aug"; Quality=Sus4Augmented; Formula=[PerfectFourth; AugmentedFifth]}
             ]
 
         let private qualityForIntervals intervals =
