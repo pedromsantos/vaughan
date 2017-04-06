@@ -312,7 +312,7 @@ namespace VaughanTests
             keyNotes EFlatMajor =! [ EFlat; F; G; AFlat; BFlat; C; D ]
             keyNotes BFlatMajor =! [ BFlat; C; D; EFlat; F; G; A ]
             keyNotes FMajor =! [ F; G; A; BFlat; C; D; E ]
-            
+
             keyNotes AMinor =! [ A; B; C; D; E; F; G ]
             keyNotes EMinor =! [ E; FSharp; G; A; B; C; D ]
             keyNotes BMinor =! [ B; CSharp; D; E; FSharp; G; A ]
@@ -373,8 +373,11 @@ namespace VaughanTests
 
     module ChordsTests =
         open NUnit.Framework
+        open FsCheck
+        open FsCheck.NUnit
         open Swensen.Unquote
         open Vaughan.Domain
+        open Vaughan.Notes
         open Vaughan.Chords
         open Vaughan.ChordVoiceLeading
 
@@ -426,8 +429,41 @@ namespace VaughanTests
         let ``Chord should be named after the root``() =
             test <@ (name cMin7b5).StartsWith("C") @>
 
+        [<Property>]
+        let ``Chords should be named after the root`` (root :Note) (quality: ChordQuality) =
+            let chord = chordFromRootAndQuality root quality
+            (name chord).StartsWith(noteName root)
+
+        [<Property>]
+        let ``Major chords should be named after the quality`` (root :Note) (quality: ChordQuality) =
+            let chord = chordFromRootAndQuality root quality
+
+            ( quality = Major || quality = Major7 || quality = Major9 
+            || quality = Major9Sharp11 || quality = Major11 || quality = Major13Sharp11)
+                ==> lazy ((name chord).StartsWith((noteName root) + "Maj"))
+
+        [<Property>]
+        let ``Minor chords should be named after the quality`` (root :Note) (quality: ChordQuality) =
+            let chord = chordFromRootAndQuality root quality
+
+            (quality = Minor || quality = Minor6 || quality = Minor6Add9 || quality = Minor7
+             || quality = Minor7b5 || quality = Minor9 || quality = MinorMaj7 || quality = MinorMaj9)
+                ==> lazy ((name chord).StartsWith((noteName root) + "Min"))
+
+        [<Property>]
+        let ``Dominant chords should be named after the quality`` (root :Note) (quality: ChordQuality) =
+            let chord = chordFromRootAndQuality root quality
+
+            (quality = Dominant7 || quality = Dominant9 || quality = Dominant11 || quality = Dominant13
+             || quality = Dominant7Flat5 || quality = Dominant7Flat5Flat9 || quality = Dominant7Flat5Sharp9 
+             || quality = Dominant7Flat9 || quality = Dominant7Sharp9)
+                ==> lazy ((name chord).StartsWith((noteName root) + "7")
+                        || (name chord).StartsWith((noteName root) + "9")
+                        || (name chord).StartsWith((noteName root) + "11")
+                        || (name chord).StartsWith((noteName root) + "13"))
+
         [<Test>]
-        let ``Chord should be named after the function``() = 
+        let ``Chord should be named after the quality``() = 
             test <@ (name cMaj).StartsWith("CMaj") @>
             test <@ (name cAug).StartsWith("CAug") @>
             test <@ (name cMin).StartsWith("CMin") @>
@@ -440,36 +476,36 @@ namespace VaughanTests
             
         [<Test>]
         let ``Should create chord from root and function``() =
-            (chordFromRootAndFunction C Major).Notes =! cMaj.Notes
-            (chordFromRootAndFunction C Augmented).Notes =! cAug.Notes
-            (chordFromRootAndFunction C Minor).Notes =! cMin.Notes
-            (chordFromRootAndFunction C Diminished).Notes =! cDim.Notes
-            (chordFromRootAndFunction C Major7).Notes =! cMaj7.Notes
-            (chordFromRootAndFunction C Augmented7).Notes =! cAug7.Notes
-            (chordFromRootAndFunction C Minor7).Notes =! cMin7.Notes
-            (chordFromRootAndFunction C Diminished7).Notes =! cDim7.Notes
-            (chordFromRootAndFunction C Minor7b5).Notes =! cMin7b5.Notes
-            (chordFromRootAndFunction C Major6).Notes =! c6.Notes
-            (chordFromRootAndFunction C Major6Add9).Notes =! c6add9.Notes
-            (chordFromRootAndFunction C Major6Flat5Add9).Notes =! c6flat5add9.Notes
-            (chordFromRootAndFunction C Dominant7Flat5).Notes =! c7flat5.Notes
-            (chordFromRootAndFunction C Dominant7Flat9).Notes =! c7flat9.Notes
-            (chordFromRootAndFunction C Dominant7Sharp9).Notes =! c7sharp9.Notes
-            (chordFromRootAndFunction C Dominant7Flat5Flat9).Notes =! c7flat5flat9.Notes
-            (chordFromRootAndFunction C Dominant7Flat5Sharp9).Notes =! c7flat5sharp9.Notes
-            (chordFromRootAndFunction C Dominant9).Notes =! c9.Notes
-            (chordFromRootAndFunction C Dominant11).Notes =! c11.Notes
-            (chordFromRootAndFunction C Dominant13).Notes =! c13.Notes
-            (chordFromRootAndFunction C Major9).Notes =! cMaj9.Notes
-            (chordFromRootAndFunction C Major11).Notes =! cMaj11.Notes
-            (chordFromRootAndFunction C Major13).Notes =! cMaj13.Notes
-            (chordFromRootAndFunction C Major9Sharp11).Notes =! cMaj9Sharp11.Notes
-            (chordFromRootAndFunction C Major13Sharp11).Notes =! cMaj13sharp11.Notes
-            (chordFromRootAndFunction C Minor6).Notes =! cMin6.Notes
-            (chordFromRootAndFunction C Minor6Add9).Notes =! cMin6add9.Notes
-            (chordFromRootAndFunction C MinorMaj7).Notes =! cMinMaj7.Notes
-            (chordFromRootAndFunction C Minor9).Notes =! cMin9.Notes
-            (chordFromRootAndFunction C MinorMaj9).Notes =! cMinMaj9.Notes
+            (chordFromRootAndQuality C Major).Notes =! cMaj.Notes
+            (chordFromRootAndQuality C Augmented).Notes =! cAug.Notes
+            (chordFromRootAndQuality C Minor).Notes =! cMin.Notes
+            (chordFromRootAndQuality C Diminished).Notes =! cDim.Notes
+            (chordFromRootAndQuality C Major7).Notes =! cMaj7.Notes
+            (chordFromRootAndQuality C Augmented7).Notes =! cAug7.Notes
+            (chordFromRootAndQuality C Minor7).Notes =! cMin7.Notes
+            (chordFromRootAndQuality C Diminished7).Notes =! cDim7.Notes
+            (chordFromRootAndQuality C Minor7b5).Notes =! cMin7b5.Notes
+            (chordFromRootAndQuality C Major6).Notes =! c6.Notes
+            (chordFromRootAndQuality C Major6Add9).Notes =! c6add9.Notes
+            (chordFromRootAndQuality C Major6Flat5Add9).Notes =! c6flat5add9.Notes
+            (chordFromRootAndQuality C Dominant7Flat5).Notes =! c7flat5.Notes
+            (chordFromRootAndQuality C Dominant7Flat9).Notes =! c7flat9.Notes
+            (chordFromRootAndQuality C Dominant7Sharp9).Notes =! c7sharp9.Notes
+            (chordFromRootAndQuality C Dominant7Flat5Flat9).Notes =! c7flat5flat9.Notes
+            (chordFromRootAndQuality C Dominant7Flat5Sharp9).Notes =! c7flat5sharp9.Notes
+            (chordFromRootAndQuality C Dominant9).Notes =! c9.Notes
+            (chordFromRootAndQuality C Dominant11).Notes =! c11.Notes
+            (chordFromRootAndQuality C Dominant13).Notes =! c13.Notes
+            (chordFromRootAndQuality C Major9).Notes =! cMaj9.Notes
+            (chordFromRootAndQuality C Major11).Notes =! cMaj11.Notes
+            (chordFromRootAndQuality C Major13).Notes =! cMaj13.Notes
+            (chordFromRootAndQuality C Major9Sharp11).Notes =! cMaj9Sharp11.Notes
+            (chordFromRootAndQuality C Major13Sharp11).Notes =! cMaj13sharp11.Notes
+            (chordFromRootAndQuality C Minor6).Notes =! cMin6.Notes
+            (chordFromRootAndQuality C Minor6Add9).Notes =! cMin6add9.Notes
+            (chordFromRootAndQuality C MinorMaj7).Notes =! cMinMaj7.Notes
+            (chordFromRootAndQuality C Minor9).Notes =! cMin9.Notes
+            (chordFromRootAndQuality C MinorMaj9).Notes =! cMinMaj9.Notes
 
         [<Test>]
         let ``Should filter function from chord``() =
@@ -916,7 +952,7 @@ namespace VaughanTests
 
         [<Test>]
         let ``Should map C major9 ignoring 5th to guitar fretboard on fifth string closed``() =
-            let chord = chordFromRootAndFunction C Major9
+            let chord = chordFromRootAndQuality C Major9
                         |> skipFunction Fifth
             (chordToGuitarClosedChord FifthString chord).Frets =! [
                         {GuitarString=FifthString; Fret=3; Note=C};
@@ -927,7 +963,7 @@ namespace VaughanTests
         
         [<Test>]
         let ``Should map C9 ignoring 5th to guitar fretboard on fifth string closed``() =
-            let chord = chordFromRootAndFunction C Dominant9
+            let chord = chordFromRootAndQuality C Dominant9
                         |> skipFunction Fifth
             (chordToGuitarClosedChord FifthString chord).Frets =! [
                         {GuitarString=FifthString; Fret=3; Note=C};
@@ -1037,7 +1073,7 @@ namespace VaughanTests
                                                         
         [<Test>]
         let ``Should map C9 ignoring 5th to guitar fretboard on fifth string closed``() =
-            let guitarChord = chordFromRootAndFunction C Dominant9 
+            let guitarChord = chordFromRootAndQuality C Dominant9 
                               |> skipFunction Fifth
                               |> chordToGuitarClosedChord FifthString
 

@@ -403,8 +403,8 @@ namespace Vaughan
                 {Name="Aug7"; Quality=Augmented7; Formula=[MajorThird; AugmentedFifth; MajorSeventh]}
                 {Name="Min7"; Quality=Minor7; Formula=[MinorThird; PerfectFifth; MinorSeventh]}
                 {Name="Min9"; Quality=Minor9; Formula=[MinorThird; PerfectFifth; MinorSeventh; MajorNinth]}
-                {Name="Min6"; Quality=Minor6Add9; Formula=[MinorThird; PerfectFifth; MajorSixth; MajorNinth]}
-                {Name="Min6Add9"; Quality=Minor6; Formula=[MinorThird; PerfectFifth; MajorSixth]}
+                {Name="Min6"; Quality=Minor6; Formula=[MinorThird; PerfectFifth; MajorSixth]}
+                {Name="Min6Add9"; Quality=Minor6Add9; Formula=[MinorThird; PerfectFifth; MajorSixth; MajorNinth]}
                 {Name="Min7b5"; Quality=Minor7b5; Formula=[MinorThird; DiminishedFifth; MinorSeventh]}
                 {Name="MinMaj7"; Quality=MinorMaj7; Formula=[MinorThird; PerfectFifth; MajorSeventh]} 
                 {Name="MinMaj9"; Quality=MinorMaj9; Formula=[MinorThird; PerfectFifth; MajorSeventh; MajorNinth]} 
@@ -412,7 +412,7 @@ namespace Vaughan
                 {Name="Min7(b5b9)"; Quality=MinorMaj9; Formula=[MinorThird; DiminishedFifth; MinorSeventh; MinorNinth]} 
                 {Name="Dim7"; Quality=Diminished7; Formula=[MinorThird; DiminishedFifth; DiminishedSeventh]}
                 {Name="Dim7"; Quality=Diminished7; Formula=[MinorThird; DiminishedFifth; MajorSixth]}
-                {Name="Dom7"; Quality=Dominant7; Formula=[MajorThird; PerfectFifth; MinorSeventh]}
+                {Name="7"; Quality=Dominant7; Formula=[MajorThird; PerfectFifth; MinorSeventh]}
                 {Name="7(b5)"; Quality=Dominant7Flat5; Formula=[MajorThird; DiminishedFifth; MinorSeventh]}
                 {Name="7(b9)"; Quality=Dominant7Flat9; Formula=[MajorThird; PerfectFifth; MinorSeventh; MinorNinth]}
                 {Name="7(#9)"; Quality=Dominant7Sharp9; Formula=[MajorThird; PerfectFifth; MinorSeventh; AugmentedNinth]}
@@ -509,7 +509,7 @@ namespace Vaughan
         let noteNames chord =
             chord.Notes |> List.map (note >> noteName)
             
-        let chordFromRootAndFunction root quality =
+        let chordFromRootAndQuality root quality =
             {
                 Notes= [(root, Root)] @ (intervalsForQuality quality |> List.map (fun i -> ((transpose root i), functionForInterval i)));
                 ChordType = Closed
@@ -1011,4 +1011,4 @@ namespace Vaughan
             | Failure(errorMsg, _, _) -> invalidOp errorMsg
 
         let createChord chordIntent =
-            chordFromRootAndFunction chordIntent.Root chordIntent.Quality
+            chordFromRootAndQuality chordIntent.Root chordIntent.Quality
