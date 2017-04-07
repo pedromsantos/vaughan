@@ -855,7 +855,7 @@ namespace VaughanTests
             (seventhsHarmonizer ScaleDgrees.VII cMinor).Notes =! bDim7.Notes
 
         [<Property>]
-        let ``Should create seventh chords for scale`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note)=
+        let ``Should create seventh chords for scale`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) =
             (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic 
                 && scaleType <> WholeTone) 
                 ==> lazy (
@@ -880,6 +880,8 @@ namespace VaughanTests
 
     module GuitarTests =
         open NUnit.Framework
+        open FsCheck
+        open FsCheck.NUnit
         open Swensen.Unquote
         open Vaughan.Domain
         open Vaughan.Chords
@@ -1009,6 +1011,18 @@ namespace VaughanTests
             fretForNote D FirstString =! 10
             fretForNote EFlat FirstString =! 11
             fretForNote DSharp FirstString =! 11
+
+        [<Property>]
+        let ``Should map diatonic closed triads to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) () =
+            ((bassString = SixthString || bassString = FifthString || bassString = FourthString)
+            && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic))
+                ==> lazy (
+                            let scale = createScale scaleType root
+                            let chord = triadsHarmonizer scaleDegree scale
+                            let guitarChord = chordToGuitarClosedChord bassString chord
+                            let maxFret = guitarChord.Frets |> List.map (fun f -> f.Fret) |> List.max
+                            let minFret = guitarChord.Frets |> List.map (fun f -> f.Fret) |> List.min
+                            maxFret - minFret < 6)
 
         [<Test>]
         let ``Should map c major to guitar fretboard``() =

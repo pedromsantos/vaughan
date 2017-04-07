@@ -1,6 +1,6 @@
 namespace Vaughan
     
-    //https://repl.it/FJHh/5
+    //https://repl.it/FJHh/29
 
     module Infrastructure =
         let rotateByOne list =
@@ -627,6 +627,9 @@ namespace Vaughan
 
             let private isOpenFret fret =
                 fret.Fret = 0
+                
+            let private isMuted fret =
+                fret.Fret = -1
 
             let private isRaised fret =
                 fret.Fret > 11
@@ -635,44 +638,25 @@ namespace Vaughan
                 frets |> List.exists isRaised
 
             let private fretDistance fret other =
-                abs(fret.Fret - other.Fret)
+                abs(fret - other)
 
             let private isStretched fret other =
-                let maxStrech = 5
-                (fretDistance fret other) > maxStrech
+                (fretDistance fret other) > 5
 
             let private raiseOctave fret =
                 {fret with Fret = fret.Fret + (toDistance PerfectOctave)}
-                
-            let private raiseOctaveOnStretch previous current next =
-                if (isStretched current previous) || (isStretched current next)
-                then raiseOctave current
-                else current
-
-            let private raiseStretchedFret fretIndex frets =
-                let previousFretIndex = minimumPositive (fretIndex - 1)
-                let maxFretIndex = (frets |> List.length) - 1
-                let nextFretIndex = cappedMaximum (fretIndex + 1) maxFretIndex 
-                raiseOctaveOnStretch frets.[previousFretIndex] frets.[fretIndex] frets.[nextFretIndex]
-
-            let private unstrechFrets frets =
-                frets 
-                |> List.mapi (fun i fret -> if isRaised fret then fret else raiseStretchedFret i frets)
-
-            let private unstrechFretsTimesFrets frets = 
-                let rec loop lst i =
-                    match i with
-                    | 0 -> lst
-                    | _ -> loop (lst |> unstrechFrets) (i-1)
-                    
-                loop frets ((frets |> List.length) - 1)
-
+            
             let raiseOpenFrets frets =
                 frets 
                 |> List.map (fun fret -> if isOpenFret fret then raiseOctave fret else fret)
 
-            let  unstretch frets =
-                if hasRaised frets then unstrechFretsTimesFrets frets else frets
+            let unstretch frets =
+                let maxFret = frets |> List.map (fun f -> f.Fret) |> List.max
+                frets 
+                |> List.map (fun f -> 
+                                        if isStretched f.Fret maxFret && not (isRaised f) && not (isMuted f)
+                                        then raiseOctave f 
+                                        else f)
 
         open Domain
         open Notes
