@@ -575,10 +575,13 @@ namespace VaughanTests
             (cMaj7 |> toDrop2).Notes =! [(C, Root); (G, Fifth); (B, Seventh); (E, Third);]
 
         [<Property>]
-        let ``Drop 2 chords have third on lead`` (root :Note) (quality: ChordQuality) =
+        let ``Drop 2 chords have third on lead and root on bass`` (root :Note) (quality: ChordQuality) =
             let chord = chordFromRootAndQuality root quality
-            (chord.Notes.Length = 4)
-                ==> lazy (snd ((chord |> toDrop2).Notes |> List.last) = Third)
+            let drop2Chord = chord |> toDrop2
+            let lead = snd (drop2Chord.Notes |> List.last)
+            let bass = snd (drop2Chord.Notes.Head)
+            
+            (chord.Notes.Length = 4) ==> lazy (lead = Third && bass = Root)
 
         [<Test>]
         let ``Should transform chord to drop3``() =
@@ -587,8 +590,11 @@ namespace VaughanTests
         [<Property>]
         let ``Drop 3 chords have fifth on lead`` (root :Note) (quality: ChordQuality) =
             let chord = chordFromRootAndQuality root quality
-            (chord.Notes.Length = 4)
-                ==> lazy (snd ((chord |> toDrop3).Notes |> List.last) = Fifth)
+            let drop3Chord = chord |> toDrop3
+            let lead = snd (drop3Chord.Notes |> List.last)
+            let bass = snd (drop3Chord.Notes.Head)
+
+            (chord.Notes.Length = 4) ==> lazy (lead = Fifth && bass = Root)
 
         [<Test>]
         let ``Should invert drop2``() =
