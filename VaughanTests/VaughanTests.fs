@@ -756,10 +756,13 @@ namespace VaughanTests
 
     module ScalesHormonizerTests =
         open NUnit.Framework
+        open FsCheck
+        open FsCheck.NUnit
         open Swensen.Unquote
         open Vaughan.Domain
         open Vaughan.ScaleHarmonizer
         open Vaughan.Scales
+        open Vaughan.Notes
         
         let chord = {Notes= []; ChordType=Closed; Name=""}
         let cMaj = {chord with Notes= [(C, Root); (E, Third); (G, Fifth)]}
@@ -769,13 +772,11 @@ namespace VaughanTests
         let gMaj = {chord with Notes= [(G, Root); (B, Third); (D, Fifth)]}
         let aMin = {chord with Notes= [(A, Root); (C, Third); (E, Fifth)]}
         let bDim = {chord with Notes= [(B, Root); (D, Third); (F, Fifth)]}
-
         let cMin = {chord with Notes= [(C, Root); (EFlat, Third); (G, Fifth)]}
         let dDim = {chord with Notes= [(D, Root); (F, Third); (AFlat, Fifth)]}
         let eFlatAug = {chord with Notes= [(EFlat, Root); (G, Third); (B, Fifth)]}
         let fMin = {chord with Notes= [(F, Root); (AFlat, Third); (C, Fifth)]}
         let aFlatMaj = {chord with Notes= [(AFlat, Root); (C, Third); (EFlat, Fifth)]}
-
         let cMaj7 = {chord with Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh)]}
         let dMin7 = {chord with Notes= [(D, Root); (F, Third); (A, Fifth); (C, Seventh)]}
         let eMin7 = {chord with Notes= [(E, Root); (G, Third); (B, Fifth); (D, Seventh)]}
@@ -783,7 +784,6 @@ namespace VaughanTests
         let gDom7 = {chord with Notes= [(G, Root); (B, Third); (D, Fifth); (F, Seventh)]}
         let aMin7 = {chord with Notes= [(A, Root); (C, Third); (E, Fifth); (G, Seventh)]}
         let bMin7b5 = {chord with Notes= [(B, Root); (D, Third); (F, Fifth); (A, Seventh)]}
-
         let cMaj9 = {chord with Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh); (D, Ninth)]}
         let dMin9 = {chord with Notes= [(D, Root); (F, Third); (A, Fifth); (C, Seventh); (E, Ninth)]}
         let eMin9 = {chord with Notes= [(E, Root); (G, Third); (B, Fifth); (D, Seventh); (F, Ninth)]}
@@ -791,7 +791,6 @@ namespace VaughanTests
         let gDom9 = {chord with Notes= [(G, Root); (B, Third); (D, Fifth); (F, Seventh); (A, Ninth)]}
         let aMin9 = {chord with Notes= [(A, Root); (C, Third); (E, Fifth); (G, Seventh); (B, Ninth)]}
         let bMin9b5 = {chord with Notes= [(B, Root); (D, Third); (F, Fifth); (A, Seventh); (C, Ninth)]}
-
         let cMinMaj7 = {chord with Notes= [(C, Root); (EFlat, Third); (G, Fifth); (B, Seventh)]}
         let dMin7b5 = {chord with Notes= [(D, Root); (F, Third); (AFlat, Fifth); (C, Seventh)]}
         let eFlatAug7 = {chord with Notes= [(EFlat, Root); (G, Third); (B, Fifth); (D, Seventh)]}
@@ -820,6 +819,18 @@ namespace VaughanTests
             (triadsHarmonizer ScaleDgrees.V cMinor).Notes =! gMaj.Notes
             (triadsHarmonizer ScaleDgrees.VI cMinor).Notes =! aFlatMaj.Notes
             (triadsHarmonizer ScaleDgrees.VII cMinor).Notes =! bDim.Notes
+        
+        [<Property>]
+        let ``Should create triads for scale`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note)=
+            (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic) 
+                ==> lazy (
+                    let scale = createScale scaleType root
+
+                    (triadsHarmonizer scaleDegree scale).Notes
+                    |> List.pairwise
+                    |> List.map (fun e -> intervalBetween (fst (fst e)) (fst (snd e)))
+                    |> List.forall (
+                        fun e -> e = MajorThird || e = MinorThird || e = MajorSecond || e = PerfectFourth))
 
         [<Test>]
         let ``Should create seventh chords for Ionian scale`` () =
@@ -842,6 +853,19 @@ namespace VaughanTests
             (seventhsHarmonizer ScaleDgrees.V cMinor).Notes =! gDom7.Notes
             (seventhsHarmonizer ScaleDgrees.VI cMinor).Notes =! aFlatMaj7.Notes
             (seventhsHarmonizer ScaleDgrees.VII cMinor).Notes =! bDim7.Notes
+
+        [<Property>]
+        let ``Should create seventh chords for scale`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note)=
+            (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic 
+                && scaleType <> WholeTone) 
+                ==> lazy (
+                    let scale = createScale scaleType root
+                    
+                    (seventhsHarmonizer scaleDegree scale).Notes
+                    |> List.pairwise
+                    |> List.map (fun e -> intervalBetween (fst (fst e)) (fst (snd e)))
+                    |> List.forall (
+                        fun e -> e = MajorThird || e = MinorThird || e = MajorSecond || e = PerfectFourth))
 
         [<Test>]
         let ``Should create ninth chords for Ionian scale`` () =
