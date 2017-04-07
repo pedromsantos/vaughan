@@ -603,6 +603,43 @@ namespace VaughanTests
             (cMaj7 |> toDrop2 |> invert |> invert |> invert ).Notes =! [(B, Seventh); (E, Third); (G, Fifth); (C, Root); ] 
             (cMaj7 |> toDrop2 |> invert |> invert |> invert |> invert).Notes =! [(C, Root); (G, Fifth); (B, Seventh); (E, Third);] 
 
+        [<Property>]
+        let ``First inversion drop 2 chords have fifth on lead and third on bass`` (root :Note) (quality: ChordQuality) =
+            let chord = chordFromRootAndQuality root quality
+            let drop2Chord = chord |> toDrop2 |> invert
+            let lead = snd (drop2Chord.Notes |> List.last)
+            let bass = snd (drop2Chord.Notes.Head)
+            
+            (chord.Notes.Length = 4) ==> lazy (bass = Third && lead = Fifth)
+
+
+        [<Property>]
+        let ``Second inversion drop 2 chords have seventh or sixth on lead and fifth on bass`` (root :Note) (quality: ChordQuality) =
+            let chord = chordFromRootAndQuality root quality
+            let drop2Chord = chord |> toDrop2 |> invert |> invert
+            let lead = snd (drop2Chord.Notes |> List.last)
+            let bass = snd (drop2Chord.Notes.Head)
+            
+            (chord.Notes.Length = 4) ==> lazy (bass = Fifth && (lead = Seventh || lead = Sixth))
+
+        [<Property>]
+        let ``Third inversion drop 2 chords have root on lead and seventh or sixth on bass`` (root :Note) (quality: ChordQuality) =
+            let chord = chordFromRootAndQuality root quality
+            let drop2Chord = chord |> toDrop2 |> invert |> invert |> invert
+            let lead = snd (drop2Chord.Notes |> List.last)
+            let bass = snd (drop2Chord.Notes.Head)
+            
+            (chord.Notes.Length = 4) ==> lazy ((bass = Seventh || bass = Sixth) && lead = Root)
+
+        [<Property>]
+        let ``Fourth inversion drop 2 chords should have notes in same position as univerted chord`` (root :Note) (quality: ChordQuality) =
+            let chord = chordFromRootAndQuality root quality
+            let drop2Chord = chord |> toDrop2 |> invert |> invert |> invert |> invert
+            let lead = snd (drop2Chord.Notes |> List.last)
+            let bass = snd (drop2Chord.Notes.Head)
+            
+            (chord.Notes.Length = 4) ==> lazy (bass = Root && lead = Third)
+
         [<Test>]
         let ``Should invert drop3``() =
             (cMaj7 |> toDrop3 |> invert).Notes =! [(E, Third); (C, Root); (G, Fifth); (B, Seventh)] 
