@@ -732,12 +732,6 @@ namespace VaughanTests
             
             invertedChord.Notes |> List.head |> snd = Fifth
 
-        [<Test>]
-        let ``Should choose invertion that satisfies having a lead that is closest to a provided note``() =
-            (invertionWithLeadClosestToNote cMaj A).Notes =! (cMaj).Notes
-            (invertionWithLeadClosestToNote cMaj CSharp).Notes =! (cMaj |> invert).Notes
-            (invertionWithLeadClosestToNote cMaj F).Notes =! (cMaj |> invert |> invert).Notes
-
         [<Property>]
         let ``It should choose invertion that satisfies having a lead that is closest to a provided note`` (root :Note) (quality: ChordQuality) (providedNote: Note) =
             let chord = chordFromRootAndQuality root quality
@@ -748,12 +742,6 @@ namespace VaughanTests
                 |> List.map (fun n -> measureAbsoluteSemitones (fst n) providedNote)
 
             (distancesToProvidedNote |> List.min) = (distancesToProvidedNote |> List.last)
-
-        [<Test>]
-        let ``Should choose invertion that satisfies having a bass that is closest to a provided note``() =
-            (invertionWithBassClosestToNote cMaj CSharp).Notes =! (cMaj).Notes
-            (invertionWithBassClosestToNote cMaj F).Notes =! (cMaj |> invert).Notes
-            (invertionWithBassClosestToNote cMaj A).Notes =! (cMaj |> invert |> invert).Notes
 
         [<Property>]
         let ``It should choose invertion that satisfies having a bass that is closest to a provided note`` (root :Note) (quality: ChordQuality) (providedNote: Note) =
