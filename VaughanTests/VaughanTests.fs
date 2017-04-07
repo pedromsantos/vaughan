@@ -686,9 +686,51 @@ namespace VaughanTests
         let ``Should choose invertion that satisfies having a specific function as lead``() =
             (inversionForFunctionAsLead cMaj Third).Notes =! (cMaj |> invert |> invert).Notes
 
+        [<Property>]
+        let ``Should choose invertion that satisfies having a root as lead`` (root :Note) (quality: ChordQuality) =
+            let chord = chordFromRootAndQuality root quality
+            let invertedChord = inversionForFunctionAsLead chord Root
+            
+            invertedChord.Notes |> List.last |> snd = Root
+
+        [<Property>]
+        let ``Should choose invertion that satisfies having a third as lead`` (root :Note) (quality: ChordQuality) =
+            let chord = chordFromRootAndQuality root quality
+            let invertedChord = inversionForFunctionAsLead chord Third
+            
+            invertedChord.Notes |> List.last |> snd = Third
+
+        [<Property>]
+        let ``Should choose invertion that satisfies having a fifth as lead`` (root :Note) (quality: ChordQuality) =
+            let chord = chordFromRootAndQuality root quality
+            let invertedChord = inversionForFunctionAsLead chord Fifth
+            
+            invertedChord.Notes |> List.last |> snd = Fifth
+
         [<Test>]
         let ``Should choose invertion that satisfies having a specific function as bass``() =
             (inversionForFunctionAsBass cMaj Fifth).Notes =! (cMaj |> invert |> invert).Notes
+
+        [<Property>]
+        let ``Should choose invertion that satisfies having a root as bass`` (root :Note) (quality: ChordQuality) =
+            let chord = chordFromRootAndQuality root quality |> invert
+            let invertedChord = inversionForFunctionAsBass chord Root
+            
+            invertedChord.Notes |> List.head |> snd = Root
+
+        [<Property>]
+        let ``Should choose invertion that satisfies having a third as bass`` (root :Note) (quality: ChordQuality) =
+            let chord = chordFromRootAndQuality root quality
+            let invertedChord = inversionForFunctionAsBass chord Third
+            
+            invertedChord.Notes |> List.head |> snd = Third
+
+        [<Property>]
+        let ``Should choose invertion that satisfies having a fifth as bass`` (root :Note) (quality: ChordQuality) =
+            let chord = chordFromRootAndQuality root quality
+            let invertedChord = inversionForFunctionAsBass chord Fifth
+            
+            invertedChord.Notes |> List.head |> snd = Fifth
 
         [<Test>]
         let ``Should choose invertion that satisfies having a lead that is closest to a provided note``() =
