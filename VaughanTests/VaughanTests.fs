@@ -738,11 +738,33 @@ namespace VaughanTests
             (invertionWithLeadClosestToNote cMaj CSharp).Notes =! (cMaj |> invert).Notes
             (invertionWithLeadClosestToNote cMaj F).Notes =! (cMaj |> invert |> invert).Notes
 
+        [<Property>]
+        let ``It should choose invertion that satisfies having a lead that is closest to a provided note`` (root :Note) (quality: ChordQuality) (providedNote: Note) =
+            let chord = chordFromRootAndQuality root quality
+            let invertedChord = invertionWithLeadClosestToNote chord providedNote
+            
+            let distancesToProvidedNote = 
+                invertedChord.Notes 
+                |> List.map (fun n -> measureAbsoluteSemitones (fst n) providedNote)
+
+            (distancesToProvidedNote |> List.min) = (distancesToProvidedNote |> List.last)
+
         [<Test>]
         let ``Should choose invertion that satisfies having a bass that is closest to a provided note``() =
             (invertionWithBassClosestToNote cMaj CSharp).Notes =! (cMaj).Notes
             (invertionWithBassClosestToNote cMaj F).Notes =! (cMaj |> invert).Notes
-            (invertionWithBassClosestToNote cMaj A).Notes =! (cMaj |> invert |> invert).Notes           
+            (invertionWithBassClosestToNote cMaj A).Notes =! (cMaj |> invert |> invert).Notes
+
+        [<Property>]
+        let ``It should choose invertion that satisfies having a bass that is closest to a provided note`` (root :Note) (quality: ChordQuality) (providedNote: Note) =
+            let chord = chordFromRootAndQuality root quality
+            let invertedChord = invertionWithBassClosestToNote chord providedNote
+            
+            let distancesToProvidedNote = 
+                invertedChord.Notes 
+                |> List.map (fun n -> measureAbsoluteSemitones (fst n) providedNote)
+
+            (distancesToProvidedNote |> List.min) = (distancesToProvidedNote |> List.head)
 
     module ScalesHormonizerTests =
         open NUnit.Framework
@@ -752,7 +774,6 @@ namespace VaughanTests
         open Vaughan.Scales
         
         let chord = {Notes= []; ChordType=Closed; Name=""}
-        
         let cMaj = {chord with Notes= [(C, Root); (E, Third); (G, Fifth)]}
         let dMin = {chord with Notes= [(D, Root); (F, Third); (A, Fifth)]}
         let eMin = {chord with Notes= [(E, Root); (G, Third); (B, Fifth)]}
