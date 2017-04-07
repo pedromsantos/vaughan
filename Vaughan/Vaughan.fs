@@ -1,6 +1,6 @@
 namespace Vaughan
     
-    //https://repl.it/FJHh/29
+    //https://repl.it/FJHh/30
 
     module Infrastructure =
         let rotateByOne list =
@@ -646,6 +646,9 @@ namespace Vaughan
             let private raiseOctave fret =
                 {fret with Fret = fret.Fret + (toDistance PerfectOctave)}
             
+            let private isRaisable fret =
+                not (isRaised fret) && not (isMuted fret)
+
             let raiseOpenFrets frets =
                 frets 
                 |> List.map (fun fret -> if isOpenFret fret then raiseOctave fret else fret)
@@ -654,7 +657,7 @@ namespace Vaughan
                 let maxFret = frets |> List.map (fun f -> f.Fret) |> List.max
                 frets 
                 |> List.map (fun f -> 
-                                        if isStretched f.Fret maxFret && not (isRaised f) && not (isMuted f)
+                                        if isStretched f.Fret maxFret && isRaisable f
                                         then raiseOctave f 
                                         else f)
 
