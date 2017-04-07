@@ -1130,6 +1130,19 @@ namespace VaughanTests
                         {GuitarString=FirstString; Fret=12; Note=E};
                     ]
 
+        [<Property>]
+        let ``Should map diatonic closed sevent drop 2 chords to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) () =
+            ((bassString = SixthString || bassString = FifthString || bassString = FourthString)
+            && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic 
+                && scaleType <> WholeTone))
+                ==> lazy (
+                            let scale = createScale scaleType root
+                            let chord = seventhsHarmonizer scaleDegree scale |> toDrop2
+                            let guitarChord = chordToGuitarClosedChord bassString chord
+                            let maxFret = guitarChord.Frets |> List.map (fun f -> f.Fret) |> List.max
+                            let minFret = guitarChord.Frets |> List.map (fun f -> f.Fret) |> List.min
+                            maxFret - minFret < 6)
+
         [<Test>]
         let ``Should map C major 7 drop 2 to guitar fretboard on fifth string closed``() =
             let chord = seventhsHarmonizer ScaleDgrees.I cIonian |> toDrop2
