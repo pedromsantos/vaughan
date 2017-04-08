@@ -625,7 +625,7 @@ namespace Vaughan
             open Domain
             open Notes
 
-            let private isOpenFret fret =
+            let private isOpen fret =
                 fret.Fret = 0
                 
             let private isMuted fret =
@@ -633,9 +633,6 @@ namespace Vaughan
 
             let private isRaised fret =
                 fret.Fret > 11
-
-            let private hasRaised frets =
-                frets |> List.exists isRaised
 
             let private fretDistance fret other =
                 abs(fret - other)
@@ -651,7 +648,7 @@ namespace Vaughan
 
             let raiseOpenFrets frets =
                 frets 
-                |> List.map (fun fret -> if isOpenFret fret then raiseOctave fret else fret)
+                |> List.map (fun fret -> if isOpen fret then raiseOctave fret else fret)
 
             let unstretch frets =
                 let maxFret = frets |> List.map (fun f -> f.Fret) |> List.max
