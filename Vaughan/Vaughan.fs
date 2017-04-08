@@ -268,7 +268,9 @@ namespace Vaughan
             let rec loop note =
                 let transposedNote = transposeNoteForInterval note transposingInterval
                 let newInterval = intervalBetween noteToTranspose transposedNote
-                if isSameInterval newInterval transposingInterval then transposedNote else loop transposedNote
+                if isSameInterval newInterval transposingInterval 
+                    then transposedNote 
+                    else loop transposedNote
             
             loop noteToTranspose
 
