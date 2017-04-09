@@ -511,7 +511,7 @@ namespace Vaughan
         let noteNames chord =
             chord.Notes |> List.map (note >> noteName)
             
-        let chordFromRootAndQuality root quality =
+        let chord root quality =
             {
                 Notes= [(root, Root)] @ (intervalsForQuality quality |> List.map (fun i -> ((transpose root i), functionForInterval i)));
                 ChordType = Closed
@@ -997,4 +997,4 @@ namespace Vaughan
             | Failure(errorMsg, _, _) -> invalidOp errorMsg
 
         let createChord chordIntent =
-            chordFromRootAndQuality chordIntent.Root chordIntent.Quality
+            chord chordIntent.Root chordIntent.Quality

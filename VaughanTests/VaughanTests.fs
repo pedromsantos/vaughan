@@ -431,12 +431,12 @@ namespace VaughanTests
 
         [<Property>]
         let ``Chords should be named after the root`` (root :Note) (quality: ChordQuality) =
-            let chord = chordFromRootAndQuality root quality
+            let chord = chord root quality
             (name chord).StartsWith(noteName root)
 
         [<Property>]
         let ``Major chords should be named after the quality`` (root :Note) (quality: ChordQuality) =
-            let chord = chordFromRootAndQuality root quality
+            let chord = chord root quality
 
             ( quality = Major || quality = Major7 || quality = Major9 
             || quality = Major9Sharp11 || quality = Major11 || quality = Major13Sharp11)
@@ -444,7 +444,7 @@ namespace VaughanTests
 
         [<Property>]
         let ``Minor chords should be named after the quality`` (root :Note) (quality: ChordQuality) =
-            let chord = chordFromRootAndQuality root quality
+            let chord = chord root quality
 
             (quality = Minor || quality = Minor6 || quality = Minor6Add9 || quality = Minor7
              || quality = Minor7b5 || quality = Minor9 || quality = MinorMaj7 || quality = MinorMaj9)
@@ -452,7 +452,7 @@ namespace VaughanTests
 
         [<Property>]
         let ``Dominant chords should be named after the quality`` (root :Note) (quality: ChordQuality) =
-            let chord = chordFromRootAndQuality root quality
+            let chord = chord root quality
 
             (quality = Dominant7 || quality = Dominant9 || quality = Dominant11 || quality = Dominant13
              || quality = Dominant7Flat5 || quality = Dominant7Flat5Flat9 || quality = Dominant7Flat5Sharp9 
@@ -476,36 +476,36 @@ namespace VaughanTests
             
         [<Test>]
         let ``Should create chord from root and function``() =
-            (chordFromRootAndQuality C Major).Notes =! cMaj.Notes
-            (chordFromRootAndQuality C Augmented).Notes =! cAug.Notes
-            (chordFromRootAndQuality C Minor).Notes =! cMin.Notes
-            (chordFromRootAndQuality C Diminished).Notes =! cDim.Notes
-            (chordFromRootAndQuality C Major7).Notes =! cMaj7.Notes
-            (chordFromRootAndQuality C Augmented7).Notes =! cAug7.Notes
-            (chordFromRootAndQuality C Minor7).Notes =! cMin7.Notes
-            (chordFromRootAndQuality C Diminished7).Notes =! cDim7.Notes
-            (chordFromRootAndQuality C Minor7b5).Notes =! cMin7b5.Notes
-            (chordFromRootAndQuality C Major6).Notes =! c6.Notes
-            (chordFromRootAndQuality C Major6Add9).Notes =! c6add9.Notes
-            (chordFromRootAndQuality C Major6Flat5Add9).Notes =! c6flat5add9.Notes
-            (chordFromRootAndQuality C Dominant7Flat5).Notes =! c7flat5.Notes
-            (chordFromRootAndQuality C Dominant7Flat9).Notes =! c7flat9.Notes
-            (chordFromRootAndQuality C Dominant7Sharp9).Notes =! c7sharp9.Notes
-            (chordFromRootAndQuality C Dominant7Flat5Flat9).Notes =! c7flat5flat9.Notes
-            (chordFromRootAndQuality C Dominant7Flat5Sharp9).Notes =! c7flat5sharp9.Notes
-            (chordFromRootAndQuality C Dominant9).Notes =! c9.Notes
-            (chordFromRootAndQuality C Dominant11).Notes =! c11.Notes
-            (chordFromRootAndQuality C Dominant13).Notes =! c13.Notes
-            (chordFromRootAndQuality C Major9).Notes =! cMaj9.Notes
-            (chordFromRootAndQuality C Major11).Notes =! cMaj11.Notes
-            (chordFromRootAndQuality C Major13).Notes =! cMaj13.Notes
-            (chordFromRootAndQuality C Major9Sharp11).Notes =! cMaj9Sharp11.Notes
-            (chordFromRootAndQuality C Major13Sharp11).Notes =! cMaj13sharp11.Notes
-            (chordFromRootAndQuality C Minor6).Notes =! cMin6.Notes
-            (chordFromRootAndQuality C Minor6Add9).Notes =! cMin6add9.Notes
-            (chordFromRootAndQuality C MinorMaj7).Notes =! cMinMaj7.Notes
-            (chordFromRootAndQuality C Minor9).Notes =! cMin9.Notes
-            (chordFromRootAndQuality C MinorMaj9).Notes =! cMinMaj9.Notes
+            (chord C Major).Notes =! cMaj.Notes
+            (chord C Augmented).Notes =! cAug.Notes
+            (chord C Minor).Notes =! cMin.Notes
+            (chord C Diminished).Notes =! cDim.Notes
+            (chord C Major7).Notes =! cMaj7.Notes
+            (chord C Augmented7).Notes =! cAug7.Notes
+            (chord C Minor7).Notes =! cMin7.Notes
+            (chord C Diminished7).Notes =! cDim7.Notes
+            (chord C Minor7b5).Notes =! cMin7b5.Notes
+            (chord C Major6).Notes =! c6.Notes
+            (chord C Major6Add9).Notes =! c6add9.Notes
+            (chord C Major6Flat5Add9).Notes =! c6flat5add9.Notes
+            (chord C Dominant7Flat5).Notes =! c7flat5.Notes
+            (chord C Dominant7Flat9).Notes =! c7flat9.Notes
+            (chord C Dominant7Sharp9).Notes =! c7sharp9.Notes
+            (chord C Dominant7Flat5Flat9).Notes =! c7flat5flat9.Notes
+            (chord C Dominant7Flat5Sharp9).Notes =! c7flat5sharp9.Notes
+            (chord C Dominant9).Notes =! c9.Notes
+            (chord C Dominant11).Notes =! c11.Notes
+            (chord C Dominant13).Notes =! c13.Notes
+            (chord C Major9).Notes =! cMaj9.Notes
+            (chord C Major11).Notes =! cMaj11.Notes
+            (chord C Major13).Notes =! cMaj13.Notes
+            (chord C Major9Sharp11).Notes =! cMaj9Sharp11.Notes
+            (chord C Major13Sharp11).Notes =! cMaj13sharp11.Notes
+            (chord C Minor6).Notes =! cMin6.Notes
+            (chord C Minor6Add9).Notes =! cMin6add9.Notes
+            (chord C MinorMaj7).Notes =! cMinMaj7.Notes
+            (chord C Minor9).Notes =! cMin9.Notes
+            (chord C MinorMaj9).Notes =! cMinMaj9.Notes
 
         [<Test>]
         let ``Should filter function from chord``() =
@@ -527,7 +527,7 @@ namespace VaughanTests
 
         [<Property>]
         let ``Should put third on bass for first inversion`` (root :Note) (quality: ChordQuality) =
-            let chord = chordFromRootAndQuality root quality
+            let chord = chord root quality
             snd (invert chord).Notes.Head = Third
 
         [<Test>]
@@ -544,7 +544,7 @@ namespace VaughanTests
 
         [<Property>]
         let ``Should put fifth on bass for second inversion`` (root :Note) (quality: ChordQuality) =
-            let chord = chordFromRootAndQuality root quality
+            let chord = chord root quality
             snd (chord |> invert |> invert).Notes.Head = Fifth
 
 
@@ -558,7 +558,7 @@ namespace VaughanTests
 
         [<Property>]
         let ``Should put sixth or seventh on bass for third inversion`` (root :Note) (quality: ChordQuality) =
-            let chord = chordFromRootAndQuality root quality
+            let chord = chord root quality
 
             ( chord.Notes.Length > 3)
                 ==> lazy (snd (chord |> invert |> invert |> invert).Notes.Head = Seventh
@@ -576,7 +576,7 @@ namespace VaughanTests
 
         [<Property>]
         let ``Drop 2 chords have third on lead and root on bass`` (root :Note) (quality: ChordQuality) =
-            let chord = chordFromRootAndQuality root quality
+            let chord = chord root quality
             let drop2Chord = chord |> toDrop2
             let lead = snd (drop2Chord.Notes |> List.last)
             let bass = snd (drop2Chord.Notes.Head)
@@ -589,7 +589,7 @@ namespace VaughanTests
 
         [<Property>]
         let ``Drop 3 chords have fifth on lead`` (root :Note) (quality: ChordQuality) =
-            let chord = chordFromRootAndQuality root quality
+            let chord = chord root quality
             let drop3Chord = chord |> toDrop3
             let lead = snd (drop3Chord.Notes |> List.last)
             let bass = snd (drop3Chord.Notes.Head)
@@ -605,7 +605,7 @@ namespace VaughanTests
 
         [<Property>]
         let ``First inversion drop 2 chords have fifth on lead and third on bass`` (root :Note) (quality: ChordQuality) =
-            let chord = chordFromRootAndQuality root quality
+            let chord = chord root quality
             let drop2Chord = chord |> toDrop2 |> invert
             let lead = snd (drop2Chord.Notes |> List.last)
             let bass = snd (drop2Chord.Notes.Head)
@@ -614,7 +614,7 @@ namespace VaughanTests
 
         [<Property>]
         let ``Second inversion drop 2 chords have seventh or sixth on lead and fifth on bass`` (root :Note) (quality: ChordQuality) =
-            let chord = chordFromRootAndQuality root quality
+            let chord = chord root quality
             let drop2Chord = chord |> toDrop2 |> invert |> invert
             let lead = snd (drop2Chord.Notes |> List.last)
             let bass = snd (drop2Chord.Notes.Head)
@@ -623,7 +623,7 @@ namespace VaughanTests
 
         [<Property>]
         let ``Third inversion drop 2 chords have root on lead and seventh or sixth on bass`` (root :Note) (quality: ChordQuality) =
-            let chord = chordFromRootAndQuality root quality
+            let chord = chord root quality
             let drop2Chord = chord |> toDrop2 |> invert |> invert |> invert
             let lead = snd (drop2Chord.Notes |> List.last)
             let bass = snd (drop2Chord.Notes.Head)
@@ -632,7 +632,7 @@ namespace VaughanTests
 
         [<Property>]
         let ``Fourth inversion drop 2 chords should have notes in same position as univerted chord`` (root :Note) (quality: ChordQuality) =
-            let chord = chordFromRootAndQuality root quality
+            let chord = chord root quality
             let drop2Chord = chord |> toDrop2 |> invert |> invert |> invert |> invert
             let lead = snd (drop2Chord.Notes |> List.last)
             let bass = snd (drop2Chord.Notes.Head)
@@ -648,7 +648,7 @@ namespace VaughanTests
 
         [<Property>]
         let ``First inversion drop 3 chords have third on lead and seventh or sixth on bass`` (root :Note) (quality: ChordQuality) =
-            let chord = chordFromRootAndQuality root quality
+            let chord = chord root quality
             let drop3Chord = chord |> toDrop3 |> invert
             let lead = snd (drop3Chord.Notes |> List.last)
             let bass = snd (drop3Chord.Notes.Head)
@@ -657,7 +657,7 @@ namespace VaughanTests
 
         [<Property>]
         let ``Second inversion drop 3 chords have seventh or sixth on lead and third on bass`` (root :Note) (quality: ChordQuality) =
-            let chord = chordFromRootAndQuality root quality
+            let chord = chord root quality
             let drop3Chord = chord |> toDrop3 |> invert |> invert
             let lead = snd (drop3Chord.Notes |> List.last)
             let bass = snd (drop3Chord.Notes.Head)
@@ -666,7 +666,7 @@ namespace VaughanTests
 
         [<Property>]
         let ``Third inversion drop 3 chords have third on lead and seventh or sixth on bass`` (root :Note) (quality: ChordQuality) =
-            let chord = chordFromRootAndQuality root quality
+            let chord = chord root quality
             let drop3Chord = chord |> toDrop3 |> invert |> invert |> invert
             let lead = snd (drop3Chord.Notes |> List.last)
             let bass = snd (drop3Chord.Notes.Head)
@@ -675,7 +675,7 @@ namespace VaughanTests
 
         [<Property>]
         let ``Fourth inversion drop 3 chords should have notes in same position as univerted chord`` (root :Note) (quality: ChordQuality) =
-            let chord = chordFromRootAndQuality root quality
+            let chord = chord root quality
             let drop3Chord = chord |> toDrop3 |> invert |> invert |> invert |> invert
             let lead = snd (drop3Chord.Notes |> List.last)
             let bass = snd (drop3Chord.Notes.Head)
@@ -688,21 +688,21 @@ namespace VaughanTests
 
         [<Property>]
         let ``Should choose invertion that satisfies having a root as lead`` (root :Note) (quality: ChordQuality) =
-            let chord = chordFromRootAndQuality root quality
+            let chord = chord root quality
             let invertedChord = inversionForFunctionAsLead chord Root
             
             invertedChord.Notes |> List.last |> snd = Root
 
         [<Property>]
         let ``Should choose invertion that satisfies having a third as lead`` (root :Note) (quality: ChordQuality) =
-            let chord = chordFromRootAndQuality root quality
+            let chord = chord root quality
             let invertedChord = inversionForFunctionAsLead chord Third
             
             invertedChord.Notes |> List.last |> snd = Third
 
         [<Property>]
         let ``Should choose invertion that satisfies having a fifth as lead`` (root :Note) (quality: ChordQuality) =
-            let chord = chordFromRootAndQuality root quality
+            let chord = chord root quality
             let invertedChord = inversionForFunctionAsLead chord Fifth
             
             invertedChord.Notes |> List.last |> snd = Fifth
@@ -713,28 +713,28 @@ namespace VaughanTests
 
         [<Property>]
         let ``Should choose invertion that satisfies having a root as bass`` (root :Note) (quality: ChordQuality) =
-            let chord = chordFromRootAndQuality root quality |> invert
+            let chord = chord root quality |> invert
             let invertedChord = inversionForFunctionAsBass chord Root
             
             invertedChord.Notes |> List.head |> snd = Root
 
         [<Property>]
         let ``Should choose invertion that satisfies having a third as bass`` (root :Note) (quality: ChordQuality) =
-            let chord = chordFromRootAndQuality root quality
+            let chord = chord root quality
             let invertedChord = inversionForFunctionAsBass chord Third
             
             invertedChord.Notes |> List.head |> snd = Third
 
         [<Property>]
         let ``Should choose invertion that satisfies having a fifth as bass`` (root :Note) (quality: ChordQuality) =
-            let chord = chordFromRootAndQuality root quality
+            let chord = chord root quality
             let invertedChord = inversionForFunctionAsBass chord Fifth
             
             invertedChord.Notes |> List.head |> snd = Fifth
 
         [<Property>]
         let ``It should choose invertion that satisfies having a lead that is closest to a provided note`` (root :Note) (quality: ChordQuality) (providedNote: Note) =
-            let chord = chordFromRootAndQuality root quality
+            let chord = chord root quality
             let invertedChord = invertionWithLeadClosestToNote chord providedNote
             
             let distancesToProvidedNote = 
@@ -745,7 +745,7 @@ namespace VaughanTests
 
         [<Property>]
         let ``It should choose invertion that satisfies having a bass that is closest to a provided note`` (root :Note) (quality: ChordQuality) (providedNote: Note) =
-            let chord = chordFromRootAndQuality root quality
+            let chord = chord root quality
             let invertedChord = invertionWithBassClosestToNote chord providedNote
             
             let distancesToProvidedNote = 
@@ -1190,7 +1190,7 @@ namespace VaughanTests
 
         [<Test>]
         let ``Should map C major9 ignoring 5th to guitar fretboard on fifth string closed``() =
-            let chord = chordFromRootAndQuality C Major9
+            let chord = chord C Major9
                         |> skipFunction Fifth
             (chordToGuitarClosedChord FifthString chord).Frets =! [
                         {GuitarString=FifthString; Fret=3; Note=C};
@@ -1201,7 +1201,7 @@ namespace VaughanTests
         
         [<Test>]
         let ``Should map C9 ignoring 5th to guitar fretboard on fifth string closed``() =
-            let chord = chordFromRootAndQuality C Dominant9
+            let chord = chord C Dominant9
                         |> skipFunction Fifth
             (chordToGuitarClosedChord FifthString chord).Frets =! [
                         {GuitarString=FifthString; Fret=3; Note=C};
@@ -1311,7 +1311,7 @@ namespace VaughanTests
                                                         
         [<Test>]
         let ``Should map C9 ignoring 5th to guitar fretboard on fifth string closed``() =
-            let guitarChord = chordFromRootAndQuality C Dominant9 
+            let guitarChord = chord C Dominant9 
                               |> skipFunction Fifth
                               |> chordToGuitarClosedChord FifthString
 
