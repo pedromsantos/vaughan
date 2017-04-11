@@ -1,6 +1,6 @@
 namespace Vaughan
-    
-    //https://repl.it/FJHh/30
+
+    //https://repl.it/FJHh/32
 
     module Infrastructure =
         let rotateByOne list =
@@ -8,21 +8,21 @@ namespace Vaughan
             | [] -> []
             | f::t -> t @ [f]
 
-        let swapFirstTwo list = 
+        let swapFirstTwo list =
             match list with
             | [] -> []
             | f::s::r -> s::f::r
             | f -> f
 
-        let swapSecondTwo list = 
+        let swapSecondTwo list =
             match list with
             | [] -> []
             | f::s::t::r -> f::t::s::r
             | f::s::t -> f::s::t
             | f -> f
 
-        let circularSequenceFromList (lst:'a list) = 
-            let rec next () = 
+        let circularSequenceFromList (lst:'a list) =
+            let rec next () =
                 seq {
                     for element in lst do
                         yield element
@@ -34,7 +34,7 @@ namespace Vaughan
             sequence |> Seq.mapi (fun i v -> i, v)
 
         let filterOddIndexElements sequence =
-            sequence 
+            sequence
             |> sequenceToIndexValueTupleSequence
             |> Seq.filter (fun (i, _) -> i % 2 = 0)
             |> Seq.map snd
@@ -48,7 +48,7 @@ namespace Vaughan
         let cappedMinimum number cap =
             if number < cap then cap else number
 
-        let minimumPositive number = 
+        let minimumPositive number =
             cappedMinimum number 0
 
         let cappedMaximum number cap =
@@ -56,8 +56,8 @@ namespace Vaughan
 
 
     module Domain =
-        type Note = 
-            | C | CSharp | DFlat | D | DSharp | EFlat | E | F | FSharp 
+        type Note =
+            | C | CSharp | DFlat | D | DSharp | EFlat | E | F | FSharp
             | GFlat | G | GSharp | AFlat | A | ASharp | BFlat | B
 
         type ISharpNote = Note -> Note
@@ -65,13 +65,13 @@ namespace Vaughan
         type INaturalNote = Note -> Note
         type INoteName = Note -> string
         type IPitchNote = Note -> int
-                    
-        type Interval = 
+
+        type Interval =
             | Unisson | MinorSecond | MajorSecond | AugmentedSecond | MinorThird
             | MajorThird | PerfectFourth | AugmentedFourth | DiminishedFifth
             | PerfectFifth | AugmentedFifth | MinorSixth | MajorSixth
             | DiminishedSeventh | MinorSeventh | MajorSeventh | PerfectOctave
-            | MajorNinth | MinorNinth | AugmentedNinth 
+            | MajorNinth | MinorNinth | AugmentedNinth
             | PerfectEleventh | AugmentedEleventh
             | MinorThirteenth | MajorThirteenth
 
@@ -83,7 +83,7 @@ namespace Vaughan
         type IIntervalBetween = Note -> Note -> Interval
         type ITransposeNote = Note -> Interval -> Note
 
-        type Scale = 
+        type Scale =
             | Ionian | Dorian | Phrygian | Lydian | Mixolydian
             | Aolian | Locrian | MajorPentatonic | MinorPentatonic
             | Blues | HarmonicMinor | MelodicMinor | Dorianb2 | LydianAugmented
@@ -93,33 +93,33 @@ namespace Vaughan
         type ScaleNotes = Note list
         type ICreateScale = Scale -> Note -> ScaleNotes
 
-        type Key = 
+        type Key =
             | AMajor | AFlatMajor | BMajor | BFlatMajor | CMajor
             | DMajor | DFlatMajor | EMajor | EFlatMajor
             | FMajor | FSharpMajor | GMajor | GFlatMajor | AMinor
             | BMinor | BFlatMinor | CMinor | CSharpMinor | DMinor
-            | EMinor | FMinor | FSharpMinor | GMinor 
+            | EMinor | FMinor | FSharpMinor | GMinor
             | GSharpMinor | EFlatMinor
 
         type KeyNotes = Note list
         type IKeyNotes = Key -> KeyNotes
 
-        type ChordQuality = 
+        type ChordQuality =
             | Major | Augmented
-            | Major6 | Major6Add9 | Major6Flat5Add9 
+            | Major6 | Major6Add9 | Major6Flat5Add9
             | Major7 | Major9 | Major9Sharp11 | Major11 | Major13 | Major13Sharp11 | Augmented7
             | Dominant7 | Dominant7Flat5 | Dominant7Flat9 | Dominant7Sharp9
-            | Dominant7Flat5Flat9 | Dominant7Flat5Sharp9 
+            | Dominant7Flat5Flat9 | Dominant7Flat5Sharp9
             | Dominant9 | Dominant11 | Dominant13
-            | Minor | Diminished 
-            | Minor7 | Minor6 | Minor6Add9 | Minor9 | Diminished7 | Minor7b5 
+            | Minor | Diminished
+            | Minor7 | Minor6 | Minor6Add9 | Minor9 | Diminished7 | Minor7b5
             | MinorMaj7 | MinorMaj9
             | Sus2 | Sus2Diminished | Sus2Augmented
             | Sus4 | Sus4Diminished | Sus4Augmented
-            
-        type ChordNoteFunction = 
+
+        type ChordNoteFunction =
             | Root | Third | Fifth | Sixth | Seventh | Ninth | Eleventh | Thirteenth
-        
+
         type ChordNote = Note * ChordNoteFunction
         type ChordNotes = ChordNote list
 
@@ -127,27 +127,26 @@ namespace Vaughan
 
         type Chord = {Notes:ChordNotes; ChordType:ChordType; Name:string}
 
-        type ScaleDgrees = 
+        type ScaleDgrees =
             | I = 0 | II = 1 | III = 2 | IV = 3 | V = 4 | VI = 5 | VII = 6
 
-        type GuitarString = 
-            | SixthString | FifthString | FourthString 
+        type GuitarString =
+            | SixthString | FifthString | FourthString
             | ThirdString | SecondString | FirstString
-        
+
         type Fret = {GuitarString:GuitarString; Fret:int; Note:Note}
 
         type Frets = Fret list
-        
+
         type GuitarChord = {Chord:Chord; Frets:Frets}
 
         type ChordIntent = { Root: Note; Quality:ChordQuality; }
-        
+
     module Notes =
         open Domain
 
         type private NoteAttributes = {Name:string; Sharp:Note; Flat:Note; Pitch:int}
         type private IntervalAttributes = {Name:string; Distance:int; Transpose: (Note -> Note)}
-        
         type private INoteAttributes = Note -> NoteAttributes
         type private IIntervalAttributes = Interval -> ISharpNote -> IFlatNote -> INaturalNote -> IntervalAttributes
         type private ITransposeNoteForInterval = Note -> Interval -> Note
@@ -170,7 +169,7 @@ namespace Vaughan
             | ASharp -> {Name="A#"; Sharp=B; Flat=A; Pitch=10}
             | BFlat -> {Name="Bb"; Sharp=B; Flat=A; Pitch=10}
             | B -> {Name="B"; Sharp=C; Flat=BFlat; Pitch=11}
-        
+
         let private intervalAttributes:IIntervalAttributes = fun interval sharp flat natural ->
             match interval with
             | Unisson -> {Name="Unisson"; Distance=0; Transpose=natural}
@@ -197,8 +196,8 @@ namespace Vaughan
             | AugmentedEleventh -> {Name="AugmentedEleventh"; Distance=18; Transpose=sharp}
             | MinorThirteenth -> {Name="MinorThirteenth"; Distance=20; Transpose=flat}
             | MajorThirteenth -> {Name="MajorThirteenth"; Distance=21; Transpose=sharp}
-        
-        let private intervalAttributesWithDefaults interval = 
+
+        let private intervalAttributesWithDefaults interval =
             (intervalAttributes interval (fun n -> (noteAttributes n).Sharp) (fun n -> (noteAttributes n).Flat) id)
 
         let private transposeNoteForInterval:ITransposeNoteForInterval = fun note interval ->
@@ -217,18 +216,18 @@ namespace Vaughan
 
         let pitch:IPitchNote = fun note ->
             (noteAttributes note).Pitch
-            
+
         let intervalName:IIntervalName = fun interval ->
             (intervalAttributesWithDefaults interval).Name
-        
+
         let toDistance:IIntervalToDistance = fun interval ->
             (intervalAttributesWithDefaults interval).Distance
-            
+
         let toOctaveDistance:IIntervalToDistance = fun interval ->
             let distance = toDistance interval
             let octaveDistance = toDistance PerfectOctave
             if distance > octaveDistance then distance - octaveDistance else distance
-            
+
         let fromDistance:IIntervalFromDistance = function
             | 0 -> Unisson
             | 1 -> MinorSecond
@@ -251,27 +250,27 @@ namespace Vaughan
             | 20 -> MinorThirteenth
             | 21 -> MajorThirteenth
             | _ -> Unisson
-        
+
         let measureAbsoluteSemitones:IMeasureAbsoluteSemitones = fun note other ->
             let distance = (pitch other) - (pitch note)
-            if distance < (toOctaveDistance Unisson) 
-            then (toDistance PerfectOctave) - distance * -1 
+            if distance < (toOctaveDistance Unisson)
+            then (toDistance PerfectOctave) - distance * -1
             else distance
-            
+
         let intervalBetween:IIntervalBetween = fun note other ->
             fromDistance (measureAbsoluteSemitones note other)
 
         let private isSameInterval interval otherInterval =
             toOctaveDistance interval = toOctaveDistance otherInterval
-            
+
         let transpose:ITransposeNote = fun noteToTranspose transposingInterval ->
             let rec loop note =
                 let transposedNote = transposeNoteForInterval note transposingInterval
                 let newInterval = intervalBetween noteToTranspose transposedNote
-                if isSameInterval newInterval transposingInterval 
-                    then transposedNote 
+                if isSameInterval newInterval transposingInterval
+                    then transposedNote
                     else loop transposedNote
-            
+
             loop noteToTranspose
 
     module Scales =
@@ -280,7 +279,7 @@ namespace Vaughan
 
         type private ScaleFormula = Interval list
         type private IScaleFormula = Scale -> ScaleFormula
-        
+
         let private scaleFormula:IScaleFormula = function
             | Ionian -> [Unisson; MajorSecond; MajorThird; PerfectFourth; PerfectFifth; MajorSixth; MajorSeventh]
             | Dorian -> [Unisson; MajorSecond; MinorThird; PerfectFourth; PerfectFifth; MajorSixth; MinorSeventh]
@@ -302,7 +301,7 @@ namespace Vaughan
             | AlteredDominant -> [Unisson; MinorSecond; AugmentedSecond; MajorThird; DiminishedFifth;  AugmentedFifth; MinorSeventh]
             | HalfWholeDiminished -> [Unisson; MinorSecond; MinorThird; MajorThird; AugmentedFourth;  PerfectFifth; MajorSixth; MinorSeventh]
             | WholeTone -> [Unisson; MajorSecond; MajorThird; DiminishedFifth; AugmentedFifth; MinorSeventh]
-        
+
         let createScale:ICreateScale = fun scale root ->
             scaleFormula scale |> List.map (fun interval -> transpose root interval)
 
@@ -314,71 +313,71 @@ namespace Vaughan
         type private IKeyAttributes = Key -> KeyAttributes
 
         let private keyAttributes = function
-            | AMajor -> {Root=A; Accidentals=3} 
-            | AFlatMajor -> {Root=AFlat; Accidentals=(-4)} 
-            | BMajor -> {Root=B; Accidentals=5} 
-            | BFlatMajor -> {Root=BFlat; Accidentals=(-2)} 
-            | CMajor -> {Root=C; Accidentals=0} 
-            | DMajor -> {Root=D; Accidentals=2} 
-            | DFlatMajor -> {Root=DFlat; Accidentals=(-5)} 
-            | EMajor -> {Root=E; Accidentals=4} 
-            | EFlatMajor -> {Root=EFlat; Accidentals=(-3)} 
-            | FMajor -> {Root=F; Accidentals=(-1)} 
-            | FSharpMajor -> {Root=FSharp; Accidentals=6} 
-            | GMajor -> {Root=G; Accidentals=1} 
-            | GFlatMajor -> {Root=GFlat; Accidentals=(-6)} 
-            | AMinor -> {Root=A; Accidentals=0} 
-            | BMinor -> {Root=B; Accidentals=2} 
-            | BFlatMinor -> {Root=BFlat; Accidentals=(-5)} 
-            | CMinor -> {Root=C; Accidentals=(-3)} 
-            | CSharpMinor -> {Root=CSharp; Accidentals=4} 
-            | DMinor -> {Root=D; Accidentals=(-1)} 
-            | EMinor -> {Root=E; Accidentals=1} 
-            | FMinor -> {Root=F; Accidentals=(-4)} 
-            | FSharpMinor -> {Root=FSharp; Accidentals=3} 
-            | GMinor -> {Root=G; Accidentals=(-2)} 
-            | GSharpMinor -> {Root=GSharp; Accidentals=5} 
-            | EFlatMinor -> {Root=EFlat; Accidentals=(-6)} 
+            | AMajor -> {Root=A; Accidentals=3}
+            | AFlatMajor -> {Root=AFlat; Accidentals=(-4)}
+            | BMajor -> {Root=B; Accidentals=5}
+            | BFlatMajor -> {Root=BFlat; Accidentals=(-2)}
+            | CMajor -> {Root=C; Accidentals=0}
+            | DMajor -> {Root=D; Accidentals=2}
+            | DFlatMajor -> {Root=DFlat; Accidentals=(-5)}
+            | EMajor -> {Root=E; Accidentals=4}
+            | EFlatMajor -> {Root=EFlat; Accidentals=(-3)}
+            | FMajor -> {Root=F; Accidentals=(-1)}
+            | FSharpMajor -> {Root=FSharp; Accidentals=6}
+            | GMajor -> {Root=G; Accidentals=1}
+            | GFlatMajor -> {Root=GFlat; Accidentals=(-6)}
+            | AMinor -> {Root=A; Accidentals=0}
+            | BMinor -> {Root=B; Accidentals=2}
+            | BFlatMinor -> {Root=BFlat; Accidentals=(-5)}
+            | CMinor -> {Root=C; Accidentals=(-3)}
+            | CSharpMinor -> {Root=CSharp; Accidentals=4}
+            | DMinor -> {Root=D; Accidentals=(-1)}
+            | EMinor -> {Root=E; Accidentals=1}
+            | FMinor -> {Root=F; Accidentals=(-4)}
+            | FSharpMinor -> {Root=FSharp; Accidentals=3}
+            | GMinor -> {Root=G; Accidentals=(-2)}
+            | GSharpMinor -> {Root=GSharp; Accidentals=5}
+            | EFlatMinor -> {Root=EFlat; Accidentals=(-6)}
 
         let private root key =
             (keyAttributes key).Root
 
         let private accidentals key =
             (keyAttributes key).Accidentals
-        
-        let private flatedKey fifths keyAccidents =
-            (fifths |> List.rev |> List.skip -keyAccidents) 
+
+        let private flatKey fifths keyAccidents =
+            (fifths |> List.rev |> List.skip -keyAccidents)
             @ (fifths
             |> List.rev
             |> List.take(-keyAccidents)
             |> List.map flat)
-        
-        let private sharpedKey fifths keyAccidents =
+
+        let private sharpKey fifths keyAccidents =
             ((fifths |> List.skip keyAccidents) )
             @ (fifths
             |> List.take(keyAccidents)
             |> List.map sharp)
-        
-        let private rawkeyNotes key = 
+
+        let private rawKeyNotes key =
             let fifths = [F; C; G; D; A; E; B;]
             let keyAccidents = accidentals key
-            
+
             if keyAccidents = 0 then
                 fifths
-            else 
-                if keyAccidents < 0 then 
-                    flatedKey fifths keyAccidents
+            else
+                if keyAccidents < 0 then
+                    flatKey fifths keyAccidents
                 else
-                    sharpedKey fifths keyAccidents
+                    sharpKey fifths keyAccidents
 
-        let keyNotes:IKeyNotes = fun key ->  
-            (rawkeyNotes key
+        let keyNotes:IKeyNotes = fun key ->
+            (rawKeyNotes key
             |> List.sortBy pitch
             |> List.skipWhile (fun n -> n <> root key))
             @
-            (rawkeyNotes key
+            (rawKeyNotes key
             |> List.sortBy pitch
-            |> List.takeWhile (fun n -> n <> root key))  
+            |> List.takeWhile (fun n -> n <> root key))
 
     module Chords =
         open Domain
@@ -408,10 +407,10 @@ namespace Vaughan
                 {Name="Min6"; Quality=Minor6; Formula=[MinorThird; PerfectFifth; MajorSixth]}
                 {Name="Min6Add9"; Quality=Minor6Add9; Formula=[MinorThird; PerfectFifth; MajorSixth; MajorNinth]}
                 {Name="Min7b5"; Quality=Minor7b5; Formula=[MinorThird; DiminishedFifth; MinorSeventh]}
-                {Name="MinMaj7"; Quality=MinorMaj7; Formula=[MinorThird; PerfectFifth; MajorSeventh]} 
-                {Name="MinMaj9"; Quality=MinorMaj9; Formula=[MinorThird; PerfectFifth; MajorSeventh; MajorNinth]} 
-                {Name="Min7(b9)"; Quality=MinorMaj9; Formula=[MinorThird; PerfectFifth; MinorSeventh; MinorNinth]} 
-                {Name="Min7(b5b9)"; Quality=MinorMaj9; Formula=[MinorThird; DiminishedFifth; MinorSeventh; MinorNinth]} 
+                {Name="MinMaj7"; Quality=MinorMaj7; Formula=[MinorThird; PerfectFifth; MajorSeventh]}
+                {Name="MinMaj9"; Quality=MinorMaj9; Formula=[MinorThird; PerfectFifth; MajorSeventh; MajorNinth]}
+                {Name="Min7(b9)"; Quality=MinorMaj9; Formula=[MinorThird; PerfectFifth; MinorSeventh; MinorNinth]}
+                {Name="Min7(b5b9)"; Quality=MinorMaj9; Formula=[MinorThird; DiminishedFifth; MinorSeventh; MinorNinth]}
                 {Name="Dim7"; Quality=Diminished7; Formula=[MinorThird; DiminishedFifth; DiminishedSeventh]}
                 {Name="Dim7"; Quality=Diminished7; Formula=[MinorThird; DiminishedFifth; MajorSixth]}
                 {Name="7"; Quality=Dominant7; Formula=[MajorThird; PerfectFifth; MinorSeventh]}
@@ -448,7 +447,7 @@ namespace Vaughan
 
         let private functionForInterval = function
             | Unisson -> Root
-            | MajorThird | MinorThird | MajorSecond | MinorSecond | PerfectFourth | AugmentedFourth -> Third 
+            | MajorThird | MinorThird | MajorSecond | MinorSecond | PerfectFourth | AugmentedFourth -> Third
             | PerfectFifth | DiminishedFifth | AugmentedFifth  -> Fifth
             | MajorSixth -> Sixth
             | MajorSeventh | MinorSeventh | DiminishedSeventh -> Seventh
@@ -462,10 +461,10 @@ namespace Vaughan
 
         let private noteFunction chordNote =
             snd chordNote
-                                
+
         let private noteForFunction chord chordNoteFunction =
             note (chord.Notes |> List.find (fun n -> noteFunction n = chordNoteFunction))
-                
+
         let private adjustIntervalForFunctionsAboveSeventh interval noteFunction =
             match noteFunction with
             | Ninth | Eleventh | Thirteenth -> fromDistance ((toDistance interval) + (toDistance PerfectOctave))
@@ -480,20 +479,20 @@ namespace Vaughan
         let private invertOpenOrClosed chord =
             {chord with Notes= rotateByOne chord.Notes;}
 
-        let private invertDrop2 chord = 
+        let private invertDrop2 chord =
             {
-                chord with Notes= [chord.Notes |> List.last] 
-                                    @ (chord.Notes 
-                                        |> List.take (chord.Notes.Length - 1) 
-                                        |> rotateByOne 
-                                        |> rotateByOne) 
-             }     
+                chord with Notes= [chord.Notes |> List.last]
+                                    @ (chord.Notes
+                                        |> List.take (chord.Notes.Length - 1)
+                                        |> rotateByOne
+                                        |> rotateByOne)
+             }
 
         let private invertDrop3 chord =
             {chord with Notes= chord.Notes |> rotateByOne |> rotateByOne |> swapSecondTwo;}
 
         let name chord =
-            noteName (noteForFunction chord Root) 
+            noteName (noteForFunction chord Root)
             + nameForQuality (qualityForIntervals(intervalsForChord chord))
 
         let invert chord =
@@ -501,16 +500,16 @@ namespace Vaughan
             | Closed | Open -> invertOpenOrClosed chord
             | Drop2 -> invertDrop2 chord
             | Drop3 -> invertDrop3 chord
-            
+
         let bass chord =
             note (chord.Notes |> List.head)
-        
+
         let lead chord =
             note (chord.Notes |> List.last)
-            
+
         let noteNames chord =
             chord.Notes |> List.map (note >> noteName)
-            
+
         let chord root quality =
             {
                 Notes= [(root, Root)] @ (intervalsForQuality quality |> List.map (fun i -> ((transpose root i), functionForInterval i)));
@@ -533,27 +532,27 @@ namespace Vaughan
         open Notes
         open Infrastructure
 
-        let private isLeadFunctionOnChordDesiredFunction chord desiredNoteFunction listFilter =
-            snd (chord.Notes |> listFilter) = desiredNoteFunction
+        let private isLeadFunctionOnChordDesiredFunction chord desiredNoteFunction desiredPosition =
+            snd (chord.Notes |> desiredPosition) = desiredNoteFunction
 
         let rec private repeatInversion chord times =
             match times with
             | 0 -> chord
             | _ -> repeatInversion (chord |> invert) (times - 1)
 
-        let private generateChordInversions chord =
+        let private allInversions chord =
             let notesInChord = chord.Notes |> List.length
             [for index in 1 .. notesInChord do yield repeatInversion chord index]
 
-        let private inversionForFunction chord desiredNoteFunction listFilter =
-            generateChordInversions chord
-            |> List.filter (fun c -> isLeadFunctionOnChordDesiredFunction c desiredNoteFunction listFilter)
+        let private inversionForFunction chord desiredNoteFunction desiredPosition =
+            allInversions chord
+            |> List.filter (fun c -> isLeadFunctionOnChordDesiredFunction c desiredNoteFunction desiredPosition)
             |> List.head
-        
-        let private invertionWithNoteClosestToNote chord note chordNote =
-            (generateChordInversions chord
-            |> min (fun c1 c2 -> 
-                if (measureAbsoluteSemitones (chordNote c1) note) < (measureAbsoluteSemitones (chordNote c2) note) 
+
+        let private invertionWithNoteClosestToNote chord note desiredPosition =
+            (allInversions chord
+            |> min (fun c1 c2 ->
+                if (measureAbsoluteSemitones (desiredPosition c1) note) < (measureAbsoluteSemitones (desiredPosition c2) note)
                 then c1 else c2)).Value
 
         let inversionForFunctionAsLead chord desiredNoteFunction =
@@ -568,15 +567,15 @@ namespace Vaughan
         let invertionWithBassClosestToNote chord note =
             invertionWithNoteClosestToNote chord note bass
 
-    module ScaleHarmonizer = 
+    module ScaleHarmonizer =
         open Infrastructure
         open Domain
         open Chords
 
         let private thirds (fromPosition:ScaleDgrees) scale =
             let octave = 16
-            
-            scale 
+
+            scale
             |> circularSequenceFromList
             |> Seq.skip (int fromPosition)
             |> Seq.take octave
@@ -584,19 +583,19 @@ namespace Vaughan
             |> Seq.toList
 
         let private harmonizer forDegree scale =
-            let thirdsList = 
+            let thirdsList =
                 scale
                 |> thirds forDegree
                 |> List.take 7
-            
+
             {
-                Notes = [(thirdsList.[0], Root); 
-                         (thirdsList.[1], Third); 
-                         (thirdsList.[2], Fifth); 
-                         (thirdsList.[3], Seventh); 
-                         (thirdsList.[4], Ninth); 
-                         (thirdsList.[5], Eleventh); 
-                         (thirdsList.[6], Thirteenth)]; 
+                Notes = [(thirdsList.[0], Root);
+                         (thirdsList.[1], Third);
+                         (thirdsList.[2], Fifth);
+                         (thirdsList.[3], Seventh);
+                         (thirdsList.[4], Ninth);
+                         (thirdsList.[5], Eleventh);
+                         (thirdsList.[6], Thirteenth)];
                 ChordType = Closed;
                 Name =  ""
              }
@@ -629,7 +628,7 @@ namespace Vaughan
 
             let private isOpen fret =
                 fret.Fret = 0
-                
+
             let private isMuted fret =
                 fret.Fret = -1
 
@@ -644,20 +643,20 @@ namespace Vaughan
 
             let private raiseOctave fret =
                 {fret with Fret = fret.Fret + (toDistance PerfectOctave)}
-            
+
             let private isRaisable fret =
                 not (isRaised fret) && not (isMuted fret)
 
             let raiseOpenFrets frets =
-                frets 
+                frets
                 |> List.map (fun fret -> if isOpen fret then raiseOctave fret else fret)
 
             let unstretch frets =
                 let maxFret = frets |> List.map (fun f -> f.Fret) |> List.max
-                frets 
-                |> List.map (fun f -> 
+                frets
+                |> List.map (fun f ->
                                         if isStretched f.Fret maxFret && isRaisable f
-                                        then raiseOctave f 
+                                        then raiseOctave f
                                         else f)
 
         open Domain
@@ -667,7 +666,7 @@ namespace Vaughan
         open Infrastructure
 
         type private GuitarStringAttributes = {Name:string; OpenStringNote:Note; Index:int}
-        
+
         let private guitarStringAttributes = function
             | SixthString -> { Name="Sixth"; OpenStringNote=E; Index=6}
             | FifthString -> { Name="Fifth"; OpenStringNote=A; Index=5}
@@ -678,7 +677,7 @@ namespace Vaughan
 
         let private guitarStringOrdinal guitarString =
             (guitarStringAttributes guitarString).Index
-      
+
         let private indexToGuitarString (nth:int) =
             match nth with
             | 6 -> SixthString
@@ -686,12 +685,12 @@ namespace Vaughan
             | 4 -> FourthString
             | 3 -> ThirdString
             | 2 -> SecondString
-            | _ -> FirstString 
+            | _ -> FirstString
 
         let private openStringNote guitarString =
             (guitarStringAttributes guitarString).OpenStringNote
 
-        let private nextString guitarString = 
+        let private nextString guitarString =
             indexToGuitarString ((guitarStringOrdinal guitarString) - 1)
 
         let private createMutedStringFret guitarString =
@@ -707,20 +706,20 @@ namespace Vaughan
         let private skipString bassString chord guitarString =
             chord.ChordType = Drop3 && guitarString = nextString bassString
 
-        let private chordNotesTail (chordNotes:ChordNotes) =
+        let private chordNotesExceptBass (chordNotes:ChordNotes) =
             chordNotes |> List.tail
-    
+
         let private mapNoteToFret guitarString note shouldSkipString =
             if shouldSkipString then
                 createMutedStringFret guitarString
             else
                 createFret guitarString note
-            
+
         let private remainingChordNotesToMap chordNotes shouldSkipString =
             if shouldSkipString then
                 chordNotes
             else
-                chordNotesTail chordNotes
+                chordNotesExceptBass chordNotes
 
         let private mapChordToGuitarFrets bassString chord =
             let rec mapChordNoteToString guitarString chordNotes mappedChordNotes =
@@ -731,17 +730,13 @@ namespace Vaughan
                     let fret = mapNoteToFret guitarString (fst chordNotes.[0]) shouldSkipString
                     let unmapedChordNotes = remainingChordNotesToMap chordNotes shouldSkipString
                     mapChordNoteToString (nextString guitarString) unmapedChordNotes (fret::mappedChordNotes)
-
             mapChordNoteToString bassString chord.Notes []
-
-        let fretForNote note guitarString =
-            findFretForNote note guitarString
 
         let chordToGuitarChord bassString chord =
             { Chord=chord; Frets= mapChordToGuitarFrets bassString chord |> List.rev }
 
         let chordToGuitarClosedChord bassString chord =
-            let guitarChord = chordToGuitarChord bassString chord 
+            let guitarChord = chordToGuitarChord bassString chord
             let closedChord = {guitarChord with Frets = raiseOpenFrets guitarChord.Frets}
             {closedChord with Frets = unstretch closedChord.Frets}
 
@@ -752,17 +747,17 @@ namespace Vaughan
         open Chords
         open Guitar
 
-        let private startTab = 
+        let private startTab =
             [
-                "E|-";
-                "B|-";
-                "G|-";
-                "D|-";
-                "A|-";
-                "E|-"
+                "E||-";
+                "B||-";
+                "G||-";
+                "D||-";
+                "A||-";
+                "E||-"
             ]
 
-        let private bar = 
+        let private bar =
                     [
                         "-|-";
                         "-|-";
@@ -772,20 +767,20 @@ namespace Vaughan
                         "-|-"
                     ]
 
-        let private endTab = 
+        let private endTab =
                     [
-                        "-|" + Environment.NewLine;
-                        "-|" + Environment.NewLine;
-                        "-|" + Environment.NewLine;
-                        "-|" + Environment.NewLine;
-                        "-|" + Environment.NewLine;
-                        "-|" + Environment.NewLine;
+                        "-||" + Environment.NewLine;
+                        "-||" + Environment.NewLine;
+                        "-||" + Environment.NewLine;
+                        "-||" + Environment.NewLine;
+                        "-||" + Environment.NewLine;
+                        "-||" + Environment.NewLine;
                     ]
 
-        let private mutedStringDashes guitarChord = 
+        let private mutedStringDashes guitarChord =
             String.replicate (guitarChord.Chord.Name).Length "-"
 
-        let private fretedStringDashes guitarChord fret = 
+        let private fretedStringDashes guitarChord fret =
             String.replicate ((guitarChord.Chord.Name).Length - (string(fret)).Length) "-"
 
         let private mutedHigherStrings guitarChord =
@@ -836,36 +831,36 @@ namespace Vaughan
         let private shapifyFrets guitarChord =
             guitarChord.Frets |> List.map shapifyFret
 
-        let private tabifyChord guitarChord = 
-            (tabifyMutedHigherStrings guitarChord) 
+        let private tabifyChord guitarChord =
+            (tabifyMutedHigherStrings guitarChord)
             @ (tabifyFrets guitarChord)
             @ (tabifyMutedLowerStrings guitarChord)
 
-        let private shapifyChord guitarChord = 
+        let private shapifyChord guitarChord =
             (shapifyMutedLowerStrings guitarChord)
             @ (shapifyFrets guitarChord)
             @ (shapifyMutedHigherStrings guitarChord)
 
         let private groupByString (tabifiedChords: string list list) =
-            [0 .. 5] 
+            [0 .. 5]
             |> List.map (fun index -> tabifiedChords |> List.map (fun l -> l.[index]))
 
         let private tabifyStrings guitarStrings =
-            guitarStrings 
+            guitarStrings
             |> List.map (fun tabifiedFrets -> tabifiedFrets |> List.fold (fun acc fret -> acc + fret + "---" ) "---")
             |> List.mapi (fun index tabifiedFrets -> startTab.[index] + tabifiedFrets + endTab.[index])
 
-        let private tabifyChordNames guitarChords = 
+        let private tabifyChordNames guitarChords =
             let chordNameSeparator = "   "
-            let separatedChordNames = 
+            let separatedChordNames =
                 guitarChords
-                |> List.map (fun guitarChord -> chordNameSeparator + guitarChord.Chord.Name)  
+                |> List.map (fun guitarChord -> chordNameSeparator + guitarChord.Chord.Name)
             [chordNameSeparator] @ separatedChordNames @ [chordNameSeparator; Environment.NewLine;]
 
-        let tabifyAll guitarChords = 
+        let tabifyAll guitarChords =
             let tabifiedChordNames = guitarChords |> tabifyChordNames
-            let tabifiedChords = 
-                        guitarChords 
+            let tabifiedChords =
+                        guitarChords
                         |> List.map tabifyChord
                         |> groupByString
                         |> tabifyStrings
@@ -892,13 +887,13 @@ namespace Vaughan
 
         type private UserState = unit
         type private Parser<'t> = Parser<'t, UserState>
-        
+
         let private skip parser skiped = parser .>> skiped
 
         let private skipSpaces parser = skip parser spaces
 
         let private any parsers = parsers |> List.reduce (<|>)
-        
+
         let private parseNote: Parser<_> =
             any [
                     (stringCIReturn "a" A);
@@ -922,7 +917,7 @@ namespace Vaughan
             any [
                     (stringCIReturn "major" Major)
                     (stringCIReturn "maj" Major)
-                    (stringReturn "M" Major) 
+                    (stringReturn "M" Major)
                 ] |> skipSpaces
 
         let private parseMinorQuality: Parser<_> =
@@ -971,7 +966,7 @@ namespace Vaughan
             | {Quality=Augmented} -> { chord with Quality = Augmented7 }
             | {Quality=_} -> { chord with Quality = Dominant7 }
 
-        let private parseNoSeventh chord = 
+        let private parseNoSeventh chord =
             chord
 
         let private parseSeventhQuality: Parser<_> =

@@ -27,14 +27,14 @@ namespace VaughanTests
         let ``Swapping first two elements in list twice undoes first swap`` (list :int list) =
             ( list |> List.length > 2 )
                 ==> lazy ((list |> swapFirstTwo |> swapFirstTwo) = list)
- 
+
         [<Test>]
         let ``Should swap second two elements in list``() =
             swapSecondTwo [1; 2; 3] =! [1; 3; 2]
 
         [<Property>]
         let ``Swapping second two elements in list twice undoes first swap`` (list :int list) =
-            ( list |> List.length > 2 ) 
+            ( list |> List.length > 2 )
                 ==> lazy ((list |> swapSecondTwo |> swapSecondTwo) = list)
 
         [<Test>]
@@ -46,7 +46,7 @@ namespace VaughanTests
             circularSequenceFromList [1; 2; 3] |> Seq.take 3 |> Seq.last =! 3
             circularSequenceFromList [1; 2; 3] |> Seq.take 4 |> Seq.last =! 1
             circularSequenceFromList [1; 2; 3] |> Seq.take 5 |> Seq.last =! 2
-        
+
     module NotesTests =
         open NUnit.Framework
         open FsCheck
@@ -74,7 +74,7 @@ namespace VaughanTests
             noteName ASharp =! "A#"
             noteName BFlat =! "Bb"
             noteName B =! "B"
-            
+
         [<Test>]
         let ``Should sharp note``() =
             sharp C =! CSharp
@@ -94,7 +94,7 @@ namespace VaughanTests
             sharp ASharp =! B
             sharp BFlat =! B
             sharp B =! C
-            
+
         [<Test>]
         let ``Should flat note``() =
             flat C =! B
@@ -114,7 +114,7 @@ namespace VaughanTests
             flat ASharp =! A
             flat BFlat =! A
             flat B =! BFlat
-        
+
         [<Property>]
         let ``Sharping and flating a note should go back to original note pitch`` (note :Note)  =
             pitch (note |> sharp |> flat) = (pitch note)
@@ -158,7 +158,7 @@ namespace VaughanTests
             intervalBetween C ASharp =! MinorSeventh
             intervalBetween C BFlat =! MinorSeventh
             intervalBetween C B =! MajorSeventh
-        
+
         [<Property>]
         let ``Interval between same note is a unisson interval`` (note :Note) =
             (intervalBetween note note) = Unisson
@@ -219,7 +219,7 @@ namespace VaughanTests
             transpose C MajorSixth =! A
             transpose C MinorSeventh =! BFlat
             transpose C MajorSeventh =! B
-        
+
         [<Property>]
         let ``Transposing a note by a unisson gives the same the note`` (note :Note) =
             (transpose note Unisson) = note
@@ -271,7 +271,7 @@ namespace VaughanTests
             intervalName MinorSeventh =! "MinorSeventh"
             intervalName MajorSeventh =! "MajorSeventh"
             intervalName PerfectOctave =! "PerfectOctave"
-            
+
         [<Test>]
         let ``Should relate interval with distances``() =
             fromDistance 0 =! Unisson
@@ -328,16 +328,16 @@ namespace VaughanTests
 
         [<Property>]
         let ``Major keys have formula R, W, W, H, W, W, W, H and Minor keys have formula R, W, H, W, W, H, W, W`` (key :Key) =
-            let majorKeyformula = 
+            let majorKeyformula =
                 [Unisson; MajorSecond; MajorSecond; MinorSecond; MajorSecond; MajorSecond; MajorSecond; MinorSecond]
-            let minorKeyformula = 
+            let minorKeyformula =
                 [Unisson; MajorSecond; MinorSecond; MajorSecond; MajorSecond; MinorSecond; MajorSecond; MajorSecond]
 
             let notesForKey = keyNotes key
             let notesForKeyWithOctave = notesForKey@[notesForKey.Head]
-            let intervalsForKey = 
-                notesForKeyWithOctave 
-                |> List.mapi 
+            let intervalsForKey =
+                notesForKeyWithOctave
+                |> List.mapi
                     (fun i n -> if i = 0 then Unisson else intervalBetween notesForKeyWithOctave.[i - 1] n)
 
             intervalsForKey = majorKeyformula || intervalsForKey = minorKeyformula
@@ -369,7 +369,7 @@ namespace VaughanTests
             createScale LocrianSharp2 C =! [ C; D; EFlat; F; GFlat; AFlat; BFlat ]
             createScale AlteredDominant C =! [ C; DFlat; DSharp; E; GFlat; GSharp; BFlat ]
             createScale HalfWholeDiminished C =! [ C; DFlat; EFlat; E; FSharp; G; A; BFlat ]
-            createScale WholeTone C =! [ C; D; E; GFlat; GSharp; BFlat ] 
+            createScale WholeTone C =! [ C; D; E; GFlat; GSharp; BFlat ]
 
     module ChordsTests =
         open NUnit.Framework
@@ -399,11 +399,11 @@ namespace VaughanTests
         let c6add9 = {Notes= [(C, Root); (E, Third); (G, Fifth); (A, Sixth); (D, Ninth)]; ChordType=Closed; Name=""}
         let c6flat5add9 = {Notes= [(C, Root); (E, Third); (GFlat, Fifth); (A, Sixth); (D, Ninth)]; ChordType=Closed; Name=""}
         let c7 = {Notes= [(C, Root); (E, Third); (G, Fifth); (BFlat, Seventh)]; ChordType=Closed; Name=""}
-        let c7flat5 = {Notes= [(C, Root); (E, Third); (GFlat, Fifth); (BFlat, Seventh)]; ChordType=Closed; Name=""}    
+        let c7flat5 = {Notes= [(C, Root); (E, Third); (GFlat, Fifth); (BFlat, Seventh)]; ChordType=Closed; Name=""}
         let c9 = {Notes= [(C, Root); (E, Third); (G, Fifth); (BFlat, Seventh); (D, Ninth)]; ChordType=Closed; Name=""}
         let c7flat9 = {Notes= [(C, Root); (E, Third); (G, Fifth); (BFlat, Seventh); (DFlat, Ninth)]; ChordType=Closed; Name=""}
         let c7sharp9 = {Notes= [(C, Root); (E, Third); (G, Fifth); (BFlat, Seventh); (DSharp, Ninth)]; ChordType=Closed; Name=""}
-        let c7flat5flat9 = {Notes= [(C, Root); (E, Third); (GFlat, Fifth); (BFlat, Seventh); (DFlat, Ninth)]; ChordType=Closed; Name=""}    
+        let c7flat5flat9 = {Notes= [(C, Root); (E, Third); (GFlat, Fifth); (BFlat, Seventh); (DFlat, Ninth)]; ChordType=Closed; Name=""}
         let c7flat5sharp9 = {Notes= [(C, Root); (E, Third); (GFlat, Fifth); (BFlat, Seventh); (DSharp, Ninth)]; ChordType=Closed; Name=""}
         let c11 = {Notes= [(C, Root); (E, Third); (G, Fifth); (BFlat, Seventh); (D, Ninth); (F, Eleventh)]; ChordType=Closed; Name=""}
         let c13 = {Notes= [(C, Root); (E, Third); (G, Fifth); (BFlat, Seventh); (D, Ninth); (F, Eleventh); (A, Thirteenth)]; ChordType=Closed; Name=""}
@@ -438,7 +438,7 @@ namespace VaughanTests
         let ``Major chords should be named after the quality`` (root :Note) (quality: ChordQuality) =
             let chord = chord root quality
 
-            ( quality = Major || quality = Major7 || quality = Major9 
+            ( quality = Major || quality = Major7 || quality = Major9
             || quality = Major9Sharp11 || quality = Major11 || quality = Major13Sharp11)
                 ==> lazy ((name chord).StartsWith((noteName root) + "Maj"))
 
@@ -455,7 +455,7 @@ namespace VaughanTests
             let chord = chord root quality
 
             (quality = Dominant7 || quality = Dominant9 || quality = Dominant11 || quality = Dominant13
-             || quality = Dominant7Flat5 || quality = Dominant7Flat5Flat9 || quality = Dominant7Flat5Sharp9 
+             || quality = Dominant7Flat5 || quality = Dominant7Flat5Flat9 || quality = Dominant7Flat5Sharp9
              || quality = Dominant7Flat9 || quality = Dominant7Sharp9)
                 ==> lazy ((name chord).StartsWith((noteName root) + "7")
                         || (name chord).StartsWith((noteName root) + "9")
@@ -463,7 +463,7 @@ namespace VaughanTests
                         || (name chord).StartsWith((noteName root) + "13"))
 
         [<Test>]
-        let ``Chord should be named after the quality``() = 
+        let ``Chord should be named after the quality``() =
             test <@ (name cMaj).StartsWith("CMaj") @>
             test <@ (name cAug).StartsWith("CAug") @>
             test <@ (name cMin).StartsWith("CMin") @>
@@ -473,7 +473,7 @@ namespace VaughanTests
             test <@ (name cMin7).StartsWith("CMin7") @>
             test <@ (name cDim7).StartsWith("CDim7") @>
             test <@ (name c6).StartsWith("C6") @>
-            
+
         [<Test>]
         let ``Should create chord from root and function``() =
             (chord C Major).Notes =! cMaj.Notes
@@ -509,21 +509,21 @@ namespace VaughanTests
 
         [<Test>]
         let ``Should filter function from chord``() =
-            (c9 |> skipFunction Fifth).Notes =! [(C, Root); (E, Third); (BFlat, Seventh); (D, Ninth)] 
-            (c9 |> skipFunction Root).Notes =! [(E, Third); (G, Fifth); (BFlat, Seventh); (D, Ninth)] 
-            (c9 |> skipFunction Seventh).Notes =! [(C, Root); (E, Third); (G, Fifth); (D, Ninth)] 
+            (c9 |> skipFunction Fifth).Notes =! [(C, Root); (E, Third); (BFlat, Seventh); (D, Ninth)]
+            (c9 |> skipFunction Root).Notes =! [(E, Third); (G, Fifth); (BFlat, Seventh); (D, Ninth)]
+            (c9 |> skipFunction Seventh).Notes =! [(C, Root); (E, Third); (G, Fifth); (D, Ninth)]
 
         [<Test>]
         let ``Should invert chord for first inversion``() =
-            (invert cMaj).Notes =! [(E, Third); (G, Fifth); (C, Root)] 
-            (invert cAug).Notes =! [(E, Third); (GSharp, Fifth); (C, Root)] 
-            (invert cMin).Notes =! [(EFlat, Third); (G, Fifth); (C, Root)] 
-            (invert cDim).Notes =! [(EFlat, Third); (GFlat, Fifth); (C, Root)] 
-            (invert cMaj7).Notes =! [(E, Third); (G, Fifth); (B, Seventh); (C, Root)] 
-            (invert cAug7).Notes =! [(E, Third); (GSharp, Fifth); (B, Seventh); (C, Root)] 
-            (invert cMin7).Notes =! [(EFlat, Third); (G, Fifth); (BFlat, Seventh); (C, Root)] 
-            (invert cDim7).Notes =! [(EFlat, Third); (GFlat, Fifth); (A, Seventh); (C, Root)] 
-            (invert cMin7b5).Notes =! [(EFlat, Third); (GFlat, Fifth); (BFlat, Seventh); (C, Root)] 
+            (invert cMaj).Notes =! [(E, Third); (G, Fifth); (C, Root)]
+            (invert cAug).Notes =! [(E, Third); (GSharp, Fifth); (C, Root)]
+            (invert cMin).Notes =! [(EFlat, Third); (G, Fifth); (C, Root)]
+            (invert cDim).Notes =! [(EFlat, Third); (GFlat, Fifth); (C, Root)]
+            (invert cMaj7).Notes =! [(E, Third); (G, Fifth); (B, Seventh); (C, Root)]
+            (invert cAug7).Notes =! [(E, Third); (GSharp, Fifth); (B, Seventh); (C, Root)]
+            (invert cMin7).Notes =! [(EFlat, Third); (G, Fifth); (BFlat, Seventh); (C, Root)]
+            (invert cDim7).Notes =! [(EFlat, Third); (GFlat, Fifth); (A, Seventh); (C, Root)]
+            (invert cMin7b5).Notes =! [(EFlat, Third); (GFlat, Fifth); (BFlat, Seventh); (C, Root)]
 
         [<Property>]
         let ``Should put third on bass for first inversion`` (root :Note) (quality: ChordQuality) =
@@ -532,15 +532,15 @@ namespace VaughanTests
 
         [<Test>]
         let ``Should invert chord for second inversion``() =
-            (cMaj |> invert |> invert).Notes =! [(G, Fifth); (C, Root); (E, Third)] 
-            (cAug |> invert |> invert).Notes =! [(GSharp, Fifth); (C, Root); (E, Third)] 
-            (cMin |> invert |> invert).Notes =! [(G, Fifth); (C, Root); (EFlat, Third)] 
-            (cDim |> invert |> invert).Notes =! [(GFlat, Fifth); (C, Root); (EFlat, Third)] 
-            (cMaj7 |> invert |> invert).Notes =! [(G, Fifth); (B, Seventh); (C, Root); (E, Third)] 
-            (cAug7 |> invert |> invert).Notes =! [(GSharp, Fifth); (B, Seventh); (C, Root); (E, Third)] 
-            (cMin7 |> invert |> invert).Notes =! [(G, Fifth); (BFlat, Seventh); (C, Root); (EFlat, Third)] 
-            (cDim7 |> invert |> invert).Notes =! [(GFlat, Fifth); (A, Seventh); (C, Root); (EFlat, Third)] 
-            (cMin7b5 |> invert |> invert).Notes =! [(GFlat, Fifth); (BFlat, Seventh); (C, Root); (EFlat, Third)] 
+            (cMaj |> invert |> invert).Notes =! [(G, Fifth); (C, Root); (E, Third)]
+            (cAug |> invert |> invert).Notes =! [(GSharp, Fifth); (C, Root); (E, Third)]
+            (cMin |> invert |> invert).Notes =! [(G, Fifth); (C, Root); (EFlat, Third)]
+            (cDim |> invert |> invert).Notes =! [(GFlat, Fifth); (C, Root); (EFlat, Third)]
+            (cMaj7 |> invert |> invert).Notes =! [(G, Fifth); (B, Seventh); (C, Root); (E, Third)]
+            (cAug7 |> invert |> invert).Notes =! [(GSharp, Fifth); (B, Seventh); (C, Root); (E, Third)]
+            (cMin7 |> invert |> invert).Notes =! [(G, Fifth); (BFlat, Seventh); (C, Root); (EFlat, Third)]
+            (cDim7 |> invert |> invert).Notes =! [(GFlat, Fifth); (A, Seventh); (C, Root); (EFlat, Third)]
+            (cMin7b5 |> invert |> invert).Notes =! [(GFlat, Fifth); (BFlat, Seventh); (C, Root); (EFlat, Third)]
 
         [<Property>]
         let ``Should put fifth on bass for second inversion`` (root :Note) (quality: ChordQuality) =
@@ -550,11 +550,11 @@ namespace VaughanTests
 
         [<Test>]
         let ``Should invert chord for third inversion``() =
-            (cMaj7 |> invert |> invert |> invert).Notes =! [(B, Seventh); (C, Root); (E, Third); (G, Fifth)] 
-            (cAug7 |> invert |> invert |> invert).Notes =! [(B, Seventh); (C, Root); (E, Third); (GSharp, Fifth)] 
-            (cMin7 |> invert |> invert |> invert).Notes =! [(BFlat, Seventh); (C, Root); (EFlat, Third); (G, Fifth)] 
-            (cDim7 |> invert |> invert |> invert).Notes =! [(A, Seventh); (C, Root); (EFlat, Third); (GFlat, Fifth)] 
-            (cMin7b5 |> invert |> invert |> invert).Notes =! [(BFlat, Seventh); (C, Root); (EFlat, Third); (GFlat, Fifth)] 
+            (cMaj7 |> invert |> invert |> invert).Notes =! [(B, Seventh); (C, Root); (E, Third); (G, Fifth)]
+            (cAug7 |> invert |> invert |> invert).Notes =! [(B, Seventh); (C, Root); (E, Third); (GSharp, Fifth)]
+            (cMin7 |> invert |> invert |> invert).Notes =! [(BFlat, Seventh); (C, Root); (EFlat, Third); (G, Fifth)]
+            (cDim7 |> invert |> invert |> invert).Notes =! [(A, Seventh); (C, Root); (EFlat, Third); (GFlat, Fifth)]
+            (cMin7b5 |> invert |> invert |> invert).Notes =! [(BFlat, Seventh); (C, Root); (EFlat, Third); (GFlat, Fifth)]
 
         [<Property>]
         let ``Should put sixth or seventh on bass for third inversion`` (root :Note) (quality: ChordQuality) =
@@ -567,8 +567,8 @@ namespace VaughanTests
 
         [<Test>]
         let ``Should loop inversions``() =
-            cMaj7 |> invert |> invert |> invert |> invert =! cMaj7 
-            cAug7 |> invert |> invert |> invert |> invert =! cAug7 
+            cMaj7 |> invert |> invert |> invert |> invert =! cMaj7
+            cAug7 |> invert |> invert |> invert |> invert =! cAug7
 
         [<Test>]
         let ``Should transform chord to drop2``() =
@@ -580,7 +580,7 @@ namespace VaughanTests
             let drop2Chord = chord |> toDrop2
             let lead = snd (drop2Chord.Notes |> List.last)
             let bass = snd (drop2Chord.Notes.Head)
-            
+
             (chord.Notes.Length = 4) ==> lazy (lead = Third && bass = Root)
 
         [<Test>]
@@ -598,10 +598,10 @@ namespace VaughanTests
 
         [<Test>]
         let ``Should invert drop2``() =
-            (cMaj7 |> toDrop2 |> invert).Notes =! [(E, Third); (B, Seventh); (C, Root); (G, Fifth);] 
-            (cMaj7 |> toDrop2 |> invert |> invert).Notes =! [(G, Fifth); (C, Root); (E, Third); (B, Seventh);] 
-            (cMaj7 |> toDrop2 |> invert |> invert |> invert ).Notes =! [(B, Seventh); (E, Third); (G, Fifth); (C, Root); ] 
-            (cMaj7 |> toDrop2 |> invert |> invert |> invert |> invert).Notes =! [(C, Root); (G, Fifth); (B, Seventh); (E, Third);] 
+            (cMaj7 |> toDrop2 |> invert).Notes =! [(E, Third); (B, Seventh); (C, Root); (G, Fifth);]
+            (cMaj7 |> toDrop2 |> invert |> invert).Notes =! [(G, Fifth); (C, Root); (E, Third); (B, Seventh);]
+            (cMaj7 |> toDrop2 |> invert |> invert |> invert ).Notes =! [(B, Seventh); (E, Third); (G, Fifth); (C, Root); ]
+            (cMaj7 |> toDrop2 |> invert |> invert |> invert |> invert).Notes =! [(C, Root); (G, Fifth); (B, Seventh); (E, Third);]
 
         [<Property>]
         let ``First inversion drop 2 chords have fifth on lead and third on bass`` (root :Note) (quality: ChordQuality) =
@@ -609,7 +609,7 @@ namespace VaughanTests
             let drop2Chord = chord |> toDrop2 |> invert
             let lead = snd (drop2Chord.Notes |> List.last)
             let bass = snd (drop2Chord.Notes.Head)
-            
+
             (chord.Notes.Length = 4) ==> lazy (bass = Third && lead = Fifth)
 
         [<Property>]
@@ -618,7 +618,7 @@ namespace VaughanTests
             let drop2Chord = chord |> toDrop2 |> invert |> invert
             let lead = snd (drop2Chord.Notes |> List.last)
             let bass = snd (drop2Chord.Notes.Head)
-            
+
             (chord.Notes.Length = 4) ==> lazy (bass = Fifth && (lead = Seventh || lead = Sixth))
 
         [<Property>]
@@ -627,7 +627,7 @@ namespace VaughanTests
             let drop2Chord = chord |> toDrop2 |> invert |> invert |> invert
             let lead = snd (drop2Chord.Notes |> List.last)
             let bass = snd (drop2Chord.Notes.Head)
-            
+
             (chord.Notes.Length = 4) ==> lazy ((bass = Seventh || bass = Sixth) && lead = Root)
 
         [<Property>]
@@ -636,15 +636,15 @@ namespace VaughanTests
             let drop2Chord = chord |> toDrop2 |> invert |> invert |> invert |> invert
             let lead = snd (drop2Chord.Notes |> List.last)
             let bass = snd (drop2Chord.Notes.Head)
-            
+
             (chord.Notes.Length = 4) ==> lazy (bass = Root && lead = Third)
 
         [<Test>]
         let ``Should invert drop3``() =
-            (cMaj7 |> toDrop3 |> invert).Notes =! [(E, Third); (C, Root); (G, Fifth); (B, Seventh)] 
-            (cMaj7 |> toDrop3 |> invert |> invert).Notes =! [(G, Fifth); (E, Third); (B, Seventh); (C, Root);] 
-            (cMaj7 |> toDrop3 |> invert |> invert |> invert).Notes =! [(B, Seventh); (G, Fifth); (C, Root); (E, Third);] 
-            (cMaj7 |> toDrop3 |> invert |> invert |> invert |> invert).Notes =! [(C, Root); (B, Seventh); (E, Third); (G, Fifth)] 
+            (cMaj7 |> toDrop3 |> invert).Notes =! [(E, Third); (C, Root); (G, Fifth); (B, Seventh)]
+            (cMaj7 |> toDrop3 |> invert |> invert).Notes =! [(G, Fifth); (E, Third); (B, Seventh); (C, Root);]
+            (cMaj7 |> toDrop3 |> invert |> invert |> invert).Notes =! [(B, Seventh); (G, Fifth); (C, Root); (E, Third);]
+            (cMaj7 |> toDrop3 |> invert |> invert |> invert |> invert).Notes =! [(C, Root); (B, Seventh); (E, Third); (G, Fifth)]
 
         [<Property>]
         let ``First inversion drop 3 chords have third on lead and seventh or sixth on bass`` (root :Note) (quality: ChordQuality) =
@@ -652,7 +652,7 @@ namespace VaughanTests
             let drop3Chord = chord |> toDrop3 |> invert
             let lead = snd (drop3Chord.Notes |> List.last)
             let bass = snd (drop3Chord.Notes.Head)
-            
+
             (chord.Notes.Length = 4) ==> lazy (bass = Third && (lead = Seventh || lead = Sixth))
 
         [<Property>]
@@ -661,7 +661,7 @@ namespace VaughanTests
             let drop3Chord = chord |> toDrop3 |> invert |> invert
             let lead = snd (drop3Chord.Notes |> List.last)
             let bass = snd (drop3Chord.Notes.Head)
-            
+
             (chord.Notes.Length = 4) ==> lazy (bass = Fifth && lead = Root)
 
         [<Property>]
@@ -670,7 +670,7 @@ namespace VaughanTests
             let drop3Chord = chord |> toDrop3 |> invert |> invert |> invert
             let lead = snd (drop3Chord.Notes |> List.last)
             let bass = snd (drop3Chord.Notes.Head)
-            
+
             (chord.Notes.Length = 4) ==> lazy ((bass = Seventh || bass = Sixth) && lead = Third)
 
         [<Property>]
@@ -679,7 +679,7 @@ namespace VaughanTests
             let drop3Chord = chord |> toDrop3 |> invert |> invert |> invert |> invert
             let lead = snd (drop3Chord.Notes |> List.last)
             let bass = snd (drop3Chord.Notes.Head)
-            
+
             (chord.Notes.Length = 4) ==> lazy (bass = Root && lead = Fifth)
 
         [<Test>]
@@ -690,21 +690,21 @@ namespace VaughanTests
         let ``Should choose invertion that satisfies having a root as lead`` (root :Note) (quality: ChordQuality) =
             let chord = chord root quality
             let invertedChord = inversionForFunctionAsLead chord Root
-            
+
             invertedChord.Notes |> List.last |> snd = Root
 
         [<Property>]
         let ``Should choose invertion that satisfies having a third as lead`` (root :Note) (quality: ChordQuality) =
             let chord = chord root quality
             let invertedChord = inversionForFunctionAsLead chord Third
-            
+
             invertedChord.Notes |> List.last |> snd = Third
 
         [<Property>]
         let ``Should choose invertion that satisfies having a fifth as lead`` (root :Note) (quality: ChordQuality) =
             let chord = chord root quality
             let invertedChord = inversionForFunctionAsLead chord Fifth
-            
+
             invertedChord.Notes |> List.last |> snd = Fifth
 
         [<Test>]
@@ -715,30 +715,30 @@ namespace VaughanTests
         let ``Should choose invertion that satisfies having a root as bass`` (root :Note) (quality: ChordQuality) =
             let chord = chord root quality |> invert
             let invertedChord = inversionForFunctionAsBass chord Root
-            
+
             invertedChord.Notes |> List.head |> snd = Root
 
         [<Property>]
         let ``Should choose invertion that satisfies having a third as bass`` (root :Note) (quality: ChordQuality) =
             let chord = chord root quality
             let invertedChord = inversionForFunctionAsBass chord Third
-            
+
             invertedChord.Notes |> List.head |> snd = Third
 
         [<Property>]
         let ``Should choose invertion that satisfies having a fifth as bass`` (root :Note) (quality: ChordQuality) =
             let chord = chord root quality
             let invertedChord = inversionForFunctionAsBass chord Fifth
-            
+
             invertedChord.Notes |> List.head |> snd = Fifth
 
         [<Property>]
         let ``It should choose invertion that satisfies having a lead that is closest to a provided note`` (root :Note) (quality: ChordQuality) (providedNote: Note) =
             let chord = chord root quality
             let invertedChord = invertionWithLeadClosestToNote chord providedNote
-            
-            let distancesToProvidedNote = 
-                invertedChord.Notes 
+
+            let distancesToProvidedNote =
+                invertedChord.Notes
                 |> List.map (fun n -> measureAbsoluteSemitones (fst n) providedNote)
 
             (distancesToProvidedNote |> List.min) = (distancesToProvidedNote |> List.last)
@@ -747,9 +747,9 @@ namespace VaughanTests
         let ``It should choose invertion that satisfies having a bass that is closest to a provided note`` (root :Note) (quality: ChordQuality) (providedNote: Note) =
             let chord = chord root quality
             let invertedChord = invertionWithBassClosestToNote chord providedNote
-            
-            let distancesToProvidedNote = 
-                invertedChord.Notes 
+
+            let distancesToProvidedNote =
+                invertedChord.Notes
                 |> List.map (fun n -> measureAbsoluteSemitones (fst n) providedNote)
 
             (distancesToProvidedNote |> List.min) = (distancesToProvidedNote |> List.head)
@@ -763,7 +763,7 @@ namespace VaughanTests
         open Vaughan.ScaleHarmonizer
         open Vaughan.Scales
         open Vaughan.Notes
-        
+
         let chord = {Notes= []; ChordType=Closed; Name=""}
         let cMaj = {chord with Notes= [(C, Root); (E, Third); (G, Fifth)]}
         let dMin = {chord with Notes= [(D, Root); (F, Third); (A, Fifth)]}
@@ -819,10 +819,10 @@ namespace VaughanTests
             (triadsHarmonizer ScaleDgrees.V cMinor).Notes =! gMaj.Notes
             (triadsHarmonizer ScaleDgrees.VI cMinor).Notes =! aFlatMaj.Notes
             (triadsHarmonizer ScaleDgrees.VII cMinor).Notes =! bDim.Notes
-        
+
         [<Property>]
         let ``Should create triads for scale`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note)=
-            (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic) 
+            (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic)
                 ==> lazy (
                     let scale = createScale scaleType root
 
@@ -842,7 +842,7 @@ namespace VaughanTests
             (seventhsHarmonizer ScaleDgrees.V cIonian).Notes =! gDom7.Notes
             (seventhsHarmonizer ScaleDgrees.VI cIonian).Notes =! aMin7.Notes
             (seventhsHarmonizer ScaleDgrees.VII cIonian).Notes =! bMin7b5.Notes
-            
+
         [<Test>]
         let ``Should create seventh chords for Harmonic Minor scale`` () =
             let cMinor = createScale HarmonicMinor C
@@ -856,11 +856,11 @@ namespace VaughanTests
 
         [<Property>]
         let ``Should create seventh chords for scale`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) =
-            (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic 
-                && scaleType <> WholeTone) 
+            (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
+                && scaleType <> WholeTone)
                 ==> lazy (
                     let scale = createScale scaleType root
-                    
+
                     (seventhsHarmonizer scaleDegree scale).Notes
                     |> List.pairwise
                     |> List.map (fun e -> intervalBetween (fst (fst e)) (fst (snd e)))
@@ -892,126 +892,6 @@ namespace VaughanTests
         let cIonian = createScale Ionian C
         let cMaj = triadsHarmonizer ScaleDgrees.I cIonian
 
-        [<Test>]
-        let ``Should map note to fret on sixth string``() =
-            fretForNote E SixthString =! 0
-            fretForNote F SixthString =! 1
-            fretForNote GFlat SixthString =! 2
-            fretForNote FSharp SixthString =! 2
-            fretForNote G SixthString =! 3
-            fretForNote AFlat SixthString =! 4
-            fretForNote GSharp SixthString =! 4
-            fretForNote A SixthString =! 5
-            fretForNote BFlat SixthString =! 6
-            fretForNote ASharp SixthString =! 6
-            fretForNote B SixthString =! 7
-            fretForNote C SixthString =! 8
-            fretForNote DFlat SixthString =! 9
-            fretForNote CSharp SixthString =! 9
-            fretForNote D SixthString =! 10
-            fretForNote EFlat SixthString =! 11
-            fretForNote DSharp SixthString =! 11
-
-        [<Test>]
-        let ``Should map note to fret on fifth string``() =
-            fretForNote A FifthString =! 0
-            fretForNote BFlat FifthString =! 1
-            fretForNote ASharp FifthString =! 1
-            fretForNote B FifthString =! 2
-            fretForNote C FifthString =! 3
-            fretForNote DFlat FifthString =! 4
-            fretForNote CSharp FifthString =! 4
-            fretForNote D FifthString =! 5
-            fretForNote EFlat FifthString =! 6
-            fretForNote DSharp FifthString =! 6
-            fretForNote E FifthString =! 7
-            fretForNote F FifthString =! 8
-            fretForNote GFlat FifthString =! 9
-            fretForNote FSharp FifthString =! 9
-            fretForNote G FifthString =! 10
-            fretForNote AFlat FifthString =! 11
-            fretForNote GSharp FifthString =! 11
-
-        [<Test>]
-        let ``Should map note to fret on fourth string``() =
-            fretForNote D FourthString =! 0
-            fretForNote EFlat FourthString =! 1
-            fretForNote DSharp FourthString =! 1
-            fretForNote E FourthString =! 2
-            fretForNote F FourthString =! 3
-            fretForNote GFlat FourthString =! 4
-            fretForNote FSharp FourthString =! 4
-            fretForNote G FourthString =! 5
-            fretForNote AFlat FourthString =! 6
-            fretForNote GSharp FourthString =! 6
-            fretForNote A FourthString =! 7
-            fretForNote BFlat FourthString =! 8
-            fretForNote ASharp FourthString =! 8
-            fretForNote B FourthString =! 9
-            fretForNote C FourthString =! 10
-            fretForNote DFlat FourthString =! 11
-            fretForNote CSharp FourthString =! 11
-
-        [<Test>]
-        let ``Should map note to fret on third string``() =
-            fretForNote G ThirdString =! 0
-            fretForNote AFlat ThirdString =! 1
-            fretForNote GSharp ThirdString =! 1
-            fretForNote A ThirdString =! 2
-            fretForNote BFlat ThirdString =! 3
-            fretForNote ASharp ThirdString =! 3
-            fretForNote B ThirdString =! 4
-            fretForNote C ThirdString =! 5
-            fretForNote DFlat ThirdString =! 6
-            fretForNote CSharp ThirdString =! 6
-            fretForNote D ThirdString =! 7
-            fretForNote EFlat ThirdString =! 8
-            fretForNote DSharp ThirdString =! 8
-            fretForNote E ThirdString =! 9
-            fretForNote F ThirdString =! 10
-            fretForNote GFlat ThirdString =! 11
-            fretForNote FSharp ThirdString =! 11
-
-        [<Test>]
-        let ``Should map note to fret on second string``() =
-            fretForNote B SecondString =! 0
-            fretForNote C SecondString =! 1
-            fretForNote DFlat SecondString =! 2
-            fretForNote CSharp SecondString =! 2
-            fretForNote D SecondString =! 3
-            fretForNote EFlat SecondString =! 4
-            fretForNote DSharp SecondString =! 4
-            fretForNote E SecondString =! 5
-            fretForNote F SecondString =! 6
-            fretForNote GFlat SecondString =! 7
-            fretForNote FSharp SecondString =! 7
-            fretForNote G SecondString =! 8
-            fretForNote AFlat SecondString =! 9
-            fretForNote GSharp SecondString =! 9
-            fretForNote A SecondString =! 10
-            fretForNote BFlat SecondString =! 11
-            fretForNote ASharp SecondString =! 11
-        
-        [<Test>]
-        let ``Should map note to fret on first string``() =
-            fretForNote E FirstString =! 0
-            fretForNote F FirstString =! 1
-            fretForNote GFlat FirstString =! 2
-            fretForNote FSharp FirstString =! 2
-            fretForNote G FirstString =! 3
-            fretForNote AFlat FirstString =! 4
-            fretForNote GSharp FirstString =! 4
-            fretForNote A FirstString =! 5
-            fretForNote BFlat FirstString =! 6
-            fretForNote ASharp FirstString =! 6
-            fretForNote B FirstString =! 7
-            fretForNote C FirstString =! 8
-            fretForNote DFlat FirstString =! 9
-            fretForNote CSharp FirstString =! 9
-            fretForNote D FirstString =! 10
-            fretForNote EFlat FirstString =! 11
-            fretForNote DSharp FirstString =! 11
-
         [<Property>]
         let ``Should map diatonic closed triads to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) () =
             ((bassString = SixthString || bassString = FifthString || bassString = FourthString || bassString = ThirdString)
@@ -1039,7 +919,7 @@ namespace VaughanTests
                         {GuitarString=FourthString; Fret=2; Note=E};
                         {GuitarString=ThirdString; Fret=0; Note=G};
                     ]
-        
+
         [<Test>]
         let ``Should map c major to guitar fretboard on fourth string``() =
             (chordToGuitarChord FourthString cMaj).Frets =! [
@@ -1047,7 +927,7 @@ namespace VaughanTests
                         {GuitarString=ThirdString; Fret=9; Note=E};
                         {GuitarString=SecondString; Fret=8; Note=G};
                     ]
-        
+
         [<Test>]
         let ``Should map c major to guitar fretboard on third string``() =
             (chordToGuitarChord ThirdString cMaj).Frets =! [
@@ -1066,17 +946,17 @@ namespace VaughanTests
 
         [<Test>]
         let ``Should map F major to guitar fretboard on sixth string closed``() =
-            let fMaj = triadsHarmonizer ScaleDgrees.IV cIonian 
+            let fMaj = triadsHarmonizer ScaleDgrees.IV cIonian
             (chordToGuitarClosedChord SixthString fMaj).Frets =! [
                         {GuitarString=SixthString; Fret=13; Note=F};
                         {GuitarString=FifthString; Fret=12; Note=A};
                         {GuitarString=FourthString; Fret=10; Note=C};
                     ]
-        
+
         [<Property>]
         let ``Should map diatonic closed sevent chords to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) () =
             ((bassString = SixthString || bassString = FifthString || bassString = FourthString)
-            && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic 
+            && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
                 && scaleType <> WholeTone && scaleType <> HalfWholeDiminished))
                 ==> lazy (
                             let scale = createScale scaleType root
@@ -1084,7 +964,7 @@ namespace VaughanTests
                             let guitarChord = chordToGuitarClosedChord bassString chord
                             let maxFret = guitarChord.Frets |> List.map (fun f -> f.Fret) |> List.max
                             let minFret = guitarChord.Frets |> List.map (fun f -> f.Fret) |> List.min
-                            maxFret - minFret < 6)
+                            maxFret - minFret < 7)
 
         [<Test>]
         let ``Should map D major 7 to guitar fretboard on fourth string closed``() =
@@ -1118,7 +998,7 @@ namespace VaughanTests
                         {GuitarString=SecondString; Fret=12; Note=B};
                         {GuitarString=FirstString; Fret=11; Note=DSharp};
                     ]
-        
+
         [<Test>]
         let ``Should map F major 7 to guitar fretboard on fourth string closed``() =
             let scale = createScale Ionian F
@@ -1133,7 +1013,7 @@ namespace VaughanTests
         [<Property>]
         let ``Should map diatonic closed sevent drop 2 chords to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) () =
             ((bassString = SixthString || bassString = FifthString || bassString = FourthString)
-            && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic 
+            && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
                 && scaleType <> WholeTone && scaleType <> HalfWholeDiminished))
                 ==> lazy (
                             let scale = createScale scaleType root
@@ -1163,11 +1043,11 @@ namespace VaughanTests
                         {GuitarString=ThirdString; Fret=13; Note=GSharp};
                         {GuitarString=SecondString; Fret=14; Note=CSharp};
                     ]
-    
+
         [<Property>]
         let ``Should map diatonic closed sevent drop 3 chords to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) () =
             ((bassString = SixthString || bassString = FifthString)
-            && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic 
+            && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
                 && scaleType <> WholeTone && scaleType <> HalfWholeDiminished))
                 ==> lazy (
                             let scale = createScale scaleType root
@@ -1198,7 +1078,7 @@ namespace VaughanTests
                         {GuitarString=ThirdString; Fret=4; Note=B};
                         {GuitarString=SecondString; Fret=3; Note=D};
                     ]
-        
+
         [<Test>]
         let ``Should map C9 ignoring 5th to guitar fretboard on fifth string closed``() =
             let chord = chord C Dominant9
@@ -1226,103 +1106,103 @@ namespace VaughanTests
 
         [<Test>]
         let ``Should draw C major 7 drop 2 to guitar fretboard on fifth string closed ``() =
-            let guitarChord = 
+            let guitarChord =
                 (cIonian
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> toDrop2
                 |> chordToGuitarClosedChord FifthString)
             guitarChord |> tabify =! "      CMaj7   " + Environment.NewLine +
-                                            "E|-------------|" + Environment.NewLine +
-                                            "B|----5--------|" + Environment.NewLine +
-                                            "G|----4--------|" + Environment.NewLine +
-                                            "D|----5--------|" + Environment.NewLine +
-                                            "A|----3--------|" + Environment.NewLine +
-                                            "E|-------------|" + Environment.NewLine
+                                            "E||-------------||" + Environment.NewLine +
+                                            "B||----5--------||" + Environment.NewLine +
+                                            "G||----4--------||" + Environment.NewLine +
+                                            "D||----5--------||" + Environment.NewLine +
+                                            "A||----3--------||" + Environment.NewLine +
+                                            "E||-------------||" + Environment.NewLine
 
         [<Test>]
         let ``Should draw A major 7 to guitar fretboard on fifth string closed ``() =
-            let guitarChord = 
+            let guitarChord =
                 (createScale Ionian A
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> toDrop2
                 |> chordToGuitarClosedChord FifthString)
             guitarChord |> tabify =! "      AMaj7   " + Environment.NewLine +
-                                            "E|-------------|" + Environment.NewLine +
-                                            "B|----14-------|" + Environment.NewLine +
-                                            "G|----13-------|" + Environment.NewLine +
-                                            "D|----14-------|" + Environment.NewLine +
-                                            "A|----12-------|" + Environment.NewLine +
-                                            "E|-------------|" + Environment.NewLine
+                                            "E||-------------||" + Environment.NewLine +
+                                            "B||----14-------||" + Environment.NewLine +
+                                            "G||----13-------||" + Environment.NewLine +
+                                            "D||----14-------||" + Environment.NewLine +
+                                            "A||----12-------||" + Environment.NewLine +
+                                            "E||-------------||" + Environment.NewLine
 
         [<Test>]
         let ``Should draw F major 7 to guitar fretboard on fourth string closed``() =
-            let guitarChord = 
+            let guitarChord =
                 (createScale Ionian F
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> chordToGuitarClosedChord FourthString)
             guitarChord |> tabify =! "      FMaj7   " + Environment.NewLine +
-                                            "E|----12-------|" + Environment.NewLine +
-                                            "B|----13-------|" + Environment.NewLine +
-                                            "G|----14-------|" + Environment.NewLine +
-                                            "D|----15-------|" + Environment.NewLine +
-                                            "A|-------------|" + Environment.NewLine +
-                                            "E|-------------|" + Environment.NewLine
+                                            "E||----12-------||" + Environment.NewLine +
+                                            "B||----13-------||" + Environment.NewLine +
+                                            "G||----14-------||" + Environment.NewLine +
+                                            "D||----15-------||" + Environment.NewLine +
+                                            "A||-------------||" + Environment.NewLine +
+                                            "E||-------------||" + Environment.NewLine
 
         [<Test>]
         let ``Should draw c major to guitar fretboard on sixth string``() =
             let guitarChord = chordToGuitarClosedChord SixthString cMaj
             guitarChord |> tabify =! "      CMaj   " + Environment.NewLine +
-                                            "E|------------|" + Environment.NewLine +
-                                            "B|------------|" + Environment.NewLine +
-                                            "G|------------|" + Environment.NewLine +
-                                            "D|----5-------|" + Environment.NewLine +
-                                            "A|----7-------|" + Environment.NewLine +
-                                            "E|----8-------|" + Environment.NewLine
+                                            "E||------------||" + Environment.NewLine +
+                                            "B||------------||" + Environment.NewLine +
+                                            "G||------------||" + Environment.NewLine +
+                                            "D||----5-------||" + Environment.NewLine +
+                                            "A||----7-------||" + Environment.NewLine +
+                                            "E||----8-------||" + Environment.NewLine
 
         [<Test>]
         let ``Should draw C major 7 drop 3 to guitar fretboard on sixth string closed``() =
-            let guitarChord = 
+            let guitarChord =
                 (cIonian
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> toDrop3
                 |> chordToGuitarClosedChord SixthString)
             guitarChord |> tabify =! "      CMaj7   " + Environment.NewLine +
-                                            "E|-------------|" + Environment.NewLine +
-                                            "B|----8--------|" + Environment.NewLine +
-                                            "G|----9--------|" + Environment.NewLine +
-                                            "D|----9--------|" + Environment.NewLine +
-                                            "A|-------------|" + Environment.NewLine +
-                                            "E|----8--------|" + Environment.NewLine
+                                            "E||-------------||" + Environment.NewLine +
+                                            "B||----8--------||" + Environment.NewLine +
+                                            "G||----9--------||" + Environment.NewLine +
+                                            "D||----9--------||" + Environment.NewLine +
+                                            "A||-------------||" + Environment.NewLine +
+                                            "E||----8--------||" + Environment.NewLine
 
-        [<Test>]        
+        [<Test>]
         let ``Should draw C major 7 drop 3 to guitar fretboard on fifth string closed``() =
-            let guitarChord = 
+            let guitarChord =
                 (cIonian
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> toDrop3
                 |> chordToGuitarClosedChord FifthString)
             guitarChord |> tabify =! "      CMaj7   " + Environment.NewLine +
-                                            "E|----3--------|" + Environment.NewLine +
-                                            "B|----5--------|" + Environment.NewLine +
-                                            "G|----4--------|" + Environment.NewLine +
-                                            "D|-------------|" + Environment.NewLine +
-                                            "A|----3--------|" + Environment.NewLine +
-                                            "E|-------------|" + Environment.NewLine
-                                                        
+                                            "E||----3--------||" + Environment.NewLine +
+                                            "B||----5--------||" + Environment.NewLine +
+                                            "G||----4--------||" + Environment.NewLine +
+                                            "D||-------------||" + Environment.NewLine +
+                                            "A||----3--------||" + Environment.NewLine +
+                                            "E||-------------||" + Environment.NewLine
+
         [<Test>]
         let ``Should map C9 ignoring 5th to guitar fretboard on fifth string closed``() =
-            let guitarChord = chord C Dominant9 
+            let guitarChord = chord C Dominant9
                               |> skipFunction Fifth
                               |> chordToGuitarClosedChord FifthString
 
             guitarChord |> tabify =! "      C9   " + Environment.NewLine +
-                                            "E|----------|" + Environment.NewLine +
-                                            "B|----3-----|" + Environment.NewLine +
-                                            "G|----3-----|" + Environment.NewLine +
-                                            "D|----2-----|" + Environment.NewLine +
-                                            "A|----3-----|" + Environment.NewLine +
-                                            "E|----------|" + Environment.NewLine
-            
+                                            "E||----------||" + Environment.NewLine +
+                                            "B||----3-----||" + Environment.NewLine +
+                                            "G||----3-----||" + Environment.NewLine +
+                                            "D||----2-----||" + Environment.NewLine +
+                                            "A||----3-----||" + Environment.NewLine +
+                                            "E||----------||" + Environment.NewLine
+
         [<Test>]
         let ``Should tabify multiple chords``() =
             let cIonian = createScale Ionian C
@@ -1331,23 +1211,23 @@ namespace VaughanTests
             let eMin7 = seventhsHarmonizer ScaleDgrees.III cIonian
             let fMaj7 = seventhsHarmonizer ScaleDgrees.IV cIonian
 
-            let guitarChords =  
-                [cMaj7; dMin7; eMin7; fMaj7] 
+            let guitarChords =
+                [cMaj7; dMin7; eMin7; fMaj7]
                 |> List.map (
                     toDrop2 >> (chordToGuitarClosedChord FifthString))
-            
-            tabifyAll guitarChords =! 
+
+            tabifyAll guitarChords =!
                                 "      CMaj7   DMin7   EMin7   FMaj7   " + Environment.NewLine +
-                                "E|-------------------------------------|" + Environment.NewLine +
-                                "B|----5-------6-------8-------10-------|" + Environment.NewLine +
-                                "G|----4-------5-------7-------9--------|" + Environment.NewLine +
-                                "D|----5-------7-------9-------10-------|" + Environment.NewLine +
-                                "A|----3-------5-------7-------8--------|" + Environment.NewLine +
-                                "E|-------------------------------------|" + Environment.NewLine 
+                                "E||-------------------------------------||" + Environment.NewLine +
+                                "B||----5-------6-------8-------10-------||" + Environment.NewLine +
+                                "G||----4-------5-------7-------9--------||" + Environment.NewLine +
+                                "D||----5-------7-------9-------10-------||" + Environment.NewLine +
+                                "A||----3-------5-------7-------8--------||" + Environment.NewLine +
+                                "E||-------------------------------------||" + Environment.NewLine
 
         [<Test>]
         let ``Should draw shape of C major 7 drop 3 on sixth string``() =
-            let guitarChord = 
+            let guitarChord =
                 (cIonian
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> toDrop3
@@ -1359,7 +1239,7 @@ namespace VaughanTests
 
         [<Test>]
         let ``Should draw shape of C major 7 drop 2 on fifth string``() =
-            let guitarChord = 
+            let guitarChord =
                 (cIonian
                 |> seventhsHarmonizer ScaleDgrees.I
                 |> toDrop2
@@ -1404,7 +1284,7 @@ namespace VaughanTests
                 (parseChord "Caug7") =! { Root=C; Quality=Augmented7 }
                 (parseChord "Cdom7") =! { Root=C; Quality=Dominant7 }
                 (parseChord "C#7") =! { Root=CSharp; Quality=Dominant7 }
-                             
+
             [<Test>]
             let ``Should create chord from chord intent``() =
                 let cIonian = createScale Ionian C
@@ -1423,7 +1303,7 @@ namespace VaughanTests
                 createChord { Root=G; Quality=Major } =! gMaj
                 createChord { Root=A; Quality=Minor } =! aMin
                 createChord { Root=B; Quality=Diminished } =! bDim
-                
+
             [<Test>]
             let ``Should tabify chord from text``() =
                 "A Major"
@@ -1431,22 +1311,22 @@ namespace VaughanTests
                         |> createChord
                         |> chordToGuitarClosedChord SixthString
                         |> tabify =! "      AMaj   " + Environment.NewLine+
-                                    "E|------------|" + Environment.NewLine +
-                                    "B|------------|" + Environment.NewLine +
-                                    "G|------------|" + Environment.NewLine + 
-                                    "D|----2-------|" + Environment.NewLine + 
-                                    "A|----4-------|" + Environment.NewLine + 
-                                    "E|----5-------|" + Environment.NewLine
+                                    "E||------------||" + Environment.NewLine +
+                                    "B||------------||" + Environment.NewLine +
+                                    "G||------------||" + Environment.NewLine +
+                                    "D||----2-------||" + Environment.NewLine +
+                                    "A||----4-------||" + Environment.NewLine +
+                                    "E||----5-------||" + Environment.NewLine
             [<Test>]
-            let ``Should tabify open chord from text``() =                 
+            let ``Should tabify open chord from text``() =
                 "C Major"
                         |> parseChord
                         |> createChord
                         |> chordToGuitarChord FifthString
                         |> tabify =! "      CMaj   " + Environment.NewLine+
-                                    "E|------------|" + Environment.NewLine +
-                                    "B|------------|" + Environment.NewLine +
-                                    "G|----0-------|" + Environment.NewLine + 
-                                    "D|----2-------|" + Environment.NewLine + 
-                                    "A|----3-------|" + Environment.NewLine + 
-                                    "E|------------|" + Environment.NewLine
+                                    "E||------------||" + Environment.NewLine +
+                                    "B||------------||" + Environment.NewLine +
+                                    "G||----0-------||" + Environment.NewLine +
+                                    "D||----2-------||" + Environment.NewLine +
+                                    "A||----3-------||" + Environment.NewLine +
+                                    "E||------------||" + Environment.NewLine
