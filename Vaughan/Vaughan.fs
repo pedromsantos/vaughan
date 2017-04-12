@@ -583,11 +583,7 @@ namespace Vaughan
             |> Seq.toList
 
         let private harmonizer forDegree scale =
-            let thirdsList =
-                scale
-                |> thirds forDegree
-                |> List.take 7
-
+            let thirdsList = scale |> thirds forDegree |> List.take 7
             {
                 Notes = [(thirdsList.[0], Root);
                          (thirdsList.[1], Third);
@@ -598,7 +594,7 @@ namespace Vaughan
                          (thirdsList.[6], Thirteenth)];
                 ChordType = Closed;
                 Name =  ""
-             }
+            }
 
         let private harmonizeScaleDegreeWithNotes forDegree scale notes =
             let complete = harmonizer forDegree scale
