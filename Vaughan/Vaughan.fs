@@ -767,14 +767,25 @@ namespace Vaughan
         open Guitar
 
         module private Tabify =
+
+            let private standardTunning =
+                [
+                    "E";
+                    "B";
+                    "G";
+                    "D";
+                    "A";
+                    "E"
+                ]
+
             let private startTab =
                 [
-                    "E||-";
-                    "B||-";
-                    "G||-";
-                    "D||-";
-                    "A||-";
-                    "E||-"
+                    "||-";
+                    "||-";
+                    "||-";
+                    "||-";
+                    "||-";
+                    "||-"
                 ]
 
             let private barTab =
@@ -831,7 +842,7 @@ namespace Vaughan
             let tabifyStrings guitarStrings =
                 guitarStrings
                 |> List.map (fun tabifiedFrets -> tabifiedFrets |> List.fold (fun acc fret -> acc + fret + "---" ) "---")
-                |> List.mapi (fun index tabifiedFrets -> startTab.[index] + tabifiedFrets + endTab.[index])
+                |> List.mapi (fun index tabifiedFrets -> standardTunning.[index] + startTab.[index] + tabifiedFrets + endTab.[index])
 
             let tabifyChordNames guitarChords =
                 let chordNameSeparator = "   "
