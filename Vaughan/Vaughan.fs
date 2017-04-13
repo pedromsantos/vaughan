@@ -808,25 +808,28 @@ namespace Vaughan
                             "-||" + Environment.NewLine;
                         ]
 
-            let private numberOfMutedStringDashes guitarChord =
-                String.replicate (guitarChord |> chordName).Length "-"
+            let private chordNameLength guitarChord =
+                (guitarChord |> chordName).Length
 
-            let private numberOfFretedStringDashes guitarChord fret =
-                String.replicate ((guitarChord |> chordName).Length - (string(fret)).Length) "-"
+            let private mutedStringDashes guitarChord =
+                String.replicate (chordNameLength guitarChord) "-"
+
+            let private fretedStringDashes guitarChord fret =
+                String.replicate ((chordNameLength guitarChord) - (string(fret)).Length) "-"
 
             let private tabifyMutedHigherStrings guitarChord =
                 let mutedStrings = numberOfMutedHighStrings guitarChord
-                List.replicate mutedStrings (numberOfMutedStringDashes guitarChord)
+                List.replicate mutedStrings (mutedStringDashes guitarChord)
 
             let private tabifyMutedLowerStrings guitarChord =
                 let mutedStrings = numberOfMutedLowStrings guitarChord
-                List.replicate mutedStrings (numberOfMutedStringDashes guitarChord)
+                List.replicate mutedStrings (mutedStringDashes guitarChord)
 
             let private tabifyFret fret guitarChord =
                 if fret.Fret = -1 then
-                    sprintf "%s" (numberOfMutedStringDashes guitarChord)
+                    sprintf "%s" (mutedStringDashes guitarChord)
                 else
-                    sprintf "%i%s" fret.Fret (numberOfFretedStringDashes guitarChord fret.Fret)
+                    sprintf "%i%s" fret.Fret (fretedStringDashes guitarChord fret.Fret)
 
             let private tabifyFrets guitarChord =
                 guitarChord.Frets |> List.map (fun fret -> tabifyFret fret guitarChord) |> List.rev
