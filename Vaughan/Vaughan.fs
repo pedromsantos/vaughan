@@ -879,14 +879,9 @@ namespace Vaughan
         open Shapify
 
         let shapify guitarChord =
-            guitarChord.Chord.Name +
-            Environment.NewLine +
-            "EADGBE" +
-            Environment.NewLine +
-            (guitarChord
-                |> shapifyChord
-                |> List.fold (+) "") +
-            Environment.NewLine
+            guitarChord.Chord.Name + Environment.NewLine +
+            "EADGBE" + Environment.NewLine +
+            (guitarChord |> shapifyChord |> List.fold (+) "") + Environment.NewLine
 
     module SpeechToMusic =
         open FParsec
