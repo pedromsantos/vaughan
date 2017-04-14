@@ -854,20 +854,6 @@ namespace Vaughan
                     guitarChords |> List.map (fun guitarChord -> chordNameSeparator + guitarChord.Chord.Name)
                 [chordNameSeparator] @ separatedChordNames @ [chordNameSeparator; Environment.NewLine;]
 
-        open Tabify
-
-        let tabifyAll guitarChords =
-            let tabifiedChordNames = guitarChords |> tabifyChordNames
-            let tabifiedChords =
-                        guitarChords
-                        |> List.map tabifyChord
-                        |> groupByString
-                        |> tabifyStrings
-            (tabifiedChordNames @ tabifiedChords) |> List.fold (+) ""
-
-        let tabify guitarChord =
-            tabifyAll [guitarChord]
-
         module private Shapify =
             let private shapifyMutedLowerStrings guitarChord =
                 let mutedStrings = numberOfMutedLowStrings guitarChord
@@ -892,6 +878,19 @@ namespace Vaughan
                 @ (shapifyMutedHigherStrings guitarChord)
 
         open Shapify
+        open Tabify
+
+        let tabifyAll guitarChords =
+            let tabifiedChordNames = guitarChords |> tabifyChordNames
+            let tabifiedChords =
+                        guitarChords
+                        |> List.map tabifyChord
+                        |> groupByString
+                        |> tabifyStrings
+            (tabifiedChordNames @ tabifiedChords) |> List.fold (+) ""
+
+        let tabify guitarChord =
+            tabifyAll [guitarChord]
 
         let shapify guitarChord =
             guitarChord.Chord.Name + Environment.NewLine +
