@@ -1310,26 +1310,26 @@ namespace VaughanTests
             [<Test>]
             let ``Should tabify chord from text``() =
                 "A Major"
-                        |> parseChord
-                        |> createChord
-                        |> chordToGuitarClosedChord SixthString
-                        |> tabify =! "      AMaj   " + Environment.NewLine+
-                                    "E||------------||" + Environment.NewLine +
-                                    "B||------------||" + Environment.NewLine +
-                                    "G||------------||" + Environment.NewLine +
-                                    "D||----2-------||" + Environment.NewLine +
-                                    "A||----4-------||" + Environment.NewLine +
-                                    "E||----5-------||" + Environment.NewLine
+                |> parseChord
+                |> createChord
+                |> chordToGuitarClosedChord SixthString
+                |> tabify =! "      AMaj   " + Environment.NewLine+
+                            "E||------------||" + Environment.NewLine +
+                            "B||------------||" + Environment.NewLine +
+                            "G||------------||" + Environment.NewLine +
+                            "D||----2-------||" + Environment.NewLine +
+                            "A||----4-------||" + Environment.NewLine +
+                            "E||----5-------||" + Environment.NewLine
             [<Test>]
             let ``Should tabify open chord from text``() =
                 "C Major"
-                        |> parseChord
-                        |> createChord
-                        |> chordToGuitarChord FifthString
-                        |> tabify =! "      CMaj   " + Environment.NewLine+
-                                    "E||------------||" + Environment.NewLine +
-                                    "B||------------||" + Environment.NewLine +
-                                    "G||----0-------||" + Environment.NewLine +
-                                    "D||----2-------||" + Environment.NewLine +
-                                    "A||----3-------||" + Environment.NewLine +
-                                    "E||------------||" + Environment.NewLine
+                |> parseChord
+                |> createChord
+                |> chordToGuitarChord FifthString
+                |> tabify =! "      CMaj   " + Environment.NewLine+
+                            "E||------------||" + Environment.NewLine +
+                            "B||------------||" + Environment.NewLine +
+                            "G||----0-------||" + Environment.NewLine +
+                            "D||----2-------||" + Environment.NewLine +
+                            "A||----3-------||" + Environment.NewLine +
+                            "E||------------||" + Environment.NewLine
