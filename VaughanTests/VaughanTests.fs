@@ -964,7 +964,7 @@ namespace VaughanTests
                             let guitarChord = chordToGuitarClosedChord bassString chord
                             let maxFret = guitarChord.Frets |> List.map (fun f -> f.Fret) |> List.max
                             let minFret = guitarChord.Frets |> List.map (fun f -> f.Fret) |> List.min
-                            maxFret - minFret < 7)
+                            maxFret - minFret < 6)
 
         [<Test>]
         let ``Should map D major 7 to guitar fretboard on fourth string closed``() =
