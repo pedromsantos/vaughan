@@ -772,6 +772,10 @@ namespace Vaughan
 
             type private TabColumns = TabColumn list
 
+            type private TabLine = string list
+
+            type private TabLines = TabLine list
+
             let private standardTunningTab = ["E"; "B"; "G"; "D"; "A"; "E"]
 
             let private startTab = "||-" |> List.replicate 6
@@ -808,19 +812,19 @@ namespace Vaughan
             let private convertTabColumnsToTabLinesPerString stringOrdinal (tabifiedChords: TabColumns) =
                 tabifiedChords |> List.map (fun f -> f.[stringOrdinal])
 
-            let private streamlineTabifiedChordsByString (tabifiedChords: TabColumns) =
+            let private streamlineTabifiedChordsToTabLines (tabifiedChords: TabColumns) =
                 [0 .. 5]
                 |> List.map (fun stringOrdinal -> convertTabColumnsToTabLinesPerString stringOrdinal tabifiedChords)
 
-            let private connectStreamlinedTabifiedFrets tabifiedFrets =
+            let private renderTabLine (tabifiedFrets:TabLine) =
                 tabifiedFrets
                 |> List.fold (fun acc fret -> acc + fret + "---" ) "---"
 
-            let private connectStreamlinedTabifiedChords tabifiedFretsForStrings =
+            let private renderTabLines (tabifiedFretsForStrings:TabLines) =
                 tabifiedFretsForStrings
-                |> List.map connectStreamlinedTabifiedFrets
+                |> List.map renderTabLine
 
-            let private renderStreamlinedTabifiedChords tabifiedChords =
+            let private renderTabifiedChords tabifiedChords =
                 tabifiedChords
                 |> List.mapi (fun index tabifiedFrets ->
                     standardTunningTab.[index] + startTab.[index] + tabifiedFrets + endTab.[index])
@@ -834,9 +838,9 @@ namespace Vaughan
             let tabifyChords guitarChords =
                 guitarChords
                 |> List.map tabifyChord
-                |> streamlineTabifiedChordsByString
-                |> connectStreamlinedTabifiedChords
-                |> renderStreamlinedTabifiedChords
+                |> streamlineTabifiedChordsToTabLines
+                |> renderTabLines
+                |> renderTabifiedChords
 
             let tabifyChordNames guitarChords =
                 let chordNameSeparator = "   "
