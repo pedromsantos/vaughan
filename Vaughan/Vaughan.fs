@@ -809,12 +809,12 @@ namespace Vaughan
                 |> List.map (fun fret -> tabifyFret mutedStringTab fret)
                 |> List.rev
 
-            let private convertTabColumnsToTabLinesPerString stringOrdinal (tabifiedChords: TabColumns) =
+            let private convertTabColumsToTabLines stringOrdinal (tabifiedChords: TabColumns) =
                 tabifiedChords |> List.map (fun f -> f.[stringOrdinal])
 
-            let private streamlineTabifiedChordsToGuitarStringTabLines (tabifiedChords: TabColumns) =
+            let private convertColumnChordsToGuitarStringLines (tabifiedChords: TabColumns) =
                 [0 .. 5]
-                |> List.map (fun stringOrdinal -> convertTabColumnsToTabLinesPerString stringOrdinal tabifiedChords)
+                |> List.map (fun stringOrdinal -> convertTabColumsToTabLines stringOrdinal tabifiedChords)
 
             let private renderGuitarStringTab (tabifiedFretsForString:TabLine) =
                 tabifiedFretsForString
@@ -841,7 +841,7 @@ namespace Vaughan
             let tabifyChords guitarChords =
                 guitarChords
                 |> List.map tabifyChord
-                |> streamlineTabifiedChordsToGuitarStringTabLines
+                |> convertColumnChordsToGuitarStringLines
                 |> renderGuitarStringsTab
                 |> renderTabifiedChords
 
