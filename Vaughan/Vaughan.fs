@@ -825,8 +825,7 @@ namespace Vaughan
                 |> List.mapi (fun index tabifiedFrets ->
                     standardTunningTab.[index] + startTab.[index] + tabifiedFrets + endTab.[index])
 
-
-            let tabifyChord guitarChord =
+            let private tabifyChord guitarChord =
                 let mutedStringTab = tabifyMutedString guitarChord
                 (tabifyMutedHigherStrings mutedStringTab guitarChord)
                 @ (tabifyFrets mutedStringTab guitarChord)
