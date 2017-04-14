@@ -1260,7 +1260,7 @@ namespace VaughanTests
             open Vaughan.ScaleHarmonizer
 
             [<Test>]
-            let ``Should parse textual representation of chord``() =
+            let ``Should parse textual representation of triads``() =
                 (parseChord "C Major") =! { Root=C; Quality=Major }
                 (parseChord "C# Maj") =! { Root=CSharp; Quality=Major }
                 (parseChord "C minor") =! { Root=C; Quality=Minor }
@@ -1271,6 +1271,9 @@ namespace VaughanTests
                 (parseChord "C Aug") =! { Root=C; Quality=Augmented }
                 (parseChord "C diminished") =! { Root=C; Quality=Diminished }
                 (parseChord "C dim") =! { Root=C; Quality=Diminished }
+
+            [<Test>]
+            let ``Should parse textual representation of seventh chords``() =
                 (parseChord "C Major 7") =! { Root=C; Quality=Major7 }
                 (parseChord "C Maj 7") =! { Root=C; Quality=Major7 }
                 (parseChord "CMaj7") =! { Root=C; Quality=Major7 }

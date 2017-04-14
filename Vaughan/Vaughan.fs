@@ -969,7 +969,7 @@ namespace Vaughan
                     parseDominantQuality
                 ] |> skipSpaces
 
-        let private parseSeventh chord =
+        let private updateChordIntentWithSeventhQuality chord =
             match chord with
             | {Quality=Major} -> { chord with Quality = Major7 }
             | {Quality=Minor} -> { chord with Quality = Minor7 }
@@ -977,24 +977,35 @@ namespace Vaughan
             | {Quality=Augmented} -> { chord with Quality = Augmented7 }
             | {Quality=_} -> { chord with Quality = Dominant7 }
 
-        let private parseNoSeventh chord =
-            chord
-
         let private parseSeventhQuality: Parser<_> =
             any [
-                    (stringCIReturn "7" parseSeventh);
-                    (stringCIReturn "7th" parseSeventh);
-                    (stringCIReturn "seventh" parseSeventh);
-                    (stringCIReturn "seven" parseSeventh);
-                    (notFollowedByString "7" >>% parseNoSeventh);
-                    (notFollowedByString "7th" >>% parseNoSeventh);
-                    (notFollowedByString "seventh" >>% parseNoSeventh);
-                    (notFollowedByString "seven" >>% parseNoSeventh)
+                    (stringCIReturn "7" updateChordIntentWithSeventhQuality);
+                    (stringCIReturn "7th" updateChordIntentWithSeventhQuality);
+                    (stringCIReturn "seventh" updateChordIntentWithSeventhQuality);
+                    (stringCIReturn "seven" updateChordIntentWithSeventhQuality);
+                    (notFollowedByString "7" >>% id);
+                    (notFollowedByString "7th" >>% id);
+                    (notFollowedByString "seventh" >>% id);
+                    (notFollowedByString "seven" >>% id)
                 ] |> skipSpaces
 
+        let private rootParser: Parser<_> =
+            pipe2 parseNote parseAccident
+                (fun note applyAccidentToNote -> applyAccidentToNote note)
+
+        let private triadParser: Parser<_> =
+            pipe2 rootParser parseQuality
+                (fun r q -> {Root=r; Quality=q;})
+
+        let private seventhChordParser: Parser<_> =
+            pipe2 triadParser parseSeventhQuality
+                (fun triad seventhQualityUpdater -> seventhQualityUpdater triad)
+
         let private chordParser: Parser<_> =
-            pipe4 parseNote parseAccident parseQuality parseSeventhQuality
-                (fun n a q s -> s { Root=(a n); Quality=q; })
+            any [
+                    seventhChordParser
+                    triadParser;
+                ]
 
         let parseChord (text:string) =
             let parsed = run chordParser text
