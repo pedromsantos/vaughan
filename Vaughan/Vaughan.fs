@@ -822,14 +822,16 @@ namespace Vaughan
                 let mutedStrings = numberOfMutedLowStrings guitarChord
                 List.replicate mutedStrings mutedStringTab
 
-            let private tabifyFret mutedStringTab fret guitarChord =
+            let private tabifyFret mutedStringTab fret =
                 if fret.Fret = -1 then
                     sprintf "%s" mutedStringTab
                 else
                     sprintf "%i%s" fret.Fret (mutedStringTab.[(string(fret.Fret)).Length..])
 
             let private tabifyFrets mutedStringTab guitarChord =
-                guitarChord.Frets |> List.map (fun fret -> guitarChord |> tabifyFret mutedStringTab fret) |> List.rev
+                guitarChord.Frets
+                |> List.map (fun fret -> tabifyFret mutedStringTab fret)
+                |> List.rev
 
             let tabifyChord guitarChord =
                 let mutedStringTab = tabifyMutedString guitarChord
@@ -838,7 +840,8 @@ namespace Vaughan
                 @ (tabifyMutedLowerStrings mutedStringTab guitarChord)
 
             let groupByString (tabifiedChords: string list list) =
-                [0 .. 5] |> List.map (fun index -> tabifiedChords |> List.map (fun l -> l.[index]))
+                [0 .. 5]
+                |> List.map (fun index -> tabifiedChords |> List.map (fun l -> l.[index]))
 
             let tabifyStrings guitarStrings =
                 guitarStrings
