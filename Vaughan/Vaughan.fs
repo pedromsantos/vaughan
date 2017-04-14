@@ -816,8 +816,8 @@ namespace Vaughan
                 [0 .. 5]
                 |> List.map (fun stringOrdinal -> convertTabColumnsToTabLinesPerString stringOrdinal tabifiedChords)
 
-            let private renderGuitarStringTab (tabifiedFrets:TabLine) =
-                tabifiedFrets
+            let private renderGuitarStringTab (tabifiedFretsForString:TabLine) =
+                tabifiedFretsForString
                 |> List.fold (fun acc fret -> acc + fret + "---" ) "---"
 
             let private renderGuitarStringsTab (tabifiedFretsForStrings:TabLines) =
