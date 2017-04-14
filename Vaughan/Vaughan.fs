@@ -768,7 +768,7 @@ namespace Vaughan
 
         module private Tabify =
 
-            let private standardTunning =
+            let private standardTunningTab =
                 [
                     "E";
                     "B";
@@ -811,33 +811,31 @@ namespace Vaughan
             let private chordNameLength guitarChord =
                 (guitarChord |> chordName).Length
 
-            let private mutedStringDashes guitarChord =
+            let private tabifyMutedString guitarChord =
                 String.replicate (chordNameLength guitarChord) "-"
 
-            let private fretedStringDashes guitarChord fret =
-                String.replicate ((chordNameLength guitarChord) - (string(fret)).Length) "-"
-
-            let private tabifyMutedHigherStrings guitarChord =
+            let private tabifyMutedHigherStrings mutedStringTab guitarChord =
                 let mutedStrings = numberOfMutedHighStrings guitarChord
-                List.replicate mutedStrings (mutedStringDashes guitarChord)
+                List.replicate mutedStrings mutedStringTab
 
-            let private tabifyMutedLowerStrings guitarChord =
+            let private tabifyMutedLowerStrings mutedStringTab guitarChord =
                 let mutedStrings = numberOfMutedLowStrings guitarChord
-                List.replicate mutedStrings (mutedStringDashes guitarChord)
+                List.replicate mutedStrings mutedStringTab
 
-            let private tabifyFret fret guitarChord =
+            let private tabifyFret mutedStringTab fret guitarChord =
                 if fret.Fret = -1 then
-                    sprintf "%s" (mutedStringDashes guitarChord)
+                    sprintf "%s" mutedStringTab
                 else
-                    sprintf "%i%s" fret.Fret (fretedStringDashes guitarChord fret.Fret)
+                    sprintf "%i%s" fret.Fret (mutedStringTab.[(string(fret.Fret)).Length..])
 
-            let private tabifyFrets guitarChord =
-                guitarChord.Frets |> List.map (fun fret -> tabifyFret fret guitarChord) |> List.rev
+            let private tabifyFrets mutedStringTab guitarChord =
+                guitarChord.Frets |> List.map (fun fret -> guitarChord |> tabifyFret mutedStringTab fret) |> List.rev
 
             let tabifyChord guitarChord =
-                (tabifyMutedHigherStrings guitarChord)
-                @ (tabifyFrets guitarChord)
-                @ (tabifyMutedLowerStrings guitarChord)
+                let mutedStringTab = tabifyMutedString guitarChord
+                (tabifyMutedHigherStrings mutedStringTab guitarChord)
+                @ (tabifyFrets mutedStringTab guitarChord)
+                @ (tabifyMutedLowerStrings mutedStringTab guitarChord)
 
             let groupByString (tabifiedChords: string list list) =
                 [0 .. 5] |> List.map (fun index -> tabifiedChords |> List.map (fun l -> l.[index]))
@@ -845,7 +843,7 @@ namespace Vaughan
             let tabifyStrings guitarStrings =
                 guitarStrings
                 |> List.map (fun tabifiedFrets -> tabifiedFrets |> List.fold (fun acc fret -> acc + fret + "---" ) "---")
-                |> List.mapi (fun index tabifiedFrets -> standardTunning.[index] + startTab.[index] + tabifiedFrets + endTab.[index])
+                |> List.mapi (fun index tabifiedFrets -> standardTunningTab.[index] + startTab.[index] + tabifiedFrets + endTab.[index])
 
             let tabifyChordNames guitarChords =
                 let chordNameSeparator = "   "
