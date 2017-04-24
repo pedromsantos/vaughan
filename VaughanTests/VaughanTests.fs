@@ -1106,15 +1106,23 @@ namespace VaughanTests
         let cIonian = createScale Ionian C
         let cMaj = triadsHarmonizer ScaleDgrees.I cIonian
 
+        let createTriad (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) =
+            let scale = createScale scaleType root
+            let chord = triadsHarmonizer scaleDegree scale
+            chordToGuitarClosedChord bassString chord
+
+        let createSeventhChord (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) =
+            let scale = createScale scaleType root
+            let chord = seventhsHarmonizer scaleDegree scale
+            chordToGuitarClosedChord bassString chord
+
         [<Property>]
         let ``Should map diatonic closed triad to guitar tab`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) () =
             ((bassString <> SecondString && bassString <> FirstString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
                 && scaleType <> WholeTone && scaleType <> HalfWholeDiminished))
                 ==> lazy (
-                            let scale = createScale scaleType root
-                            let chord = triadsHarmonizer scaleDegree scale
-                            let guitarChord = chordToGuitarClosedChord bassString chord
+                            let guitarChord = createTriad scaleType scaleDegree root bassString
                             let frets = guitarChord.Frets
                             let tab = tabify guitarChord
                             tab.Contains (string frets.[0].Fret)
@@ -1127,9 +1135,7 @@ namespace VaughanTests
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
                 && scaleType <> WholeTone && scaleType <> HalfWholeDiminished))
                 ==> lazy (
-                            let scale = createScale scaleType root
-                            let chord = seventhsHarmonizer scaleDegree scale
-                            let guitarChord = chordToGuitarClosedChord bassString chord
+                            let guitarChord = createSeventhChord scaleType scaleDegree root bassString
                             let frets = guitarChord.Frets
                             let tab = tabify guitarChord
                             tab.Contains (string frets.[0].Fret)
