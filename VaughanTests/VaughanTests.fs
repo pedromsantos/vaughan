@@ -1093,6 +1093,8 @@ namespace VaughanTests
     module GuitarTabTests =
         open System
         open NUnit.Framework
+        open FsCheck
+        open FsCheck.NUnit
         open Swensen.Unquote
         open Vaughan.Domain
         open Vaughan.Chords
@@ -1103,6 +1105,37 @@ namespace VaughanTests
 
         let cIonian = createScale Ionian C
         let cMaj = triadsHarmonizer ScaleDgrees.I cIonian
+
+        [<Property>]
+        let ``Should map diatonic closed triad to guitar tab`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) () =
+            ((bassString <> SecondString && bassString <> FirstString)
+            && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
+                && scaleType <> WholeTone && scaleType <> HalfWholeDiminished))
+                ==> lazy (
+                            let scale = createScale scaleType root
+                            let chord = triadsHarmonizer scaleDegree scale
+                            let guitarChord = chordToGuitarClosedChord bassString chord
+                            let frets = guitarChord.Frets
+                            let tab = tabify guitarChord
+                            tab.Contains (string frets.[0].Fret)
+                            && tab.Contains (string frets.[1].Fret)
+                            && tab.Contains (string frets.[2].Fret))
+
+        [<Property>]
+        let ``Should map diatonic closed seventh chord to guitar tab`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) () =
+            ((bassString <> SecondString && bassString <> FirstString)
+            && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
+                && scaleType <> WholeTone && scaleType <> HalfWholeDiminished))
+                ==> lazy (
+                            let scale = createScale scaleType root
+                            let chord = seventhsHarmonizer scaleDegree scale
+                            let guitarChord = chordToGuitarClosedChord bassString chord
+                            let frets = guitarChord.Frets
+                            let tab = tabify guitarChord
+                            tab.Contains (string frets.[0].Fret)
+                            && tab.Contains (string frets.[1].Fret)
+                            && tab.Contains (string frets.[2].Fret)
+                            && tab.Contains (string frets.[3].Fret))
 
         [<Test>]
         let ``Should draw C major 7 drop 2 to guitar fretboard on fifth string closed ``() =

@@ -878,9 +878,8 @@ namespace Vaughan
         open Tabify
 
         let tabifyAll guitarChords =
-            let tabifiedChordNames = guitarChords |> tabifyChordNames
-            let tabifiedChords = tabifyChords guitarChords
-            (tabifiedChordNames @ tabifiedChords) |> List.fold (+) ""
+            (tabifyChordNames guitarChords) @ (tabifyChords guitarChords)
+            |> List.fold (+) ""
 
         let tabify guitarChord =
             tabifyAll [guitarChord]
