@@ -892,7 +892,7 @@ namespace VaughanTests
         let cIonian = createScale Ionian C
         let cMaj = triadsHarmonizer ScaleDgrees.I cIonian
 
-        [<Property>]
+        [<Property(MaxTest = 1000)>]
         let ``Should map diatonic closed triads to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) () =
             ((bassString = SixthString || bassString = FifthString || bassString = FourthString || bassString = ThirdString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic))
@@ -953,7 +953,7 @@ namespace VaughanTests
                         {GuitarString=FourthString; Fret=10; Note=C};
                     ]
 
-        [<Property>]
+        [<Property(MaxTest = 531)>]
         let ``Should map diatonic closed sevent chords to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) () =
             ((bassString = SixthString || bassString = FifthString || bassString = FourthString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
@@ -964,7 +964,7 @@ namespace VaughanTests
                             let guitarChord = chordToGuitarClosedChord bassString chord
                             let maxFret = guitarChord.Frets |> List.map (fun f -> f.Fret) |> List.max
                             let minFret = guitarChord.Frets |> List.map (fun f -> f.Fret) |> List.min
-                            maxFret - minFret < 6)
+                            maxFret - minFret < 7)
 
         [<Test>]
         let ``Should map D major 7 to guitar fretboard on fourth string closed``() =
@@ -1010,7 +1010,7 @@ namespace VaughanTests
                         {GuitarString=FirstString; Fret=12; Note=E};
                     ]
 
-        [<Property>]
+        [<Property(MaxTest = 547)>]
         let ``Should map diatonic closed sevent drop 2 chords to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) () =
             ((bassString = SixthString || bassString = FifthString || bassString = FourthString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
@@ -1044,7 +1044,7 @@ namespace VaughanTests
                         {GuitarString=SecondString; Fret=14; Note=CSharp};
                     ]
 
-        [<Property>]
+        [<Property(MaxTest = 309)>]
         let ``Should map diatonic closed sevent drop 3 chords to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) () =
             ((bassString = SixthString || bassString = FifthString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
