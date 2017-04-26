@@ -1,6 +1,6 @@
 namespace Vaughan
 
-    //https://repl.it/FJHh/32
+    //https://repl.it/FJHh/56
 
     module Infrastructure =
         let rotateByOne list =
@@ -40,10 +40,10 @@ namespace Vaughan
             |> Seq.map snd
 
         let rec min (minOf:'a->'a->'a) (list:'a list) =
-           match list with
-           | [] -> None
-           | [x] -> Some(x)
-           | c1::c2::rest -> min minOf ((minOf c1 c2)::rest)
+            match list with
+            | [] -> None
+            | [x] -> Some(x)
+            | c1::c2::rest -> min minOf ((minOf c1 c2)::rest)
 
         let cappedMinimum number cap =
             if number < cap then cap else number
@@ -54,6 +54,11 @@ namespace Vaughan
         let cappedMaximum number cap =
             if number > cap then cap else number
 
+        let allCombinations frets =
+            let prefix fs pfx = pfx :: fs
+            let prefixWith pfxs fs = List.map (prefix fs) pfxs
+            let prefixAll pfxs fs = List.collect (prefixWith pfxs) fs
+            List.foldBack prefixAll frets [[]]
 
     module Domain =
         type Note =
@@ -486,7 +491,7 @@ namespace Vaughan
                                         |> List.take (chord.Notes.Length - 1)
                                         |> rotateByOne
                                         |> rotateByOne)
-             }
+            }
 
         let private invertDrop3 chord =
             {chord with Notes= chord.Notes |> rotateByOne |> rotateByOne |> swapSecondTwo;}
@@ -586,12 +591,12 @@ namespace Vaughan
             let thirdsList = scale |> thirds forDegree |> List.take 7
             {
                 Notes = [(thirdsList.[0], Root);
-                         (thirdsList.[1], Third);
-                         (thirdsList.[2], Fifth);
-                         (thirdsList.[3], Seventh);
-                         (thirdsList.[4], Ninth);
-                         (thirdsList.[5], Eleventh);
-                         (thirdsList.[6], Thirteenth)];
+                        (thirdsList.[1], Third);
+                        (thirdsList.[2], Fifth);
+                        (thirdsList.[3], Seventh);
+                        (thirdsList.[4], Ninth);
+                        (thirdsList.[5], Eleventh);
+                        (thirdsList.[6], Thirteenth)];
                 ChordType = Closed;
                 Name =  ""
             }
@@ -608,10 +613,10 @@ namespace Vaughan
             | _ -> harmonizeScaleDegreeWithNotes forDegree scale 3
 
         let ninthsHarmonizer forDegree scale =
-             harmonize forDegree Ninth scale
+            harmonize forDegree Ninth scale
 
         let seventhsHarmonizer forDegree scale =
-             harmonize forDegree Seventh scale
+            harmonize forDegree Seventh scale
 
         let triadsHarmonizer forDegree scale =
             harmonize forDegree Fifth scale
@@ -621,6 +626,8 @@ namespace Vaughan
             open Infrastructure
             open Domain
             open Notes
+            open Scales
+            open ScaleHarmonizer
 
             let private isOpen fret =
                 fret.Fret = 0
@@ -658,6 +665,8 @@ namespace Vaughan
         open Domain
         open Notes
         open Chords
+        open Scales
+        open ScaleHarmonizer
         open GuitarFrets
         open Infrastructure
 
@@ -717,7 +726,7 @@ namespace Vaughan
             else
                 chordNotesExceptBass chordNotes
 
-        let private mapChordToGuitarFrets bassString chord =
+        let mapChordToGuitarFrets bassString chord =
             let rec mapChordNoteToString guitarString chordNotes mappedChordNotes =
                 match chordNotes with
                 | [] -> mappedChordNotes
@@ -727,6 +736,29 @@ namespace Vaughan
                     let unmapedChordNotes = remainingChordNotesToMap chordNotes shouldSkipString
                     mapChordNoteToString (nextString guitarString) unmapedChordNotes (fret::mappedChordNotes)
             mapChordNoteToString bassString chord.Notes []
+
+        let mapsChordNotesToFrets guitarStringIndex chord =
+                [for chordNoteIndex in 0 .. (chord.Notes.Length - 1)
+                        do yield (mapNoteToFret (indexToGuitarString guitarStringIndex) (fst chord.Notes.[chordNoteIndex]) false)]
+
+        let mapChordNotesToStrings bassString chord =
+            [for guitarStringIndex in 1 .. (guitarStringOrdinal bassString)
+                do yield (mapsChordNotesToFrets guitarStringIndex chord)]
+
+        let mapChordToOpen mappedChord =
+            mappedChord
+            |> allCombinations
+            |> List.map (fun m -> (m, (m |> List.map (fun f -> f.Fret)) |> List.sum) )
+            |> List.minBy (fun l -> (snd l))
+            |> fst
+
+        let mapChordToClosed mappedChord =
+            mappedChord
+            |> allCombinations
+            |> List.map (fun m -> (m, (m |> List.map (fun f -> f.Fret)) |> List.sum) )
+            |> List.filter (fun l -> not( (fst l) |> List.exists (fun f -> f.Fret = 0) ))
+            |> List.minBy (fun l -> (snd l))
+            |> fst
 
         let chordName guitarChord =
             guitarChord.Chord.Name
@@ -750,6 +782,16 @@ namespace Vaughan
             | FourthString  -> 2
             | ThirdString  -> 3
             | _ -> 0
+
+        let chordToGuitarOpenChord bassString chord =
+            chord
+            |> mapChordNotesToStrings bassString
+            |> mapChordToOpen
+
+        let nonDropChordToGuitarClosedChord bassString chord =
+            chord
+            |> mapChordNotesToStrings bassString
+            |> mapChordToClosed
 
         let chordToGuitarChord bassString chord =
             { Chord=chord; Frets= mapChordToGuitarFrets bassString chord |> List.rev }

@@ -894,7 +894,7 @@ namespace VaughanTests
 
         [<Property(MaxTest = 1000)>]
         let ``Should map diatonic closed triads to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) () =
-            ((bassString = SixthString || bassString = FifthString || bassString = FourthString || bassString = ThirdString)
+            ((bassString <> FirstString || bassString = SecondString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic))
                 ==> lazy (
                             let scale = createScale scaleType root
@@ -1044,7 +1044,7 @@ namespace VaughanTests
                         {GuitarString=SecondString; Fret=14; Note=CSharp};
                     ]
 
-        [<Property(MaxTest = 309)>]
+        [<Property(MaxTest = 284)>]
         let ``Should map diatonic closed sevent drop 3 chords to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) () =
             ((bassString = SixthString || bassString = FifthString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
