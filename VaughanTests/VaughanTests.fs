@@ -1290,6 +1290,7 @@ namespace VaughanTests
                 "A Major"
                 |> parseChord
                 |> createChord
+                |> toTriad
                 |> createGuitarChord SixthString
                 |> tabify =! "      AMaj   " + Environment.NewLine+
                             "E||------------||" + Environment.NewLine +
