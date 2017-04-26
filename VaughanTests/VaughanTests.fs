@@ -914,10 +914,12 @@ namespace VaughanTests
 
         [<Test>]
         let ``Should map c major to guitar fretboard on fifth string``() =
-            (createGuitarChord FifthString cMaj).Frets =! [
+            (createGuitarChord FifthString (cMaj |> toOpen)).Frets =! [
                         {GuitarString=FifthString; Fret=3; Note=C};
                         {GuitarString=FourthString; Fret=2; Note=E};
                         {GuitarString=ThirdString; Fret=0; Note=G};
+                        {GuitarString=SecondString; Fret=1; Note=C};
+                        {GuitarString=FirstString; Fret=0; Note=E};
                     ]
 
         [<Test>]
@@ -1230,6 +1232,7 @@ namespace VaughanTests
             open Vaughan.Domain
             open Vaughan.Scales
             open Vaughan.SpeechToMusic
+            open Vaughan.Chords
             open Vaughan.Guitar
             open Vaughan.GuitarTab
             open Vaughan.ScaleHarmonizer
@@ -1274,13 +1277,13 @@ namespace VaughanTests
                 let aMin = triadsHarmonizer ScaleDgrees.VI cIonian
                 let bDim = triadsHarmonizer ScaleDgrees.VII cIonian
 
-                createChord { Root=C; Quality=Major } =! cMaj
-                createChord { Root=D; Quality=Minor } =! dMin
-                createChord { Root=E; Quality=Minor } =! eMin
-                createChord { Root=F; Quality=Major } =! fMaj
-                createChord { Root=G; Quality=Major } =! gMaj
-                createChord { Root=A; Quality=Minor } =! aMin
-                createChord { Root=B; Quality=Diminished } =! bDim
+                createChord { Root=C; Quality=Major } =! (cMaj |> toClosed)
+                createChord { Root=D; Quality=Minor } =! (dMin |> toClosed)
+                createChord { Root=E; Quality=Minor } =! (eMin |> toClosed)
+                createChord { Root=F; Quality=Major } =! (fMaj |> toClosed)
+                createChord { Root=G; Quality=Major } =! (gMaj |> toClosed)
+                createChord { Root=A; Quality=Minor } =! (aMin |> toClosed)
+                createChord { Root=B; Quality=Diminished } =! (bDim |> toClosed)
 
             [<Test>]
             let ``Should tabify chord from text``() =

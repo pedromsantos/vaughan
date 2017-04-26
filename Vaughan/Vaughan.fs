@@ -1,6 +1,6 @@
 namespace Vaughan
 
-    //https://repl.it/FJHh/56
+    //https://repl.it/FJHh/63
 
     module Infrastructure =
         let rotateByOne list =
@@ -523,10 +523,24 @@ namespace Vaughan
             }
 
         let toDrop2 chord =
-            {chord with Notes = chord.Notes |> swapFirstTwo |> rotateByOne; ChordType=Drop2}
+            if chord.Notes.Length = 4
+            then {chord with Notes = chord.Notes |> swapFirstTwo |> rotateByOne; ChordType=Drop2}
+            else chord
 
         let toDrop3 chord =
-            {chord with Notes= (chord |> toDrop2 |> toDrop2).Notes; ChordType=Drop3}
+            if chord.Notes.Length = 4
+            then {chord with Notes= (chord |> toDrop2 |> toDrop2).Notes; ChordType=Drop3}
+            else chord
+
+        let toTriad chord =
+            if chord.Notes.Length = 3 then {chord with ChordType=Triad}
+            else chord
+
+        let toOpen chord =
+            {chord with ChordType=Open}
+
+        let toClosed chord =
+            {chord with ChordType=Closed}
 
         let skipFunction functionToSkipp chord =
             {chord with Notes = chord.Notes |> List.filter (fun nf -> snd nf <> functionToSkipp)}
