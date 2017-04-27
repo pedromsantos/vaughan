@@ -890,6 +890,7 @@ namespace VaughanTests
         open Vaughan.Scales
 
         let cIonian = createScale Ionian C
+
         let cMaj = triadsHarmonizer ScaleDgrees.I cIonian
 
         [<Property(MaxTest = 1000)>]
@@ -913,7 +914,7 @@ namespace VaughanTests
                     ]
 
         [<Test>]
-        let ``Should map c major to guitar fretboard on fifth string``() =
+        let ``Should map c major open to guitar fretboard on fifth string``() =
             (createGuitarChord FifthString (cMaj |> toOpen)).Frets =! [
                         {GuitarString=FifthString; Fret=3; Note=C};
                         {GuitarString=FourthString; Fret=2; Note=E};
@@ -939,7 +940,7 @@ namespace VaughanTests
                     ]
 
         [<Test>]
-        let ``Should map F major to guitar fretboard on sixth string closed``() =
+        let ``Should map F major to guitar fretboard on sixth string``() =
             let fMaj = triadsHarmonizer ScaleDgrees.IV cIonian
             (createGuitarChord SixthString fMaj).Frets =! [
                         {GuitarString=SixthString; Fret=13; Note=F};
@@ -958,7 +959,7 @@ namespace VaughanTests
                             let guitarChord = createGuitarChord bassString chord
                             let maxFret = guitarChord.Frets |> List.map (fun f -> f.Fret) |> List.max
                             let minFret = guitarChord.Frets |> List.map (fun f -> f.Fret) |> List.min
-                            maxFret - minFret < 7)
+                            maxFret - minFret < 6)
 
         [<Property(MaxTest = 537)>]
         let ``Should map diatonic closed sevent drop 2 chords to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) () =
@@ -1079,10 +1080,9 @@ namespace VaughanTests
                             && tab.Contains (string frets.[1].Fret)
                             && tab.Contains (string frets.[2].Fret))
 
-(*
-        [<Property>]
+        [<Property(Verbose = true)>]
         let ``Should map diatonic closed seventh chord to guitar tab`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) () =
-            ((bassString <> SecondString && bassString <> FirstString)
+            ((bassString <> ThirdString && bassString <> SecondString && bassString <> FirstString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
                 && scaleType <> WholeTone && scaleType <> HalfWholeDiminished))
                 ==> lazy (
@@ -1093,7 +1093,6 @@ namespace VaughanTests
                             && tab.Contains (string frets.[1].Fret)
                             && tab.Contains (string frets.[2].Fret)
                             && tab.Contains (string frets.[3].Fret))
-*)
 
         [<Test>]
         let ``Should draw C major 7 drop 2 to guitar fretboard on fifth string closed ``() =
