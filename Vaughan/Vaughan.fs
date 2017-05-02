@@ -132,7 +132,7 @@ namespace Vaughan
 
         type Chord = {Notes:ChordNotes; ChordType:ChordType; Name:string}
 
-        type ScaleDgrees =
+        type ScaleDegrees =
             | I = 0 | II = 1 | III = 2 | IV = 3 | V = 4 | VI = 5 | VII = 6
 
         type GuitarString =
@@ -591,7 +591,7 @@ namespace Vaughan
         open Domain
         open Chords
 
-        let private thirds (fromPosition:ScaleDgrees) scale =
+        let private thirds (fromPosition:ScaleDegrees) scale =
             let octave = 16
 
             scale

@@ -801,27 +801,27 @@ namespace VaughanTests
         [<Test>]
         let ``Should create triads for Ionian scale`` () =
             let cIonian = createScale Ionian C
-            (triadsHarmonizer ScaleDgrees.I cIonian).Notes =! cMaj.Notes
-            (triadsHarmonizer ScaleDgrees.II cIonian).Notes =! dMin.Notes
-            (triadsHarmonizer ScaleDgrees.III cIonian).Notes =! eMin.Notes
-            (triadsHarmonizer ScaleDgrees.IV cIonian).Notes =! fMaj.Notes
-            (triadsHarmonizer ScaleDgrees.V cIonian).Notes =! gMaj.Notes
-            (triadsHarmonizer ScaleDgrees.VI cIonian).Notes =! aMin.Notes
-            (triadsHarmonizer ScaleDgrees.VII cIonian).Notes =! bDim.Notes
+            (triadsHarmonizer ScaleDegrees.I cIonian).Notes =! cMaj.Notes
+            (triadsHarmonizer ScaleDegrees.II cIonian).Notes =! dMin.Notes
+            (triadsHarmonizer ScaleDegrees.III cIonian).Notes =! eMin.Notes
+            (triadsHarmonizer ScaleDegrees.IV cIonian).Notes =! fMaj.Notes
+            (triadsHarmonizer ScaleDegrees.V cIonian).Notes =! gMaj.Notes
+            (triadsHarmonizer ScaleDegrees.VI cIonian).Notes =! aMin.Notes
+            (triadsHarmonizer ScaleDegrees.VII cIonian).Notes =! bDim.Notes
 
         [<Test>]
         let ``Should create triads for Harmonic Minor scale`` () =
             let cMinor = createScale HarmonicMinor C
-            (triadsHarmonizer ScaleDgrees.I cMinor).Notes =! cMin.Notes
-            (triadsHarmonizer ScaleDgrees.II cMinor).Notes =! dDim.Notes
-            (triadsHarmonizer ScaleDgrees.III cMinor).Notes =! eFlatAug.Notes
-            (triadsHarmonizer ScaleDgrees.IV cMinor).Notes =! fMin.Notes
-            (triadsHarmonizer ScaleDgrees.V cMinor).Notes =! gMaj.Notes
-            (triadsHarmonizer ScaleDgrees.VI cMinor).Notes =! aFlatMaj.Notes
-            (triadsHarmonizer ScaleDgrees.VII cMinor).Notes =! bDim.Notes
+            (triadsHarmonizer ScaleDegrees.I cMinor).Notes =! cMin.Notes
+            (triadsHarmonizer ScaleDegrees.II cMinor).Notes =! dDim.Notes
+            (triadsHarmonizer ScaleDegrees.III cMinor).Notes =! eFlatAug.Notes
+            (triadsHarmonizer ScaleDegrees.IV cMinor).Notes =! fMin.Notes
+            (triadsHarmonizer ScaleDegrees.V cMinor).Notes =! gMaj.Notes
+            (triadsHarmonizer ScaleDegrees.VI cMinor).Notes =! aFlatMaj.Notes
+            (triadsHarmonizer ScaleDegrees.VII cMinor).Notes =! bDim.Notes
 
         [<Property>]
-        let ``Should create triads for scale`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note)=
+        let ``Should create triads for scale`` (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note)=
             (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic)
                 ==> lazy (
                     let scale = createScale scaleType root
@@ -835,27 +835,27 @@ namespace VaughanTests
         [<Test>]
         let ``Should create seventh chords for Ionian scale`` () =
             let cIonian = createScale Ionian C
-            (seventhsHarmonizer ScaleDgrees.I cIonian).Notes =! cMaj7.Notes
-            (seventhsHarmonizer ScaleDgrees.II cIonian).Notes =! dMin7.Notes
-            (seventhsHarmonizer ScaleDgrees.III cIonian).Notes =! eMin7.Notes
-            (seventhsHarmonizer ScaleDgrees.IV cIonian).Notes =! fMaj7.Notes
-            (seventhsHarmonizer ScaleDgrees.V cIonian).Notes =! gDom7.Notes
-            (seventhsHarmonizer ScaleDgrees.VI cIonian).Notes =! aMin7.Notes
-            (seventhsHarmonizer ScaleDgrees.VII cIonian).Notes =! bMin7b5.Notes
+            (seventhsHarmonizer ScaleDegrees.I cIonian).Notes =! cMaj7.Notes
+            (seventhsHarmonizer ScaleDegrees.II cIonian).Notes =! dMin7.Notes
+            (seventhsHarmonizer ScaleDegrees.III cIonian).Notes =! eMin7.Notes
+            (seventhsHarmonizer ScaleDegrees.IV cIonian).Notes =! fMaj7.Notes
+            (seventhsHarmonizer ScaleDegrees.V cIonian).Notes =! gDom7.Notes
+            (seventhsHarmonizer ScaleDegrees.VI cIonian).Notes =! aMin7.Notes
+            (seventhsHarmonizer ScaleDegrees.VII cIonian).Notes =! bMin7b5.Notes
 
         [<Test>]
         let ``Should create seventh chords for Harmonic Minor scale`` () =
             let cMinor = createScale HarmonicMinor C
-            (seventhsHarmonizer ScaleDgrees.I cMinor).Notes =! cMinMaj7.Notes
-            (seventhsHarmonizer ScaleDgrees.II cMinor).Notes =! dMin7b5.Notes
-            (seventhsHarmonizer ScaleDgrees.III cMinor).Notes =! eFlatAug7.Notes
-            (seventhsHarmonizer ScaleDgrees.IV cMinor).Notes =! fMin7.Notes
-            (seventhsHarmonizer ScaleDgrees.V cMinor).Notes =! gDom7.Notes
-            (seventhsHarmonizer ScaleDgrees.VI cMinor).Notes =! aFlatMaj7.Notes
-            (seventhsHarmonizer ScaleDgrees.VII cMinor).Notes =! bDim7.Notes
+            (seventhsHarmonizer ScaleDegrees.I cMinor).Notes =! cMinMaj7.Notes
+            (seventhsHarmonizer ScaleDegrees.II cMinor).Notes =! dMin7b5.Notes
+            (seventhsHarmonizer ScaleDegrees.III cMinor).Notes =! eFlatAug7.Notes
+            (seventhsHarmonizer ScaleDegrees.IV cMinor).Notes =! fMin7.Notes
+            (seventhsHarmonizer ScaleDegrees.V cMinor).Notes =! gDom7.Notes
+            (seventhsHarmonizer ScaleDegrees.VI cMinor).Notes =! aFlatMaj7.Notes
+            (seventhsHarmonizer ScaleDegrees.VII cMinor).Notes =! bDim7.Notes
 
         [<Property>]
-        let ``Should create seventh chords for scale`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) =
+        let ``Should create seventh chords for scale`` (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note) =
             (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
                 && scaleType <> WholeTone)
                 ==> lazy (
@@ -870,13 +870,13 @@ namespace VaughanTests
         [<Test>]
         let ``Should create ninth chords for Ionian scale`` () =
             let cIonian = createScale Ionian C
-            (ninthsHarmonizer ScaleDgrees.I cIonian).Notes =! cMaj9.Notes
-            (ninthsHarmonizer ScaleDgrees.II cIonian).Notes =! dMin9.Notes
-            (ninthsHarmonizer ScaleDgrees.III cIonian).Notes =! eMin9.Notes
-            (ninthsHarmonizer ScaleDgrees.IV cIonian).Notes =! fMaj9.Notes
-            (ninthsHarmonizer ScaleDgrees.V cIonian).Notes =! gDom9.Notes
-            (ninthsHarmonizer ScaleDgrees.VI cIonian).Notes =! aMin9.Notes
-            (ninthsHarmonizer ScaleDgrees.VII cIonian).Notes =! bMin9b5.Notes
+            (ninthsHarmonizer ScaleDegrees.I cIonian).Notes =! cMaj9.Notes
+            (ninthsHarmonizer ScaleDegrees.II cIonian).Notes =! dMin9.Notes
+            (ninthsHarmonizer ScaleDegrees.III cIonian).Notes =! eMin9.Notes
+            (ninthsHarmonizer ScaleDegrees.IV cIonian).Notes =! fMaj9.Notes
+            (ninthsHarmonizer ScaleDegrees.V cIonian).Notes =! gDom9.Notes
+            (ninthsHarmonizer ScaleDegrees.VI cIonian).Notes =! aMin9.Notes
+            (ninthsHarmonizer ScaleDegrees.VII cIonian).Notes =! bMin9b5.Notes
 
     module GuitarTests =
         open NUnit.Framework
@@ -891,10 +891,10 @@ namespace VaughanTests
 
         let cIonian = createScale Ionian C
 
-        let cMaj = triadsHarmonizer ScaleDgrees.I cIonian
+        let cMaj = triadsHarmonizer ScaleDegrees.I cIonian
 
         [<Property(MaxTest = 1000)>]
-        let ``Should map diatonic closed triads to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) () =
+        let ``Should map diatonic closed triads to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note) (bassString: GuitarString) () =
             ((bassString <> FirstString || bassString = SecondString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic))
                 ==> lazy (
@@ -941,7 +941,7 @@ namespace VaughanTests
 
         [<Test>]
         let ``Should map F major to guitar fretboard on sixth string``() =
-            let fMaj = triadsHarmonizer ScaleDgrees.IV cIonian
+            let fMaj = triadsHarmonizer ScaleDegrees.IV cIonian
             (createGuitarChord SixthString fMaj).Frets =! [
                         {GuitarString=SixthString; Fret=13; Note=F};
                         {GuitarString=FifthString; Fret=12; Note=A};
@@ -949,7 +949,7 @@ namespace VaughanTests
                     ]
 
         [<Property(MaxTest = 531)>]
-        let ``Should map diatonic closed sevent chords to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) () =
+        let ``Should map diatonic closed sevent chords to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note) (bassString: GuitarString) () =
             ((bassString = SixthString || bassString = FifthString || bassString = FourthString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
                 && scaleType <> WholeTone && scaleType <> HalfWholeDiminished))
@@ -962,7 +962,7 @@ namespace VaughanTests
                             maxFret - minFret < 6)
 
         [<Property(MaxTest = 537)>]
-        let ``Should map diatonic closed sevent drop 2 chords to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) () =
+        let ``Should map diatonic closed sevent drop 2 chords to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note) (bassString: GuitarString) () =
             ((bassString = SixthString || bassString = FifthString || bassString = FourthString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
                 && scaleType <> WholeTone && scaleType <> HalfWholeDiminished))
@@ -976,7 +976,7 @@ namespace VaughanTests
 
         [<Test>]
         let ``Should map C major 7 drop 2 to guitar fretboard on fifth string closed``() =
-            let chord = seventhsHarmonizer ScaleDgrees.I cIonian |> toDrop2
+            let chord = seventhsHarmonizer ScaleDegrees.I cIonian |> toDrop2
             (createGuitarChord FifthString chord).Frets =! [
                         {GuitarString=FifthString; Fret=3; Note=C};
                         {GuitarString=FourthString; Fret=5; Note=G};
@@ -987,7 +987,7 @@ namespace VaughanTests
         [<Test>]
         let ``Should map A major 7 drop 2 to guitar fretboard on fifth string closed``() =
             let scale = createScale Ionian A
-            let chord = seventhsHarmonizer ScaleDgrees.I scale |> toDrop2
+            let chord = seventhsHarmonizer ScaleDegrees.I scale |> toDrop2
             (createGuitarChord FifthString chord).Frets =! [
                         {GuitarString=FifthString; Fret=12; Note=A};
                         {GuitarString=FourthString; Fret=14; Note=E};
@@ -996,7 +996,7 @@ namespace VaughanTests
                     ]
 
         [<Property(MaxTest = 282)>]
-        let ``Should map diatonic closed sevent drop 3 chords to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) () =
+        let ``Should map diatonic closed sevent drop 3 chords to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note) (bassString: GuitarString) () =
             ((bassString = SixthString || bassString = FifthString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
                 && scaleType <> WholeTone && scaleType <> HalfWholeDiminished))
@@ -1010,7 +1010,7 @@ namespace VaughanTests
 
         [<Test>]
         let ``Should map C major 7 drop 3 to guitar fretboard on sixth string closed``() =
-            let chord = seventhsHarmonizer ScaleDgrees.I cIonian |> toDrop3
+            let chord = seventhsHarmonizer ScaleDegrees.I cIonian |> toDrop3
             (createGuitarChord SixthString chord).Frets =! [
                         {GuitarString=SixthString; Fret=8; Note=C};
                         {GuitarString=FifthString; Fret=(-1); Note=A};
@@ -1055,20 +1055,20 @@ namespace VaughanTests
         open Vaughan.Scales
 
         let cIonian = createScale Ionian C
-        let cMaj = triadsHarmonizer ScaleDgrees.I cIonian
+        let cMaj = triadsHarmonizer ScaleDegrees.I cIonian
 
-        let createTriad (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) =
+        let createTriad (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note) (bassString: GuitarString) =
             let scale = createScale scaleType root
             let chord = triadsHarmonizer scaleDegree scale
             createGuitarChord bassString chord
 
-        let createSeventhChord (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) =
+        let createSeventhChord (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note) (bassString: GuitarString) =
             let scale = createScale scaleType root
             let chord = seventhsHarmonizer scaleDegree scale
             createGuitarChord bassString chord
 
         [<Property>]
-        let ``Should map diatonic closed triad to guitar tab`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) () =
+        let ``Should map diatonic closed triad to guitar tab`` (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note) (bassString: GuitarString) () =
             ((bassString <> SecondString && bassString <> FirstString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
                 && scaleType <> WholeTone && scaleType <> HalfWholeDiminished))
@@ -1081,7 +1081,7 @@ namespace VaughanTests
                             && tab.Contains (string frets.[2].Fret))
 
         [<Property(Verbose = true)>]
-        let ``Should map diatonic closed seventh chord to guitar tab`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) () =
+        let ``Should map diatonic closed seventh chord to guitar tab`` (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note) (bassString: GuitarString) () =
             ((bassString <> ThirdString && bassString <> SecondString && bassString <> FirstString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
                 && scaleType <> WholeTone && scaleType <> HalfWholeDiminished))
@@ -1098,7 +1098,7 @@ namespace VaughanTests
         let ``Should draw C major 7 drop 2 to guitar fretboard on fifth string closed ``() =
             let guitarChord =
                 (cIonian
-                |> seventhsHarmonizer ScaleDgrees.I
+                |> seventhsHarmonizer ScaleDegrees.I
                 |> toDrop2
                 |> createGuitarChord FifthString)
             guitarChord |> tabify =! "      CMaj7   " + Environment.NewLine +
@@ -1113,7 +1113,7 @@ namespace VaughanTests
         let ``Should draw A major 7 to guitar fretboard on fifth string closed ``() =
             let guitarChord =
                 (createScale Ionian A
-                |> seventhsHarmonizer ScaleDgrees.I
+                |> seventhsHarmonizer ScaleDegrees.I
                 |> toDrop2
                 |> createGuitarChord FifthString)
             guitarChord |> tabify =! "      AMaj7   " + Environment.NewLine +
@@ -1139,7 +1139,7 @@ namespace VaughanTests
         let ``Should draw C major 7 drop 3 to guitar fretboard on sixth string closed``() =
             let guitarChord =
                 (cIonian
-                |> seventhsHarmonizer ScaleDgrees.I
+                |> seventhsHarmonizer ScaleDegrees.I
                 |> toDrop3
                 |> createGuitarChord SixthString)
             guitarChord |> tabify =! "      CMaj7   " + Environment.NewLine +
@@ -1154,7 +1154,7 @@ namespace VaughanTests
         let ``Should draw C major 7 drop 3 to guitar fretboard on fifth string closed``() =
             let guitarChord =
                 (cIonian
-                |> seventhsHarmonizer ScaleDgrees.I
+                |> seventhsHarmonizer ScaleDegrees.I
                 |> toDrop3
                 |> createGuitarChord FifthString)
             guitarChord |> tabify =! "      CMaj7   " + Environment.NewLine +
@@ -1182,10 +1182,10 @@ namespace VaughanTests
         [<Test>]
         let ``Should tabify multiple chords``() =
             let cIonian = createScale Ionian C
-            let cMaj7 = seventhsHarmonizer ScaleDgrees.I cIonian
-            let dMin7 = seventhsHarmonizer ScaleDgrees.II cIonian
-            let eMin7 = seventhsHarmonizer ScaleDgrees.III cIonian
-            let fMaj7 = seventhsHarmonizer ScaleDgrees.IV cIonian
+            let cMaj7 = seventhsHarmonizer ScaleDegrees.I cIonian
+            let dMin7 = seventhsHarmonizer ScaleDegrees.II cIonian
+            let eMin7 = seventhsHarmonizer ScaleDegrees.III cIonian
+            let fMaj7 = seventhsHarmonizer ScaleDegrees.IV cIonian
 
             let guitarChords =
                 [cMaj7; dMin7; eMin7; fMaj7]
@@ -1205,7 +1205,7 @@ namespace VaughanTests
         let ``Should draw shape of C major 7 drop 3 on sixth string``() =
             let guitarChord =
                 (cIonian
-                |> seventhsHarmonizer ScaleDgrees.I
+                |> seventhsHarmonizer ScaleDegrees.I
                 |> toDrop3
                 |> createGuitarChord SixthString)
             guitarChord |> shapify =! "CMaj7" + Environment.NewLine +
@@ -1217,7 +1217,7 @@ namespace VaughanTests
         let ``Should draw shape of C major 7 drop 2 on fifth string``() =
             let guitarChord =
                 (cIonian
-                |> seventhsHarmonizer ScaleDgrees.I
+                |> seventhsHarmonizer ScaleDegrees.I
                 |> toDrop2
                 |> createGuitarChord FifthString)
             guitarChord |> shapify =! "CMaj7" + Environment.NewLine +
@@ -1268,13 +1268,13 @@ namespace VaughanTests
             [<Test>]
             let ``Should create chord from chord intent``() =
                 let cIonian = createScale Ionian C
-                let cMaj = triadsHarmonizer ScaleDgrees.I cIonian
-                let dMin = triadsHarmonizer ScaleDgrees.II cIonian
-                let eMin = triadsHarmonizer ScaleDgrees.III cIonian
-                let fMaj = triadsHarmonizer ScaleDgrees.IV cIonian
-                let gMaj = triadsHarmonizer ScaleDgrees.V cIonian
-                let aMin = triadsHarmonizer ScaleDgrees.VI cIonian
-                let bDim = triadsHarmonizer ScaleDgrees.VII cIonian
+                let cMaj = triadsHarmonizer ScaleDegrees.I cIonian
+                let dMin = triadsHarmonizer ScaleDegrees.II cIonian
+                let eMin = triadsHarmonizer ScaleDegrees.III cIonian
+                let fMaj = triadsHarmonizer ScaleDegrees.IV cIonian
+                let gMaj = triadsHarmonizer ScaleDegrees.V cIonian
+                let aMin = triadsHarmonizer ScaleDegrees.VI cIonian
+                let bDim = triadsHarmonizer ScaleDegrees.VII cIonian
 
                 createChord { Root=C; Quality=Major } =! (cMaj |> toClosed)
                 createChord { Root=D; Quality=Minor } =! (dMin |> toClosed)
