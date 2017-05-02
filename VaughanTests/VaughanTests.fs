@@ -1080,13 +1080,8 @@ namespace VaughanTests
                             && tab.Contains (string frets.[1].Fret)
                             && tab.Contains (string frets.[2].Fret))
 
-<<<<<<< HEAD
         [<Property(Verbose = true)>]
         let ``Should map diatonic closed seventh chord to guitar tab`` (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note) (bassString: GuitarString) () =
-=======
-        [<Property>]
-        let ``Should map diatonic closed seventh chord to guitar tab`` (scaleType: Scale) (scaleDegree: ScaleDgrees) (root: Note) (bassString: GuitarString) () =
->>>>>>> 58bf64c9373699c5fd3b4da6fe7b2a164329ddc3
             ((bassString <> ThirdString && bassString <> SecondString && bassString <> FirstString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
                 && scaleType <> WholeTone && scaleType <> HalfWholeDiminished))
