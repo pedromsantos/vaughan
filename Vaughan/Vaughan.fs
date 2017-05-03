@@ -757,16 +757,16 @@ namespace Vaughan
             let closedChord = {guitarChord with Frets = raiseOpenFrets guitarChord.Frets}
             {closedChord with Frets = unstretch closedChord.Frets}
 
-        let private mapsChordNotesToFrets guitarStringIndex chord =
-                [for chordNoteIndex in 0 .. (chord.Notes.Length - 1)
-                        do yield (mapNoteToFret (indexToGuitarString guitarStringIndex) (fst chord.Notes.[chordNoteIndex]) false)]
+        let private mapAllChordNotesToFretsOnString guitarStringIndex chord =
+            [for chordNoteIndex in 0 .. (chord.Notes.Length - 1)
+                    do yield (mapNoteToFret (indexToGuitarString guitarStringIndex) (fst chord.Notes.[chordNoteIndex]) false)]
 
-        let private mapChordNotesToStrings bassString chord =
+        let private generateFretStringCombinationForChord bassString chord =
             [for guitarStringIndex in 1 .. (guitarStringOrdinal bassString)
-                do yield (mapsChordNotesToFrets guitarStringIndex chord)]
+                do yield (mapAllChordNotesToFretsOnString guitarStringIndex chord)]
 
-        let private mapChordToOpen mappedChord =
-            mappedChord
+        let private fitChordForOpenPositionFromCombinations fretStringCombinations =
+            fretStringCombinations
             |> allCombinations
             |> List.map (fun m -> (m, List.sumBy (fun f -> f.Fret) m) )
             |> List.minBy (fun l -> (snd l))
@@ -774,12 +774,12 @@ namespace Vaughan
 
         let private chordToGuitarOpenChord bassString chord =
             let frets = chord
-                        |> mapChordNotesToStrings bassString
-                        |> mapChordToOpen
+                        |> generateFretStringCombinationForChord bassString
+                        |> fitChordForOpenPositionFromCombinations
             { Chord=chord; Frets= frets |> List.rev }
 
-        let private mapChordToClosed mappedChord =
-            mappedChord
+        let private fitChordForClosedPositionFromCombinations fretStringCombinations =
+            fretStringCombinations
             |> allCombinations
             |> List.map (fun m -> (m, List.sumBy (fun f -> f.Fret) m) )
             |> List.filter (fun l -> not( (fst l) |> List.exists (fun f -> f.Fret = 0) ))
@@ -788,8 +788,8 @@ namespace Vaughan
 
         let private chordToGuitarClosedChord bassString chord =
             let frets = chord
-                        |> mapChordNotesToStrings bassString
-                        |> mapChordToClosed
+                        |> generateFretStringCombinationForChord bassString
+                        |> fitChordForClosedPositionFromCombinations
             { Chord=chord; Frets= frets |> List.rev }
 
         let private stringForLead guitarChord =
