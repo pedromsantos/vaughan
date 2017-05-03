@@ -677,57 +677,62 @@ namespace Vaughan
                                         then raiseOctave f
                                         else f)
 
+         module private GuitarStrings =
+            open Domain
+            open Notes
+
+            type private GuitarStringAttributes = {Name:string; OpenStringNote:Note; Index:int}
+
+            let private guitarStringAttributes = function
+                | SixthString -> { Name="Sixth"; OpenStringNote=E; Index=6}
+                | FifthString -> { Name="Fifth"; OpenStringNote=A; Index=5}
+                | FourthString -> { Name="Fourth"; OpenStringNote=D; Index=4}
+                | ThirdString -> { Name="Third"; OpenStringNote=G; Index=3}
+                | SecondString -> { Name="Second"; OpenStringNote=B; Index=2}
+                | FirstString -> { Name="First"; OpenStringNote=E; Index=1}
+
+            let guitarStringOrdinal guitarString =
+                (guitarStringAttributes guitarString).Index
+
+            let indexToGuitarString (nth:int) =
+                match nth with
+                | 6 -> SixthString
+                | 5 -> FifthString
+                | 4 -> FourthString
+                | 3 -> ThirdString
+                | 2 -> SecondString
+                | _ -> FirstString
+
+            let openStringNote guitarString =
+                (guitarStringAttributes guitarString).OpenStringNote
+
+            let nextString guitarString =
+                indexToGuitarString ((guitarStringOrdinal guitarString) - 1)
+
+            let fretForNote note guitarString =
+                measureAbsoluteSemitones (guitarStringAttributes guitarString).OpenStringNote note
+
         open Domain
         open Notes
         open Chords
         open Scales
         open ScaleHarmonizer
         open GuitarFrets
+        open GuitarStrings
         open Infrastructure
-
-        type private GuitarStringAttributes = {Name:string; OpenStringNote:Note; Index:int}
-
-        let private guitarStringAttributes = function
-            | SixthString -> { Name="Sixth"; OpenStringNote=E; Index=6}
-            | FifthString -> { Name="Fifth"; OpenStringNote=A; Index=5}
-            | FourthString -> { Name="Fourth"; OpenStringNote=D; Index=4}
-            | ThirdString -> { Name="Third"; OpenStringNote=G; Index=3}
-            | SecondString -> { Name="Second"; OpenStringNote=B; Index=2}
-            | FirstString -> { Name="First"; OpenStringNote=E; Index=1}
-
-        let private guitarStringOrdinal guitarString =
-            (guitarStringAttributes guitarString).Index
-
-        let private indexToGuitarString (nth:int) =
-            match nth with
-            | 6 -> SixthString
-            | 5 -> FifthString
-            | 4 -> FourthString
-            | 3 -> ThirdString
-            | 2 -> SecondString
-            | _ -> FirstString
-
-        let private openStringNote guitarString =
-            (guitarStringAttributes guitarString).OpenStringNote
-
-        let private nextString guitarString =
-            indexToGuitarString ((guitarStringOrdinal guitarString) - 1)
 
         let private createMutedStringFret guitarString =
             let note = openStringNote guitarString
             { GuitarString = guitarString; Fret = -1; Note = note }
 
-        let private findFretForNote note guitarString =
-            measureAbsoluteSemitones (guitarStringAttributes guitarString).OpenStringNote note
-
         let private createFret guitarString note =
-            { GuitarString = guitarString; Fret = findFretForNote note guitarString; Note = note }
+            { GuitarString = guitarString; Fret = fretForNote note guitarString; Note = note }    
 
-        let private skipString bassString chord guitarString =
-            chord.ChordType = Drop3 && guitarString = nextString bassString
-
-        let private chordNotesExceptBass (chordNotes:ChordNotes) =
-            chordNotes |> List.tail
+        let private remainingChordNotesToMap chordNotes shouldSkipString =
+            if shouldSkipString then
+                chordNotes
+            else
+                chordNotes |> List.tail
 
         let private mapNoteToFret guitarString note shouldSkipString =
             if shouldSkipString then
@@ -735,11 +740,8 @@ namespace Vaughan
             else
                 createFret guitarString note
 
-        let private remainingChordNotesToMap chordNotes shouldSkipString =
-            if shouldSkipString then
-                chordNotes
-            else
-                chordNotesExceptBass chordNotes
+        let private skipString bassString chord guitarString =
+            chord.ChordType = Drop3 && guitarString = nextString bassString
 
         let private mapChordToGuitarFrets bassString chord =
             let rec mapChordNoteToString guitarString chordNotes mappedChordNotes =
