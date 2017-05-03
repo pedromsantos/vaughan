@@ -792,6 +792,12 @@ namespace Vaughan
                         |> mapChordToClosed
             { Chord=chord; Frets= frets |> List.rev }
 
+        let private stringForLead guitarChord =
+            (guitarChord.Frets |> List.last).GuitarString
+
+        let private stringForBass guitarChord =
+            (guitarChord.Frets |> List.head).GuitarString
+
         let createGuitarChord bassString chord =
             match chord.ChordType with
             | Drop2 | Drop3 | Triad -> dropChordToGuitarChord bassString chord
@@ -803,12 +809,6 @@ namespace Vaughan
                 
         let chordName guitarChord =
             guitarChord.Chord.Name
-
-        let stringForLead guitarChord =
-            (guitarChord.Frets |> List.last).GuitarString
-
-        let stringForBass guitarChord =
-            (guitarChord.Frets |> List.head).GuitarString
 
         let numberOfMutedHighStrings guitarChord =
             match stringForLead guitarChord with
