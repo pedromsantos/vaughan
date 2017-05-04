@@ -548,6 +548,9 @@ namespace Vaughan
         let toOpen chord =
             {chord with ChordType=Open}
 
+        let ( !* ) c =
+            toOpen c
+
         let toClosed chord =
             {chord with ChordType=Closed}
 
@@ -835,6 +838,12 @@ namespace Vaughan
                 if chord.Notes |> List.exists (fun n -> snd n = Ninth)
                 then chordToGuitarClosedChord bassString chord
                 else nonDropChordToGuitarClosedChord bassString chord
+
+        let (|~) chord bassString =
+            createGuitarChord bassString chord
+
+        let (>|<) (chords:GuitarChord list) (chord:GuitarChord) =
+            chord :: chords |> rotateByOne
 
     module GuitarTab =
         open System
