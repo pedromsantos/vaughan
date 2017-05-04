@@ -650,11 +650,8 @@ namespace Vaughan
 
     module Guitar =
         module private GuitarFrets =
-            open Infrastructure
             open Domain
             open Notes
-            open Scales
-            open ScaleHarmonizer
 
             let private isOpen fret =
                 fret.Fret = 0
@@ -689,132 +686,142 @@ namespace Vaughan
                                         then raiseOctave f
                                         else f)
 
+         module private GuitarStrings =
+            open Domain
+            open Notes
+
+            type private GuitarStringAttributes = {Name:string; OpenStringNote:Note; Index:int}
+
+            let private guitarStringAttributes = function
+                | SixthString -> { Name="Sixth"; OpenStringNote=E; Index=6}
+                | FifthString -> { Name="Fifth"; OpenStringNote=A; Index=5}
+                | FourthString -> { Name="Fourth"; OpenStringNote=D; Index=4}
+                | ThirdString -> { Name="Third"; OpenStringNote=G; Index=3}
+                | SecondString -> { Name="Second"; OpenStringNote=B; Index=2}
+                | FirstString -> { Name="First"; OpenStringNote=E; Index=1}
+
+            let guitarStringOrdinal guitarString =
+                (guitarStringAttributes guitarString).Index
+
+            let indexToGuitarString (nth:int) =
+                match nth with
+                | 6 -> SixthString
+                | 5 -> FifthString
+                | 4 -> FourthString
+                | 3 -> ThirdString
+                | 2 -> SecondString
+                | _ -> FirstString
+
+            let openStringNote guitarString =
+                (guitarStringAttributes guitarString).OpenStringNote
+
+            let nextString guitarString =
+                indexToGuitarString ((guitarStringOrdinal guitarString) - 1)
+
+            let fretNoteOnString note guitarString =
+                measureAbsoluteSemitones (openStringNote guitarString) note
+
         open Domain
         open Notes
         open Chords
-        open Scales
-        open ScaleHarmonizer
         open GuitarFrets
+        open GuitarStrings
         open Infrastructure
 
-        type private GuitarStringAttributes = {Name:string; OpenStringNote:Note; Index:int}
-
-        let private guitarStringAttributes = function
-            | SixthString -> { Name="Sixth"; OpenStringNote=E; Index=6}
-            | FifthString -> { Name="Fifth"; OpenStringNote=A; Index=5}
-            | FourthString -> { Name="Fourth"; OpenStringNote=D; Index=4}
-            | ThirdString -> { Name="Third"; OpenStringNote=G; Index=3}
-            | SecondString -> { Name="Second"; OpenStringNote=B; Index=2}
-            | FirstString -> { Name="First"; OpenStringNote=E; Index=1}
-
-        let private guitarStringOrdinal guitarString =
-            (guitarStringAttributes guitarString).Index
-
-        let private indexToGuitarString (nth:int) =
-            match nth with
-            | 6 -> SixthString
-            | 5 -> FifthString
-            | 4 -> FourthString
-            | 3 -> ThirdString
-            | 2 -> SecondString
-            | _ -> FirstString
-
-        let private openStringNote guitarString =
-            (guitarStringAttributes guitarString).OpenStringNote
-
-        let private nextString guitarString =
-            indexToGuitarString ((guitarStringOrdinal guitarString) - 1)
-
-        let private createMutedStringFret guitarString =
-            let note = openStringNote guitarString
-            { GuitarString = guitarString; Fret = -1; Note = note }
-
-        let private findFretForNote note guitarString =
-            measureAbsoluteSemitones (guitarStringAttributes guitarString).OpenStringNote note
-
         let private createFret guitarString note =
-            { GuitarString = guitarString; Fret = findFretForNote note guitarString; Note = note }
+            { GuitarString = guitarString; Fret = fretNoteOnString note guitarString; Note = note }
 
-        let private skipString bassString chord guitarString =
-            chord.ChordType = Drop3 && guitarString = nextString bassString
+        module private MapDropChords =
+            let private createMutedStringFret guitarString =
+                { GuitarString = guitarString; Fret = -1; Note = openStringNote guitarString }
 
-        let private chordNotesExceptBass (chordNotes:ChordNotes) =
-            chordNotes |> List.tail
+            let private nextChordNotes chordNotes shouldSkipString =
+                if shouldSkipString then
+                    chordNotes
+                else
+                    chordNotes |> List.tail
 
-        let private mapNoteToFret guitarString note shouldSkipString =
-            if shouldSkipString then
-                createMutedStringFret guitarString
-            else
-                createFret guitarString note
+            let private mapNoteToFret guitarString note shouldSkipString =
+                if shouldSkipString then
+                    createMutedStringFret guitarString
+                else
+                    createFret guitarString note
 
-        let private remainingChordNotesToMap chordNotes shouldSkipString =
-            if shouldSkipString then
-                chordNotes
-            else
-                chordNotesExceptBass chordNotes
+            let private skipString bassString chord guitarString =
+                chord.ChordType = Drop3 && guitarString = nextString bassString
 
-        let private mapChordToGuitarFrets bassString chord =
-            let rec mapChordNoteToString guitarString chordNotes mappedChordNotes =
-                match chordNotes with
-                | [] -> mappedChordNotes
-                | _ ->
-                    let shouldSkipString = skipString bassString chord guitarString
-                    let fret = mapNoteToFret guitarString (fst chordNotes.[0]) shouldSkipString
-                    let unmapedChordNotes = remainingChordNotesToMap chordNotes shouldSkipString
-                    mapChordNoteToString (nextString guitarString) unmapedChordNotes (fret::mappedChordNotes)
-            mapChordNoteToString bassString chord.Notes []
+            let private mapChordToGuitarFrets bassString chord =
+                let rec mapChordNoteToString guitarString chordNotes mappedChordNotes =
+                    match chordNotes with
+                    | [] -> mappedChordNotes
+                    | _ ->
+                        let shouldSkipString = skipString bassString chord guitarString
+                        let fret = mapNoteToFret guitarString (fst chordNotes.[0]) shouldSkipString
+                        let unmapedChordNotes = nextChordNotes chordNotes shouldSkipString
+                        mapChordNoteToString (nextString guitarString) unmapedChordNotes (fret::mappedChordNotes)
+                mapChordNoteToString bassString chord.Notes []
 
-        let private mapsChordNotesToFrets guitarStringIndex chord =
+            let dropChordToGuitarChord bassString chord =
+                let guitarChord = { Chord = chord; Frets = mapChordToGuitarFrets bassString chord |> List.rev }
+                let closedChord = {guitarChord with Frets = raiseOpenFrets guitarChord.Frets}
+                {closedChord with Frets = unstretch closedChord.Frets}
+
+        module private MapNonDropChords =
+            let private mapAllChordNotesToFretsOnString guitarStringIndex chord =
                 [for chordNoteIndex in 0 .. (chord.Notes.Length - 1)
-                        do yield (mapNoteToFret (indexToGuitarString guitarStringIndex) (fst chord.Notes.[chordNoteIndex]) false)]
+                        do yield (createFret (indexToGuitarString guitarStringIndex) (fst chord.Notes.[chordNoteIndex]))]
 
-        let private mapChordNotesToStrings bassString chord =
-            [for guitarStringIndex in 1 .. (guitarStringOrdinal bassString)
-                do yield (mapsChordNotesToFrets guitarStringIndex chord)]
+            let private generateFretStringCombinationForChord bassString chord =
+                [for guitarStringIndex in 1 .. (guitarStringOrdinal bassString)
+                    do yield (mapAllChordNotesToFretsOnString guitarStringIndex chord)]
 
-        let private mapChordToOpen mappedChord =
-            mappedChord
-            |> allCombinations
-            |> List.map (fun m -> (m, List.sumBy (fun f -> f.Fret) m) )
-            |> List.minBy (fun l -> (snd l))
-            |> fst
+            let private fitChordForOpenPositionFromCombinations fretStringCombinations =
+                fretStringCombinations
+                |> allCombinations
+                |> List.map (fun m -> (m, List.sumBy (fun f -> f.Fret) m) )
+                |> List.minBy (fun l -> (snd l))
+                |> fst
 
-        let private mapChordToClosed mappedChord =
-            mappedChord
-            |> allCombinations
-            |> List.map (fun m -> (m, List.sumBy (fun f -> f.Fret) m) )
-            |> List.filter (fun l -> not( (fst l) |> List.exists (fun f -> f.Fret = 0) ))
-            |> List.minBy (fun l -> (snd l))
-            |> fst
+            let private fitChordForClosedPositionFromCombinations fretStringCombinations =
+                fretStringCombinations
+                |> allCombinations
+                |> List.map (fun m -> (m, List.sumBy (fun f -> f.Fret) m) )
+                |> List.filter (fun l -> not( (fst l) |> List.exists (fun f -> f.Fret = 0) ))
+                |> List.minBy (fun l -> (snd l))
+                |> fst
 
-        let private chordToGuitarOpenChord bassString chord =
-            let frets = chord
-                        |> mapChordNotesToStrings bassString
-                        |> mapChordToOpen
-            { Chord=chord; Frets= frets |> List.rev }
+            let chordToGuitarOpenChord bassString chord =
+                let frets = chord
+                            |> generateFretStringCombinationForChord bassString
+                            |> fitChordForOpenPositionFromCombinations
+                { Chord=chord; Frets= frets |> List.rev }
 
-        let private nonDropChordToGuitarClosedChord bassString chord =
-            let frets = chord
-                        |> mapChordNotesToStrings bassString
-                        |> mapChordToClosed
-            { Chord=chord; Frets= frets |> List.rev }
+            let chordToGuitarClosedChord bassString chord =
+                let frets = chord
+                            |> generateFretStringCombinationForChord bassString
+                            |> fitChordForClosedPositionFromCombinations
+                { Chord=chord; Frets= frets |> List.rev }
 
-        let private chordToGuitarChord bassString chord =
-            { Chord=chord; Frets= mapChordToGuitarFrets bassString chord |> List.rev }
+        let private stringForLead guitarChord =
+            (guitarChord.Frets |> List.last).GuitarString
 
-        let private chordToGuitarClosedChord bassString chord =
-            let guitarChord = chordToGuitarChord bassString chord
-            let closedChord = {guitarChord with Frets = raiseOpenFrets guitarChord.Frets}
-            {closedChord with Frets = unstretch closedChord.Frets}
+        let private stringForBass guitarChord =
+            (guitarChord.Frets |> List.head).GuitarString
+
+        open MapDropChords
+        open MapNonDropChords
+
+        let createGuitarChord bassString chord =
+            match chord.ChordType with
+            | Drop2 | Drop3 | Triad -> dropChordToGuitarChord bassString chord
+            | Open -> chordToGuitarOpenChord bassString chord
+            | Closed ->
+                if chord.Notes |> List.exists (fun n -> snd n = Ninth)
+                then dropChordToGuitarChord bassString chord
+                else chordToGuitarClosedChord bassString chord
 
         let chordName guitarChord =
             guitarChord.Chord.Name
-
-        let stringForLead guitarChord =
-            (guitarChord.Frets |> List.last).GuitarString
-
-        let stringForBass guitarChord =
-            (guitarChord.Frets |> List.head).GuitarString
 
         let numberOfMutedHighStrings guitarChord =
             match stringForLead guitarChord with
