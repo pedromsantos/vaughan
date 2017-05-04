@@ -522,6 +522,15 @@ namespace Vaughan
                 Name =  noteName root + nameForQuality (qualityForIntervals(intervalsForQuality quality))
             }
 
+        let (=>) root quality =
+            chord root quality
+
+        let add chords chord =
+            chord :: chords |> rotateByOne
+
+        let (/./) chords chord =
+            add chords chord
+
         let toDrop2 chord =
             if chord.Notes.Length = 4
             then {chord with Notes = chord.Notes |> swapFirstTwo |> rotateByOne; ChordType=Drop2}

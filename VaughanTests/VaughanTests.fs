@@ -1202,6 +1202,19 @@ namespace VaughanTests
                                 "E||-------------------------------------||" + Environment.NewLine
 
         [<Test>]
+        let ``Should tabify multiple chained chords using operators``() =
+            [(G=>Major)] /./ (C=>Major) /./ (A=>Minor) /./ (D=>Major)
+            |> List.map (fun c -> createGuitarChord SixthString (toOpen c))
+            |> tabifyAll =!
+                                "      GMaj   CMaj   AMin   DMaj   " + Environment.NewLine +
+                                "E||----3------0------0------2-------||" + Environment.NewLine +
+                                "B||----0------1------1------3-------||" + Environment.NewLine +
+                                "G||----0------0------2------2-------||" + Environment.NewLine +
+                                "D||----0------2------2------0-------||" + Environment.NewLine +
+                                "A||----2------3------0------0-------||" + Environment.NewLine +
+                                "E||----3------0------0------2-------||" + Environment.NewLine
+
+        [<Test>]
         let ``Should draw shape of C major 7 drop 3 on sixth string``() =
             let guitarChord =
                 (cIonian
