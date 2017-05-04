@@ -811,15 +811,6 @@ namespace Vaughan
         open MapDropChords
         open MapNonDropChords
 
-        let createGuitarChord bassString chord =
-            match chord.ChordType with
-            | Drop2 | Drop3 | Triad -> dropChordToGuitarChord bassString chord
-            | Open -> chordToGuitarOpenChord bassString chord
-            | Closed ->
-                if chord.Notes |> List.exists (fun n -> snd n = Ninth)
-                then dropChordToGuitarChord bassString chord
-                else chordToGuitarClosedChord bassString chord
-
         let chordName guitarChord =
             guitarChord.Chord.Name
 
@@ -839,12 +830,12 @@ namespace Vaughan
 
         let createGuitarChord bassString chord =
             match chord.ChordType with
-            | Drop2 | Drop3 | Triad -> chordToGuitarClosedChord bassString chord
+            | Drop2 | Drop3 | Triad -> dropChordToGuitarChord bassString chord
             | Open -> chordToGuitarOpenChord bassString chord
             | Closed ->
                 if chord.Notes |> List.exists (fun n -> snd n = Ninth)
-                then chordToGuitarClosedChord bassString chord
-                else nonDropChordToGuitarClosedChord bassString chord
+                then dropChordToGuitarChord bassString chord
+                else chordToGuitarClosedChord bassString chord
 
         let (|~) chord bassString =
             createGuitarChord bassString chord
