@@ -802,17 +802,17 @@ namespace Vaughan
                             |> fitChordForClosedPositionFromCombinations
                 { Chord=chord; Frets= frets |> List.rev }
 
-        let private stringForLead guitarChord =
-            (guitarChord.Frets |> List.last).GuitarString
-
-        let private stringForBass guitarChord =
-            (guitarChord.Frets |> List.head).GuitarString
-
         open MapDropChords
         open MapNonDropChords
 
         let chordName guitarChord =
             guitarChord.Chord.Name
+
+        let private stringForLead guitarChord =
+            (guitarChord.Frets |> List.last).GuitarString
+
+        let private stringForBass guitarChord =
+            (guitarChord.Frets |> List.head).GuitarString
 
         let numberOfMutedHighStrings guitarChord =
             match stringForLead guitarChord with
