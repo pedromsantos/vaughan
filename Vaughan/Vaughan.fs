@@ -783,29 +783,22 @@ namespace Vaughan
                 |> List.minBy (fun l -> (snd l))
                 |> fst
 
-            let private fitChordForOpenPositionFromCombinations fretStringCombinations =
-                fretStringCombinations
-                |> fitChordFromCombinations id
-
-            let private fitChordForClosedPositionFromCombinations fretStringCombinations =
-                fretStringCombinations
-                |> fitChordFromCombinations (List.filter (fun l -> not( l |> List.exists (fun f -> f.Fret = 0) )))
-
             let chordToGuitarOpenChord bassString chord =
                 { 
                     Chord = chord; 
                     Frets = chord
                             |> generateAllFretStringCombinationForChord bassString
-                            |> fitChordForOpenPositionFromCombinations 
+                            |> fitChordFromCombinations id 
                             |> List.rev 
                 }
 
             let chordToGuitarClosedChord bassString chord =
+                let filterOpenPositions = List.filter (fun fl -> not( fl |> List.exists (fun f -> f.Fret = 0) ))
                 { 
                     Chord = chord; 
                     Frets = chord
                             |> generateAllFretStringCombinationForChord bassString
-                            |> fitChordForClosedPositionFromCombinations 
+                            |> fitChordFromCombinations filterOpenPositions
                             |> List.rev 
                 }
 
