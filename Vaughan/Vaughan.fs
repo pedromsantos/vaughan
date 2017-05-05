@@ -767,40 +767,38 @@ namespace Vaughan
                 {closedChord with Frets = unstretch closedChord.Frets}
 
         module private MapNonDropChords =
-            let private mapAllChordNotesToFretsOnString guitarStringIndex chord =
+            let private mapAllChordNotesToFretsOnString fretFilter guitarStringIndex chord =
+                let guitarString = indexToGuitarString guitarStringIndex
                 [for chordNoteIndex in 0 .. (chord.Notes.Length - 1)
-                        do yield (createFret (indexToGuitarString guitarStringIndex) (fst chord.Notes.[chordNoteIndex]))]
+                    do yield (createFret guitarString (fst chord.Notes.[chordNoteIndex]))]
+                |> List.filter fretFilter
 
-            let private generateAllFretStringCombinationForChord bassString chord =
-                [for guitarStringIndex in 1 .. (guitarStringOrdinal bassString)
-                    do yield (mapAllChordNotesToFretsOnString guitarStringIndex chord)]
+            let private generateAllFretStringCombinationForChord fretFilter bassString chord =
+                let bassStringOrdinal = guitarStringOrdinal bassString
+                [for guitarStringIndex in 1 .. bassStringOrdinal 
+                    do yield (mapAllChordNotesToFretsOnString fretFilter guitarStringIndex chord)]
                 |> flatMap
 
-            let private fitChordFromCombinations filterUnwantedCombinations fretStringCombinations =
+            let private fitChordFromCombinations fretStringCombinations =
                 fretStringCombinations
-                |> filterUnwantedCombinations
                 |> List.map (fun m -> (m, List.sumBy (fun f -> f.Fret) m) )
                 |> List.minBy (fun l -> (snd l))
                 |> fst
 
-            let chordToGuitarOpenChord bassString chord =
+            let private chordToGuitarChord fretFilter bassString chord =
                 { 
                     Chord = chord; 
                     Frets = chord
-                            |> generateAllFretStringCombinationForChord bassString
-                            |> fitChordFromCombinations id 
+                            |> generateAllFretStringCombinationForChord fretFilter bassString
+                            |> fitChordFromCombinations 
                             |> List.rev 
                 }
 
+            let chordToGuitarOpenChord bassString chord =
+                chordToGuitarChord (fun f -> f = f) bassString chord
+            
             let chordToGuitarClosedChord bassString chord =
-                let filterOpenPositions = List.filter (fun fl -> not( fl |> List.exists (fun f -> f.Fret = 0) ))
-                { 
-                    Chord = chord; 
-                    Frets = chord
-                            |> generateAllFretStringCombinationForChord bassString
-                            |> fitChordFromCombinations filterOpenPositions
-                            |> List.rev 
-                }
+                chordToGuitarChord (fun f -> f.Fret <> 0) bassString chord
 
         open MapDropChords
         open MapNonDropChords
