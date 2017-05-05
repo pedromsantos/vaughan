@@ -54,11 +54,11 @@ namespace Vaughan
         let cappedMaximum number cap =
             if number > cap then cap else number
 
-        let allCombinations frets =
+        let flatMap listOfLists =
             let prefix fs pfx = pfx :: fs
             let prefixWith pfxs fs = List.map (prefix fs) pfxs
             let prefixAll pfxs fs = List.collect (prefixWith pfxs) fs
-            List.foldBack prefixAll frets [[]]
+            List.foldBack prefixAll listOfLists [[]]
 
     module Domain =
         type Note =
@@ -771,36 +771,43 @@ namespace Vaughan
                 [for chordNoteIndex in 0 .. (chord.Notes.Length - 1)
                         do yield (createFret (indexToGuitarString guitarStringIndex) (fst chord.Notes.[chordNoteIndex]))]
 
-            let private generateFretStringCombinationForChord bassString chord =
+            let private generateAllFretStringCombinationForChord bassString chord =
                 [for guitarStringIndex in 1 .. (guitarStringOrdinal bassString)
                     do yield (mapAllChordNotesToFretsOnString guitarStringIndex chord)]
 
-            let private fitChordForOpenPositionFromCombinations fretStringCombinations =
+            let private fitChordFromCombinations filter fretStringCombinations =
                 fretStringCombinations
-                |> allCombinations
+                |> flatMap
                 |> List.map (fun m -> (m, List.sumBy (fun f -> f.Fret) m) )
+                |> filter
                 |> List.minBy (fun l -> (snd l))
                 |> fst
+
+            let private fitChordForOpenPositionFromCombinations fretStringCombinations =
+                fretStringCombinations
+                |> fitChordFromCombinations id
 
             let private fitChordForClosedPositionFromCombinations fretStringCombinations =
                 fretStringCombinations
-                |> allCombinations
-                |> List.map (fun m -> (m, List.sumBy (fun f -> f.Fret) m) )
-                |> List.filter (fun l -> not( (fst l) |> List.exists (fun f -> f.Fret = 0) ))
-                |> List.minBy (fun l -> (snd l))
-                |> fst
+                |> fitChordFromCombinations (List.filter (fun l -> not( (fst l) |> List.exists (fun f -> f.Fret = 0) )))
 
             let chordToGuitarOpenChord bassString chord =
-                let frets = chord
-                            |> generateFretStringCombinationForChord bassString
-                            |> fitChordForOpenPositionFromCombinations
-                { Chord=chord; Frets= frets |> List.rev }
+                { 
+                    Chord = chord; 
+                    Frets = chord
+                            |> generateAllFretStringCombinationForChord bassString
+                            |> fitChordForOpenPositionFromCombinations 
+                            |> List.rev 
+                }
 
             let chordToGuitarClosedChord bassString chord =
-                let frets = chord
-                            |> generateFretStringCombinationForChord bassString
-                            |> fitChordForClosedPositionFromCombinations
-                { Chord=chord; Frets= frets |> List.rev }
+                { 
+                    Chord = chord; 
+                    Frets = chord
+                            |> generateAllFretStringCombinationForChord bassString
+                            |> fitChordForClosedPositionFromCombinations 
+                            |> List.rev 
+                }
 
         open MapDropChords
         open MapNonDropChords
