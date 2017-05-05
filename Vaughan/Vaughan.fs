@@ -774,11 +774,11 @@ namespace Vaughan
             let private generateAllFretStringCombinationForChord bassString chord =
                 [for guitarStringIndex in 1 .. (guitarStringOrdinal bassString)
                     do yield (mapAllChordNotesToFretsOnString guitarStringIndex chord)]
-
-            let private fitChordFromCombinations filter fretStringCombinations =
-                fretStringCombinations
                 |> flatMap
-                |> filter
+
+            let private fitChordFromCombinations filterUnwantedCombinations fretStringCombinations =
+                fretStringCombinations
+                |> filterUnwantedCombinations
                 |> List.map (fun m -> (m, List.sumBy (fun f -> f.Fret) m) )
                 |> List.minBy (fun l -> (snd l))
                 |> fst
