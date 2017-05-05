@@ -778,8 +778,8 @@ namespace Vaughan
             let private fitChordFromCombinations filter fretStringCombinations =
                 fretStringCombinations
                 |> flatMap
-                |> List.map (fun m -> (m, List.sumBy (fun f -> f.Fret) m) )
                 |> filter
+                |> List.map (fun m -> (m, List.sumBy (fun f -> f.Fret) m) )
                 |> List.minBy (fun l -> (snd l))
                 |> fst
 
@@ -789,7 +789,7 @@ namespace Vaughan
 
             let private fitChordForClosedPositionFromCombinations fretStringCombinations =
                 fretStringCombinations
-                |> fitChordFromCombinations (List.filter (fun l -> not( (fst l) |> List.exists (fun f -> f.Fret = 0) )))
+                |> fitChordFromCombinations (List.filter (fun l -> not( l |> List.exists (fun f -> f.Fret = 0) )))
 
             let chordToGuitarOpenChord bassString chord =
                 { 
