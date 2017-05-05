@@ -773,14 +773,14 @@ namespace Vaughan
                     do yield (createFret guitarString (fst chord.Notes.[chordNoteIndex]))]
                 |> List.filter fretFilter
 
-            let private generateAllFretStringCombinationForChord fretFilter bassString chord =
+            let private generateAllFretCombinations fretFilter bassString chord =
                 let bassStringOrdinal = guitarStringOrdinal bassString
                 [for guitarStringIndex in 1 .. bassStringOrdinal 
                     do yield (mapAllChordNotesToFretsOnString fretFilter guitarStringIndex chord)]
                 |> flatMap
 
-            let private fitChordFromCombinations fretStringCombinations =
-                fretStringCombinations
+            let private fitFretingCombinations fretingCombinations =
+                fretingCombinations
                 |> List.map (fun m -> (m, List.sumBy (fun f -> f.Fret) m) )
                 |> List.minBy (fun l -> (snd l))
                 |> fst
@@ -789,8 +789,8 @@ namespace Vaughan
                 { 
                     Chord = chord; 
                     Frets = chord
-                            |> generateAllFretStringCombinationForChord fretFilter bassString
-                            |> fitChordFromCombinations 
+                            |> generateAllFretCombinations fretFilter bassString
+                            |> fitFretingCombinations 
                             |> List.rev 
                 }
 
