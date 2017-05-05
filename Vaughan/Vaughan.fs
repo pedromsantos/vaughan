@@ -767,11 +767,11 @@ namespace Vaughan
                 {closedChord with Frets = unstretch closedChord.Frets}
 
         module private MapNonDropChords =
-            let private mapAllChordNotesToFretsOnString fretFilter guitarStringIndex chord =
+            let private mapAllChordNotesToFretsOnString excludeFrets guitarStringIndex chord =
                 let guitarString = indexToGuitarString guitarStringIndex
                 [for chordNoteIndex in 0 .. (chord.Notes.Length - 1)
                     do yield (createFret guitarString (fst chord.Notes.[chordNoteIndex]))]
-                |> List.filter fretFilter
+                |> List.filter excludeFrets
 
             let private generateAllFretCombinations fretFilter bassString chord =
                 let bassStringOrdinal = guitarStringOrdinal bassString
@@ -785,11 +785,11 @@ namespace Vaughan
                 |> List.minBy (fun l -> (snd l))
                 |> fst
 
-            let private chordToGuitarChord fretFilter bassString chord =
+            let private chordToGuitarChord excludeFrets bassString chord =
                 { 
                     Chord = chord; 
                     Frets = chord
-                            |> generateAllFretCombinations fretFilter bassString
+                            |> generateAllFretCombinations excludeFrets bassString
                             |> fitFretingCombinations 
                             |> List.rev 
                 }
