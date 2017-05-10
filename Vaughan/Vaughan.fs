@@ -206,7 +206,7 @@ namespace Vaughan
             | MajorThirteenth -> {Name="MajorThirteenth"; Distance=21; Transpose=sharp}
 
 
-        let private transposeNoteForInterval:ITransposeNoteForInterval = fun note interval ->
+        let private sharpOrFlatNoteForInterval:ITransposeNoteForInterval = fun note interval ->
             (intervalAttributes interval).Transpose note
 
         let sharp:ISharpNote = fun note ->
@@ -269,15 +269,15 @@ namespace Vaughan
         let private isSameInterval interval otherInterval =
             toOctaveDistance interval = toOctaveDistance otherInterval
 
-        let transpose:ITransposeNote = fun noteToTranspose transposingInterval ->
-            let rec loop note =
-                let transposedNote = transposeNoteForInterval note transposingInterval
-                let newInterval = intervalBetween noteToTranspose transposedNote
-                if isSameInterval newInterval transposingInterval
-                    then transposedNote
-                    else loop transposedNote
+        let transpose:ITransposeNote = fun note interval ->
+            let rec loop n =
+                let newNote = sharpOrFlatNoteForInterval n interval
+                let newInterval = intervalBetween note newNote
+                if isSameInterval newInterval interval
+                    then newNote
+                    else loop newNote
 
-            loop noteToTranspose
+            loop note
 
     module Scales =
         open Domain
