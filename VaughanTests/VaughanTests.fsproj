@@ -90,5 +90,5 @@
         </PropertyGroup>
     </Otherwise>
   </Choose>
-  <Import Project="$(FSharpTargetsPath)" />  
+  <Import Project="$(FSharpTargetsPath)" />
 </Project>
