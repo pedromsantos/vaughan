@@ -948,7 +948,7 @@ namespace VaughanTests
                         {GuitarString=FourthString; Fret=10; Note=C};
                     ]
 
-        [<Property(MaxTest = 531)>]
+        [<Property(MaxTest = 500)>]
         let ``Should map diatonic closed sevent chords to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note) (bassString: GuitarString) () =
             ((bassString = SixthString || bassString = FifthString || bassString = FourthString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
@@ -1080,7 +1080,7 @@ namespace VaughanTests
                             && tab.Contains (string frets.[1].Fret)
                             && tab.Contains (string frets.[2].Fret))
 
-        [<Property(Verbose = true)>]
+        [<Property>]
         let ``Should map diatonic closed seventh chord to guitar tab`` (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note) (bassString: GuitarString) () =
             ((bassString <> ThirdString && bassString <> SecondString && bassString <> FirstString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
