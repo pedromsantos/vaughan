@@ -54,11 +54,11 @@ namespace Vaughan
         let cappedMaximum number cap =
             if number > cap then cap else number
 
-        let allCombinations frets =
+        let flatMap listOfLists =
             let prefix fs pfx = pfx :: fs
             let prefixWith pfxs fs = List.map (prefix fs) pfxs
             let prefixAll pfxs fs = List.collect (prefixWith pfxs) fs
-            List.foldBack prefixAll frets [[]]
+            List.foldBack prefixAll listOfLists [[]]
 
     module Domain =
         type Note =
@@ -768,52 +768,50 @@ namespace Vaughan
                 {closedChord with Frets = unstretch closedChord.Frets}
 
         module private MapNonDropChords =
-            let private mapAllChordNotesToFretsOnString guitarStringIndex chord =
+            let private mapAllChordNotesToFretsOnString allowedFrets guitarStringIndex chord =
+                let guitarString = indexToGuitarString guitarStringIndex
                 [for chordNoteIndex in 0 .. (chord.Notes.Length - 1)
-                        do yield (createFret (indexToGuitarString guitarStringIndex) (fst chord.Notes.[chordNoteIndex]))]
+                    do yield (createFret guitarString (fst chord.Notes.[chordNoteIndex]))]
+                |> List.filter allowedFrets
 
-            let private generateFretStringCombinationForChord bassString chord =
-                [for guitarStringIndex in 1 .. (guitarStringOrdinal bassString)
-                    do yield (mapAllChordNotesToFretsOnString guitarStringIndex chord)]
+            let private generateAllFretCombinations allowedFrets bassString chord =
+                let bassStringOrdinal = guitarStringOrdinal bassString
+                [for guitarStringIndex in 1 .. bassStringOrdinal 
+                    do yield (mapAllChordNotesToFretsOnString allowedFrets guitarStringIndex chord)]
+                |> flatMap
 
-            let private fitChordForOpenPositionFromCombinations fretStringCombinations =
-                fretStringCombinations
-                |> allCombinations
+            let private fitFretingCombinations fretingCombinations =
+                fretingCombinations
                 |> List.map (fun m -> (m, List.sumBy (fun f -> f.Fret) m) )
                 |> List.minBy (fun l -> (snd l))
                 |> fst
 
-            let private fitChordForClosedPositionFromCombinations fretStringCombinations =
-                fretStringCombinations
-                |> allCombinations
-                |> List.map (fun m -> (m, List.sumBy (fun f -> f.Fret) m) )
-                |> List.filter (fun l -> not( (fst l) |> List.exists (fun f -> f.Fret = 0) ))
-                |> List.minBy (fun l -> (snd l))
-                |> fst
+            let private chordToGuitarChord allowedFrets bassString chord =
+                { 
+                    Chord = chord; 
+                    Frets = chord
+                            |> generateAllFretCombinations allowedFrets bassString
+                            |> fitFretingCombinations 
+                            |> List.rev 
+                }
 
             let chordToGuitarOpenChord bassString chord =
-                let frets = chord
-                            |> generateFretStringCombinationForChord bassString
-                            |> fitChordForOpenPositionFromCombinations
-                { Chord=chord; Frets= frets |> List.rev }
-
+                chordToGuitarChord (fun f -> f = f) bassString chord
+            
             let chordToGuitarClosedChord bassString chord =
-                let frets = chord
-                            |> generateFretStringCombinationForChord bassString
-                            |> fitChordForClosedPositionFromCombinations
-                { Chord=chord; Frets= frets |> List.rev }
-
-        let private stringForLead guitarChord =
-            (guitarChord.Frets |> List.last).GuitarString
-
-        let private stringForBass guitarChord =
-            (guitarChord.Frets |> List.head).GuitarString
+                chordToGuitarChord (fun f -> f.Fret <> 0) bassString chord
 
         open MapDropChords
         open MapNonDropChords
 
         let chordName guitarChord =
             guitarChord.Chord.Name
+
+        let private stringForLead guitarChord =
+            (guitarChord.Frets |> List.last).GuitarString
+
+        let private stringForBass guitarChord =
+            (guitarChord.Frets |> List.head).GuitarString
 
         let numberOfMutedHighStrings guitarChord =
             match stringForLead guitarChord with
