@@ -270,13 +270,12 @@ namespace Vaughan
 
         let transpose:ITransposeNote = fun noteToTranspose transposingInterval ->
             let rec loop note =
-                let transposedNote = transposeNoteForInterval note transposingInterval
-                let newInterval = intervalBetween noteToTranspose transposedNote
+                let newInterval = intervalBetween noteToTranspose note
                 if isSameInterval newInterval transposingInterval
-                    then transposedNote
-                    else loop transposedNote
+                    then note
+                    else loop (transposeNoteForInterval note transposingInterval)
 
-            loop noteToTranspose
+            loop (transposeNoteForInterval noteToTranspose transposingInterval)
 
     module Scales =
         open Domain
