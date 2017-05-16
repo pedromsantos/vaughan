@@ -271,8 +271,7 @@ namespace Vaughan
 
         let transpose:ITransposeNote = fun noteToTranspose transposingInterval ->
             let rec loop note =
-                let newInterval = intervalBetween noteToTranspose note
-                if isSameInterval newInterval transposingInterval
+                if isSameInterval (intervalBetween noteToTranspose note) transposingInterval
                     then note
                     else loop (sharpOrFlatNoteForInterval note transposingInterval)
 
@@ -317,7 +316,7 @@ namespace Vaughan
         type private KeyAttributes = {Root:Note; Accidentals:int}
         type private IKeyAttributes = Key -> KeyAttributes
 
-        let private keyAttributes = function
+        let private keyFormula = function
             | AMajor -> {Root=A; Accidentals=3}
             | AFlatMajor -> {Root=AFlat; Accidentals=(-4)}
             | BMajor -> {Root=B; Accidentals=5}
@@ -345,10 +344,10 @@ namespace Vaughan
             | EFlatMinor -> {Root=EFlat; Accidentals=(-6)}
 
         let private root key =
-            (keyAttributes key).Root
+            (keyFormula key).Root
 
         let private accidentals key =
-            (keyAttributes key).Accidentals
+            (keyFormula key).Accidentals
 
         let private flatKey fifths keyAccidents =
             (fifths |> List.rev |> List.skip -keyAccidents)
@@ -391,7 +390,7 @@ namespace Vaughan
 
         type private ChordAttributes = {Name:string; Quality:ChordQuality; Formula:Interval list}
 
-        let private chordAttributes =
+        let private chordFormula =
             [
                 {Name="Maj"; Quality=Major; Formula=[MajorThird; PerfectFifth]}
                 {Name="Aug"; Quality=Augmented; Formula=[MajorThird; AugmentedFifth]}
@@ -436,17 +435,17 @@ namespace Vaughan
             ]
 
         let private qualityForIntervals intervals =
-            (chordAttributes
+            (chordFormula
             |> List.filter (fun c -> c.Formula = intervals)
             |> List.head).Quality
 
         let private intervalsForQuality quality =
-            (chordAttributes
+            (chordFormula
             |> List.filter (fun c -> c.Quality = quality)
             |> List.head).Formula
 
         let private nameForQuality quality =
-            (chordAttributes
+            (chordFormula
             |> List.filter (fun c -> c.Quality = quality)
             |> List.head).Name
 
@@ -486,11 +485,12 @@ namespace Vaughan
 
         let private invertDrop2 chord =
             {
-                chord with Notes= [chord.Notes |> List.last]
-                                    @ (chord.Notes
-                                        |> List.take (chord.Notes.Length - 1)
-                                        |> rotateByOne
-                                        |> rotateByOne)
+                chord with Notes = [chord.Notes |> List.last]
+                                   @ 
+                                   (chord.Notes
+                                    |> List.take (chord.Notes.Length - 1)
+                                    |> rotateByOne
+                                    |> rotateByOne)
             }
 
         let private invertDrop3 chord =
