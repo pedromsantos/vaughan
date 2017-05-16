@@ -153,7 +153,6 @@ namespace Vaughan
         type private NoteAttributes = {Name:string; Sharp:Note; Flat:Note; Pitch:int}
         type private IntervalAttributes = {Name:string; Distance:int; Transpose: (Note -> Note)}
         type private INoteAttributes = Note -> NoteAttributes
-        type private IIntervalAttributes = Interval -> ISharpNote -> IFlatNote -> INaturalNote -> IntervalAttributes
         type private ITransposeNoteForInterval = Note -> Interval -> Note
 
         let private noteAttributes:INoteAttributes = function
@@ -175,7 +174,11 @@ namespace Vaughan
             | BFlat -> {Name="Bb"; Sharp=B; Flat=A; Pitch=10}
             | B -> {Name="B"; Sharp=C; Flat=BFlat; Pitch=11}
 
-        let private intervalAttributes:IIntervalAttributes = fun interval sharp flat natural ->
+        let private intervalAttributes interval =
+            let sharp = fun n -> (noteAttributes n).Sharp
+            let flat = fun n -> (noteAttributes n).Flat
+            let natural = id
+
             match interval with
             | Unisson -> {Name="Unisson"; Distance=0; Transpose=natural}
             | MinorSecond -> {Name="MinorSecond"; Distance=1; Transpose=flat}
@@ -202,11 +205,9 @@ namespace Vaughan
             | MinorThirteenth -> {Name="MinorThirteenth"; Distance=20; Transpose=flat}
             | MajorThirteenth -> {Name="MajorThirteenth"; Distance=21; Transpose=sharp}
 
-        let private intervalAttributesWithDefaults interval =
-            (intervalAttributes interval (fun n -> (noteAttributes n).Sharp) (fun n -> (noteAttributes n).Flat) id)
 
-        let private transposeNoteForInterval:ITransposeNoteForInterval = fun note interval ->
-            (intervalAttributesWithDefaults interval).Transpose note
+        let private sharpOrFlatNoteForInterval:ITransposeNoteForInterval = fun note interval ->
+            (intervalAttributes interval).Transpose note
 
         let sharp:ISharpNote = fun note ->
             (noteAttributes note).Sharp
@@ -223,10 +224,10 @@ namespace Vaughan
             (noteAttributes note).Pitch
 
         let intervalName:IIntervalName = fun interval ->
-            (intervalAttributesWithDefaults interval).Name
+            (intervalAttributes interval).Name
 
         let toDistance:IIntervalToDistance = fun interval ->
-            (intervalAttributesWithDefaults interval).Distance
+            (intervalAttributes interval).Distance
 
         let toOctaveDistance:IIntervalToDistance = fun interval ->
             let distance = toDistance interval
@@ -273,9 +274,9 @@ namespace Vaughan
                 let newInterval = intervalBetween noteToTranspose note
                 if isSameInterval newInterval transposingInterval
                     then note
-                    else loop (transposeNoteForInterval note transposingInterval)
+                    else loop (sharpOrFlatNoteForInterval note transposingInterval)
 
-            loop (transposeNoteForInterval noteToTranspose transposingInterval)
+            loop (sharpOrFlatNoteForInterval noteToTranspose transposingInterval)
 
     module Scales =
         open Domain
