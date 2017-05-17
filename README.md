@@ -59,9 +59,9 @@ open Vaughan.Keys
 
 | Example           | Output                              |
 | ----------------- | ----------------------------------- |
-| notes CMajor      | [ C; D; E; F; G; A; B ]             |
-| notes EFlatMajor  | [ EFlat; F; G; AFlat; BFlat; C; D ] |
-| notes DMinor      | [ D; E; F; G; A; BFlat; C ]         |
+| CMajor.Notes      | [ C; D; E; F; G; A; B ]             |
+| EFlatMajor.Notes  | [ EFlat; F; G; AFlat; BFlat; C; D ] |
+| DMinor.Notes      | [ D; E; F; G; A; BFlat; C ]         |
 
 ### Scales
 
@@ -97,12 +97,12 @@ let cMaj = chordFromRootAndFunction c Major
 | bass cMaj7                                                  | C                                                 |
 | lead cMaj7                                                  | B                                                 |
 | name cMaj7                                                  | "CMaj7"                                           |
-| cMaj7.notes                                                 | [(C, Root); (E, Third); (G, Fifth); (B, Seventh)] |
-| (cMaj7 &#124;> invert).notes                                | [(E, Third); (G, Fifth); (B, Seventh); (C, Root)] |
-| (cMaj7 &#124;> invert &#124;> invert).notes                 | [(G, Fifth); (B, Seventh); (C, Root); (E, Third)] |
-| (cMaj7 &#124;> invert &#124;> invert &#124;> invert).notes  | [(B, Seventh); (C, Root); (E, Third); (G, Fifth)] |
-| (cMaj7 &#124;> toDrop2).notes                               | [(C, Root); (G, Fifth); (B, Seventh); (E, Third)] |
-| (cMaj7 &#124;> toDrop3).notes                               | [(C, Root); (B, Seventh); (E, Third); (G, Fifth)] |
+| cMaj7.Notes                                                 | [(C, Root); (E, Third); (G, Fifth); (B, Seventh)] |
+| (cMaj7 &#124;> invert).Notes                                | [(E, Third); (G, Fifth); (B, Seventh); (C, Root)] |
+| (cMaj7 &#124;> invert &#124;> invert).Notes                 | [(G, Fifth); (B, Seventh); (C, Root); (E, Third)] |
+| (cMaj7 &#124;> invert &#124;> invert &#124;> invert).Notes  | [(B, Seventh); (C, Root); (E, Third); (G, Fifth)] |
+| (cMaj7 &#124;> toDrop2).Notes                               | [(C, Root); (G, Fifth); (B, Seventh); (E, Third)] |
+| (cMaj7 &#124;> toDrop3).Notes                               | [(C, Root); (B, Seventh); (E, Third); (G, Fifth)] |
 | inversionForFunctionAsLead cMaj Third                       | cMaj &#124;> invert &#124;> invert                |
 | inversionForFunctionAsBass cMaj Fifth                       | cMaj &#124;> invert &#124;> invert                |
 | invertionWithLeadClosestToNote cMaj CSharp                  | cMaj &#124;> invert                               |
@@ -127,7 +127,6 @@ let cMinor = createScale HarmonicMinor C
 
  Example                                       | Output         |
 | -------------------------------------------- | -------------- |
-| thirds ScaleDgrees.I cIonian                 | [ C; E; G; B ] |
 | triadsHarmonizer ScaleDgrees.I cIonian       | cMaj           |
 | triadsHarmonizer ScaleDgrees.I cMinor        | cMin           |
 | triadsHarmonizer ScaleDgrees.I cMinor        | cMin           |
@@ -147,7 +146,7 @@ open Vaughan.Scales
 ```fsharp
 createScale Ionian C
 |> triadsHarmonizer ScaleDgrees.I
-|> chordToGuitarClosedChord SixthString
+|> createGuitarChord SixthString
 |> tabify
 ```
 Output:
@@ -165,7 +164,7 @@ E|-8-|
 createScale Ionian C
 |> seventhsHarmonizer ScaleDgrees.I
 |> toDrop2
-|> chordToGuitarClosedChord FifthString
+|> createGuitarChord FifthString
 |> tabify
 ```
 Output:
@@ -183,7 +182,7 @@ E|---|
 createScale Ionian A
 |> seventhsHarmonizer ScaleDgrees.I
 |> toDrop2
-|> chordToGuitarClosedChord FifthString
+|> createGuitarChord FifthString
 |> tabify
 ```
 Output:
@@ -199,7 +198,7 @@ E|----|
 ```fsharp
 createScale Ionian F
 |> seventhsHarmonizer ScaleDgrees.I
-|> chordToGuitarClosedChord FourthString
+|> createGuitarChord FourthString
 |> tabify
 ```
 Output:
@@ -217,7 +216,7 @@ E|----|
 createScale Ionian C
 |> seventhsHarmonizer ScaleDgrees.I
 |> toDrop3
-|> chordToGuitarClosedChord SixthString
+|> createGuitarChord SixthString
 |> tabify
 ```
 Output:
@@ -235,7 +234,7 @@ E|-8-|
 createScale Ionian C
 |> seventhsHarmonizer ScaleDgrees.I
 |> toDrop3
-|> chordToGuitarClosedChord FifthString
+|> createGuitarChord FifthString
 |> tabify
 ```
 Output:
@@ -252,7 +251,7 @@ E|---|
 createScale Ionian C
 |> seventhsHarmonizer ScaleDgrees.I
 |> toDrop2
-|> chordToGuitarClosedChord FifthString
+|> createGuitarChord FifthString
 |> shapify
 Output:
 ```
@@ -270,7 +269,7 @@ let eMin = seventhsHarmonizer ScaleDgrees.III cIonian
 let fMaj = seventhsHarmonizer ScaleDgrees.IV cIonian
 
 let guitarChords =  [cMaj; dMin; eMin; fMaj] 
-                    |> List.map (toDrop2 >> (chordToGuitarClosedChord FifthString))
+                    |> List.map (toDrop2 >> (createGuitarChord FifthString))
 
 tabifyAll guitarChords
 ```
@@ -301,7 +300,7 @@ open Vaughan.SpeechToMusic
 "C Major"
 |> parseChord
 |> createChord
-|> chordToGuitarClosedChord SixthString
+|> createGuitarChord SixthString
 |> tabify
 ```
 Output:
