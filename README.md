@@ -57,11 +57,11 @@ open Vaughan.Notes
 open Vaughan.Keys
 ```
 
-| Example           | Output                              |
-| ----------------- | ----------------------------------- |
-| CMajor.Notes      | [ C; D; E; F; G; A; B ]             |
-| EFlatMajor.Notes  | [ EFlat; F; G; AFlat; BFlat; C; D ] |
-| DMinor.Notes      | [ D; E; F; G; A; BFlat; C ]         |
+| Example              | Output                              |
+| -------------------- | ----------------------------------- |
+| keyNotes CMajor      | [ C; D; E; F; G; A; B ]             |
+| keyNotes EFlatMajor  | [ EFlat; F; G; AFlat; BFlat; C; D ] |
+| keyNotes DMinor      | [ D; E; F; G; A; BFlat; C ]         |
 
 ### Scales
 
@@ -82,6 +82,7 @@ open Vaughan.Scales
 open Vaughan.Notes
 open Vaughan.Scales
 open Vaughan.Chords
+open Vaughan.ChordVoiceLeading
 
 let cMaj7 = {notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh)]; chordType=Closed}
 let cMaj = chordFromRootAndFunction c Major
@@ -89,10 +90,6 @@ let cMaj = chordFromRootAndFunction c Major
 
 | Example                                                     | Output                                            |
 | ----------------------------------------------------------- | ------------------------------------------------- |
-| noteForFunction cMaj7 Root                                  | C                                                 |
-| noteForFunction cMaj7 Third                                 | E                                                 |
-| noteForFunction cMaj7 Fifth                                 | G                                                 |
-| noteForFunction cMaj7 Sevent                                | B                                                 |
 | noteNames cMaj7                                             | ["C"; "E"; "G"; "B"]                              |
 | bass cMaj7                                                  | C                                                 |
 | lead cMaj7                                                  | B                                                 |
@@ -106,7 +103,7 @@ let cMaj = chordFromRootAndFunction c Major
 | inversionForFunctionAsLead cMaj Third                       | cMaj &#124;> invert &#124;> invert                |
 | inversionForFunctionAsBass cMaj Fifth                       | cMaj &#124;> invert &#124;> invert                |
 | invertionWithLeadClosestToNote cMaj CSharp                  | cMaj &#124;> invert                               |
-| invertionWithBAssdClosestToNote cMaj F                      | cMaj &#124;> invert                               |
+| invertionWithBassClosestToNote cMaj F                      | cMaj &#124;> invert                               |
 
 ### Scale harmonizing
 
@@ -116,10 +113,10 @@ open Vaughan.Scales
 open Vaughan.Chords
 open Vaughan.ScaleHarmonizer
 
-let cMaj = {notes= [(C, Root); (E, Third); (G, Fifth)]; chordType=Closed}
-let cMin = {notes= [(C, Root); (EFlat, Third); (G, Fifth)]; chordType=Closed}
+let cMaj = {Notes= [(C, Root); (E, Third); (G, Fifth)]; ChordType=Closed; Name="CMaj"}
+let cMin = {Notes= [(C, Root); (EFlat, Third); (G, Fifth)]; ChordType=Closed; Name="CMin"}
 
-let cMaj7 = {notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh)]; chordType=Closed}
+let cMaj7 = {Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh)]; ChordType=Closed; Name="CMaj7"}
 
 let cIonian = createScale Ionian C
 let cMinor = createScale HarmonicMinor C
