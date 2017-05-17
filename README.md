@@ -11,7 +11,7 @@ Build is broken due to github API rate limit in build server.
 
 ### Online
 
-Navigate to https://repl.it/FJHh/78 there is some sample code included with the source. The SpeechToMusic module is not available as I have not found a way to add FParsec dependency in repl.it
+Navigate to https://repl.it/FJHh/79 there is some sample code included with the source. The SpeechToMusic module is not available as I have not found a way to add FParsec dependency in repl.it
 
 ### On your own evironment
 
