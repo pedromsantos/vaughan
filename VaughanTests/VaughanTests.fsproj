@@ -65,7 +65,14 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="VaughanTests.fs" />
+    <Compile Include="InfrastructureTests.fs" />
+    <Compile Include="NoteTests.fs" />
+    <Compile Include="KeyTests.fs" />
+    <Compile Include="ScaleTests.fs" />
+    <Compile Include="ScaleHarmonizerTests.fs" />
+    <Compile Include="ChordTests.fs" />
+    <Compile Include="GuitarTests.fs" />
+    <Compile Include="SpeechToMusicTests.fs" />
     <Content Include="App.config" />
   </ItemGroup>
   <Choose>
