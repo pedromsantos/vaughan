@@ -52,7 +52,7 @@ namespace Vaughan
         let cappedMaximum number cap =
             if number > cap then cap else number
 
-        let flatMap listOfLists =
+        let combineAll listOfLists =
             let prefix fs pfx = pfx :: fs
             let prefixWith pfxs fs = List.map (prefix fs) pfxs
             let prefixAll pfxs fs = List.collect (prefixWith pfxs) fs

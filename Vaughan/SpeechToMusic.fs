@@ -1,7 +1,5 @@
 namespace Vaughan
 
-    //https://repl.it/FJHh/79
-
     module SpeechToMusic =
         open FParsec
         open Domain

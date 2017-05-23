@@ -129,7 +129,7 @@ namespace Vaughan
                 let bassStringOrdinal = guitarStringOrdinal bassString
                 [for guitarStringIndex in 1 .. bassStringOrdinal 
                     do yield (mapAllChordNotesToFretsOnString allowedFrets guitarStringIndex chord)]
-                |> flatMap
+                |> combineAll
 
             let private fitFretingCombinations fretingCombinations =
                 fretingCombinations
