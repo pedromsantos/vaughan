@@ -32,7 +32,7 @@ namespace Vaughan
             | Ionian | Dorian | Phrygian | Lydian | Mixolydian
             | Aolian | Locrian | MajorPentatonic | MinorPentatonic
             | Blues | HarmonicMinor | MelodicMinor | Dorianb2 | LydianAugmented
-            | LydianDominant | Mixolydianb6 | LocrianSharp2
+            | LydianDominant | Bebop | Mixolydianb6 | LocrianSharp2
             | AlteredDominant | HalfWholeDiminished | WholeTone
 
         type ScaleNotes = Note list
