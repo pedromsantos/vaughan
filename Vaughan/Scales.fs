@@ -4,10 +4,10 @@ namespace Vaughan
         open Domain
         open Notes
 
-        type private ScaleFormula = Interval list
-        type private IScaleFormula = Scale -> ScaleFormula
+        type private ScalePattern = Interval list
+        type private IScalePattern = Scale -> ScalePattern
 
-        let private scaleFormula:IScaleFormula = function
+        let private scalePattern:IScalePattern = function
             | Ionian -> [Unisson; MajorSecond; MajorThird; PerfectFourth; PerfectFifth; MajorSixth; MajorSeventh]
             | Dorian -> [Unisson; MajorSecond; MinorThird; PerfectFourth; PerfectFifth; MajorSixth; MinorSeventh]
             | Phrygian -> [Unisson; MinorSecond; MinorThird; PerfectFourth; PerfectFifth; MinorSixth; MinorSeventh]
@@ -30,4 +30,4 @@ namespace Vaughan
             | WholeTone -> [Unisson; MajorSecond; MajorThird; DiminishedFifth; AugmentedFifth; MinorSeventh]
 
         let createScale:ICreateScale = fun scale root ->
-            scaleFormula scale |> List.map (fun interval -> transpose root interval)
+            scalePattern scale |> List.map (fun interval -> transpose root interval)

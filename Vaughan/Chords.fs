@@ -6,7 +6,6 @@ namespace Vaughan
         open Infrastructure
 
         type private ChordPattern = Interval list
-
         type private ChordAttributes = {Name:string; Quality:ChordQuality; Pattern:ChordPattern}
 
         let private chordFormula =
