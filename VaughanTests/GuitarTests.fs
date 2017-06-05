@@ -116,7 +116,7 @@ namespace VaughanTests
                         {GuitarString=SecondString; Fret=14; Note=CSharp};
                     ]
 
-        [<Property(MaxTest = 282)>]
+        [<Property(MaxTest = 280)>]
         let ``Should map diatonic closed sevent drop 3 chords to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note) (bassString: GuitarString) () =
             ((bassString = SixthString || bassString = FifthString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
