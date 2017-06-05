@@ -82,7 +82,7 @@ namespace VaughanTests
                             let minFret = guitarChord.Frets |> List.map (fun f -> f.Fret) |> List.min
                             maxFret - minFret < 6)
 
-        [<Property(MaxTest = 537)>]
+        [<Property(MaxTest = 500)>]
         let ``Should map diatonic closed seventh drop 2 chords to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note) (bassString: GuitarString) () =
             ((bassString = SixthString || bassString = FifthString || bassString = FourthString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
