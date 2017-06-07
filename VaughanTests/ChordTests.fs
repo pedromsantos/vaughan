@@ -381,3 +381,83 @@ namespace VaughanTests
                 |> List.map (fun n -> measureAbsoluteSemitones (fst n) providedNote)
 
             (distancesToProvidedNote |> List.min) = (distancesToProvidedNote |> List.head)
+            
+        [<Test>]
+        let ``It should return an empty list of chords for an empty list of notes`` () =
+            let fittingChords = chordsFitting [A; B]
+
+            fittingChords =! []
+        
+        [<Property>]
+        let ``It should return an empty list of chords for list of notes with one note`` (note :Note) =
+            let fittingChords = chordsFitting [note]
+
+            fittingChords =! []
+
+        [<Property>]
+        let ``It should return an empty list of chords for list of notes with two notes`` (note1 :Note)  (note2 :Note) =
+            let fittingChords = chordsFitting [note1; note2]
+
+            fittingChords =! []
+
+        [<Property>]
+        let ``It should return the chord for list of notes from triad`` (root :Note) (quality :ChordQuality) =
+            let chord = chord root quality
+            let chordNotes = chord.Notes |> List.map (fun n -> fst n)
+
+            (chord.Notes.Length = 3) 
+                ==> lazy ((chordsFitting chordNotes) |> List.contains chord) 
+
+        [<Property>]
+        let ``It should return the chord for list of notes from first inversion triad`` (root :Note) (quality :ChordQuality) =
+            let chord = chord root quality
+            let invertedChord = chord |> invert
+            let chordNotes = invertedChord.Notes |> List.map (fun n -> fst n)
+
+            (chord.Notes.Length = 3) 
+                ==> lazy ((chordsFitting chordNotes) |> List.contains chord)
+
+        [<Property>]
+        let ``It should return the chord for list of notes from second inversion triad`` (root :Note) (quality :ChordQuality) =
+            let chord = chord root quality
+            let invertedChord = chord |> invert |> invert
+            let chordNotes = invertedChord.Notes |> List.map (fun n -> fst n)
+
+            (chord.Notes.Length = 3) 
+                ==> lazy ((chordsFitting chordNotes) |> List.contains chord)
+
+        [<Property>]
+        let ``It should return the chord for list of notes from seventh chord`` (root :Note) (quality :ChordQuality) =
+            let chord = chord root quality
+            let chordNotes = chord.Notes |> List.map (fun n -> fst n)
+
+            (quality = Major7 || quality = Dominant7 || quality = Minor7 || quality = Minor7b5) 
+                ==> lazy ((chordsFitting chordNotes) |> List.contains chord)
+
+
+        [<Property>]
+        let ``It should return the chord for list of notes from seventh chord in first inversion`` (root :Note) (quality :ChordQuality) =
+            let chord = chord root quality
+            let invertedChord = chord |> invert
+            let chordNotes = invertedChord.Notes |> List.map (fun n -> fst n)
+
+            (quality = Major7 || quality = Dominant7 || quality = Minor7 || quality = Minor7b5) 
+                ==> lazy ((chordsFitting chordNotes) |> List.contains chord)
+
+        [<Property>]
+        let ``It should return the chord for list of notes from seventh chord in second inversion`` (root :Note) (quality :ChordQuality) =
+            let chord = chord root quality
+            let invertedChord = chord |> invert |> invert
+            let chordNotes = invertedChord.Notes |> List.map (fun n -> fst n)
+
+            (quality = Major7 || quality = Dominant7 || quality = Minor7 || quality = Minor7b5) 
+                ==> lazy ((chordsFitting chordNotes) |> List.contains chord)
+
+        [<Property>]
+        let ``It should return the chord for list of notes from seventh chord in third inversion`` (root :Note) (quality :ChordQuality) =
+            let chord = chord root quality
+            let invertedChord = chord |> invert |> invert |> invert
+            let chordNotes = invertedChord.Notes |> List.map (fun n -> fst n)
+
+            (quality = Major7 || quality = Dominant7 || quality = Minor7 || quality = Minor7b5) 
+                ==> lazy ((chordsFitting chordNotes) |> List.contains chord)

@@ -57,6 +57,22 @@ namespace Vaughan
              |> List.filter (fun c -> c.Pattern = pattern)
              |> List.head).Quality
 
+        let private findQualityForPattern pattern =
+            match (chordFormula |> List.filter (fun c -> c.Pattern = pattern)) with
+            | [] -> None
+            | l -> Some (l |> List.head).Quality
+        
+        let private chordPatternFromNotes (notes :Note list) =
+            let root = notes.Head
+            notes
+            |> List.map (fun n -> intervalBetween root n)
+            |> List.skip 1
+
+        let private findFittingChordQuality (fittingNotes :Note list) =
+            fittingNotes
+            |> chordPatternFromNotes 
+            |> findQualityForPattern
+
         let private intervalsForQuality quality =
              (chordFormula
             |> List.filter (fun c -> c.Quality = quality)
@@ -96,7 +112,7 @@ namespace Vaughan
             let root = noteForFunction chord Root
             chord.Notes
             |> List.map (fun n -> adjustIntervalForFunctionsAboveSeventh (intervalBetween root (note n)) (noteFunction n))
-            |> List.skip 1
+            |> List.skip 1     
 
         let private invertOpenOrClosed chord =
             {chord with Notes= rotateByOne chord.Notes;}
@@ -112,7 +128,7 @@ namespace Vaughan
             }
 
         let private invertDrop3 chord =
-            {chord with Notes= chord.Notes |> rotateByOne |> rotateByOne |> swapSecondTwo;}
+            {chord with Notes= chord.Notes |> rotateByOne |> rotateByOne |> swapSecondTwo;}        
 
         let name chord =
             noteName (noteForFunction chord Root)
@@ -173,4 +189,18 @@ namespace Vaughan
             {chord with ChordType=Closed}
 
         let skipFunction functionToSkipp chord =
-            {chord with Notes = chord.Notes |> List.filter (fun nf -> snd nf <> functionToSkipp)}
+            {chord with Notes = chord.Notes |> List.filter (fun nf -> snd nf <> functionToSkipp)} 
+
+        let chordsFitting (notes :Note list) =
+            if notes.Length < 3 then []
+            else let rec addChord rotation fittingChords (fittingNotes :Note list) =
+                    if rotation = fittingNotes.Length then fittingChords
+                    else
+                       let quality = findFittingChordQuality fittingNotes 
+                       let fittedChords = match quality with
+                                          | Some(q) -> chord fittingNotes.Head q :: fittingChords
+                                          | None-> fittingChords
+                 
+                       addChord (rotation + 1) fittedChords (fittingNotes |> rotateByOne) 
+
+                 addChord 0 [] notes
