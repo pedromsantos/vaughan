@@ -310,3 +310,302 @@ D|-5-|
 A|-7-|
 E|-8-|
 ```
+
+### Example usage
+
+```fsharp
+open Domain
+open Notes
+open Chords
+open Keys
+open Scales
+open ScaleHarmonizer
+open Guitar
+open GuitarTab
+open ScaleHarmonizer
+open Infrastructure
+
+let cIonian = createScale Ionian C
+
+(cIonian
+|> seventhsHarmonizer ScaleDegrees.I
+|> toDrop3
+|> createGuitarChord SixthString)
+|> tabify
+|> printf "\n%s"
+
+(cIonian
+|> seventhsHarmonizer ScaleDegrees.I
+|> toDrop2
+|> createGuitarChord FifthString)
+|> tabify
+|> printf "\n%s"
+
+(cIonian
+|> triadsHarmonizer ScaleDegrees.I
+|> createGuitarChord FifthString)
+|> tabify
+|> printf "\n%s"
+
+chord C Dominant9 
+|> skipFunction Fifth
+|> createGuitarChord FifthString
+|> tabify
+|> printf "\n%s"
+
+chord C Major9 
+|> skipFunction Fifth
+|> createGuitarChord FifthString
+|> tabify
+|> printf "\n%s"
+
+createScale Aolian DSharp
+|> triadsHarmonizer ScaleDegrees.III
+|> createGuitarChord SixthString
+|> tabify
+|> printf "\n%s"
+
+createScale Ionian A
+|> seventhsHarmonizer ScaleDegrees.I
+|> toDrop2
+|> createGuitarChord FifthString
+|> tabify
+|> printf "\n%s"
+
+createScale Ionian C
+|> seventhsHarmonizer ScaleDegrees.I
+|> toDrop3
+|> createGuitarChord FifthString
+|> tabify
+|> printf "\n%s"
+
+createScale Aolian FSharp
+|> seventhsHarmonizer ScaleDegrees.III
+|> toDrop3
+|> createGuitarChord SixthString
+|> tabify
+|> printf "\n%s"
+
+createScale HarmonicMinor BFlat
+|> seventhsHarmonizer ScaleDegrees.VII
+|> createGuitarChord SixthString
+|> tabify
+|> printf "\n%s"
+
+createScale HarmonicMinor C
+|> seventhsHarmonizer ScaleDegrees.VII
+|> createGuitarChord SixthString
+|> tabify
+|> printf "\n%s"
+
+createScale HarmonicMinor C
+|> seventhsHarmonizer ScaleDegrees.VII
+|> createGuitarChord SixthString
+|> tabify
+|> printf "\n%A"
+
+createScale HarmonicMinor C
+|> seventhsHarmonizer ScaleDegrees.VII
+|> toOpen
+|> createGuitarChord SixthString
+|> tabify
+|> printf "\n%A"
+
+[(!*(G=>Major) |~ SixthString);
+(!*(C=>Major) |~ FifthString); 
+(!*(A=>Minor) |~ FifthString);
+(!*(D=>Major) |~ FourthString)]
+|> tabifyAll
+|> printf "\n%s"
+
+noteName C |> printf "\n%A"
+noteName CSharp |> printf "\n%A"
+noteName DFlat |> printf "\n%A"
+sharp EFlat |> printf "\n%A"
+flat E |> printf "\n%A"
+measureAbsoluteSemitones C G |> printf "\n%A"
+intervalBetween C FSharp |> printf "\n%A"
+transpose C MajorSixth |> printf "\n%A"
+intervalName DiminishedFifth |> printf "\n%A"
+fromDistance 6 |> printf "\n%A"
+
+keyNotes CMajor |> printf "\n%A"
+keyNotes EFlatMajor |> printf "\n%A"
+keyNotes DMinor |> printf "\n%A"
+
+createScale Phrygian C |> printf "\n%A"
+createScale LydianAugmented C  |> printf "\n%A"
+
+let cMaj7 = {Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh)]; ChordType=Closed; Name="CMaj7"}
+let cMaj = chord C Major
+
+noteNames cMaj7 |> printf "\n%A"             
+bass cMaj7 |> printf "\n%A"                          
+lead cMaj7 |> printf "\n%A"                               
+name cMaj7 |> printf "\n%A"                               
+cMaj7.Notes |> printf "\n%A"
+(cMaj7 |> invert).Notes |> printf "\n%A"                              
+(cMaj7 |> invert |> invert).Notes |> printf "\n%A"               
+(cMaj7 |> invert |> invert |> invert).Notes |> printf "\n%A"
+(cMaj7 |> toDrop2).Notes |> printf "\n%A"      
+(cMaj7 |> toDrop3).Notes |> printf "\n%A"
+
+open ChordVoiceLeading
+inversionForFunctionAsLead cMaj Third |> printf "\n%A"            
+inversionForFunctionAsBass cMaj Fifth |> printf "\n%A"    
+invertionWithLeadClosestToNote cMaj CSharp |> printf "\n%A"    
+invertionWithBassClosestToNote cMaj F |> printf "\n%A"
+```
+
+####Output
+```
+      CMaj7   
+E||-------------||
+B||----8--------||
+G||----9--------||
+D||----9--------||
+A||-------------||
+E||----8--------||
+
+      CMaj7   
+E||-------------||
+B||----5--------||
+G||----4--------||
+D||----5--------||
+A||----3--------||
+E||-------------||
+
+      CMaj   
+E||------------||
+B||------------||
+G||----12------||
+D||----14------||
+A||----15------||
+E||------------||
+
+      C9   
+E||----------||
+B||----3-----||
+G||----3-----||
+D||----2-----||
+A||----3-----||
+E||----------||
+
+      CMaj9   
+E||-------------||
+B||----3--------||
+G||----4--------||
+D||----2--------||
+A||----3--------||
+E||-------------||
+
+      GbMaj   
+E||-------------||
+B||-------------||
+G||-------------||
+D||----11-------||
+A||----13-------||
+E||----14-------||
+
+      AMaj7   
+E||-------------||
+B||----14-------||
+G||----13-------||
+D||----14-------||
+A||----12-------||
+E||-------------||
+
+      CMaj7   
+E||----3--------||
+B||----5--------||
+G||----4--------||
+D||-------------||
+A||----3--------||
+E||-------------||
+
+      AMaj7   
+E||-------------||
+B||----5--------||
+G||----6--------||
+D||----6--------||
+A||-------------||
+E||----5--------||
+
+      ADim7   
+E||----2--------||
+B||----1--------||
+G||----2--------||
+D||----1--------||
+A||----3--------||
+E||----2--------||
+
+      BDim7   
+E||----1--------||
+B||----3--------||
+G||----1--------||
+D||----3--------||
+A||----2--------||
+E||----1--------||
+
+"      BDim7   
+E||----1--------||
+B||----3--------||
+G||----1--------||
+D||----3--------||
+A||----2--------||
+E||----1--------||
+"
+"      BDim7   
+E||----1--------||
+B||----0--------||
+G||----1--------||
+D||----0--------||
+A||----2--------||
+E||----1--------||
+"
+      GMaj   CMaj   AMin   DMaj   
+E||----3------0------0------2-------||
+B||----0------1------1------3-------||
+G||----0------0------2------2-------||
+D||----0------2------2------0-------||
+A||----2------3------0--------------||
+E||----3----------------------------||
+
+"C"
+"C#"
+"Db"
+E
+EFlat
+7
+DiminishedFifth
+A
+"DiminishedFifth"
+DiminishedFifth
+[C; D; E; F; G; A; B]
+[EFlat; F; G; AFlat; BFlat; C; D]
+[D; E; F; G; A; BFlat; C]
+[C; DFlat; EFlat; F; G; AFlat; BFlat]
+[C; D; E; FSharp; GSharp; A; B]
+["C"; "E"; "G"; "B"]
+C
+B
+"CMaj7"
+[(C, Root); (E, Third); (G, Fifth); (B, Seventh)]
+[(E, Third); (G, Fifth); (B, Seventh); (C, Root)]
+[(G, Fifth); (B, Seventh); (C, Root); (E, Third)]
+[(B, Seventh); (C, Root); (E, Third); (G, Fifth)]
+[(C, Root); (G, Fifth); (B, Seventh); (E, Third)]
+[(C, Root); (B, Seventh); (E, Third); (G, Fifth)]
+{Notes = [(G, Fifth); (C, Root); (E, Third)];
+ ChordType = Closed;
+ Name = "CMaj";}
+{Notes = [(G, Fifth); (C, Root); (E, Third)];
+ ChordType = Closed;
+ Name = "CMaj";}
+{Notes = [(E, Third); (G, Fifth); (C, Root)];
+ ChordType = Closed;
+ Name = "CMaj";}
+{Notes = [(E, Third); (G, Fifth); (C, Root)];
+ ChordType = Closed;
+ Name = "CMaj";}
+ ```
