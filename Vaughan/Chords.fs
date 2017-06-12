@@ -68,7 +68,7 @@ namespace Vaughan
             |> List.map (fun n -> intervalBetween root n)
             |> List.skip 1
 
-        let private findFittingChordQuality (fittingNotes :Note list) =
+        let private findFittingQuality (fittingNotes :Note list) =
             fittingNotes
             |> chordPatternFromNotes 
             |> findQualityForPattern
@@ -190,17 +190,18 @@ namespace Vaughan
 
         let skipFunction functionToSkipp chord =
             {chord with Notes = chord.Notes |> List.filter (fun nf -> snd nf <> functionToSkipp)} 
+        
+        let private addFittingChord notes fittingChords =
+            match findFittingQuality notes with
+            | Some(q) -> chord notes.Head q :: fittingChords
+            | None-> fittingChords
 
         let chordsFitting (notes :Note list) =
             if notes.Length < 3 then []
             else let rec addChord rotation fittingChords (fittingNotes :Note list) =
                     if rotation = fittingNotes.Length then fittingChords
                     else
-                       let quality = findFittingChordQuality fittingNotes 
-                       let fittedChords = match quality with
-                                          | Some(q) -> chord fittingNotes.Head q :: fittingChords
-                                          | None-> fittingChords
-                 
+                       let fittedChords = addFittingChord fittingNotes fittingChords
                        addChord (rotation + 1) fittedChords (fittingNotes |> rotateByOne) 
 
                  addChord 0 [] notes
