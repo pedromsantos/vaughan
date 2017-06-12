@@ -457,7 +457,7 @@ invertionWithLeadClosestToNote cMaj CSharp |> printf "\n%A"
 invertionWithBassClosestToNote cMaj F |> printf "\n%A"
 ```
 
-####Output
+#### Output
 
 ```
       CMaj7   
