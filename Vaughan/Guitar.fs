@@ -1,6 +1,7 @@
 namespace Vaughan
 
     module Guitar =
+        [<AutoOpen>]
         module private GuitarFrets =
             open Domain
             open Notes
@@ -38,6 +39,7 @@ namespace Vaughan
                                         then raiseOctave f
                                         else f)
 
+         [<AutoOpen>]
          module private GuitarStrings =
             open Domain
             open Notes
@@ -76,13 +78,12 @@ namespace Vaughan
         open Domain
         open Notes
         open Chords
-        open GuitarFrets
-        open GuitarStrings
         open Infrastructure
 
         let private createFret guitarString note =
             { GuitarString = guitarString; Fret = fretNoteOnString note guitarString; Note = note }
 
+        [<AutoOpen>]
         module private MapDropChords =
             let private createMutedStringFret guitarString =
                 { GuitarString = guitarString; Fret = -1; Note = openStringNote guitarString }
@@ -118,6 +119,7 @@ namespace Vaughan
                 let closedChord = {guitarChord with Frets = raiseOpenFrets guitarChord.Frets}
                 {closedChord with Frets = unstretch closedChord.Frets}
 
+        [<AutoOpen>]
         module private MapNonDropChords =
             let private mapAllChordNotesToFretsOnString allowedFrets guitarStringIndex chord =
                 let guitarString = indexToGuitarString guitarStringIndex
@@ -151,9 +153,6 @@ namespace Vaughan
             
             let chordToGuitarClosedChord bassString chord =
                 chordToGuitarChord (fun f -> f.Fret <> 0) bassString chord
-
-        open MapDropChords
-        open MapNonDropChords
 
         let chordName guitarChord =
             guitarChord.Chord.Name
@@ -200,6 +199,7 @@ namespace Vaughan
         open Chords
         open Guitar
 
+        [<AutoOpen>]
         module private Tabify =
 
             type private TabColumn = string list
@@ -285,6 +285,7 @@ namespace Vaughan
                     guitarChords |> List.map (fun guitarChord -> chordNameSeparator + guitarChord.Chord.Name)
                 [chordNameSeparator] @ separatedChordNames @ [chordNameSeparator; Environment.NewLine;]
 
+        [<AutoOpen>]
         module private Shapify =
             let private shapifyMutedLowerStrings guitarChord =
                 let mutedStrings = numberOfMutedLowStrings guitarChord
@@ -307,9 +308,6 @@ namespace Vaughan
                 (shapifyMutedLowerStrings guitarChord)
                 @ (shapifyFrets guitarChord)
                 @ (shapifyMutedHigherStrings guitarChord)
-
-        open Shapify
-        open Tabify
 
         let tabifyAll guitarChords =
             (tabifyChordNames guitarChords) @ (tabifyChords guitarChords)
