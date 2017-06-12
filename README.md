@@ -458,6 +458,7 @@ invertionWithBassClosestToNote cMaj F |> printf "\n%A"
 ```
 
 ####Output
+
 ```
       CMaj7   
 E||-------------||
