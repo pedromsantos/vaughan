@@ -455,6 +455,12 @@ inversionForFunctionAsLead cMaj Third |> printf "\n%A"
 inversionForFunctionAsBass cMaj Fifth |> printf "\n%A"    
 invertionWithLeadClosestToNote cMaj CSharp |> printf "\n%A"    
 invertionWithBassClosestToNote cMaj F |> printf "\n%A"
+
+printfn "\n"
+printfn "chordsFitting"
+
+chordsFitting [D; F; A] |> printf "\n%A"
+chordsFitting [C; E; G; B] |> printf "\n%A" 
 ```
 
 #### Output
@@ -609,4 +615,15 @@ B
 {Notes = [(E, Third); (G, Fifth); (C, Root)];
  ChordType = Closed;
  Name = "CMaj";}
+
+chordsFitting
+
+[{Notes = [(A, Root); (D, Third); (F, Fifth)];
+  ChordType = Closed;
+  Name = "ASus4Aug";}; {Notes = [(D, Root); (F, Third); (A, Fifth)];
+                        ChordType = Closed;
+                        Name = "DMin";}]
+[{Notes = [(C, Root); (E, Third); (G, Fifth); (B, Seventh)];
+  ChordType = Closed;
+  Name = "CMaj7";}]
  ```
