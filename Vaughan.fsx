@@ -1,3 +1,4 @@
+#load "./Vaughan/Infrastructure.fs"
 #load "./Vaughan/Domain.fs"
 #load "./Vaughan/Notes.fs"
 #load "./Vaughan/Chords.fs"
@@ -7,8 +8,8 @@
 #load "./Vaughan/Guitar.fs"
 #load "./Vaughan/GuitarTab.fs"
 #load "./Vaughan/ChordVoiceLeading.fs"
-#load "./Vaughan/Infrastructure.fs"
 
+open Vaughan.Infrastructure
 open Vaughan.Domain
 open Vaughan.Notes
 open Vaughan.Chords
@@ -17,7 +18,6 @@ open Vaughan.Scales
 open Vaughan.ScaleHarmonizer
 open Vaughan.Guitar
 open Vaughan.GuitarTab
-open Vaughan.Infrastructure
 open Vaughan.ChordVoiceLeading
 
 let cIonian = createScale Ionian C
