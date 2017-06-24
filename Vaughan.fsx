@@ -6,17 +6,19 @@
 #load "./Vaughan/ScaleHarmonizer.fs"
 #load "./Vaughan/Guitar.fs"
 #load "./Vaughan/GuitarTab.fs"
+#load "./Vaughan/ChordVoiceLeading.fs"
 #load "./Vaughan/Infrastructure.fs"
 
-open Domain
-open Notes
-open Chords
-open Keys
-open Scales
-open ScaleHarmonizer
-open Guitar
-open GuitarTab
-open Infrastructure
+open Vaughan.Domain
+open Vaughan.Notes
+open Vaughan.Chords
+open Vaughan.Keys
+open Vaughan.Scales
+open Vaughan.ScaleHarmonizer
+open Vaughan.Guitar
+open Vaughan.GuitarTab
+open Vaughan.Infrastructure
+open Vaughan.ChordVoiceLeading
 
 let cIonian = createScale Ionian C
 
@@ -143,7 +145,6 @@ cMaj7.Notes |> printf "\n%A"
 (cMaj7 |> toDrop2).Notes |> printf "\n%A"
 (cMaj7 |> toDrop3).Notes |> printf "\n%A"
 
-open ChordVoiceLeading
 inversionForFunctionAsLead cMaj Third |> printf "\n%A"
 inversionForFunctionAsBass cMaj Fifth |> printf "\n%A"
 invertionWithLeadClosestToNote cMaj CSharp |> printf "\n%A"
