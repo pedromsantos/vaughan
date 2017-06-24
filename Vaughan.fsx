@@ -6,7 +6,6 @@
 #load "./Vaughan/Scales.fs"
 #load "./Vaughan/ScaleHarmonizer.fs"
 #load "./Vaughan/Guitar.fs"
-#load "./Vaughan/GuitarTab.fs"
 #load "./Vaughan/ChordVoiceLeading.fs"
 
 open Vaughan.Infrastructure
