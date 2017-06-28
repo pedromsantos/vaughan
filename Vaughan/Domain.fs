@@ -31,7 +31,7 @@ namespace Vaughan
         type Scale =
             | Ionian | Dorian | Phrygian | Lydian | Mixolydian
             | Aolian | Locrian | MajorPentatonic | MinorPentatonic
-            | Blues | HarmonicMinor | MelodicMinor | Dorianb2 | LydianAugmented
+            | Blues | HarmonicMinor | MelodicMinor | Dorianb2 | LydianAugmented | NeapolitanMinor
             | LydianDominant | Bebop | Mixolydianb6 | LocrianSharp2
             | AlteredDominant | HalfWholeDiminished | WholeTone
 
