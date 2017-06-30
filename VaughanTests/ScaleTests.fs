@@ -1,9 +1,12 @@
 namespace VaughanTests
     module ScaleTests =
         open NUnit.Framework
+        open FsCheck
+        open FsCheck.NUnit
         open Swensen.Unquote
         open Vaughan.Domain
         open Vaughan.Scales
+        open Vaughan.Chords
 
         [<Test>]
         let ``Should have notes for scales``() =
@@ -28,3 +31,12 @@ namespace VaughanTests
             createScale AlteredDominant C =! [ C; DFlat; DSharp; E; GFlat; GSharp; BFlat ]
             createScale HalfWholeDiminished C =! [ C; DFlat; EFlat; E; FSharp; G; A; BFlat ]
             createScale WholeTone C =! [ C; D; E; GFlat; GSharp; BFlat ]
+
+        [<Property>]
+        let ``It should return scales fitting a major triad`` (root :Note) =
+            let chord = chord root ChordQuality.Major
+            let chordNotes = chord.Notes |> List.map fst |> List.sort
+
+            let scales = scalesFitting chord
+
+            scales.[0] |> List.filter (fun x -> (List.contains x chordNotes)) |> List.sort = chordNotes

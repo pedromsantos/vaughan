@@ -35,9 +35,9 @@
     <Compile Include="Infrastructure.fs" />
     <Compile Include="Domain.fs" />
     <Compile Include="Notes.fs" />
+    <Compile Include="Chords.fs" />
     <Compile Include="Scales.fs" />
     <Compile Include="Keys.fs" />
-    <Compile Include="Chords.fs" />
     <Compile Include="ChordVoiceLeading.fs" />
     <Compile Include="ScaleHarmonizer.fs" />
     <Compile Include="Guitar.fs" />

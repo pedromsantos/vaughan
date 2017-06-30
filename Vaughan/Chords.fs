@@ -61,7 +61,7 @@ namespace Vaughan
             match (chordFormula |> List.filter (fun c -> c.Pattern = pattern)) with
             | [] -> None
             | l -> Some (l |> List.head).Quality
-        
+
         let private chordPatternFromNotes (notes :Note list) =
             let root = notes.Head
             notes
@@ -70,7 +70,7 @@ namespace Vaughan
 
         let private findFittingQuality (fittingNotes :Note list) =
             fittingNotes
-            |> chordPatternFromNotes 
+            |> chordPatternFromNotes
             |> findQualityForPattern
 
         let private intervalsForQuality quality =
@@ -112,7 +112,7 @@ namespace Vaughan
             let root = noteForFunction chord Root
             chord.Notes
             |> List.map (fun n -> adjustIntervalForFunctionsAboveSeventh (intervalBetween root (note n)) (noteFunction n))
-            |> List.skip 1     
+            |> List.skip 1
 
         let private invertOpenOrClosed chord =
             {chord with Notes= rotateByOne chord.Notes;}
@@ -120,7 +120,7 @@ namespace Vaughan
         let private invertDrop2 chord =
             {
                 chord with Notes = [chord.Notes |> List.last]
-                                   @ 
+                                   @
                                    (chord.Notes
                                     |> List.take (chord.Notes.Length - 1)
                                     |> rotateByOne
@@ -128,7 +128,7 @@ namespace Vaughan
             }
 
         let private invertDrop3 chord =
-            {chord with Notes= chord.Notes |> rotateByOne |> rotateByOne |> swapSecondTwo;}        
+            {chord with Notes= chord.Notes |> rotateByOne |> rotateByOne |> swapSecondTwo;}
 
         let name chord =
             noteName (noteForFunction chord Root)
@@ -139,6 +139,9 @@ namespace Vaughan
             | Closed | Open | Triad -> invertOpenOrClosed chord
             | Drop2 -> invertDrop2 chord
             | Drop3 -> invertDrop3 chord
+
+        let root chord =
+            noteForFunction chord Root
 
         let bass chord =
             note (chord.Notes |> List.head)
@@ -189,8 +192,8 @@ namespace Vaughan
             {chord with ChordType=Closed}
 
         let skipFunction functionToSkipp chord =
-            {chord with Notes = chord.Notes |> List.filter (fun nf -> snd nf <> functionToSkipp)} 
-        
+            {chord with Notes = chord.Notes |> List.filter (fun nf -> snd nf <> functionToSkipp)}
+
         let private addFittingChord notes fittingChords =
             match findFittingQuality notes with
             | Some(q) -> chord notes.Head q :: fittingChords
@@ -202,6 +205,6 @@ namespace Vaughan
                     if rotation = fittingNotes.Length then fittingChords
                     else
                        let fittedChords = addFittingChord fittingNotes fittingChords
-                       addChord (rotation + 1) fittedChords (fittingNotes |> rotateByOne) 
+                       addChord (rotation + 1) fittedChords (fittingNotes |> rotateByOne)
 
                  addChord 0 [] notes

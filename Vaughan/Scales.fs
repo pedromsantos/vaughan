@@ -3,6 +3,7 @@ namespace Vaughan
     module Scales =
         open Domain
         open Notes
+        open Chords
 
         type private ScalePattern = Interval list
         type private IScalePattern = Scale -> ScalePattern
@@ -33,3 +34,6 @@ namespace Vaughan
 
         let createScale:ICreateScale = fun scale root ->
             scalePattern scale |> List.map (fun interval -> transpose root interval)
+
+        let scalesFitting (chord:Chord) =
+            [createScale Ionian (root chord)]

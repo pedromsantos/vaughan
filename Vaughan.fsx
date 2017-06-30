@@ -150,7 +150,16 @@ invertionWithLeadClosestToNote cMaj CSharp |> printf "\n%A"
 invertionWithBassClosestToNote cMaj F |> printf "\n%A"
 
 printfn "\n"
-printfn "ChordsFitting"
+printfn "Chords Fitting"
 
 chordsFitting [D; F; A] |> printf "\n%A"
 chordsFitting [C; E; G; B] |> printf "\n%A"
+
+printfn "\n"
+printfn "Scales Fitting"
+
+let chord = chord FSharp ChordQuality.Major
+let chordNotes = chord.Notes |> List.map fst |> List.sort
+let scales = scalesFitting chord
+
+scales.[0] |> List.filter (fun x -> (List.contains x chordNotes)) |> List.sort = chordNotes
