@@ -39,4 +39,5 @@ namespace VaughanTests
 
             let scales = scalesFitting chord
 
-            scales.[0] |> List.filter (fun x -> (List.contains x chordNotes)) |> List.sort = chordNotes
+            scales |> List.forall (
+                fun s -> s |> List.filter (fun x -> (List.contains x chordNotes)) |> List.sort = chordNotes)
