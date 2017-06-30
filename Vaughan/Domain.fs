@@ -36,6 +36,8 @@ namespace Vaughan
             | AlteredDominant | HalfWholeDiminished | WholeTone
 
         type ScaleNotes = Note list
+        type ScaleProperties = {Scale:Scale; Notes:ScaleNotes}
+
         type ICreateScale = Scale -> Note -> ScaleNotes
 
         type Key =

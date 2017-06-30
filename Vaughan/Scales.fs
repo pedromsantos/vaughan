@@ -35,5 +35,40 @@ namespace Vaughan
         let createScale:ICreateScale = fun scale root ->
             scalePattern scale |> List.map (fun interval -> transpose root interval)
 
+        let private createScaleProperties (scale:Scale) (root:Note) =
+            {Scale=scale; Notes=createScale scale root};
+
+        let private createAllScalesFrom (root:Note) =
+            [
+                createScaleProperties Ionian root;
+                createScaleProperties Dorian root;
+                createScaleProperties Phrygian root;
+                createScaleProperties Lydian root;
+                createScaleProperties Mixolydian root;
+                createScaleProperties Aolian root;
+                createScaleProperties Locrian root;
+                createScaleProperties MajorPentatonic root;
+                createScaleProperties MinorPentatonic root;
+                createScaleProperties Blues root;
+                createScaleProperties HarmonicMinor root;
+                createScaleProperties MelodicMinor root;
+                createScaleProperties Dorianb2 root;
+                createScaleProperties NeapolitanMinor root;
+                createScaleProperties LydianAugmented root;
+                createScaleProperties LydianDominant root;
+                createScaleProperties Mixolydianb6 root;
+                createScaleProperties Bebop root;
+                createScaleProperties LocrianSharp2 root;
+                createScaleProperties AlteredDominant root;
+                createScaleProperties HalfWholeDiminished root;
+                createScaleProperties WholeTone root
+            ]
+
+        let private scaleContainChordTones scale chordTones =
+            ( scale |> List.filter (fun x -> (List.contains x chordTones)) |> List.sort) = (chordTones |> List.sort)
+
         let scalesFitting (chord:Chord) =
-            [createScale Ionian (root chord)]
+            let chordTones = chord.Notes |> List.map fst
+
+            createAllScalesFrom (root chord)
+            |> List.choose (fun scale -> (if scaleContainChordTones scale.Notes chordTones then Some(scale) else None))

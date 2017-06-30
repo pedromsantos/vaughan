@@ -158,8 +158,7 @@ chordsFitting [C; E; G; B] |> printf "\n%A"
 printfn "\n"
 printfn "Scales Fitting"
 
-let chord = chord FSharp ChordQuality.Major
+let chord = chord C ChordQuality.Dominant7
 let chordNotes = chord.Notes |> List.map fst |> List.sort
-let scales = scalesFitting chord
 
-scales.[0] |> List.filter (fun x -> (List.contains x chordNotes)) |> List.sort = chordNotes
+scalesFitting chord

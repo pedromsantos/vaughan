@@ -40,4 +40,24 @@ namespace VaughanTests
             let scales = scalesFitting chord
 
             scales |> List.forall (
-                fun s -> s |> List.filter (fun x -> (List.contains x chordNotes)) |> List.sort = chordNotes)
+                fun s -> s.Notes |> List.filter (fun x -> (List.contains x chordNotes)) |> List.sort = chordNotes)
+
+        [<Property>]
+        let ``It should return scales fitting a minor triad`` (root :Note) =
+            let chord = chord root ChordQuality.Minor
+            let chordNotes = chord.Notes |> List.map fst |> List.sort
+
+            let scales = scalesFitting chord
+
+            scales |> List.forall (
+                fun s -> s.Notes |> List.filter (fun x -> (List.contains x chordNotes)) |> List.sort = chordNotes)
+
+        [<Property>]
+        let ``It should return scales fitting a chord`` (root :Note) (quality: ChordQuality)=
+            let chord = chord root quality
+            let chordNotes = chord.Notes |> List.map fst |> List.sort
+
+            let scales = scalesFitting chord
+
+            scales |> List.forall (
+                fun s -> s.Notes |> List.filter (fun x -> (List.contains x chordNotes)) |> List.sort = chordNotes)

@@ -14,7 +14,7 @@ namespace VaughanTests
 
         let cMaj = triadsHarmonizer ScaleDegrees.I cIonian
 
-        [<Property(MaxTest = 1000)>]
+        [<Property>]
         let ``Should map diatonic closed triads to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note) (bassString: GuitarString) () =
             ((bassString <> FirstString || bassString = SecondString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic && scaleType <> Bebop && scaleType <> NeapolitanMinor))
@@ -69,7 +69,7 @@ namespace VaughanTests
                         {GuitarString=FourthString; Fret=10; Note=C};
                     ]
 
-        [<Property(MaxTest = 500)>]
+        [<Property>]
         let ``Should map diatonic closed sevent chords to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note) (bassString: GuitarString) () =
             ((bassString = SixthString || bassString = FifthString || bassString = FourthString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
@@ -82,7 +82,7 @@ namespace VaughanTests
                             let minFret = guitarChord.Frets |> List.map (fun f -> f.Fret) |> List.min
                             maxFret - minFret < 6)
 
-        [<Property(MaxTest = 500)>]
+        [<Property>]
         let ``Should map diatonic closed seventh drop 2 chords to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note) (bassString: GuitarString) () =
             ((bassString = SixthString || bassString = FifthString || bassString = FourthString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
@@ -116,7 +116,7 @@ namespace VaughanTests
                         {GuitarString=SecondString; Fret=14; Note=CSharp};
                     ]
 
-        [<Property(MaxTest = 280)>]
+        [<Property>]
         let ``Should map diatonic closed sevent drop 3 chords to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note) (bassString: GuitarString) () =
             ((bassString = SixthString || bassString = FifthString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
