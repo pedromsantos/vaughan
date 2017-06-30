@@ -16,7 +16,6 @@ namespace Vaughan
             match list with
             | [] -> []
             | f::s::t::r -> f::t::s::r
-            | f::s::t -> f::s::t
             | f -> f
 
         let circularSequenceFromList (lst:'a list) =
