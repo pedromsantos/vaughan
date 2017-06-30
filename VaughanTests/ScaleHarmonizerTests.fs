@@ -66,7 +66,7 @@ namespace VaughanTests
             (triadsHarmonizer ScaleDegrees.VII cMinor).Notes =! bDim.Notes
 
         [<Property>]
-        let ``Should create triads for scale`` (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note)=
+        let ``Should create triads for scale`` (scaleType: ScaleType) (scaleDegree: ScaleDegrees) (root: Note)=
             (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic && scaleType <> Bebop && scaleType <> NeapolitanMinor)
                 ==> lazy (
                     let scale = createScale scaleType root
@@ -100,7 +100,7 @@ namespace VaughanTests
             (seventhsHarmonizer ScaleDegrees.VII cMinor).Notes =! bDim7.Notes
 
         [<Property>]
-        let ``Should create seventh chords for scale`` (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note) =
+        let ``Should create seventh chords for scale`` (scaleType: ScaleType) (scaleDegree: ScaleDegrees) (root: Note) =
             (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
                 && scaleType <> WholeTone && scaleType <> Bebop && scaleType <> NeapolitanMinor)
                 ==> lazy (

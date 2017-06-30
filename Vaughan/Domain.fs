@@ -28,7 +28,7 @@ namespace Vaughan
         type IIntervalBetween = Note -> Note -> Interval
         type ITransposeNote = Note -> Interval -> Note
 
-        type Scale =
+        type ScaleType =
             | Ionian | Dorian | Phrygian | Lydian | Mixolydian
             | Aolian | Locrian | MajorPentatonic | MinorPentatonic
             | Blues | HarmonicMinor | MelodicMinor | Dorianb2 | LydianAugmented | NeapolitanMinor
@@ -36,9 +36,9 @@ namespace Vaughan
             | AlteredDominant | HalfWholeDiminished | WholeTone
 
         type ScaleNotes = Note list
-        type ScaleProperties = {Scale:Scale; Notes:ScaleNotes}
+        type Scale = {Scale:ScaleType; Notes:ScaleNotes}
 
-        type ICreateScale = Scale -> Note -> ScaleNotes
+        type ICreateScale = ScaleType -> Note -> ScaleNotes
 
         type Key =
             | AMajor | AFlatMajor | BMajor | BFlatMajor | CMajor

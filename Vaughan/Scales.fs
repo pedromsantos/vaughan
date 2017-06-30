@@ -6,7 +6,7 @@ namespace Vaughan
         open Chords
 
         type private ScalePattern = Interval list
-        type private IScalePattern = Scale -> ScalePattern
+        type private IScalePattern = ScaleType -> ScalePattern
 
         let private scalePattern:IScalePattern = function
             | Ionian -> [Unisson; MajorSecond; MajorThird; PerfectFourth; PerfectFifth; MajorSixth; MajorSeventh]
@@ -35,7 +35,7 @@ namespace Vaughan
         let createScale:ICreateScale = fun scale root ->
             scalePattern scale |> List.map (fun interval -> transpose root interval)
 
-        let private createScaleProperties (scale:Scale) (root:Note) =
+        let private createScaleProperties (scale:ScaleType) (root:Note) =
             {Scale=scale; Notes=createScale scale root};
 
         let private createAllScalesFrom (root:Note) =
