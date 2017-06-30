@@ -20,6 +20,7 @@ namespace VaughanTests
             createScale HarmonicMinor C =! [ C; D; EFlat; F; G; AFlat; B ]
             createScale MelodicMinor C =! [ C; D; EFlat; F; G; A; B ]
             createScale Dorianb2 C =! [ C; DFlat; EFlat; F; G; A; BFlat ]
+            createScale NeapolitanMinor C =! [ C; DFlat; EFlat; F; G; AFlat; B ]
             createScale LydianAugmented C =! [ C; D; E; FSharp; GSharp; A; B ]
             createScale LydianDominant C =! [ C; D; E; FSharp; G; A; BFlat ]
             createScale Mixolydianb6 C =! [ C; D; E; F; G; AFlat; BFlat ]

@@ -17,7 +17,7 @@ namespace VaughanTests
         [<Property(MaxTest = 1000)>]
         let ``Should map diatonic closed triads to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note) (bassString: GuitarString) () =
             ((bassString <> FirstString || bassString = SecondString)
-            && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic && scaleType <> Bebop))
+            && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic && scaleType <> Bebop && scaleType <> NeapolitanMinor))
                 ==> lazy (
                             let scale = createScale scaleType root
                             let chord = triadsHarmonizer scaleDegree scale
@@ -73,7 +73,7 @@ namespace VaughanTests
         let ``Should map diatonic closed sevent chords to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note) (bassString: GuitarString) () =
             ((bassString = SixthString || bassString = FifthString || bassString = FourthString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
-                && scaleType <> WholeTone && scaleType <> HalfWholeDiminished && scaleType <> Bebop))
+                && scaleType <> WholeTone && scaleType <> HalfWholeDiminished && scaleType <> Bebop  && scaleType <> NeapolitanMinor))
                 ==> lazy (
                             let scale = createScale scaleType root
                             let chord = seventhsHarmonizer scaleDegree scale
@@ -86,7 +86,7 @@ namespace VaughanTests
         let ``Should map diatonic closed seventh drop 2 chords to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note) (bassString: GuitarString) () =
             ((bassString = SixthString || bassString = FifthString || bassString = FourthString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
-                && scaleType <> WholeTone && scaleType <> HalfWholeDiminished && scaleType <> Bebop))
+                && scaleType <> WholeTone && scaleType <> HalfWholeDiminished && scaleType <> Bebop && scaleType <> NeapolitanMinor))
                 ==> lazy (
                             let scale = createScale scaleType root
                             let chord = seventhsHarmonizer scaleDegree scale |> toDrop2
@@ -120,7 +120,7 @@ namespace VaughanTests
         let ``Should map diatonic closed sevent drop 3 chords to guitar fretboard`` (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note) (bassString: GuitarString) () =
             ((bassString = SixthString || bassString = FifthString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
-                && scaleType <> WholeTone && scaleType <> HalfWholeDiminished && scaleType <> Bebop))
+                && scaleType <> WholeTone && scaleType <> HalfWholeDiminished && scaleType <> Bebop && scaleType <> NeapolitanMinor))
                 ==> lazy (
                             let scale = createScale scaleType root
                             let chord = seventhsHarmonizer scaleDegree scale |> toDrop3
@@ -192,7 +192,7 @@ namespace VaughanTests
         let ``Should map diatonic closed triad to guitar tab`` (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note) (bassString: GuitarString) () =
             ((bassString <> SecondString && bassString <> FirstString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
-                && scaleType <> WholeTone && scaleType <> HalfWholeDiminished && scaleType <> Bebop))
+                && scaleType <> WholeTone && scaleType <> HalfWholeDiminished && scaleType <> Bebop  && scaleType <> NeapolitanMinor))
                 ==> lazy (
                             let guitarChord = createTriad scaleType scaleDegree root bassString
                             let frets = guitarChord.Frets
@@ -205,7 +205,7 @@ namespace VaughanTests
         let ``Should map diatonic closed seventh chord to guitar tab`` (scaleType: Scale) (scaleDegree: ScaleDegrees) (root: Note) (bassString: GuitarString) () =
             ((bassString <> ThirdString && bassString <> SecondString && bassString <> FirstString)
             && (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
-                && scaleType <> WholeTone && scaleType <> HalfWholeDiminished && scaleType <> Bebop))
+                && scaleType <> WholeTone && scaleType <> HalfWholeDiminished && scaleType <> Bebop  && scaleType <> NeapolitanMinor))
                 ==> lazy (
                             let guitarChord = createSeventhChord scaleType scaleDegree root bassString
                             let frets = guitarChord.Frets
