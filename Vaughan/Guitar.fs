@@ -129,7 +129,7 @@ namespace Vaughan
 
             let private generateAllFretCombinations allowedFrets bassString chord =
                 let bassStringOrdinal = guitarStringOrdinal bassString
-                [for guitarStringIndex in 1 .. bassStringOrdinal 
+                [for guitarStringIndex in 1 .. bassStringOrdinal
                     do yield (mapAllChordNotesToFretsOnString allowedFrets guitarStringIndex chord)]
                 |> combineAll
 
@@ -140,17 +140,17 @@ namespace Vaughan
                 |> fst
 
             let private chordToGuitarChord allowedFrets bassString chord =
-                { 
-                    Chord = chord; 
+                {
+                    Chord = chord;
                     Frets = chord
                             |> generateAllFretCombinations allowedFrets bassString
-                            |> fitFretingCombinations 
-                            |> List.rev 
+                            |> fitFretingCombinations
+                            |> List.rev
                 }
 
             let chordToGuitarOpenChord bassString chord =
                 chordToGuitarChord (fun f -> f = f) bassString chord
-            
+
             let chordToGuitarClosedChord bassString chord =
                 chordToGuitarChord (fun f -> f.Fret <> 0) bassString chord
 
@@ -199,24 +199,24 @@ namespace Vaughan
         open Chords
         open Guitar
 
+        type private TabColumn = string list
+
+        type private TabColumns = TabColumn list
+
+        type private TabLine = string list
+
+        type private TabLines = TabLine list
+
+        let private standardTunningTab = ["E"; "B"; "G"; "D"; "A"; "E"]
+
+        let private startTab = "||-" |> List.replicate 6
+
+        let private barTab = "-|-" |> List.replicate 6
+
+        let private endTab =  ("-||" + Environment.NewLine) |> List.replicate 6
+
         [<AutoOpen>]
-        module private Tabify =
-
-            type private TabColumn = string list
-
-            type private TabColumns = TabColumn list
-
-            type private TabLine = string list
-
-            type private TabLines = TabLine list
-
-            let private standardTunningTab = ["E"; "B"; "G"; "D"; "A"; "E"]
-
-            let private startTab = "||-" |> List.replicate 6
-
-            let private barTab = "-|-" |> List.replicate 6
-
-            let private endTab =  ("-||" + Environment.NewLine) |> List.replicate 6
+        module private TabifyChords =
 
             let private chordNameLength guitarChord =
                 (guitarChord |> chordName).Length
@@ -286,7 +286,7 @@ namespace Vaughan
                 [chordNameSeparator] @ separatedChordNames @ [chordNameSeparator; Environment.NewLine;]
 
         [<AutoOpen>]
-        module private Shapify =
+        module private ShapifyChords =
             let private shapifyMutedLowerStrings guitarChord =
                 let mutedStrings = numberOfMutedLowStrings guitarChord
                 List.replicate mutedStrings "X"
