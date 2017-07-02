@@ -31,6 +31,10 @@ namespace Vaughan
             | AlteredDominant -> [Unisson; MinorSecond; AugmentedSecond; MajorThird; DiminishedFifth;  AugmentedFifth; MinorSeventh]
             | HalfWholeDiminished -> [Unisson; MinorSecond; MinorThird; MajorThird; AugmentedFourth;  PerfectFifth; MajorSixth; MinorSeventh]
             | WholeTone -> [Unisson; MajorSecond; MajorThird; DiminishedFifth; AugmentedFifth; MinorSeventh]
+            | SixthDiminishedScale -> [Unisson; MajorSecond; MajorThird; PerfectFourth; PerfectFifth; AugmentedFifth; MajorSixth; MajorSeventh]
+            | MinorSixthDiminishedScale -> [Unisson; MajorSecond; MinorThird; PerfectFourth; PerfectFifth; AugmentedFifth; MajorSixth; MajorSeventh]
+            | DominantDiminishedScale -> [Unisson; MajorSecond; MajorThird; PerfectFourth; PerfectFifth; AugmentedFifth; MinorSeventh; MajorSeventh]
+            | Dominantb5DiminishedScale -> [Unisson; MajorSecond; MajorThird; PerfectFourth; DiminishedFifth; AugmentedFifth; MinorSeventh; MajorSeventh]
 
         let createScale:ICreateScale = fun scale root ->
             scalePattern scale |> List.map (fun interval -> transpose root interval)
@@ -61,7 +65,11 @@ namespace Vaughan
                 createScaleProperties LocrianSharp2 root;
                 createScaleProperties AlteredDominant root;
                 createScaleProperties HalfWholeDiminished root;
-                createScaleProperties WholeTone root
+                createScaleProperties WholeTone root;
+                createScaleProperties SixthDiminishedScale root;
+                createScaleProperties MinorSixthDiminishedScale root;
+                createScaleProperties DominantDiminishedScale root;
+                createScaleProperties Dominantb5DiminishedScale root;
             ]
 
         let private scaleContainChordTones scale chordTones =
@@ -71,4 +79,6 @@ namespace Vaughan
             let chordTones = chord.Notes |> List.map fst
 
             createAllScalesFrom (root chord)
-            |> List.choose (fun scale -> (if scaleContainChordTones scale.Notes chordTones then Some(scale) else None))
+            |> List.choose (fun scale -> (if scaleContainChordTones scale.Notes chordTones 
+                                          then Some(scale) 
+                                          else None))

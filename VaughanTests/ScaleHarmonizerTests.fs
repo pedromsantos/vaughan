@@ -67,7 +67,10 @@ namespace VaughanTests
 
         [<Property>]
         let ``Should create triads for scale`` (scaleType: ScaleType) (scaleDegree: ScaleDegrees) (root: Note)=
-            (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic && scaleType <> Bebop && scaleType <> NeapolitanMinor)
+            (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic 
+            && scaleType <> Bebop && scaleType <> NeapolitanMinor
+            && scaleType <> SixthDiminishedScale && scaleType <> MinorSixthDiminishedScale 
+            && scaleType <> DominantDiminishedScale && scaleType <> Dominantb5DiminishedScale)
                 ==> lazy (
                     let scale = createScale scaleType root
 
@@ -102,7 +105,9 @@ namespace VaughanTests
         [<Property>]
         let ``Should create seventh chords for scale`` (scaleType: ScaleType) (scaleDegree: ScaleDegrees) (root: Note) =
             (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
-                && scaleType <> WholeTone && scaleType <> Bebop && scaleType <> NeapolitanMinor)
+                && scaleType <> WholeTone && scaleType <> Bebop && scaleType <> NeapolitanMinor
+                && scaleType <> SixthDiminishedScale && scaleType <> MinorSixthDiminishedScale 
+                && scaleType <> DominantDiminishedScale && scaleType <> Dominantb5DiminishedScale)
                 ==> lazy (
                     let scale = createScale scaleType root
 
