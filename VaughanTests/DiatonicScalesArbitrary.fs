@@ -1,9 +1,7 @@
 ﻿namespace VaughanTests
     module DiatonicScalesArbitrary =
         open FsCheck
-
         open Vaughan.Domain
-        open Vaughan.Scales
 
         let isBlues = function Blues _ -> true | _ -> false
         let isMajorPentatonic = function MajorPentatonic _ -> true | _ -> false
