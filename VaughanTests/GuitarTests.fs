@@ -72,7 +72,6 @@ namespace VaughanTests
         [<Property(Arbitrary = [| typeof<DiatonicScales> |])>]
         let ``Should map diatonic closed sevent chords to guitar fretboard`` (scaleType: ScaleType) (scaleDegree: ScaleDegrees) (root: Note) (bassString: GuitarString) () =
             ((bassString = SixthString || bassString = FifthString || bassString = FourthString))
-                
                 ==> lazy (
                             let scale = createScale scaleType root
                             let chord = seventhsHarmonizer scaleDegree scale
@@ -139,6 +138,7 @@ namespace VaughanTests
         let ``Should map C major9 ignoring 5th to guitar fretboard on fifth string closed``() =
             let chord = chord C Major9
                         |> skipFunction Fifth
+
             (createGuitarChord FifthString chord).Frets =! [
                         {GuitarString=FifthString; Fret=3; Note=C};
                         {GuitarString=FourthString; Fret=2; Note=E};
@@ -150,6 +150,7 @@ namespace VaughanTests
         let ``Should map C9 ignoring 5th to guitar fretboard on fifth string closed``() =
             let chord = chord C Dominant9
                         |> skipFunction Fifth
+
             (createGuitarChord FifthString chord).Frets =! [
                         {GuitarString=FifthString; Fret=3; Note=C};
                         {GuitarString=FourthString; Fret=2; Note=E};
