@@ -82,6 +82,6 @@ namespace Vaughan
             let chordTones = chord.Notes |> List.map fst
 
             createAllScalesFrom (root chord)
-            |> List.choose (fun scale -> (if scaleContainChordTones scale.Notes chordTones 
-                                          then Some(scale) 
+            |> List.choose (fun scale -> (if scaleContainChordTones scale.Notes chordTones
+                                          then Some(scale)
                                           else None))

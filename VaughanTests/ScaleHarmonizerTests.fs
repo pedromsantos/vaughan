@@ -8,6 +8,7 @@ namespace VaughanTests
         open Vaughan.ScaleHarmonizer
         open Vaughan.Scales
         open Vaughan.Notes
+        open VaughanTests.DiatonicScalesArbitrary
 
         let chord = {Notes= []; ChordType=Closed; Name=""}
         let cMaj = {chord with Notes= [(C, Root); (E, Third); (G, Fifth)]}
@@ -41,7 +42,7 @@ namespace VaughanTests
         let eFlatAug7 = {chord with Notes= [(EFlat, Root); (G, Third); (B, Fifth); (D, Seventh)]}
         let fMin7 = {chord with Notes= [(F, Root); (AFlat, Third); (C, Fifth); (EFlat, Seventh)]}
         let aFlatMaj7 = {chord with Notes= [(AFlat, Root); (C, Third); (EFlat, Fifth); (G, Seventh)]}
-        let bDim7 = {chord with Notes= [(B, Root); (D, Third); (F, Fifth); (AFlat, Seventh)]}
+        let bDim7 = {chord with Notes= [(B, Root); (D, Third); (F, Fifth); (AFlat, Seventh)]} 
 
         [<Test>]
         let ``Should create triads for Ionian scale`` () =
@@ -65,20 +66,15 @@ namespace VaughanTests
             (triadsHarmonizer ScaleDegrees.VI cMinor).Notes =! aFlatMaj.Notes
             (triadsHarmonizer ScaleDegrees.VII cMinor).Notes =! bDim.Notes
 
-        [<Property>]
+        [<Property(Arbitrary = [| typeof<DiatonicScales> |])>]
         let ``Should create triads for scale`` (scaleType: ScaleType) (scaleDegree: ScaleDegrees) (root: Note)=
-            (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic 
-            && scaleType <> Bebop && scaleType <> NeapolitanMinor
-            && scaleType <> SixthDiminishedScale && scaleType <> MinorSixthDiminishedScale 
-            && scaleType <> DominantDiminishedScale && scaleType <> Dominantb5DiminishedScale)
-                ==> lazy (
-                    let scale = createScale scaleType root
+            let scale = createScale scaleType root
 
-                    (triadsHarmonizer scaleDegree scale).Notes
-                    |> List.pairwise
-                    |> List.map (fun e -> intervalBetween (fst (fst e)) (fst (snd e)))
-                    |> List.forall (
-                        fun e -> e = MajorThird || e = MinorThird || e = MajorSecond || e = PerfectFourth))
+            (triadsHarmonizer scaleDegree scale).Notes
+            |> List.pairwise
+            |> List.map (fun e -> intervalBetween (fst (fst e)) (fst (snd e)))
+            |> List.forall (
+                fun e -> e = MajorThird || e = MinorThird || e = MajorSecond || e = PerfectFourth)
 
         [<Test>]
         let ``Should create seventh chords for Ionian scale`` () =
@@ -102,20 +98,15 @@ namespace VaughanTests
             (seventhsHarmonizer ScaleDegrees.VI cMinor).Notes =! aFlatMaj7.Notes
             (seventhsHarmonizer ScaleDegrees.VII cMinor).Notes =! bDim7.Notes
 
-        [<Property>]
+        [<Property(Arbitrary = [| typeof<DiatonicScales> |])>]
         let ``Should create seventh chords for scale`` (scaleType: ScaleType) (scaleDegree: ScaleDegrees) (root: Note) =
-            (scaleType <> Blues && scaleType <> MajorPentatonic && scaleType <> MinorPentatonic
-                && scaleType <> WholeTone && scaleType <> Bebop && scaleType <> NeapolitanMinor
-                && scaleType <> SixthDiminishedScale && scaleType <> MinorSixthDiminishedScale 
-                && scaleType <> DominantDiminishedScale && scaleType <> Dominantb5DiminishedScale)
-                ==> lazy (
-                    let scale = createScale scaleType root
+            let scale = createScale scaleType root
 
-                    (seventhsHarmonizer scaleDegree scale).Notes
-                    |> List.pairwise
-                    |> List.map (fun e -> intervalBetween (fst (fst e)) (fst (snd e)))
-                    |> List.forall (
-                        fun e -> e = MajorThird || e = MinorThird || e = MajorSecond || e = PerfectFourth))
+            (seventhsHarmonizer scaleDegree scale).Notes
+            |> List.pairwise
+            |> List.map (fun e -> intervalBetween (fst (fst e)) (fst (snd e)))
+            |> List.forall (
+                fun e -> e = MajorThird || e = MinorThird || e = MajorSecond || e = PerfectFourth)
 
         [<Test>]
         let ``Should create ninth chords for Ionian scale`` () =
