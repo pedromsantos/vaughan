@@ -3,9 +3,9 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 14
 VisualStudioVersion = 14.0.25420.1
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "Vaughan", "Vaughan\Vaughan.fsproj", "{A9407C42-9D3E-4F65-950A-55D3E803DFE7}"
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "Vaughan", "Vaughan\Vaughan.fsproj", "{A9407C42-9D3E-4F65-950A-55D3E803DFE7}"
 EndProject
-Project("{F2A71F9B-5D33-465A-A702-920D77279786}") = "VaughanTests", "VaughanTests\VaughanTests.fsproj", "{E4B2D945-F61B-4798-AEB8-76DDDAE525DA}"
+Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "VaughanTests", "VaughanTests\VaughanTests.fsproj", "{E4B2D945-F61B-4798-AEB8-76DDDAE525DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

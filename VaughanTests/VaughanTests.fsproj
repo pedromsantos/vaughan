@@ -1,4 +1,4 @@
-﻿<?xml version="1.0" encoding="utf-8" standalone="yes"?>
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="14.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
     <Name>VaughanTests</Name>
@@ -9,7 +9,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>e4b2d945-f61b-4798-aeb8-76dddae525da</ProjectGuid>
     <OutputType>Library</OutputType>
-    <TargetFrameworkVersion>v4.5.2</TargetFrameworkVersion>
+    <TargetFrameworkVersion>v4.6.2</TargetFrameworkVersion>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
     <TargetFSharpCoreVersion>4.4.1.0</TargetFSharpCoreVersion>
   </PropertyGroup>
@@ -58,13 +58,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\Vaughan\Vaughan.fsproj">
-      <Name>Vaughan</Name>
-      <Project>{a9407c42-9d3e-4f65-950a-55d3e803dfe7}</Project>
-      <Private>True</Private>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="DiatonicScalesArbitrary.fs" />
     <Compile Include="InfrastructureTests.fs" />
     <Compile Include="NoteTests.fs" />
@@ -75,6 +68,12 @@
     <Compile Include="GuitarTests.fs" />
     <Compile Include="SpeechToMusicTests.fs" />
     <Content Include="App.config" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Vaughan\Vaughan.fsproj">
+      <Project>{A9407C42-9D3E-4F65-950A-55D3E803DFE7}</Project>
+      <Name>Vaughan</Name>
+    </ProjectReference>
   </ItemGroup>
   <Choose>
     <When Condition="$(TargetFSharpCoreVersion) &gt;= 4.3.0.0 AND $(TargetFSharpCoreVersion) &lt; 4.3.1.0 ">
