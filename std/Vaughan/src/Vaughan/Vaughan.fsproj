@@ -1,0 +1,22 @@
+﻿<Project Sdk="FSharp.NET.Sdk;Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <TargetFramework>netstandard1.6</TargetFramework>
+  </PropertyGroup>
+  <ItemGroup>
+    <PackageReference Include="FSharp.Core" Version="4.1.*" />
+    <PackageReference Include="FSharp.NET.Sdk" Version="1.0.*" PrivateAssets="All" />
+    <PackageReference Include="FParsec" Version="1.0.3-beta-20170521" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Infrastructure.fs" />
+    <Compile Include="Domain.fs" />
+    <Compile Include="Notes.fs" />
+    <Compile Include="Chords.fs" />
+    <Compile Include="Scales.fs" />
+    <Compile Include="Keys.fs" />
+    <Compile Include="ChordVoiceLeading.fs" />
+    <Compile Include="ScaleHarmonizer.fs" />
+    <Compile Include="Guitar.fs" />
+    <Compile Include="SpeechToMusic.fs" />
+  </ItemGroup>
+</Project>
