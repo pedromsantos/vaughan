@@ -16,7 +16,7 @@ namespace Vaughan
                 fret.Fret > 11
 
             let private fretDistance fret other =
-                abs(fret - other)
+                abs(fret.Fret - other.Fret)
 
             let private isStretched fret other =
                 (fretDistance fret other) > 5
@@ -27,17 +27,19 @@ namespace Vaughan
             let private isRaisable fret =
                 not (isRaised fret) && not (isMuted fret)
 
+            let private unstretchFret highestFret fret = 
+                if isStretched fret highestFret && isRaisable fret
+                then raiseOctave fret else fret
+
+            let private highestFret frets = 
+                frets |> List.maxBy (fun f -> f.Fret)
+
             let raiseOpenFrets frets =
                 frets
                 |> List.map (fun fret -> if isOpen fret then raiseOctave fret else fret)
-
-            let unstretch frets =
-                let maxFret = frets |> List.map (fun f -> f.Fret) |> List.max
-                frets
-                |> List.map (fun f ->
-                                        if isStretched f.Fret maxFret && isRaisable f
-                                        then raiseOctave f
-                                        else f)
+            
+            let unstretch frets = 
+                frets |> List.map (fun f -> unstretchFret (highestFret frets) f)
 
          [<AutoOpen>]
          module private GuitarStrings =
