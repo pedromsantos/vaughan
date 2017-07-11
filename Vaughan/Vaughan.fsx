@@ -162,13 +162,3 @@ let chord = chord C ChordQuality.Dominant7
 let chordNotes = chord.Notes |> List.map fst |> List.sort
 
 scalesFitting chord
-
-[(!*(C=>Major) |~ ThirdString);
-(!*(D=>Minor) |~ ThirdString);
-(!*(E=>Minor) |~ ThirdString);
-(!*(F=>Major) |~ ThirdString);
-(!*(G=>Major) |~ ThirdString);
-(!*(A=>Minor) |~ ThirdString);
-(!*(B=>Diminished) |~ ThirdString)]
-|> tabifyAll
-|> printf "\n%s"

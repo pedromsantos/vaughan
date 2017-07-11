@@ -89,16 +89,14 @@ namespace Vaughan
                 { GuitarString = guitarString; Fret = -1; Note = openStringNote guitarString }
 
             let private nextChordNotes chordNotes shouldSkipString =
-                if shouldSkipString then
-                    chordNotes
-                else
-                    chordNotes |> List.tail
+                match shouldSkipString with
+                | true -> chordNotes
+                | false -> chordNotes |> List.tail
 
             let private mapNoteToFret guitarString note shouldSkipString =
-                if shouldSkipString then
-                    createMutedStringFret guitarString
-                else
-                    createFret guitarString note
+                match shouldSkipString with
+                | true -> createMutedStringFret guitarString
+                | false -> createFret guitarString note
 
             let private skipString bassString chord guitarString =
                 chord.ChordType = Drop3 && guitarString = nextString bassString
