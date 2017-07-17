@@ -114,10 +114,10 @@ namespace Vaughan
             |> List.map (fun n -> adjustIntervalForFunctionsAboveSeventh (intervalBetween root (note n)) (noteFunction n))
             |> List.skip 1
 
-        let private invertOpenOrClosed chord =
-            {chord with Notes= rotateByOne chord.Notes;}
+        let private invertOpenOrClosed (chord:Chord) =
+            {chord with Notes = rotateByOne chord.Notes;}
 
-        let private invertDrop2 chord =
+        let private invertDrop2 (chord:Chord) =
             {
                 chord with Notes = [chord.Notes |> List.last]
                                    @
@@ -127,7 +127,7 @@ namespace Vaughan
                                     |> rotateByOne)
             }
 
-        let private invertDrop3 chord =
+        let private invertDrop3 (chord:Chord) =
             {chord with Notes= chord.Notes |> rotateByOne |> rotateByOne |> swapSecondTwo;}
 
         let name chord =
@@ -191,7 +191,7 @@ namespace Vaughan
         let toClosed chord =
             {chord with ChordType=Closed}
 
-        let skipFunction functionToSkipp chord =
+        let skipFunction functionToSkipp (chord:Chord) =
             {chord with Notes = chord.Notes |> List.filter (fun nf -> snd nf <> functionToSkipp)}
 
         let private addFittingChord notes fittingChords =

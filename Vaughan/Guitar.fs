@@ -77,40 +77,42 @@ namespace Vaughan
             let fretNoteOnString note guitarString =
                 measureAbsoluteSemitones (openStringNote guitarString) note
 
+            let fretForMutedString = -1
+
         open Domain
         open Notes
         open Chords
         open Infrastructure
 
+        let private createMutedStringFret guitarString =
+            { GuitarString = guitarString; Fret = fretForMutedString; Note = openStringNote guitarString }
+
         let private createFret guitarString note =
-            { GuitarString = guitarString; Fret = fretNoteOnString note guitarString; Note = note }
+            { createMutedStringFret guitarString with Fret = fretNoteOnString note guitarString; Note = note } 
 
         [<AutoOpen>]
         module private MapDropChords =
-            let private createMutedStringFret guitarString =
-                { GuitarString = guitarString; Fret = -1; Note = openStringNote guitarString }
-
-            let private nextChordNotes chordNotes shouldSkipString =
-                match shouldSkipString with
+            let private unmapedChordNotes chordNotes mutedString guitarString =
+                match mutedString guitarString with
                 | true -> chordNotes
                 | false -> chordNotes |> List.tail
 
-            let private mapNoteToFret guitarString note shouldSkipString =
-                match shouldSkipString with
+            let private mapNoteToFret guitarString (chordNotes: ChordNote list) mutedString =
+                match mutedString guitarString with
                 | true -> createMutedStringFret guitarString
-                | false -> createFret guitarString note
+                | false -> createFret guitarString (fst chordNotes.[0])
 
             let private skipString bassString chord guitarString =
                 chord.ChordType = Drop3 && guitarString = nextString bassString
 
             let private mapChordToGuitarFrets bassString chord =
+                let shouldSkipString = skipString bassString chord 
                 let rec mapChordNoteToString guitarString chordNotes mappedChordNotes =
                     match chordNotes with
                     | [] -> mappedChordNotes
                     | _ ->
-                        let shouldSkipString = skipString bassString chord guitarString
-                        let fret = mapNoteToFret guitarString (fst chordNotes.[0]) shouldSkipString
-                        let unmapedChordNotes = nextChordNotes chordNotes shouldSkipString
+                        let fret = mapNoteToFret guitarString chordNotes shouldSkipString
+                        let unmapedChordNotes = unmapedChordNotes chordNotes shouldSkipString guitarString
                         mapChordNoteToString (nextString guitarString) unmapedChordNotes (fret::mappedChordNotes)
                 mapChordNoteToString bassString chord.Notes []
 
@@ -163,6 +165,9 @@ namespace Vaughan
         let private stringForBass guitarChord =
             (guitarChord.Frets |> List.head).GuitarString
 
+        let private isNinthChord chord =
+            chord.Notes |> List.exists (fun n -> snd n = Ninth) 
+
         let numberOfMutedHighStrings guitarChord =
             match stringForLead guitarChord with
                 | SecondString -> 1
@@ -181,10 +186,8 @@ namespace Vaughan
             match chord.ChordType with
             | Drop2 | Drop3 | Triad -> dropChordToGuitarChord bassString chord
             | Open -> chordToGuitarOpenChord bassString chord
-            | Closed ->
-                if chord.Notes |> List.exists (fun n -> snd n = Ninth)
-                then dropChordToGuitarChord bassString chord
-                else chordToGuitarClosedChord bassString chord
+            | Closed when isNinthChord chord -> dropChordToGuitarChord bassString chord
+            | Closed -> chordToGuitarClosedChord bassString chord
 
         let (|~) chord bassString =
             createGuitarChord bassString chord
