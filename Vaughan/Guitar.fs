@@ -97,21 +97,21 @@ namespace Vaughan
                 | true -> chordNotes
                 | false -> chordNotes |> List.tail
 
-            let private mapNoteToFret guitarString (chordNotes: ChordNote list) mutedString =
+            let private mapNoteToFret guitarString note mutedString =
                 match mutedString guitarString with
                 | true -> createMutedStringFret guitarString
-                | false -> createFret guitarString (fst chordNotes.[0])
+                | false -> createFret guitarString note
 
             let private skipString bassString chord guitarString =
                 chord.ChordType = Drop3 && guitarString = nextString bassString
 
             let private mapChordToGuitarFrets bassString chord =
-                let shouldSkipString = skipString bassString chord 
+                let shouldSkipString = skipString bassString chord
                 let rec mapChordNoteToString guitarString chordNotes mappedChordNotes =
                     match chordNotes with
                     | [] -> mappedChordNotes
                     | _ ->
-                        let fret = mapNoteToFret guitarString chordNotes shouldSkipString
+                        let fret = mapNoteToFret guitarString (fst chordNotes.[0]) shouldSkipString
                         let unmapedChordNotes = unmapedChordNotes chordNotes shouldSkipString guitarString
                         mapChordNoteToString (nextString guitarString) unmapedChordNotes (fret::mappedChordNotes)
                 mapChordNoteToString bassString chord.Notes []
@@ -186,7 +186,7 @@ namespace Vaughan
             match chord.ChordType with
             | Drop2 | Drop3 | Triad -> dropChordToGuitarChord bassString chord
             | Open -> chordToGuitarOpenChord bassString chord
-            | Closed when isNinthChord chord -> dropChordToGuitarChord bassString chord
+            | Closed when chord.Notes |> List.exists (fun n -> snd n = Ninth) -> dropChordToGuitarChord bassString chord
             | Closed -> chordToGuitarClosedChord bassString chord
 
         let (|~) chord bassString =
