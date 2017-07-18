@@ -182,13 +182,13 @@ namespace Vaughan
             if chord.Notes.Length = 3 then {chord with ChordType=Triad}
             else chord
 
-        let toOpen chord =
+        let toOpen (chord:Chord) =
             {chord with ChordType=Open}
 
         let ( !* ) c =
             toOpen c
 
-        let toClosed chord =
+        let toClosed (chord:Chord) =
             {chord with ChordType=Closed}
 
         let skipFunction functionToSkipp (chord:Chord) =

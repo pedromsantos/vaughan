@@ -21,7 +21,7 @@ namespace Vaughan
             let private isStretched fret other =
                 (fretDistance fret other) > 5
 
-            let private raiseOctave fret =
+            let private raiseOctave (fret:Fret) =
                 {fret with Fret = fret.Fret + (toDistance PerfectOctave)}
 
             let private isRaisable fret =

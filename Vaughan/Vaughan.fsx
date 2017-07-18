@@ -8,7 +8,6 @@
 #load "Guitar.fs"
 #load "ChordVoiceLeading.fs"
 
-open Vaughan.Infrastructure
 open Vaughan.Domain
 open Vaughan.Notes
 open Vaughan.Chords
