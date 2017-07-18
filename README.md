@@ -67,10 +67,10 @@ open Vaughan.Notes
 open Vaughan.Scales
 ```
 
-| Example                       | Output                                     |
-| ----------------------------- | ------------------------------------------ |
-| createScale Phrygian C        | [ C; DFlat; EFlat; F; G; AFlat; BFlat]     |
-| createScale LydianAugmented C | [ C; D; E; FSharp; GSharp; A; B ]          |
+| Example                            | Output                                     |
+| ---------------------------------- | ------------------------------------------ |
+| createScaleNotes Phrygian C        | [ C; DFlat; EFlat; F; G; AFlat; BFlat]     |
+| createScaleNotes LydianAugmented C | [ C; D; E; FSharp; GSharp; A; B ]          |
 
 
 ### Chords
@@ -115,8 +115,8 @@ let cMin = {Notes= [(C, Root); (EFlat, Third); (G, Fifth)]; ChordType=Closed; Na
 
 let cMaj7 = {Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh)]; ChordType=Closed; Name="CMaj7"}
 
-let cIonian = createScale Ionian C
-let cMinor = createScale HarmonicMinor C
+let cIonian = createScaleNotes Ionian C
+let cMinor = createScaleNotes HarmonicMinor C
 ```
 
  Example                                       | Output         |
@@ -138,7 +138,7 @@ open Vaughan.Scales
 ```
 
 ```fsharp
-createScale Ionian C
+createScaleNotes Ionian C
 |> triadsHarmonizer ScaleDgrees.I
 |> createGuitarChord SixthString
 |> tabify
@@ -155,7 +155,7 @@ E|-8-|
 ```
 
 ```fsharp
-createScale Ionian C
+createScaleNotes Ionian C
 |> seventhsHarmonizer ScaleDgrees.I
 |> toDrop2
 |> createGuitarChord FifthString
@@ -173,7 +173,7 @@ E|---|
 ```
 
 ```fsharp
-createScale Ionian A
+createScaleNotes Ionian A
 |> seventhsHarmonizer ScaleDgrees.I
 |> toDrop2
 |> createGuitarChord FifthString
@@ -190,7 +190,7 @@ A|-12-|
 E|----|
 ```
 ```fsharp
-createScale Ionian F
+createScaleNotes Ionian F
 |> seventhsHarmonizer ScaleDgrees.I
 |> createGuitarChord FourthString
 |> tabify
@@ -207,7 +207,7 @@ E|----|
 ```
 
 ```fsharp
-createScale Ionian C
+createScaleNotes Ionian C
 |> seventhsHarmonizer ScaleDgrees.I
 |> toDrop3
 |> createGuitarChord SixthString
@@ -225,7 +225,7 @@ E|-8-|
 ```
 
 ```fsharp
-createScale Ionian C
+createScaleNotes Ionian C
 |> seventhsHarmonizer ScaleDgrees.I
 |> toDrop3
 |> createGuitarChord FifthString
@@ -242,7 +242,7 @@ A|-3-|
 E|---|
 ```
 ```fsharp
-createScale Ionian C
+createScaleNotes Ionian C
 |> seventhsHarmonizer ScaleDgrees.I
 |> toDrop2
 |> createGuitarChord FifthString
@@ -256,7 +256,7 @@ EADGBE
 X3545X
 ```
 ```fsharp
-let cIonian = createScale Ionian C
+let cIonian = createScaleNotes Ionian C
 let cMaj = seventhsHarmonizer ScaleDgrees.I cIonian
 let dMin = seventhsHarmonizer ScaleDgrees.II cIonian
 let eMin = seventhsHarmonizer ScaleDgrees.III cIonian
@@ -311,18 +311,28 @@ E|-8-|
 ### Example usage
 
 ```fsharp
-open Domain
-open Notes
-open Chords
-open Keys
-open Scales
-open ScaleHarmonizer
-open Guitar
-open GuitarTab
-open ScaleHarmonizer
-open Infrastructure
+#load "./Infrastructure.fs"
+#load "Domain.fs"
+#load "Notes.fs"
+#load "Chords.fs"
+#load "Keys.fs"
+#load "Scales.fs"
+#load "ScaleHarmonizer.fs"
+#load "Guitar.fs"
+#load "ChordVoiceLeading.fs"
 
-let cIonian = createScale Ionian C
+open Vaughan.Infrastructure
+open Vaughan.Domain
+open Vaughan.Notes
+open Vaughan.Chords
+open Vaughan.Keys
+open Vaughan.Scales
+open Vaughan.ScaleHarmonizer
+open Vaughan.Guitar
+open Vaughan.GuitarTab
+open Vaughan.ChordVoiceLeading
+
+let cIonian = createScaleNotes Ionian C
 
 (cIonian
 |> seventhsHarmonizer ScaleDegrees.I
@@ -344,64 +354,64 @@ let cIonian = createScale Ionian C
 |> tabify
 |> printf "\n%s"
 
-chord C Dominant9 
+chord C Dominant9
 |> skipFunction Fifth
 |> createGuitarChord FifthString
 |> tabify
 |> printf "\n%s"
 
-chord C Major9 
+chord C Major9
 |> skipFunction Fifth
 |> createGuitarChord FifthString
 |> tabify
 |> printf "\n%s"
 
-createScale Aolian DSharp
+createScaleNotes Aolian DSharp
 |> triadsHarmonizer ScaleDegrees.III
 |> createGuitarChord SixthString
 |> tabify
 |> printf "\n%s"
 
-createScale Ionian A
+createScaleNotes Ionian A
 |> seventhsHarmonizer ScaleDegrees.I
 |> toDrop2
 |> createGuitarChord FifthString
 |> tabify
 |> printf "\n%s"
 
-createScale Ionian C
+createScaleNotes Ionian C
 |> seventhsHarmonizer ScaleDegrees.I
 |> toDrop3
 |> createGuitarChord FifthString
 |> tabify
 |> printf "\n%s"
 
-createScale Aolian FSharp
+createScaleNotes Aolian FSharp
 |> seventhsHarmonizer ScaleDegrees.III
 |> toDrop3
 |> createGuitarChord SixthString
 |> tabify
 |> printf "\n%s"
 
-createScale HarmonicMinor BFlat
+createScaleNotes HarmonicMinor BFlat
 |> seventhsHarmonizer ScaleDegrees.VII
 |> createGuitarChord SixthString
 |> tabify
 |> printf "\n%s"
 
-createScale HarmonicMinor C
+createScaleNotes HarmonicMinor C
 |> seventhsHarmonizer ScaleDegrees.VII
 |> createGuitarChord SixthString
 |> tabify
 |> printf "\n%s"
 
-createScale HarmonicMinor C
+createScaleNotes HarmonicMinor C
 |> seventhsHarmonizer ScaleDegrees.VII
 |> createGuitarChord SixthString
 |> tabify
 |> printf "\n%A"
 
-createScale HarmonicMinor C
+createScaleNotes HarmonicMinor C
 |> seventhsHarmonizer ScaleDegrees.VII
 |> toOpen
 |> createGuitarChord SixthString
@@ -409,7 +419,7 @@ createScale HarmonicMinor C
 |> printf "\n%A"
 
 [(!*(G=>Major) |~ SixthString);
-(!*(C=>Major) |~ FifthString); 
+(!*(C=>Major) |~ FifthString);
 (!*(A=>Minor) |~ FifthString);
 (!*(D=>Major) |~ FourthString)]
 |> tabifyAll
@@ -430,34 +440,41 @@ keyNotes CMajor |> printf "\n%A"
 keyNotes EFlatMajor |> printf "\n%A"
 keyNotes DMinor |> printf "\n%A"
 
-createScale Phrygian C |> printf "\n%A"
-createScale LydianAugmented C  |> printf "\n%A"
+createScaleNotes Phrygian C |> printf "\n%A"
+createScaleNotes LydianAugmented C  |> printf "\n%A"
 
 let cMaj7 = {Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh)]; ChordType=Closed; Name="CMaj7"}
 let cMaj = chord C Major
 
-noteNames cMaj7 |> printf "\n%A"             
-bass cMaj7 |> printf "\n%A"                          
-lead cMaj7 |> printf "\n%A"                               
-name cMaj7 |> printf "\n%A"                               
+noteNames cMaj7 |> printf "\n%A"
+bass cMaj7 |> printf "\n%A"
+lead cMaj7 |> printf "\n%A"
+name cMaj7 |> printf "\n%A"
 cMaj7.Notes |> printf "\n%A"
-(cMaj7 |> invert).Notes |> printf "\n%A"                              
-(cMaj7 |> invert |> invert).Notes |> printf "\n%A"               
+(cMaj7 |> invert).Notes |> printf "\n%A"
+(cMaj7 |> invert |> invert).Notes |> printf "\n%A"
 (cMaj7 |> invert |> invert |> invert).Notes |> printf "\n%A"
-(cMaj7 |> toDrop2).Notes |> printf "\n%A"      
+(cMaj7 |> toDrop2).Notes |> printf "\n%A"
 (cMaj7 |> toDrop3).Notes |> printf "\n%A"
 
-open ChordVoiceLeading
-inversionForFunctionAsLead cMaj Third |> printf "\n%A"            
-inversionForFunctionAsBass cMaj Fifth |> printf "\n%A"    
-invertionWithLeadClosestToNote cMaj CSharp |> printf "\n%A"    
+inversionForFunctionAsLead cMaj Third |> printf "\n%A"
+inversionForFunctionAsBass cMaj Fifth |> printf "\n%A"
+invertionWithLeadClosestToNote cMaj CSharp |> printf "\n%A"
 invertionWithBassClosestToNote cMaj F |> printf "\n%A"
 
 printfn "\n"
-printfn "chordsFitting"
+printfn "Chords Fitting"
 
 chordsFitting [D; F; A] |> printf "\n%A"
-chordsFitting [C; E; G; B] |> printf "\n%A" 
+chordsFitting [C; E; G; B] |> printf "\n%A"
+
+printfn "\n"
+printfn "Scales Fitting"
+
+let chord = chord C ChordQuality.Dominant7
+let chordNotes = chord.Notes |> List.map fst |> List.sort
+
+scalesFitting chord
 ```
 
 #### Output
