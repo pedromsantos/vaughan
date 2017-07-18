@@ -40,12 +40,12 @@ namespace Vaughan
             | Ninth -> harmonizeScaleDegreeWithNotes forDegree scale 5
             | _ -> harmonizeScaleDegreeWithNotes forDegree scale 3
 
-        let ninthsHarmonizer forDegree scale =
+        let ninthsHarmonizer:INinthsHarmonizer = fun forDegree scale ->
             harmonize forDegree Ninth scale
 
-        let seventhsHarmonizer forDegree scale =
+        let seventhsHarmonizer:ISeventhsHarmonizer = fun forDegree scale ->
             harmonize forDegree Seventh scale
 
-        let triadsHarmonizer forDegree scale =
+        let triadsHarmonizer:ITriadsHarmonizer = fun forDegree scale ->
             let complete = harmonize forDegree Fifth scale
             {complete with ChordType = Triad}

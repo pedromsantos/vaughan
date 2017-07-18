@@ -130,7 +130,7 @@ namespace Vaughan
         let private invertDrop3 (chord:Chord) =
             {chord with Notes = chord.Notes |> rotateByOne |> rotateByOne |> swapSecondTwo;}
 
-        let name chord =
+        let name:IChordName = fun chord ->
             noteName (noteForFunction chord Root)
             + nameForQuality (qualityForPattern(intervalsForChord chord))
 
@@ -159,14 +159,9 @@ namespace Vaughan
                 Name =  noteName root + nameForQuality (qualityForPattern(intervalsForQuality quality))
             }
 
-        let (=>) root quality =
-            chord root quality
-
         let add chords chord =
             chord :: chords |> rotateByOne
-
-        let (/./) chords chord =
-            add chords chord
+          
 
         let toDrop2:IToDrop2 = fun chord ->
             if chord.Notes.Length = 4
@@ -184,9 +179,15 @@ namespace Vaughan
 
         let toOpen:IToOpen = fun chord ->
             {chord with ChordType=Open}
+        
+        let (=>) root quality =
+            chord root quality
 
-        let ( !* ) c =
-            toOpen c
+        let (/./) chords chord =
+            add chords chord
+        
+        let ( !* ) chord =
+            toOpen chord
 
         let toClosed:IToClosed = fun chord ->
             {chord with ChordType=Closed}

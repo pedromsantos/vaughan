@@ -156,32 +156,6 @@ namespace Vaughan
             let chordToGuitarClosedChord bassString chord =
                 chordToGuitarChord (fun f -> f.Fret <> 0) bassString chord
 
-        let chordName guitarChord =
-            guitarChord.Chord.Name
-
-        let private stringForLead guitarChord =
-            (guitarChord.Frets |> List.last).GuitarString
-
-        let private stringForBass guitarChord =
-            (guitarChord.Frets |> List.head).GuitarString
-
-        let private isNinthChord (chord:Chord) =
-            chord.Notes |> List.exists (fun n -> snd n = Ninth) 
-
-        let numberOfMutedHighStrings guitarChord =
-            match stringForLead guitarChord with
-                | SecondString -> 1
-                | ThirdString -> 2
-                | FourthString -> 3
-                | _ -> 0
-
-        let numberOfMutedLowStrings guitarChord =
-            match stringForBass guitarChord with
-            | FifthString -> 1
-            | FourthString  -> 2
-            | ThirdString  -> 3
-            | _ -> 0
-
         let createGuitarChord bassString chord =
             match chord.ChordType with
             | Drop2 | Drop3 | Triad -> dropChordToGuitarChord bassString chord
@@ -189,18 +163,13 @@ namespace Vaughan
             | Closed when chord.Notes |> List.exists (fun n -> snd n = Ninth) -> dropChordToGuitarChord bassString chord
             | Closed -> chordToGuitarClosedChord bassString chord
 
-        let (|~) chord bassString =
-            createGuitarChord bassString chord
-
-        let (>|<) (chords:GuitarChord list) (chord:GuitarChord) =
-            chord :: chords |> rotateByOne
-
     module GuitarTab =
         open System
         open Domain
         open Notes
         open Chords
         open Guitar
+        open Infrastructure
 
         type private TabColumn = string list
 
@@ -220,6 +189,31 @@ namespace Vaughan
 
         [<AutoOpen>]
         module private TabifyChords =
+            let private stringForLead guitarChord =
+                (guitarChord.Frets |> List.last).GuitarString
+
+            let private stringForBass guitarChord =
+                (guitarChord.Frets |> List.head).GuitarString
+
+            let private isNinthChord (chord:Chord) =
+                chord.Notes |> List.exists (fun n -> snd n = Ninth) 
+
+            let chordName guitarChord =
+                guitarChord.Chord.Name
+
+            let numberOfMutedHighStrings guitarChord =
+                match stringForLead guitarChord with
+                    | SecondString -> 1
+                    | ThirdString -> 2
+                    | FourthString -> 3
+                    | _ -> 0
+
+            let numberOfMutedLowStrings guitarChord =
+                match stringForBass guitarChord with
+                | FifthString -> 1
+                | FourthString  -> 2
+                | ThirdString  -> 3
+                | _ -> 0
 
             let private chordNameLength guitarChord =
                 (guitarChord |> chordName).Length
@@ -312,14 +306,20 @@ namespace Vaughan
                 @ (shapifyFrets guitarChord)
                 @ (shapifyMutedHigherStrings guitarChord)
 
-        let tabifyAll guitarChords =
+        let tabifyAll:ITabifyAll = fun guitarChords ->
             (tabifyChordNames guitarChords) @ (tabifyChords guitarChords)
             |> List.fold (+) ""
 
-        let tabify guitarChord =
+        let tabify:ITabify = fun guitarChord ->
             tabifyAll [guitarChord]
 
-        let shapify guitarChord =
+        let shapify:IShapify = fun guitarChord ->
             guitarChord.Chord.Name + Environment.NewLine +
             "EADGBE" + Environment.NewLine +
             (guitarChord |> shapifyChord |> List.fold (+) "") + Environment.NewLine
+
+        let (|~) chord bassString =
+            createGuitarChord bassString chord
+
+        let (>|<) (chords:GuitarChord list) (chord:GuitarChord) =
+            chord :: chords |> rotateByOne

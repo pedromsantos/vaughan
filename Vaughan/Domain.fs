@@ -61,6 +61,7 @@ namespace Vaughan
         type ChordType = | Open | Closed | Triad | Drop2 | Drop3
         type Chord = {Notes:ChordNotes; ChordType:ChordType; Name:string}
 
+        type IChordName = Chord -> string
         type IInvert = Chord -> Chord
         type IRoot = Chord -> Note
         type IBass = Chord -> Note
@@ -74,6 +75,10 @@ namespace Vaughan
         type IChordsFitting = Note list -> Chord list
         type ICreateChord = Note -> ChordQuality -> Chord
         type ISkipFunction = ChordNoteFunction -> Chord -> Chord
+        type IinvertionWithBassClosestToNote= Chord -> Note -> Chord
+        type IInvertionWithLeadClosestToNote = Chord -> Note -> Chord
+        type IInversionForFunctionAsBass= Chord -> ChordNoteFunction -> Chord
+        type IInversionForFunctionAsLead = Chord -> ChordNoteFunction -> Chord
 
         type ScaleDegree =
             | I = 0 | II = 1 | III = 2 | IV = 3 | V = 4 | VI = 5 | VII = 6
@@ -93,23 +98,23 @@ namespace Vaughan
         type IScalesFitting = Chord -> Scale list
         type ICreateScale = ScaleType -> Note -> Scale
         type ICreateScaleNotes = ScaleType -> Note -> ScaleNotes
-        type INinthsHarmonizer = ScaleDegree -> ScaleType -> Chord
-        type ISeventhsHarmonizer = ScaleDegree -> ScaleType -> Chord
-        type ITriadsHarmonizer = ScaleDegree -> ScaleType -> Chord
-
-        type IInversionForFunctionAsLead = Chord -> ChordNoteFunction -> Chord
-        type IInversionForFunctionAsBass= Chord -> ChordNoteFunction -> Chord
-        type IInvertionWithLeadClosestToNote = Chord -> Note -> Chord
-        type IinvertionWithBassClosestToNote= Chord -> Note -> Chord
+        type INinthsHarmonizer = ScaleDegree -> ScaleNotes -> Chord
+        type ISeventhsHarmonizer = ScaleDegree -> ScaleNotes -> Chord
+        type ITriadsHarmonizer = ScaleDegree -> ScaleNotes -> Chord
 
         type GuitarString =
             | SixthString | FifthString | FourthString
             | ThirdString | SecondString | FirstString
 
         type Fret = {GuitarString:GuitarString; Fret:int; Note:Note}
-
         type Frets = Fret list
-
         type GuitarChord = {Chord:Chord; Frets:Frets}
 
+        type ITabifyAll = GuitarChord list -> string
+        type ITabify = GuitarChord -> string
+        type IShapify = GuitarChord -> string
+
         type ChordIntent = { Root: Note; Quality:ChordQuality; }
+
+        type IParseChord = string -> ChordIntent
+        type ICreateChordFromIntent = ChordIntent -> Chord
