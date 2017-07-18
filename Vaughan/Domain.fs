@@ -93,10 +93,14 @@ namespace Vaughan
         type IScalesFitting = Chord -> Scale list
         type ICreateScale = ScaleType -> Note -> Scale
         type ICreateScaleNotes = ScaleType -> Note -> ScaleNotes
-
         type INinthsHarmonizer = ScaleDegree -> ScaleType -> Chord
         type ISeventhsHarmonizer = ScaleDegree -> ScaleType -> Chord
         type ITriadsHarmonizer = ScaleDegree -> ScaleType -> Chord
+
+        type IInversionForFunctionAsLead = Chord -> ChordNoteFunction -> Chord
+        type IInversionForFunctionAsBass= Chord -> ChordNoteFunction -> Chord
+        type IInvertionWithLeadClosestToNote = Chord -> Note -> Chord
+        type IinvertionWithBassClosestToNote= Chord -> Note -> Chord
 
         type GuitarString =
             | SixthString | FifthString | FourthString
