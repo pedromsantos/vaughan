@@ -128,7 +128,7 @@ namespace Vaughan
             }
 
         let private invertDrop3 (chord:Chord) =
-            {chord with Notes= chord.Notes |> rotateByOne |> rotateByOne |> swapSecondTwo;}
+            {chord with Notes = chord.Notes |> rotateByOne |> rotateByOne |> swapSecondTwo;}
 
         let name chord =
             noteName (noteForFunction chord Root)

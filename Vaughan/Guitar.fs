@@ -67,6 +67,8 @@ namespace Vaughan
                 | 3 -> ThirdString
                 | 2 -> SecondString
                 | _ -> FirstString
+            
+            let fretForMutedString = -1
 
             let openStringNote guitarString =
                 (guitarStringAttributes guitarString).OpenStringNote
@@ -77,18 +79,16 @@ namespace Vaughan
             let fretNoteOnString note guitarString =
                 measureAbsoluteSemitones (openStringNote guitarString) note
 
-            let fretForMutedString = -1
+            let createMutedStringFret guitarString =
+                { GuitarString = guitarString; Fret = fretForMutedString; Note = openStringNote guitarString }
+
+            let createStringFret guitarString note =
+                { createMutedStringFret guitarString with Fret = fretNoteOnString note guitarString; Note = note }  
 
         open Domain
         open Notes
         open Chords
-        open Infrastructure
-
-        let private createMutedStringFret guitarString =
-            { GuitarString = guitarString; Fret = fretForMutedString; Note = openStringNote guitarString }
-
-        let private createFret guitarString note =
-            { createMutedStringFret guitarString with Fret = fretNoteOnString note guitarString; Note = note } 
+        open Infrastructure 
 
         [<AutoOpen>]
         module private MapDropChords =
@@ -100,7 +100,7 @@ namespace Vaughan
             let private mapNoteToFret guitarString note mutedString =
                 match mutedString guitarString with
                 | true -> createMutedStringFret guitarString
-                | false -> createFret guitarString note
+                | false -> createStringFret guitarString note
 
             let private skipString bassString chord guitarString =
                 chord.ChordType = Drop3 && guitarString = nextString bassString
@@ -126,7 +126,7 @@ namespace Vaughan
             let private mapAllChordNotesToFretsOnString allowedFrets guitarStringIndex chord =
                 let guitarString = indexToGuitarString guitarStringIndex
                 [for chordNoteIndex in 0 .. (chord.Notes.Length - 1)
-                    do yield (createFret guitarString (fst chord.Notes.[chordNoteIndex]))]
+                    do yield (createStringFret guitarString (fst chord.Notes.[chordNoteIndex]))]
                 |> List.filter allowedFrets
 
             let private generateAllFretCombinations allowedFrets bassString chord =
@@ -137,7 +137,7 @@ namespace Vaughan
 
             let private fitFretingCombinations fretingCombinations =
                 fretingCombinations
-                |> List.map (fun m -> (m, List.sumBy (fun f -> f.Fret) m) )
+                |> List.map (fun fc -> (fc, fc |> List.sumBy (fun f -> f.Fret)))
                 |> List.minBy (fun l -> (snd l))
                 |> fst
 
