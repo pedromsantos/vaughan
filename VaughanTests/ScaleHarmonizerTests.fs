@@ -46,7 +46,7 @@ namespace VaughanTests
 
         [<Test>]
         let ``Should create triads for Ionian scale`` () =
-            let cIonian = createScale Ionian C
+            let cIonian = createScaleNotes Ionian C
             (triadsHarmonizer ScaleDegrees.I cIonian).Notes =! cMaj.Notes
             (triadsHarmonizer ScaleDegrees.II cIonian).Notes =! dMin.Notes
             (triadsHarmonizer ScaleDegrees.III cIonian).Notes =! eMin.Notes
@@ -57,7 +57,7 @@ namespace VaughanTests
 
         [<Test>]
         let ``Should create triads for Harmonic Minor scale`` () =
-            let cMinor = createScale HarmonicMinor C
+            let cMinor = createScaleNotes HarmonicMinor C
             (triadsHarmonizer ScaleDegrees.I cMinor).Notes =! cMin.Notes
             (triadsHarmonizer ScaleDegrees.II cMinor).Notes =! dDim.Notes
             (triadsHarmonizer ScaleDegrees.III cMinor).Notes =! eFlatAug.Notes
@@ -68,7 +68,7 @@ namespace VaughanTests
 
         [<Property(Arbitrary = [| typeof<DiatonicScales> |])>]
         let ``Should create triads for scale`` (scaleType: ScaleType) (scaleDegree: ScaleDegrees) (root: Note)=
-            let scale = createScale scaleType root
+            let scale = createScaleNotes scaleType root
 
             (triadsHarmonizer scaleDegree scale).Notes
             |> List.pairwise
@@ -78,7 +78,7 @@ namespace VaughanTests
 
         [<Test>]
         let ``Should create seventh chords for Ionian scale`` () =
-            let cIonian = createScale Ionian C
+            let cIonian = createScaleNotes Ionian C
             (seventhsHarmonizer ScaleDegrees.I cIonian).Notes =! cMaj7.Notes
             (seventhsHarmonizer ScaleDegrees.II cIonian).Notes =! dMin7.Notes
             (seventhsHarmonizer ScaleDegrees.III cIonian).Notes =! eMin7.Notes
@@ -89,7 +89,7 @@ namespace VaughanTests
 
         [<Test>]
         let ``Should create seventh chords for Harmonic Minor scale`` () =
-            let cMinor = createScale HarmonicMinor C
+            let cMinor = createScaleNotes HarmonicMinor C
             (seventhsHarmonizer ScaleDegrees.I cMinor).Notes =! cMinMaj7.Notes
             (seventhsHarmonizer ScaleDegrees.II cMinor).Notes =! dMin7b5.Notes
             (seventhsHarmonizer ScaleDegrees.III cMinor).Notes =! eFlatAug7.Notes
@@ -100,7 +100,7 @@ namespace VaughanTests
 
         [<Property(Arbitrary = [| typeof<DiatonicScales> |])>]
         let ``Should create seventh chords for scale`` (scaleType: ScaleType) (scaleDegree: ScaleDegrees) (root: Note) =
-            let scale = createScale scaleType root
+            let scale = createScaleNotes scaleType root
 
             (seventhsHarmonizer scaleDegree scale).Notes
             |> List.pairwise
@@ -110,7 +110,7 @@ namespace VaughanTests
 
         [<Test>]
         let ``Should create ninth chords for Ionian scale`` () =
-            let cIonian = createScale Ionian C
+            let cIonian = createScaleNotes Ionian C
             (ninthsHarmonizer ScaleDegrees.I cIonian).Notes =! cMaj9.Notes
             (ninthsHarmonizer ScaleDegrees.II cIonian).Notes =! dMin9.Notes
             (ninthsHarmonizer ScaleDegrees.III cIonian).Notes =! eMin9.Notes

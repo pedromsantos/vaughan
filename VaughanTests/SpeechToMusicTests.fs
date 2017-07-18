@@ -42,7 +42,7 @@ namespace VaughanTests
 
             [<Test>]
             let ``Should create chord from chord intent``() =
-                let cIonian = createScale Ionian C
+                let cIonian = createScaleNotes Ionian C
                 let cMaj = triadsHarmonizer ScaleDegrees.I cIonian
                 let dMin = triadsHarmonizer ScaleDegrees.II cIonian
                 let eMin = triadsHarmonizer ScaleDegrees.III cIonian

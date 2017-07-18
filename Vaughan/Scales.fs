@@ -36,40 +36,40 @@ namespace Vaughan
             | DominantDiminishedScale -> [Unisson; MajorSecond; MajorThird; PerfectFourth; PerfectFifth; AugmentedFifth; MinorSeventh; MajorSeventh]
             | Dominantb5DiminishedScale -> [Unisson; MajorSecond; MajorThird; PerfectFourth; DiminishedFifth; AugmentedFifth; MinorSeventh; MajorSeventh]
 
-        let createScale:ICreateScale = fun scale root ->
+        let createScaleNotes:ICreateScale = fun scale root ->
             scalePattern scale |> List.map (fun interval -> transpose root interval)
 
-        let private createScaleProperties (scale:ScaleType) (root:Note) =
-            {Scale=scale; Notes=createScale scale root};
+        let createScale (scale:ScaleType) (root:Note) =
+            {Scale=scale; Notes=createScaleNotes scale root};
 
         let private createAllScalesFrom (root:Note) =
             [
-                createScaleProperties Ionian root;
-                createScaleProperties Dorian root;
-                createScaleProperties Phrygian root;
-                createScaleProperties Lydian root;
-                createScaleProperties Mixolydian root;
-                createScaleProperties Aolian root;
-                createScaleProperties Locrian root;
-                createScaleProperties MajorPentatonic root;
-                createScaleProperties MinorPentatonic root;
-                createScaleProperties Blues root;
-                createScaleProperties HarmonicMinor root;
-                createScaleProperties MelodicMinor root;
-                createScaleProperties Dorianb2 root;
-                createScaleProperties NeapolitanMinor root;
-                createScaleProperties LydianAugmented root;
-                createScaleProperties LydianDominant root;
-                createScaleProperties Mixolydianb6 root;
-                createScaleProperties Bebop root;
-                createScaleProperties LocrianSharp2 root;
-                createScaleProperties AlteredDominant root;
-                createScaleProperties HalfWholeDiminished root;
-                createScaleProperties WholeTone root;
-                createScaleProperties SixthDiminishedScale root;
-                createScaleProperties MinorSixthDiminishedScale root;
-                createScaleProperties DominantDiminishedScale root;
-                createScaleProperties Dominantb5DiminishedScale root;
+                createScale Ionian root;
+                createScale Dorian root;
+                createScale Phrygian root;
+                createScale Lydian root;
+                createScale Mixolydian root;
+                createScale Aolian root;
+                createScale Locrian root;
+                createScale MajorPentatonic root;
+                createScale MinorPentatonic root;
+                createScale Blues root;
+                createScale HarmonicMinor root;
+                createScale MelodicMinor root;
+                createScale Dorianb2 root;
+                createScale NeapolitanMinor root;
+                createScale LydianAugmented root;
+                createScale LydianDominant root;
+                createScale Mixolydianb6 root;
+                createScale Bebop root;
+                createScale LocrianSharp2 root;
+                createScale AlteredDominant root;
+                createScale HalfWholeDiminished root;
+                createScale WholeTone root;
+                createScale SixthDiminishedScale root;
+                createScale MinorSixthDiminishedScale root;
+                createScale DominantDiminishedScale root;
+                createScale Dominantb5DiminishedScale root;
             ]
 
         let private scaleContainChordTones scale chordTones =
