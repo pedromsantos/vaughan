@@ -1,12 +1,12 @@
-#load "./Vaughan/Infrastructure.fs"
-#load "./Vaughan/Domain.fs"
-#load "./Vaughan/Notes.fs"
-#load "./Vaughan/Chords.fs"
-#load "./Vaughan/Keys.fs"
-#load "./Vaughan/Scales.fs"
-#load "./Vaughan/ScaleHarmonizer.fs"
-#load "./Vaughan/Guitar.fs"
-#load "./Vaughan/ChordVoiceLeading.fs"
+#load "./Infrastructure.fs"
+#load "Domain.fs"
+#load "Notes.fs"
+#load "Chords.fs"
+#load "Keys.fs"
+#load "Scales.fs"
+#load "ScaleHarmonizer.fs"
+#load "Guitar.fs"
+#load "ChordVoiceLeading.fs"
 
 open Vaughan.Infrastructure
 open Vaughan.Domain
@@ -19,7 +19,7 @@ open Vaughan.Guitar
 open Vaughan.GuitarTab
 open Vaughan.ChordVoiceLeading
 
-let cIonian = createScale Ionian C
+let cIonian = createScaleNotes Ionian C
 
 (cIonian
 |> seventhsHarmonizer ScaleDegrees.I
@@ -53,52 +53,52 @@ chord C Major9
 |> tabify
 |> printf "\n%s"
 
-createScale Aolian DSharp
+createScaleNotes Aolian DSharp
 |> triadsHarmonizer ScaleDegrees.III
 |> createGuitarChord SixthString
 |> tabify
 |> printf "\n%s"
 
-createScale Ionian A
+createScaleNotes Ionian A
 |> seventhsHarmonizer ScaleDegrees.I
 |> toDrop2
 |> createGuitarChord FifthString
 |> tabify
 |> printf "\n%s"
 
-createScale Ionian C
+createScaleNotes Ionian C
 |> seventhsHarmonizer ScaleDegrees.I
 |> toDrop3
 |> createGuitarChord FifthString
 |> tabify
 |> printf "\n%s"
 
-createScale Aolian FSharp
+createScaleNotes Aolian FSharp
 |> seventhsHarmonizer ScaleDegrees.III
 |> toDrop3
 |> createGuitarChord SixthString
 |> tabify
 |> printf "\n%s"
 
-createScale HarmonicMinor BFlat
+createScaleNotes HarmonicMinor BFlat
 |> seventhsHarmonizer ScaleDegrees.VII
 |> createGuitarChord SixthString
 |> tabify
 |> printf "\n%s"
 
-createScale HarmonicMinor C
+createScaleNotes HarmonicMinor C
 |> seventhsHarmonizer ScaleDegrees.VII
 |> createGuitarChord SixthString
 |> tabify
 |> printf "\n%s"
 
-createScale HarmonicMinor C
+createScaleNotes HarmonicMinor C
 |> seventhsHarmonizer ScaleDegrees.VII
 |> createGuitarChord SixthString
 |> tabify
 |> printf "\n%A"
 
-createScale HarmonicMinor C
+createScaleNotes HarmonicMinor C
 |> seventhsHarmonizer ScaleDegrees.VII
 |> toOpen
 |> createGuitarChord SixthString
@@ -127,8 +127,8 @@ keyNotes CMajor |> printf "\n%A"
 keyNotes EFlatMajor |> printf "\n%A"
 keyNotes DMinor |> printf "\n%A"
 
-createScale Phrygian C |> printf "\n%A"
-createScale LydianAugmented C  |> printf "\n%A"
+createScaleNotes Phrygian C |> printf "\n%A"
+createScaleNotes LydianAugmented C  |> printf "\n%A"
 
 let cMaj7 = {Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh)]; ChordType=Closed; Name="CMaj7"}
 let cMaj = chord C Major
