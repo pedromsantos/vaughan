@@ -43,13 +43,13 @@ namespace VaughanTests
             [<Test>]
             let ``Should create chord from chord intent``() =
                 let cIonian = createScaleNotes Ionian C
-                let cMaj = triadsHarmonizer ScaleDegrees.I cIonian
-                let dMin = triadsHarmonizer ScaleDegrees.II cIonian
-                let eMin = triadsHarmonizer ScaleDegrees.III cIonian
-                let fMaj = triadsHarmonizer ScaleDegrees.IV cIonian
-                let gMaj = triadsHarmonizer ScaleDegrees.V cIonian
-                let aMin = triadsHarmonizer ScaleDegrees.VI cIonian
-                let bDim = triadsHarmonizer ScaleDegrees.VII cIonian
+                let cMaj = triadsHarmonizer ScaleDegree.I cIonian
+                let dMin = triadsHarmonizer ScaleDegree.II cIonian
+                let eMin = triadsHarmonizer ScaleDegree.III cIonian
+                let fMaj = triadsHarmonizer ScaleDegree.IV cIonian
+                let gMaj = triadsHarmonizer ScaleDegree.V cIonian
+                let aMin = triadsHarmonizer ScaleDegree.VI cIonian
+                let bDim = triadsHarmonizer ScaleDegree.VII cIonian
 
                 createChord { Root=C; Quality=Major } =! (cMaj |> toClosed)
                 createChord { Root=D; Quality=Minor } =! (dMin |> toClosed)

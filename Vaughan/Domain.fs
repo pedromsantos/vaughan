@@ -28,20 +28,6 @@ namespace Vaughan
         type IIntervalBetween = Note -> Note -> Interval
         type ITransposeNote = Note -> Interval -> Note
 
-        type ScaleType =
-            | Ionian | Dorian | Phrygian | Lydian | Mixolydian
-            | Aolian | Locrian | MajorPentatonic | MinorPentatonic
-            | Blues | HarmonicMinor | MelodicMinor | Dorianb2 | LydianAugmented | NeapolitanMinor
-            | LydianDominant | Bebop | Mixolydianb6 | LocrianSharp2
-            | AlteredDominant | HalfWholeDiminished | WholeTone
-            | SixthDiminishedScale | MinorSixthDiminishedScale
-            | DominantDiminishedScale | Dominantb5DiminishedScale
-
-        type ScaleNotes = Note list
-        type Scale = {Scale:ScaleType; Notes:ScaleNotes}
-
-        type ICreateScale = ScaleType -> Note -> ScaleNotes
-
         type Key =
             | AMajor | AFlatMajor | BMajor | BFlatMajor | CMajor
             | DMajor | DFlatMajor | EMajor | EFlatMajor
@@ -51,6 +37,7 @@ namespace Vaughan
             | GSharpMinor | EFlatMinor
 
         type KeyNotes = Note list
+
         type IKeyNotes = Key -> KeyNotes
 
         type ChordQuality =
@@ -71,13 +58,45 @@ namespace Vaughan
 
         type ChordNote = Note * ChordNoteFunction
         type ChordNotes = ChordNote list
-
         type ChordType = | Open | Closed | Triad | Drop2 | Drop3
-
         type Chord = {Notes:ChordNotes; ChordType:ChordType; Name:string}
 
-        type ScaleDegrees =
+        type IInvert = Chord -> Chord
+        type IRoot = Chord -> Note
+        type IBass = Chord -> Note
+        type ILead = Chord -> Note
+        type IToOpen = Chord -> Chord
+        type IToDrop2 = Chord -> Chord
+        type IToDrop3 = Chord -> Chord
+        type IToTriad = Chord -> Chord
+        type IToClosed = Chord -> Chord
+        type INoteNames = Chord -> string List
+        type IChordsFitting = Note list -> Chord list
+        type ICreateChord = Note -> ChordQuality -> Chord
+        type ISkipFunction = ChordNoteFunction -> Chord -> Chord
+
+        type ScaleDegree =
             | I = 0 | II = 1 | III = 2 | IV = 3 | V = 4 | VI = 5 | VII = 6
+
+        type ScaleType =
+            | Ionian | Dorian | Phrygian | Lydian | Mixolydian
+            | Aolian | Locrian | MajorPentatonic | MinorPentatonic
+            | Blues | HarmonicMinor | MelodicMinor | Dorianb2 | LydianAugmented | NeapolitanMinor
+            | LydianDominant | Bebop | Mixolydianb6 | LocrianSharp2
+            | AlteredDominant | HalfWholeDiminished | WholeTone
+            | SixthDiminishedScale | MinorSixthDiminishedScale
+            | DominantDiminishedScale | Dominantb5DiminishedScale
+
+        type ScaleNotes = Note list
+        type Scale = {Scale:ScaleType; Notes:ScaleNotes}
+
+        type IScalesFitting = Chord -> Scale list
+        type ICreateScale = ScaleType -> Note -> Scale
+        type ICreateScaleNotes = ScaleType -> Note -> ScaleNotes
+
+        type INinthsHarmonizer = ScaleDegree -> ScaleType -> Chord
+        type ISeventhsHarmonizer = ScaleDegree -> ScaleType -> Chord
+        type ITriadsHarmonizer = ScaleDegree -> ScaleType -> Chord
 
         type GuitarString =
             | SixthString | FifthString | FourthString

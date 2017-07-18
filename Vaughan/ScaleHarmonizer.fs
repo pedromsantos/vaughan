@@ -5,7 +5,7 @@ namespace Vaughan
         open Domain
         open Chords
 
-        let private thirds (fromPosition:ScaleDegrees) scale =
+        let private thirds (fromPosition:ScaleDegree) scale =
             let octave = 16
 
             scale

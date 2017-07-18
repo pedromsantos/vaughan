@@ -123,7 +123,7 @@ namespace Vaughan
 
         [<AutoOpen>]
         module private MapNonDropChords =
-            let private mapAllChordNotesToFretsOnString allowedFrets guitarStringIndex chord =
+            let private mapAllChordNotesToFretsOnString allowedFrets guitarStringIndex (chord:Chord) =
                 let guitarString = indexToGuitarString guitarStringIndex
                 [for chordNoteIndex in 0 .. (chord.Notes.Length - 1)
                     do yield (createStringFret guitarString (fst chord.Notes.[chordNoteIndex]))]
@@ -165,7 +165,7 @@ namespace Vaughan
         let private stringForBass guitarChord =
             (guitarChord.Frets |> List.head).GuitarString
 
-        let private isNinthChord chord =
+        let private isNinthChord (chord:Chord) =
             chord.Notes |> List.exists (fun n -> snd n = Ninth) 
 
         let numberOfMutedHighStrings guitarChord =
