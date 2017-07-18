@@ -21,21 +21,21 @@ open Vaughan.ChordVoiceLeading
 let cIonian = createScaleNotes Ionian C
 
 (cIonian
-|> seventhsHarmonizer ScaleDegrees.I
+|> seventhsHarmonizer ScaleDegree.I
 |> toDrop3
 |> createGuitarChord SixthString)
 |> tabify
 |> printf "\n%s"
 
 (cIonian
-|> seventhsHarmonizer ScaleDegrees.I
+|> seventhsHarmonizer ScaleDegree.I
 |> toDrop2
 |> createGuitarChord FifthString)
 |> tabify
 |> printf "\n%s"
 
 (cIonian
-|> triadsHarmonizer ScaleDegrees.I
+|> triadsHarmonizer ScaleDegree.I
 |> createGuitarChord FifthString)
 |> tabify
 |> printf "\n%s"
@@ -53,52 +53,52 @@ chord C Major9
 |> printf "\n%s"
 
 createScaleNotes Aolian DSharp
-|> triadsHarmonizer ScaleDegrees.III
+|> triadsHarmonizer ScaleDegree.III
 |> createGuitarChord SixthString
 |> tabify
 |> printf "\n%s"
 
 createScaleNotes Ionian A
-|> seventhsHarmonizer ScaleDegrees.I
+|> seventhsHarmonizer ScaleDegree.I
 |> toDrop2
 |> createGuitarChord FifthString
 |> tabify
 |> printf "\n%s"
 
 createScaleNotes Ionian C
-|> seventhsHarmonizer ScaleDegrees.I
+|> seventhsHarmonizer ScaleDegree.I
 |> toDrop3
 |> createGuitarChord FifthString
 |> tabify
 |> printf "\n%s"
 
 createScaleNotes Aolian FSharp
-|> seventhsHarmonizer ScaleDegrees.III
+|> seventhsHarmonizer ScaleDegree.III
 |> toDrop3
 |> createGuitarChord SixthString
 |> tabify
 |> printf "\n%s"
 
 createScaleNotes HarmonicMinor BFlat
-|> seventhsHarmonizer ScaleDegrees.VII
+|> seventhsHarmonizer ScaleDegree.VII
 |> createGuitarChord SixthString
 |> tabify
 |> printf "\n%s"
 
 createScaleNotes HarmonicMinor C
-|> seventhsHarmonizer ScaleDegrees.VII
+|> seventhsHarmonizer ScaleDegree.VII
 |> createGuitarChord SixthString
 |> tabify
 |> printf "\n%s"
 
 createScaleNotes HarmonicMinor C
-|> seventhsHarmonizer ScaleDegrees.VII
+|> seventhsHarmonizer ScaleDegree.VII
 |> createGuitarChord SixthString
 |> tabify
 |> printf "\n%A"
 
 createScaleNotes HarmonicMinor C
-|> seventhsHarmonizer ScaleDegrees.VII
+|> seventhsHarmonizer ScaleDegree.VII
 |> toOpen
 |> createGuitarChord SixthString
 |> tabify
