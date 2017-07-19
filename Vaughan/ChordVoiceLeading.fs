@@ -29,14 +29,14 @@ namespace Vaughan
                 if (measureAbsoluteSemitones (desiredPosition c1) note) < (measureAbsoluteSemitones (desiredPosition c2) note)
                 then c1 else c2)).Value
 
-        let inversionForFunctionAsLead:IInversionForFunctionAsLead = fun chord desiredNoteFunction ->
+        let inversionForFunctionAsLead:InversionForFunctionAsLead = fun chord desiredNoteFunction ->
             inversionForFunction chord desiredNoteFunction List.last
 
-        let inversionForFunctionAsBass:IInversionForFunctionAsBass = fun chord desiredNoteFunction ->
+        let inversionForFunctionAsBass:InversionForFunctionAsBass = fun chord desiredNoteFunction ->
             inversionForFunction chord desiredNoteFunction List.head
 
-        let invertionWithLeadClosestToNote:IInvertionWithLeadClosestToNote = fun  chord note ->
+        let invertionWithLeadClosestToNote:InvertionWithLeadClosestToNote = fun  chord note ->
             invertionWithNoteClosestToNote chord note lead
 
-        let invertionWithBassClosestToNote:IinvertionWithBassClosestToNote = fun  chord note ->
+        let invertionWithBassClosestToNote:InvertionWithBassClosestToNote = fun  chord note ->
             invertionWithNoteClosestToNote chord note bass

@@ -36,7 +36,7 @@ namespace Vaughan
             | DominantDiminishedScale -> [Unisson; MajorSecond; MajorThird; PerfectFourth; PerfectFifth; AugmentedFifth; MinorSeventh; MajorSeventh]
             | Dominantb5DiminishedScale -> [Unisson; MajorSecond; MajorThird; PerfectFourth; DiminishedFifth; AugmentedFifth; MinorSeventh; MajorSeventh]
 
-        let createScaleNotes:ICreateScaleNotes = fun scale root ->
+        let createScaleNotes:CreateScaleNotes = fun scale root ->
             scalePattern scale |> List.map (fun interval -> transpose root interval)
 
         let createScale (scale:ScaleType) (root:Note) =

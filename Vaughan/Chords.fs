@@ -130,29 +130,29 @@ namespace Vaughan
         let private invertDrop3 (chord:Chord) =
             {chord with Notes = chord.Notes |> rotateByOne |> rotateByOne |> swapSecondTwo;}
 
-        let name:IChordName = fun chord ->
+        let name:ChordName = fun chord ->
             noteName (noteForFunction chord Root)
             + nameForQuality (qualityForPattern(intervalsForChord chord))
 
-        let invert:IInvert = fun chord ->
+        let invert:Invert = fun chord ->
             match chord.ChordType with
             | Closed | Open | Triad -> invertOpenOrClosed chord
             | Drop2 -> invertDrop2 chord
             | Drop3 -> invertDrop3 chord
 
-        let root:IRoot = fun chord ->
+        let root:Root = fun chord ->
             noteForFunction chord Root
 
-        let bass:IBass = fun chord ->
+        let bass:Bass = fun chord ->
             note (chord.Notes |> List.head)
 
-        let lead:ILead = fun chord ->
+        let lead:Lead = fun chord ->
             note (chord.Notes |> List.last)
 
-        let noteNames:INoteNames = fun chord ->
+        let noteNames:NoteNames = fun chord ->
             chord.Notes |> List.map (note >> noteName)
 
-        let chord:ICreateChord = fun root quality ->
+        let chord:CreateChord = fun root quality ->
             {
                 Notes= [(root, Root)] @ (intervalsForQuality quality |> List.map (fun i -> ((transpose root i), functionForInterval i)));
                 ChordType = Closed
@@ -163,21 +163,21 @@ namespace Vaughan
             chord :: chords |> rotateByOne
           
 
-        let toDrop2:IToDrop2 = fun chord ->
+        let toDrop2:ToDrop2 = fun chord ->
             if chord.Notes.Length = 4
             then {chord with Notes = chord.Notes |> swapFirstTwo |> rotateByOne; ChordType = Drop2}
             else chord
 
-        let toDrop3:IToDrop2 = fun chord ->
+        let toDrop3:ToDrop2 = fun chord ->
             if chord.Notes.Length = 4
             then {chord with Notes= (chord |> toDrop2 |> toDrop2).Notes; ChordType = Drop3}
             else chord
 
-        let toTriad:IToTriad = fun chord ->
+        let toTriad:ToTriad = fun chord ->
             if chord.Notes.Length = 3 then {chord with ChordType=Triad}
             else chord
 
-        let toOpen:IToOpen = fun chord ->
+        let toOpen:ToOpen = fun chord ->
             {chord with ChordType=Open}
         
         let (=>) root quality =
@@ -189,10 +189,10 @@ namespace Vaughan
         let ( !* ) chord =
             toOpen chord
 
-        let toClosed:IToClosed = fun chord ->
+        let toClosed:ToClosed = fun chord ->
             {chord with ChordType=Closed}
 
-        let skipFunction:ISkipFunction = fun functionToSkipp chord ->
+        let skipFunction:SkipFunction = fun functionToSkipp chord ->
             {chord with Notes = chord.Notes |> List.filter (fun nf -> snd nf <> functionToSkipp)}
 
         let private addFittingChord notes fittingChords =
@@ -200,7 +200,7 @@ namespace Vaughan
             | Some(q) -> chord notes.Head q :: fittingChords
             | None-> fittingChords
 
-        let chordsFitting:IChordsFitting = fun notes ->
+        let chordsFitting:ChordsFitting = fun notes ->
             if notes.Length < 3 then []
             else let rec addChord rotation fittingChords (fittingNotes :Note list) =
                     if rotation = fittingNotes.Length then fittingChords

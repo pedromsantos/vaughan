@@ -5,11 +5,11 @@ namespace Vaughan
             | C | CSharp | DFlat | D | DSharp | EFlat | E | F | FSharp
             | GFlat | G | GSharp | AFlat | A | ASharp | BFlat | B
 
-        type ISharpNote = Note -> Note
-        type IFlatNote = Note -> Note
-        type INaturalNote = Note -> Note
-        type INoteName = Note -> string
-        type IPitchNote = Note -> int
+        type SharpNote = Note -> Note
+        type FlatNote = Note -> Note
+        type NaturalNote = Note -> Note
+        type NoteName = Note -> string
+        type NotePitch = Note -> int
 
         type Interval =
             | Unisson | MinorSecond | MajorSecond | AugmentedSecond | MinorThird
@@ -20,13 +20,13 @@ namespace Vaughan
             | PerfectEleventh | AugmentedEleventh
             | MinorThirteenth | MajorThirteenth
 
-        type IIntervalName = Interval -> string
-        type IIntervalToDistance = Interval -> int
-        type IIntervalToOctaveDistance = Interval -> int
-        type IIntervalFromDistance = int -> Interval
-        type IMeasureAbsoluteSemitones = Note -> Note -> int
-        type IIntervalBetween = Note -> Note -> Interval
-        type ITransposeNote = Note -> Interval -> Note
+        type IntervalName = Interval -> string
+        type IntervalToDistance = Interval -> int
+        type IntervalToOctaveDistance = Interval -> int
+        type IntervalFromDistance = int -> Interval
+        type MeasureAbsoluteSemitones = Note -> Note -> int
+        type IntervalBetween = Note -> Note -> Interval
+        type TransposeNote = Note -> Interval -> Note
 
         type Key =
             | AMajor | AFlatMajor | BMajor | BFlatMajor | CMajor
@@ -61,24 +61,24 @@ namespace Vaughan
         type ChordType = | Open | Closed | Triad | Drop2 | Drop3
         type Chord = {Notes:ChordNotes; ChordType:ChordType; Name:string}
 
-        type IChordName = Chord -> string
-        type IInvert = Chord -> Chord
-        type IRoot = Chord -> Note
-        type IBass = Chord -> Note
-        type ILead = Chord -> Note
-        type IToOpen = Chord -> Chord
-        type IToDrop2 = Chord -> Chord
-        type IToDrop3 = Chord -> Chord
-        type IToTriad = Chord -> Chord
-        type IToClosed = Chord -> Chord
-        type INoteNames = Chord -> string List
-        type IChordsFitting = Note list -> Chord list
-        type ICreateChord = Note -> ChordQuality -> Chord
-        type ISkipFunction = ChordNoteFunction -> Chord -> Chord
-        type IinvertionWithBassClosestToNote= Chord -> Note -> Chord
-        type IInvertionWithLeadClosestToNote = Chord -> Note -> Chord
-        type IInversionForFunctionAsBass= Chord -> ChordNoteFunction -> Chord
-        type IInversionForFunctionAsLead = Chord -> ChordNoteFunction -> Chord
+        type ChordName = Chord -> string
+        type Invert = Chord -> Chord
+        type Root = Chord -> Note
+        type Bass = Chord -> Note
+        type Lead = Chord -> Note
+        type ToOpen = Chord -> Chord
+        type ToDrop2 = Chord -> Chord
+        type ToDrop3 = Chord -> Chord
+        type ToTriad = Chord -> Chord
+        type ToClosed = Chord -> Chord
+        type NoteNames = Chord -> string List
+        type ChordsFitting = Note list -> Chord list
+        type CreateChord = Note -> ChordQuality -> Chord
+        type SkipFunction = ChordNoteFunction -> Chord -> Chord
+        type InvertionWithBassClosestToNote = Chord -> Note -> Chord
+        type InvertionWithLeadClosestToNote = Chord -> Note -> Chord
+        type InversionForFunctionAsBass= Chord -> ChordNoteFunction -> Chord
+        type InversionForFunctionAsLead = Chord -> ChordNoteFunction -> Chord
 
         type ScaleDegree =
             | I = 0 | II = 1 | III = 2 | IV = 3 | V = 4 | VI = 5 | VII = 6
@@ -95,12 +95,12 @@ namespace Vaughan
         type ScaleNotes = Note list
         type Scale = {Scale:ScaleType; Notes:ScaleNotes}
 
-        type IScalesFitting = Chord -> Scale list
-        type ICreateScale = ScaleType -> Note -> Scale
-        type ICreateScaleNotes = ScaleType -> Note -> ScaleNotes
-        type INinthsHarmonizer = ScaleDegree -> ScaleNotes -> Chord
-        type ISeventhsHarmonizer = ScaleDegree -> ScaleNotes -> Chord
-        type ITriadsHarmonizer = ScaleDegree -> ScaleNotes -> Chord
+        type ScalesFitting = Chord -> Scale list
+        type CreateScale = ScaleType -> Note -> Scale
+        type CreateScaleNotes = ScaleType -> Note -> ScaleNotes
+        type NinthsHarmonizer = ScaleDegree -> ScaleNotes -> Chord
+        type SeventhsHarmonizer = ScaleDegree -> ScaleNotes -> Chord
+        type TriadsHarmonizer = ScaleDegree -> ScaleNotes -> Chord
 
         type GuitarString =
             | SixthString | FifthString | FourthString
@@ -110,11 +110,11 @@ namespace Vaughan
         type Frets = Fret list
         type GuitarChord = {Chord:Chord; Frets:Frets}
 
-        type ITabifyAll = GuitarChord list -> string
-        type ITabify = GuitarChord -> string
-        type IShapify = GuitarChord -> string
+        type Tabify = GuitarChord -> string
+        type Shapify = GuitarChord -> string
+        type TabifyAll = GuitarChord list -> string
 
         type ChordIntent = { Root: Note; Quality:ChordQuality; }
 
-        type IParseChord = string -> ChordIntent
-        type ICreateChordFromIntent = ChordIntent -> Chord
+        type ParseChord = string -> ChordIntent
+        type CreateChordFromIntent = ChordIntent -> Chord

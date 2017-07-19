@@ -306,14 +306,14 @@ namespace Vaughan
                 @ (shapifyFrets guitarChord)
                 @ (shapifyMutedHigherStrings guitarChord)
 
-        let tabifyAll:ITabifyAll = fun guitarChords ->
+        let tabifyAll:TabifyAll = fun guitarChords ->
             (tabifyChordNames guitarChords) @ (tabifyChords guitarChords)
             |> List.fold (+) ""
 
-        let tabify:ITabify = fun guitarChord ->
+        let tabify:Tabify = fun guitarChord ->
             tabifyAll [guitarChord]
 
-        let shapify:IShapify = fun guitarChord ->
+        let shapify:Shapify = fun guitarChord ->
             guitarChord.Chord.Name + Environment.NewLine +
             "EADGBE" + Environment.NewLine +
             (guitarChord |> shapifyChord |> List.fold (+) "") + Environment.NewLine

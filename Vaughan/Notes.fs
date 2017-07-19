@@ -62,32 +62,32 @@ namespace Vaughan
         let private sharpOrFlatNoteForInterval:ITransposeNoteForInterval = fun note interval ->
             (intervalAttributes interval).Transpose note
 
-        let sharp:ISharpNote = fun note ->
+        let sharp:SharpNote = fun note ->
             (noteAttributes note).Sharp
 
-        let flat:IFlatNote = fun note ->
+        let flat:FlatNote = fun note ->
             (noteAttributes note).Flat
 
-        let natural:INaturalNote = id
+        let natural:NaturalNote = id
 
-        let noteName:INoteName = fun note ->
+        let noteName:NoteName = fun note ->
             (noteAttributes note).Name
 
-        let pitch:IPitchNote = fun note ->
+        let pitch:NotePitch = fun note ->
             (noteAttributes note).Pitch
 
-        let intervalName:IIntervalName = fun interval ->
+        let intervalName:IntervalName = fun interval ->
             (intervalAttributes interval).Name
 
-        let toDistance:IIntervalToDistance = fun interval ->
+        let toDistance:IntervalToDistance = fun interval ->
             (intervalAttributes interval).Distance
 
-        let toOctaveDistance:IIntervalToDistance = fun interval ->
+        let toOctaveDistance:IntervalToDistance = fun interval ->
             let distance = toDistance interval
             let octaveDistance = toDistance PerfectOctave
             if distance > octaveDistance then distance - octaveDistance else distance
 
-        let fromDistance:IIntervalFromDistance = function
+        let fromDistance:IntervalFromDistance = function
             | 0 -> Unisson
             | 1 -> MinorSecond
             | 2 -> MajorSecond
@@ -110,19 +110,19 @@ namespace Vaughan
             | 21 -> MajorThirteenth
             | _ -> Unisson
 
-        let measureAbsoluteSemitones:IMeasureAbsoluteSemitones = fun note other ->
+        let measureAbsoluteSemitones:MeasureAbsoluteSemitones = fun note other ->
             let distance = (pitch other) - (pitch note)
             if distance < (toOctaveDistance Unisson)
             then (toDistance PerfectOctave) - distance * -1
             else distance
 
-        let intervalBetween:IIntervalBetween = fun note other ->
+        let intervalBetween:IntervalBetween = fun note other ->
             fromDistance (measureAbsoluteSemitones note other)
 
         let private isSameInterval interval otherInterval =
             toOctaveDistance interval = toOctaveDistance otherInterval
 
-        let transpose:ITransposeNote = fun noteToTranspose transposingInterval ->
+        let transpose:TransposeNote = fun noteToTranspose transposingInterval ->
             let rec loop note =
                 if isSameInterval (intervalBetween noteToTranspose note) transposingInterval
                     then note

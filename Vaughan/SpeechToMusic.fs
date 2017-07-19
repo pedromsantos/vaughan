@@ -117,11 +117,11 @@ namespace Vaughan
                     triadParser;
                 ]
 
-        let parseChord:IParseChord = fun text ->
+        let parseChord:ParseChord = fun text ->
             let parsed = run chordParser text
             match parsed with
             | Success(chordDefinition, _, _) -> chordDefinition
             | Failure(errorMsg, _, _) -> invalidOp errorMsg
 
-        let createChord:ICreateChordFromIntent = fun chordIntent ->
+        let createChord:CreateChordFromIntent = fun chordIntent ->
             chord chordIntent.Root chordIntent.Quality
