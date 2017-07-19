@@ -58,7 +58,6 @@ namespace Vaughan
             | MinorThirteenth -> {Name="MinorThirteenth"; Distance=20; Transpose=flat}
             | MajorThirteenth -> {Name="MajorThirteenth"; Distance=21; Transpose=sharp}
 
-
         let private sharpOrFlatNoteForInterval:ITransposeNoteForInterval = fun note interval ->
             (intervalAttributes interval).Transpose note
 
