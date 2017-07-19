@@ -74,7 +74,7 @@ namespace Vaughan
         type NoteNames = Chord -> string List
         type ChordsFitting = Note list -> Chord list
         type CreateChord = Note -> ChordQuality -> Chord
-        type SkipFunction = ChordNoteFunction -> Chord -> Chord
+        type SkipChordFunction = ChordNoteFunction -> Chord -> Chord
         type InvertionWithBassClosestToNote = Chord -> Note -> Chord
         type InvertionWithLeadClosestToNote = Chord -> Note -> Chord
         type InversionForFunctionAsBass= Chord -> ChordNoteFunction -> Chord

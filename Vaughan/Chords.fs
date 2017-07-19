@@ -192,7 +192,7 @@ namespace Vaughan
         let toClosed:ToClosed = fun chord ->
             {chord with ChordType=Closed}
 
-        let skipFunction:SkipFunction = fun functionToSkipp chord ->
+        let skipFunction:SkipChordFunction = fun functionToSkipp chord ->
             {chord with Notes = chord.Notes |> List.filter (fun nf -> snd nf <> functionToSkipp)}
 
         let private addFittingChord notes fittingChords =
