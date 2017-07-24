@@ -239,3 +239,71 @@ namespace VaughanTests
             fromDistance 10 =! MinorSeventh
             fromDistance 11 =! MajorSeventh
             fromDistance 12 =! PerfectOctave
+
+        [<Test>]
+        let ``Should have frequency of 55Hz for A1``() =
+            Assert.AreEqual(440.0 / 8.0, frequency A Octave.Contra, 0.100)
+
+        [<Test>]
+        let ``Should have frequency of 110Hz for A2``() =
+            Assert.AreEqual(440.0 / 4.0, frequency A Octave.Great, 0.100)
+
+        [<Test>]
+        let ``Should have frequency of 220Hz for A3``() =
+            Assert.AreEqual(440.0 / 2.0, frequency A Octave.Small, 0.100)
+
+        [<Test>]
+        let ``Should have frequency of 440Hz for A4``() =
+            Assert.AreEqual(440.0 / 1.0, frequency A Octave.OneLine, 0.100)
+
+        [<Test>]
+        let ``Should have frequency of 880Hz for A5``() =
+            Assert.AreEqual(440.0 * 2.0, frequency A Octave.TwoLine, 0.100)
+
+        [<Test>]
+        let ``Should have frequency of 1760Hz for A6``() =
+            Assert.AreEqual(440.0 * 4.0, frequency A Octave.ThreeLine, 0.100)
+
+        [<Test>]
+        let ``Should have frequency of 7040Hz for A8``() =
+            Assert.AreEqual(440.0 * 16.0, frequency A Octave.FiveLine, 0.100)
+
+        [<Test>]
+        let ``Should have frequency of 14080Hz for A9``() =
+            Assert.AreEqual(440.0 * 32.0, frequency A Octave.SixLine, 0.100)
+
+        [<Test>]
+        let ``Should have frequency of 3520Hz for A7``() =
+            Assert.AreEqual(440.0 * 8.0, frequency A Octave.FourLine, 0.100)
+
+        [<Property>]
+        let ``Small octave divides by 2 frequency of One line octave`` (note :Note) =
+           Assert.AreEqual(frequency note Octave.OneLine / 2.0, frequency note Octave.Small, 0.100) 
+
+        [<Property>]
+        let ``Great octave divides by 4 frequency of One line octave`` (note :Note) =
+           Assert.AreEqual(frequency note Octave.OneLine / 4.0, frequency note Octave.Great, 0.100) 
+
+        [<Property>]
+        let ``Contra octave divides by 8 frequency of One line octave`` (note :Note) =
+           Assert.AreEqual(frequency note Octave.OneLine / 8.0, frequency note Octave.Contra, 0.100)  
+
+        [<Property>]
+        let ``Two line octave doubles frequency of One line octave`` (note :Note) =
+           Assert.AreEqual(frequency note Octave.OneLine * 2.0, frequency note Octave.TwoLine, 0.100) 
+
+        [<Property>]
+        let ``Three line octave quadruples frequency of One line octave`` (note :Note) =
+           Assert.AreEqual(frequency note Octave.OneLine * 4.0, frequency note Octave.ThreeLine, 0.100) 
+
+        [<Property>]
+        let ``Four line octave multiplies by 8 frequency of One line octave`` (note :Note) =
+           Assert.AreEqual(frequency note Octave.OneLine * 8.0, frequency note Octave.FourLine, 0.100) 
+
+        [<Property>]
+        let ``Five line octave multiplies by 16 frequency of One line octave`` (note :Note) =
+           Assert.AreEqual(frequency note Octave.OneLine * 16.0, frequency note Octave.FiveLine, 0.100) 
+
+        [<Property>]
+        let ``Six line octave multiplies by 32 frequency of One line octave`` (note :Note) =
+           Assert.AreEqual(frequency note Octave.OneLine * 32.0, frequency note Octave.SixLine, 0.100) 

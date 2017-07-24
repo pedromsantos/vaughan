@@ -27,6 +27,20 @@ namespace Vaughan
         type MeasureAbsoluteSemitones = Note -> Note -> int
         type IntervalBetween = Note -> Note -> Interval
         type TransposeNote = Note -> Interval -> Note
+       
+        type Octave = 
+            | SubContra = -16
+            | Contra = -8
+            | Great = -4
+            | Small = -2
+            | OneLine = 1
+            | TwoLine = 2
+            | ThreeLine = 4
+            | FourLine = 8
+            | FiveLine = 16
+            | SixLine = 32
+        
+        type Frequency = Note -> Octave -> float
 
         type Key =
             | AMajor | AFlatMajor | BMajor | BFlatMajor | CMajor
@@ -37,7 +51,7 @@ namespace Vaughan
             | GSharpMinor | EFlatMinor
 
         type KeyNotes = Note list
-
+        
         type IKeyNotes = Key -> KeyNotes
 
         type ChordQuality =

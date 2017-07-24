@@ -60,6 +60,15 @@ namespace Vaughan
 
         let private sharpOrFlatNoteForInterval:ITransposeNoteForInterval = fun note interval ->
             (intervalAttributes interval).Transpose note
+        
+        let private adjustFrequencyForOctave octave frequency =
+            let octaveValue = float(int(octave))
+            let noteFrequency = 
+                if octaveValue < 0.0
+                    then frequency / (-1.0 * octaveValue)
+                    else frequency * octaveValue
+            let roundToThousands = 1000.0
+            round(roundToThousands * noteFrequency) / roundToThousands
 
         let sharp:SharpNote = fun note ->
             (noteAttributes note).Sharp
@@ -127,4 +136,11 @@ namespace Vaughan
                     then note
                     else loop (sharpOrFlatNoteForInterval note transposingInterval)
 
-            loop (sharpOrFlatNoteForInterval noteToTranspose transposingInterval)
+            loop (sharpOrFlatNoteForInterval noteToTranspose transposingInterval) 
+
+        let frequency:Frequency = fun note octave ->
+            let octaveRange = 12.0
+            let a4Frequency = 440.0
+            let power = double(pitch note - pitch A) / octaveRange
+            let frequency = ((max 1.0 power) ** 2.0) * a4Frequency
+            adjustFrequencyForOctave octave frequency
