@@ -351,3 +351,58 @@ namespace VaughanTests
         [<Property>]
         let ``Should have midi name note+9 for note at six line octave``(note :Note) =
             midiName note Octave.SixLine =! noteName note + "9"
+
+        [<Property>]
+        let ``Should have midi number from 0 to 11 on sub contra octave``(note :Note) =
+            (midiNumber note Octave.SubContra) >! -1
+            (midiNumber note Octave.SubContra) <! 12
+
+        [<Property>]
+        let ``Should have midi number from 12 to 23 on contra octave``(note :Note) =
+            (midiNumber note Octave.Contra) >! 11
+            (midiNumber note Octave.Contra) <! 24
+
+        [<Property>]
+        let ``Should have midi number from 24 to 35 on great octave``(note :Note) =
+            (midiNumber note Octave.Great) >! 23
+            (midiNumber note Octave.Great) <! 36
+
+        [<Property>]
+        let ``Should have midi number from 36 to 47 on small octave``(note :Note) =
+            (midiNumber note Octave.Small) >! 35
+            (midiNumber note Octave.Small) <! 48
+
+        [<Property>]
+        let ``Should have midi number from 48 to 59 on one line octave``(note :Note) =
+            (midiNumber note Octave.OneLine) >! 47
+            (midiNumber note Octave.OneLine) <! 60
+        
+        [<Property>]
+        let ``Should have midi number from 60 to 71 on two line octave``(note :Note) =
+            (midiNumber note Octave.TwoLine) >! 59
+            (midiNumber note Octave.TwoLine) <! 84
+
+        [<Property>]
+        let ``Should have midi number from 72 to 83 on three line octave``(note :Note) =
+            (midiNumber note Octave.ThreeLine) >! 71
+            (midiNumber note Octave.ThreeLine) <! 84
+
+        [<Property>]
+        let ``Should have midi number from 84 to 95 on four line octave``(note :Note) =
+            (midiNumber note Octave.FourLine) >! 83
+            (midiNumber note Octave.FourLine) <! 96
+
+        [<Property>]
+        let ``Should have midi number from 96 to 107 on five line octave``(note :Note) =
+            (midiNumber note Octave.FiveLine) >! 95
+            (midiNumber note Octave.FiveLine) <! 108
+
+        [<Property>]
+        let ``Should have midi number from 108 to 119 on six line octave``(note :Note) =
+            (midiNumber note Octave.SixLine) >! 107
+            (midiNumber note Octave.SixLine) <! 120
+
+        [<Property>]
+        let ``Should have midi number from 120 to 131 on seven line octave``(note :Note) =
+            (midiNumber note Octave.SevenLine) >! 119
+            (midiNumber note Octave.SevenLine) <! 132

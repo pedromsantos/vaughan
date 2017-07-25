@@ -39,9 +39,11 @@ namespace Vaughan
             | FourLine = 8
             | FiveLine = 16
             | SixLine = 32
+            | SevenLine = 64
         
         type Frequency = Note -> Octave -> float
         type NoteMidiName = Note -> Octave -> string
+        type NoteMidiNumber = Note -> Octave -> int
 
         type Key =
             | AMajor | AFlatMajor | BMajor | BFlatMajor | CMajor

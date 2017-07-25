@@ -82,7 +82,23 @@ namespace Vaughan
             | Octave.FourLine -> "7"
             | Octave.FiveLine -> "8"
             | Octave.SixLine -> "9"
+            | Octave.SevenLine -> "10"
             | _ -> ""
+
+        let private octaveMidiNumber (octave:Octave) = 
+            match octave with
+            | Octave.SubContra -> 0
+            | Octave.Contra -> 12
+            | Octave.Great -> 24
+            | Octave.Small -> 36
+            | Octave.OneLine -> 48
+            | Octave.TwoLine -> 60
+            | Octave.ThreeLine -> 72
+            | Octave.FourLine -> 84
+            | Octave.FiveLine -> 96
+            | Octave.SixLine -> 108
+            | Octave.SevenLine -> 120
+            | _ -> 0
 
         let sharp:SharpNote = fun note ->
             (noteAttributes note).Sharp
@@ -96,10 +112,13 @@ namespace Vaughan
             (noteAttributes note).Name
 
         let midiName:NoteMidiName = fun note octave ->
-            (noteAttributes note).Name + octaveMidiName octave
+            noteName note + octaveMidiName octave
 
         let pitch:NotePitch = fun note ->
             (noteAttributes note).Pitch
+
+        let midiNumber:NoteMidiNumber = fun note octave ->
+            pitch note + octaveMidiNumber octave
 
         let intervalName:IntervalName = fun interval ->
             (intervalAttributes interval).Name
