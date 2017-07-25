@@ -70,6 +70,20 @@ namespace Vaughan
             let roundToThousands = 1000.0
             round(roundToThousands * noteFrequency) / roundToThousands
 
+        let private octaveMidiName (octave:Octave) = 
+            match octave with
+            | Octave.SubContra -> "0"
+            | Octave.Contra -> "1"
+            | Octave.Great -> "2"
+            | Octave.Small -> "3"
+            | Octave.OneLine -> "4"
+            | Octave.TwoLine -> "5"
+            | Octave.ThreeLine -> "6"
+            | Octave.FourLine -> "7"
+            | Octave.FiveLine -> "8"
+            | Octave.SixLine -> "9"
+            | _ -> ""
+
         let sharp:SharpNote = fun note ->
             (noteAttributes note).Sharp
 
@@ -80,6 +94,9 @@ namespace Vaughan
 
         let noteName:NoteName = fun note ->
             (noteAttributes note).Name
+
+        let midiName:NoteMidiName = fun note octave ->
+            (noteAttributes note).Name + octaveMidiName octave
 
         let pitch:NotePitch = fun note ->
             (noteAttributes note).Pitch

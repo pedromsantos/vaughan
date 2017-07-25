@@ -41,6 +41,7 @@ namespace Vaughan
             | SixLine = 32
         
         type Frequency = Note -> Octave -> float
+        type NoteMidiName = Note -> Octave -> string
 
         type Key =
             | AMajor | AFlatMajor | BMajor | BFlatMajor | CMajor

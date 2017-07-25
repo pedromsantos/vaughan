@@ -310,4 +310,44 @@ namespace VaughanTests
 
         [<Property>]
         let ``Six line octave multiplies by 32 frequency of One line octave`` (note :Note) =
-           Assert.AreEqual(frequency note Octave.OneLine * 32.0, frequency note Octave.SixLine, 0.100) 
+           Assert.AreEqual(frequency note Octave.OneLine * 32.0, frequency note Octave.SixLine, 0.100)
+        
+        [<Property>]
+        let ``Should have midi name note+0 for note at sub contra octave``(note :Note) =
+            midiName note Octave.SubContra =! noteName note + "0"
+
+        [<Property>]
+        let ``Should have midi name note+1 for note at contra octave``(note :Note) =
+            midiName note Octave.Contra =! noteName note + "1"
+
+        [<Property>]
+        let ``Should have midi name note+2 for note at great octave``(note :Note) =
+            midiName note Octave.Great =! noteName note + "2"
+
+        [<Property>]
+        let ``Should have midi name note+3 for note at small octave``(note :Note) =
+            midiName note Octave.Small =! noteName note + "3"
+
+        [<Property>]
+        let ``Should have midi name note+4 for note at one line octave``(note :Note) =
+            midiName note Octave.OneLine =! noteName note + "4"
+        
+        [<Property>]
+        let ``Should have midi name note+5 for note at two line octave``(note :Note) =
+            midiName note Octave.TwoLine =! noteName note + "5"
+
+        [<Property>]
+        let ``Should have midi name note+6 for note at three line octave``(note :Note) =
+            midiName note Octave.ThreeLine =! noteName note + "6"
+
+        [<Property>]
+        let ``Should have midi name note+7 for note at four line octave``(note :Note) =
+            midiName note Octave.FourLine =! noteName note + "7"
+
+        [<Property>]
+        let ``Should have midi name note+8 for note at five line octave``(note :Note) =
+            midiName note Octave.FiveLine =! noteName note + "8"
+
+        [<Property>]
+        let ``Should have midi name note+9 for note at six line octave``(note :Note) =
+            midiName note Octave.SixLine =! noteName note + "9"
