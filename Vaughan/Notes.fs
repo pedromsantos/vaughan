@@ -142,5 +142,5 @@ namespace Vaughan
             let octaveRange = 12.0
             let a4Frequency = 440.0
             let power = double(pitch note - pitch A) / octaveRange
-            let frequency = ((max 1.0 power) ** 2.0) * a4Frequency
+            let frequency = (2.0 ** power) * a4Frequency
             adjustFrequencyForOctave octave frequency

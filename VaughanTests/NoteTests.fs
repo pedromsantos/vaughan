@@ -276,6 +276,10 @@ namespace VaughanTests
         let ``Should have frequency of 3520Hz for A7``() =
             Assert.AreEqual(440.0 * 8.0, frequency A Octave.FourLine, 0.100)
 
+        [<Test>]
+        let ``Should have frequency of 261.626Hz for C4``() =
+            Assert.AreEqual(261.626, frequency C Octave.OneLine, 0.100)
+
         [<Property>]
         let ``Small octave divides by 2 frequency of One line octave`` (note :Note) =
            Assert.AreEqual(frequency note Octave.OneLine / 2.0, frequency note Octave.Small, 0.100) 
