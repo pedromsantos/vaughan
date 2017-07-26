@@ -29,17 +29,9 @@ namespace Vaughan
         type TransposeNote = Note -> Interval -> Note
        
         type Octave = 
-            | SubContra = -16
-            | Contra = -8
-            | Great = -4
-            | Small = -2
-            | OneLine = 1
-            | TwoLine = 2
-            | ThreeLine = 4
-            | FourLine = 8
-            | FiveLine = 16
-            | SixLine = 32
-            | SevenLine = 64
+            | SubContra | Contra | Great | Small
+            | OneLine | TwoLine | ThreeLine | FourLine
+            | FiveLine | SixLine | SevenLine
         
         type Frequency = Note -> Octave -> float
         type NoteMidiName = Note -> Octave -> string

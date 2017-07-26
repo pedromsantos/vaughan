@@ -61,8 +61,22 @@ namespace Vaughan
         let private sharpOrFlatNoteForInterval:ITransposeNoteForInterval = fun note interval ->
             (intervalAttributes interval).Transpose note
         
+        let private octaveValue octave =
+            match octave with 
+            | SubContra -> -16.0
+            | Contra -> -8.0
+            | Great -> -4.0
+            | Small -> -2.0
+            | OneLine -> 1.0
+            | TwoLine -> 2.0
+            | ThreeLine -> 4.0
+            | FourLine -> 8.0
+            | FiveLine -> 16.0
+            | SixLine -> 32.0
+            | SevenLine -> 64.0
+
         let private adjustFrequencyForOctave octave frequency =
-            let octaveValue = float(int(octave))
+            let octaveValue = octaveValue octave
             let noteFrequency = 
                 if octaveValue < 0.0
                     then frequency / (-1.0 * octaveValue)
