@@ -5,6 +5,7 @@ namespace Vaughan
 
         type private NoteAttributes = {Name:string; Sharp:Note; Flat:Note; Pitch:int}
         type private IntervalAttributes = {Name:string; Distance:int; Transpose: (Note -> Note)}
+        type private OctaveAttributes = {Value:float; MidiName:string; MidiNumber:int}
         type private INoteAttributes = Note -> NoteAttributes
         type private ITransposeNoteForInterval = Note -> Interval -> Note
 
@@ -61,58 +62,28 @@ namespace Vaughan
         let private sharpOrFlatNoteForInterval:ITransposeNoteForInterval = fun note interval ->
             (intervalAttributes interval).Transpose note
         
-        let private octaveValue octave =
+        let private octaveProperties octave =
             match octave with 
-            | SubContra -> -16.0
-            | Contra -> -8.0
-            | Great -> -4.0
-            | Small -> -2.0
-            | OneLine -> 1.0
-            | TwoLine -> 2.0
-            | ThreeLine -> 4.0
-            | FourLine -> 8.0
-            | FiveLine -> 16.0
-            | SixLine -> 32.0
-            | SevenLine -> 64.0
+            | SubContra -> {Value = -16.0; MidiName = "0"; MidiNumber = 0}
+            | Contra -> {Value = -8.0; MidiName = "1"; MidiNumber = 12}
+            | Great -> {Value = -4.0; MidiName = "2"; MidiNumber = 24}
+            | Small -> {Value = -2.0; MidiName = "3"; MidiNumber = 36}
+            | OneLine -> {Value = 1.0; MidiName = "4"; MidiNumber = 48}
+            | TwoLine -> {Value = 2.0; MidiName = "5"; MidiNumber = 60}
+            | ThreeLine -> {Value = 4.0; MidiName = "6"; MidiNumber = 72}
+            | FourLine -> {Value = 8.0; MidiName = "7"; MidiNumber = 84}
+            | FiveLine -> {Value = 16.0; MidiName = "8"; MidiNumber = 96}
+            | SixLine -> {Value = 32.0; MidiName = "9"; MidiNumber = 108}
+            | SevenLine -> {Value = 64.0; MidiName = "10"; MidiNumber = 120}
 
         let private adjustFrequencyForOctave octave frequency =
-            let octaveValue = octaveValue octave
+            let octaveValue = (octaveProperties octave).Value
             let noteFrequency = 
                 if octaveValue < 0.0
                     then frequency / (-1.0 * octaveValue)
                     else frequency * octaveValue
             let roundToThousands = 1000.0
             round(roundToThousands * noteFrequency) / roundToThousands
-
-        let private octaveMidiName (octave:Octave) = 
-            match octave with
-            | Octave.SubContra -> "0"
-            | Octave.Contra -> "1"
-            | Octave.Great -> "2"
-            | Octave.Small -> "3"
-            | Octave.OneLine -> "4"
-            | Octave.TwoLine -> "5"
-            | Octave.ThreeLine -> "6"
-            | Octave.FourLine -> "7"
-            | Octave.FiveLine -> "8"
-            | Octave.SixLine -> "9"
-            | Octave.SevenLine -> "10"
-            | _ -> ""
-
-        let private octaveMidiNumber (octave:Octave) = 
-            match octave with
-            | Octave.SubContra -> 0
-            | Octave.Contra -> 12
-            | Octave.Great -> 24
-            | Octave.Small -> 36
-            | Octave.OneLine -> 48
-            | Octave.TwoLine -> 60
-            | Octave.ThreeLine -> 72
-            | Octave.FourLine -> 84
-            | Octave.FiveLine -> 96
-            | Octave.SixLine -> 108
-            | Octave.SevenLine -> 120
-            | _ -> 0
 
         let sharp:SharpNote = fun note ->
             (noteAttributes note).Sharp
@@ -126,13 +97,13 @@ namespace Vaughan
             (noteAttributes note).Name
 
         let midiName:NoteMidiName = fun note octave ->
-            noteName note + octaveMidiName octave
+            noteName note + (octaveProperties octave).MidiName
 
         let pitch:NotePitch = fun note ->
             (noteAttributes note).Pitch
 
         let midiNumber:NoteMidiNumber = fun note octave ->
-            pitch note + octaveMidiNumber octave
+            pitch note + (octaveProperties octave).MidiNumber
 
         let intervalName:IntervalName = fun interval ->
             (intervalAttributes interval).Name
