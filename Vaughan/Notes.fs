@@ -76,8 +76,17 @@ namespace Vaughan
             | SixLine -> {Value = 32.0; MidiName = "9"; MidiNumber = 108}
             | SevenLine -> {Value = 64.0; MidiName = "10"; MidiNumber = 120}
 
+        let private octaveValue octave = 
+            (octaveProperties octave).Value
+
+        let private octaveMidiName octave =
+            (octaveProperties octave).MidiName
+
+        let private octaveMidiNumber octave =
+            (octaveProperties octave).MidiNumber
+
         let private adjustFrequencyForOctave octave frequency =
-            let octaveValue = (octaveProperties octave).Value
+            let octaveValue = octaveValue octave
             let noteFrequency = 
                 if octaveValue < 0.0
                     then frequency / (-1.0 * octaveValue)
@@ -97,13 +106,13 @@ namespace Vaughan
             (noteAttributes note).Name
 
         let midiName:NoteMidiName = fun note octave ->
-            noteName note + (octaveProperties octave).MidiName
+            noteName note + octaveMidiName octave
 
         let pitch:NotePitch = fun note ->
             (noteAttributes note).Pitch
 
         let midiNumber:NoteMidiNumber = fun note octave ->
-            pitch note + (octaveProperties octave).MidiNumber
+            pitch note + octaveMidiNumber octave
 
         let intervalName:IntervalName = fun interval ->
             (intervalAttributes interval).Name
