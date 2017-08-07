@@ -1,6 +1,10 @@
 namespace Vaughan
 
     module Domain =
+        [<Measure>] type hz
+        [<Measure>] type ht
+        [<Measure>] type midiNote
+
         type Note =
             | C | CSharp | DFlat | D | DSharp | EFlat | E | F | FSharp
             | GFlat | G | GSharp | AFlat | A | ASharp | BFlat | B
@@ -21,10 +25,10 @@ namespace Vaughan
             | MinorThirteenth | MajorThirteenth
 
         type IntervalName = Interval -> string
-        type IntervalToDistance = Interval -> int
-        type IntervalToOctaveDistance = Interval -> int
-        type IntervalFromDistance = int -> Interval
-        type MeasureAbsoluteSemitones = Note -> Note -> int
+        type IntervalToDistance = Interval -> int<ht>
+        type IntervalToOctaveDistance = Interval -> int<ht>
+        type IntervalFromDistance = int<ht> -> Interval
+        type MeasureAbsoluteSemitones = Note -> Note -> int<ht>
         type IntervalBetween = Note -> Note -> Interval
         type TransposeNote = Note -> Interval -> Note
        
@@ -33,9 +37,9 @@ namespace Vaughan
             | OneLine | TwoLine | ThreeLine | FourLine
             | FiveLine | SixLine | SevenLine
         
-        type Frequency = Note -> Octave -> float
+        type Frequency = Note -> Octave -> float<hz>
         type NoteMidiName = Note -> Octave -> string
-        type NoteMidiNumber = Note -> Octave -> int
+        type NoteMidiNumber = Note -> Octave -> int<midiNote>
 
         type Key =
             | AMajor | AFlatMajor | BMajor | BFlatMajor | CMajor

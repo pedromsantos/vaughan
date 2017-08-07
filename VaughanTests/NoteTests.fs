@@ -73,23 +73,23 @@ namespace VaughanTests
 
         [<Test>]
         let ``Should measure semitones distance``() =
-            measureAbsoluteSemitones C C =! 0
-            measureAbsoluteSemitones C CSharp =! 1
-            measureAbsoluteSemitones C DFlat =! 1
-            measureAbsoluteSemitones C D =! 2
-            measureAbsoluteSemitones C DSharp =! 3
-            measureAbsoluteSemitones C EFlat =! 3
-            measureAbsoluteSemitones C E =! 4
-            measureAbsoluteSemitones C F =! 5
-            measureAbsoluteSemitones C FSharp =! 6
-            measureAbsoluteSemitones C GFlat =! 6
-            measureAbsoluteSemitones C G =! 7
-            measureAbsoluteSemitones C GSharp =! 8
-            measureAbsoluteSemitones C AFlat =! 8
-            measureAbsoluteSemitones C A =! 9
-            measureAbsoluteSemitones C ASharp =! 10
-            measureAbsoluteSemitones C BFlat =! 10
-            measureAbsoluteSemitones C B =! 11
+            measureAbsoluteSemitones C C =! 0<ht>
+            measureAbsoluteSemitones C CSharp =! 1<ht>
+            measureAbsoluteSemitones C DFlat =! 1<ht>
+            measureAbsoluteSemitones C D =! 2<ht>
+            measureAbsoluteSemitones C DSharp =! 3<ht>
+            measureAbsoluteSemitones C EFlat =! 3<ht>
+            measureAbsoluteSemitones C E =! 4<ht>
+            measureAbsoluteSemitones C F =! 5<ht>
+            measureAbsoluteSemitones C FSharp =! 6<ht>
+            measureAbsoluteSemitones C GFlat =! 6<ht>
+            measureAbsoluteSemitones C G =! 7<ht>
+            measureAbsoluteSemitones C GSharp =! 8<ht>
+            measureAbsoluteSemitones C AFlat =! 8<ht>
+            measureAbsoluteSemitones C A =! 9<ht>
+            measureAbsoluteSemitones C ASharp =! 10<ht>
+            measureAbsoluteSemitones C BFlat =! 10<ht>
+            measureAbsoluteSemitones C B =! 11<ht>
 
         [<Test>]
         let ``Should create interval from distance``() =
@@ -226,91 +226,91 @@ namespace VaughanTests
 
         [<Test>]
         let ``Should relate interval with distances``() =
-            fromDistance 0 =! Unisson
-            fromDistance 1 =! MinorSecond
-            fromDistance 2 =! MajorSecond
-            fromDistance 3 =! MinorThird
-            fromDistance 4 =! MajorThird
-            fromDistance 5 =! PerfectFourth
-            fromDistance 6 =! DiminishedFifth
-            fromDistance 7 =! PerfectFifth
-            fromDistance 8 =! AugmentedFifth
-            fromDistance 9 =! MajorSixth
-            fromDistance 10 =! MinorSeventh
-            fromDistance 11 =! MajorSeventh
-            fromDistance 12 =! PerfectOctave
+            fromDistance 0<ht> =! Unisson
+            fromDistance 1<ht> =! MinorSecond
+            fromDistance 2<ht> =! MajorSecond
+            fromDistance 3<ht> =! MinorThird
+            fromDistance 4<ht> =! MajorThird
+            fromDistance 5<ht> =! PerfectFourth
+            fromDistance 6<ht> =! DiminishedFifth
+            fromDistance 7<ht> =! PerfectFifth
+            fromDistance 8<ht> =! AugmentedFifth
+            fromDistance 9<ht> =! MajorSixth
+            fromDistance 10<ht> =! MinorSeventh
+            fromDistance 11<ht> =! MajorSeventh
+            fromDistance 12<ht> =! PerfectOctave
 
         [<Test>]
         let ``Should have frequency of 55Hz for A1``() =
-            Assert.AreEqual(440.0 / 8.0, frequency A Octave.Contra, 0.100)
+            Assert.AreEqual(float(440.0<hz> / 8.0), float(frequency A Octave.Contra), 0.100)
 
         [<Test>]
         let ``Should have frequency of 110Hz for A2``() =
-            Assert.AreEqual(440.0 / 4.0, frequency A Octave.Great, 0.100)
+            Assert.AreEqual(float(440.0<hz> / 4.0), float(frequency A Octave.Great), 0.100)
 
         [<Test>]
         let ``Should have frequency of 220Hz for A3``() =
-            Assert.AreEqual(440.0 / 2.0, frequency A Octave.Small, 0.100)
+            Assert.AreEqual(float(440.0<hz> / 2.0), float(frequency A Octave.Small), 0.100)
 
         [<Test>]
         let ``Should have frequency of 440Hz for A4``() =
-            Assert.AreEqual(440.0 / 1.0, frequency A Octave.OneLine, 0.100)
+            Assert.AreEqual(float(440.0<hz> / 1.0), float(frequency A Octave.OneLine), 0.100)
 
         [<Test>]
         let ``Should have frequency of 880Hz for A5``() =
-            Assert.AreEqual(440.0 * 2.0, frequency A Octave.TwoLine, 0.100)
+            Assert.AreEqual(440.0 * 2.0, float(frequency A Octave.TwoLine), 0.100)
 
         [<Test>]
         let ``Should have frequency of 1760Hz for A6``() =
-            Assert.AreEqual(440.0 * 4.0, frequency A Octave.ThreeLine, 0.100)
+            Assert.AreEqual(440.0 * 4.0, float(frequency A Octave.ThreeLine), 0.100)
 
         [<Test>]
         let ``Should have frequency of 7040Hz for A8``() =
-            Assert.AreEqual(440.0 * 16.0, frequency A Octave.FiveLine, 0.100)
+            Assert.AreEqual(440.0 * 16.0, float(frequency A Octave.FiveLine), 0.100)
 
         [<Test>]
         let ``Should have frequency of 14080Hz for A9``() =
-            Assert.AreEqual(440.0 * 32.0, frequency A Octave.SixLine, 0.100)
+            Assert.AreEqual(440.0 * 32.0, float(frequency A Octave.SixLine), 0.100)
 
         [<Test>]
         let ``Should have frequency of 3520Hz for A7``() =
-            Assert.AreEqual(440.0 * 8.0, frequency A Octave.FourLine, 0.100)
+            Assert.AreEqual(440.0 * 8.0, float(frequency A Octave.FourLine), 0.100)
 
         [<Test>]
         let ``Should have frequency of 261.626Hz for C4``() =
-            Assert.AreEqual(261.626, frequency C Octave.OneLine, 0.100)
+            Assert.AreEqual(261.626, float(frequency C Octave.OneLine), 0.100)
 
         [<Property>]
         let ``Small octave divides by 2 frequency of One line octave`` (note :Note) =
-           Assert.AreEqual(frequency note Octave.OneLine / 2.0, frequency note Octave.Small, 0.100) 
+           Assert.AreEqual(float(frequency note Octave.OneLine / 2.0), float(frequency note Octave.Small), 0.100) 
 
         [<Property>]
         let ``Great octave divides by 4 frequency of One line octave`` (note :Note) =
-           Assert.AreEqual(frequency note Octave.OneLine / 4.0, frequency note Octave.Great, 0.100) 
+           Assert.AreEqual(float(frequency note Octave.OneLine / 4.0), float(frequency note Octave.Great), 0.100) 
 
         [<Property>]
         let ``Contra octave divides by 8 frequency of One line octave`` (note :Note) =
-           Assert.AreEqual(frequency note Octave.OneLine / 8.0, frequency note Octave.Contra, 0.100)  
+           Assert.AreEqual(float(frequency note Octave.OneLine / 8.0), float(frequency note Octave.Contra), 0.100)  
 
         [<Property>]
         let ``Two line octave doubles frequency of One line octave`` (note :Note) =
-           Assert.AreEqual(frequency note Octave.OneLine * 2.0, frequency note Octave.TwoLine, 0.100) 
+           Assert.AreEqual(float(frequency note Octave.OneLine * 2.0), float(frequency note Octave.TwoLine), 0.100) 
 
         [<Property>]
         let ``Three line octave quadruples frequency of One line octave`` (note :Note) =
-           Assert.AreEqual(frequency note Octave.OneLine * 4.0, frequency note Octave.ThreeLine, 0.100) 
+           Assert.AreEqual(float(frequency note Octave.OneLine * 4.0), float(frequency note Octave.ThreeLine), 0.100) 
 
         [<Property>]
         let ``Four line octave multiplies by 8 frequency of One line octave`` (note :Note) =
-           Assert.AreEqual(frequency note Octave.OneLine * 8.0, frequency note Octave.FourLine, 0.100) 
+           Assert.AreEqual(float(frequency note Octave.OneLine * 8.0), float(frequency note Octave.FourLine), 0.100) 
 
         [<Property>]
         let ``Five line octave multiplies by 16 frequency of One line octave`` (note :Note) =
-           Assert.AreEqual(frequency note Octave.OneLine * 16.0, frequency note Octave.FiveLine, 0.100) 
+           Assert.AreEqual(float(frequency note Octave.OneLine * 16.0), float(frequency note Octave.FiveLine), 0.100) 
 
         [<Property>]
         let ``Six line octave multiplies by 32 frequency of One line octave`` (note :Note) =
-           Assert.AreEqual(frequency note Octave.OneLine * 32.0, frequency note Octave.SixLine, 0.100)
+           Assert.AreEqual(float(frequency note Octave.OneLine * 32.0), float(frequency note Octave.SixLine), 0.100)
         
         [<Property>]
         let ``Should have midi name note+0 for note at sub contra octave``(note :Note) =
@@ -354,55 +354,55 @@ namespace VaughanTests
 
         [<Property>]
         let ``Should have midi number from 0 to 11 on sub contra octave``(note :Note) =
-            (midiNumber note Octave.SubContra) >! -1
-            (midiNumber note Octave.SubContra) <! 12
+            (midiNumber note Octave.SubContra) >! -1<midiNote>
+            (midiNumber note Octave.SubContra) <! 12<midiNote>
 
         [<Property>]
         let ``Should have midi number from 12 to 23 on contra octave``(note :Note) =
-            (midiNumber note Octave.Contra) >! 11
-            (midiNumber note Octave.Contra) <! 24
+            (midiNumber note Octave.Contra) >! 11<midiNote>
+            (midiNumber note Octave.Contra) <! 24<midiNote>
 
         [<Property>]
         let ``Should have midi number from 24 to 35 on great octave``(note :Note) =
-            (midiNumber note Octave.Great) >! 23
-            (midiNumber note Octave.Great) <! 36
+            (midiNumber note Octave.Great) >! 23<midiNote>
+            (midiNumber note Octave.Great) <! 36<midiNote>
 
         [<Property>]
         let ``Should have midi number from 36 to 47 on small octave``(note :Note) =
-            (midiNumber note Octave.Small) >! 35
-            (midiNumber note Octave.Small) <! 48
+            (midiNumber note Octave.Small) >! 35<midiNote>
+            (midiNumber note Octave.Small) <! 48<midiNote>
 
         [<Property>]
         let ``Should have midi number from 48 to 59 on one line octave``(note :Note) =
-            (midiNumber note Octave.OneLine) >! 47
-            (midiNumber note Octave.OneLine) <! 60
+            (midiNumber note Octave.OneLine) >! 47<midiNote>
+            (midiNumber note Octave.OneLine) <! 60<midiNote>
         
         [<Property>]
         let ``Should have midi number from 60 to 71 on two line octave``(note :Note) =
-            (midiNumber note Octave.TwoLine) >! 59
-            (midiNumber note Octave.TwoLine) <! 84
+            (midiNumber note Octave.TwoLine) >! 59<midiNote>
+            (midiNumber note Octave.TwoLine) <! 84<midiNote>
 
         [<Property>]
         let ``Should have midi number from 72 to 83 on three line octave``(note :Note) =
-            (midiNumber note Octave.ThreeLine) >! 71
-            (midiNumber note Octave.ThreeLine) <! 84
+            (midiNumber note Octave.ThreeLine) >! 71<midiNote>
+            (midiNumber note Octave.ThreeLine) <! 84<midiNote>
 
         [<Property>]
         let ``Should have midi number from 84 to 95 on four line octave``(note :Note) =
-            (midiNumber note Octave.FourLine) >! 83
-            (midiNumber note Octave.FourLine) <! 96
+            (midiNumber note Octave.FourLine) >! 83<midiNote>
+            (midiNumber note Octave.FourLine) <! 96<midiNote>
 
         [<Property>]
         let ``Should have midi number from 96 to 107 on five line octave``(note :Note) =
-            (midiNumber note Octave.FiveLine) >! 95
-            (midiNumber note Octave.FiveLine) <! 108
+            (midiNumber note Octave.FiveLine) >! 95<midiNote>
+            (midiNumber note Octave.FiveLine) <! 108<midiNote>
 
         [<Property>]
         let ``Should have midi number from 108 to 119 on six line octave``(note :Note) =
-            (midiNumber note Octave.SixLine) >! 107
-            (midiNumber note Octave.SixLine) <! 120
+            (midiNumber note Octave.SixLine) >! 107<midiNote>
+            (midiNumber note Octave.SixLine) <! 120<midiNote>
 
         [<Property>]
         let ``Should have midi number from 120 to 131 on seven line octave``(note :Note) =
-            (midiNumber note Octave.SevenLine) >! 119
-            (midiNumber note Octave.SevenLine) <! 132
+            (midiNumber note Octave.SevenLine) >! 119<midiNote>
+            (midiNumber note Octave.SevenLine) <! 132<midiNote>

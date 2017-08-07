@@ -22,7 +22,7 @@ namespace Vaughan
                 (fretDistance fret other) > 5
 
             let private raiseOctave (fret:Fret) =
-                {fret with Fret = fret.Fret + (toDistance PerfectOctave)}
+                {fret with Fret = fret.Fret + int(toDistance PerfectOctave)}
 
             let private isRaisable fret =
                 not (isRaised fret) && not (isMuted fret)
@@ -83,7 +83,7 @@ namespace Vaughan
                 { GuitarString = guitarString; Fret = fretForMutedString; Note = openStringNote guitarString }
 
             let createStringFret guitarString note =
-                { createMutedStringFret guitarString with Fret = fretNoteOnString note guitarString; Note = note }  
+                { createMutedStringFret guitarString with Fret = int(fretNoteOnString note guitarString); Note = note }  
 
         open Domain
         open Notes
