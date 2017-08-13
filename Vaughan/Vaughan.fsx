@@ -169,17 +169,17 @@ open System.Net
 open System.Net.Sockets
 open Rug.Osc
 
-let connect message = 
+let sonicPiSend message = 
     let RUN_COMMAND = "/run-code"
     let STOP_COMMAND = "/stop-all-jobs"
     let ID = "VAUGHAN_SONIC_PI_CLI"
 
     let serverEndPoint = new IPEndPoint(IPAddress.Loopback, 4557)
-    let outSocket = new UdpClient()
+    let udpClient = new UdpClient()
     let osc_message = OscMessage(RUN_COMMAND, ID, message).ToByteArray()
    
-    outSocket.Connect(serverEndPoint)
-    outSocket.Send(osc_message, osc_message.Length) |> ignore
-    outSocket.Close()
+    udpClient.Connect(serverEndPoint)
+    udpClient.Send(osc_message, osc_message.Length) |> ignore
+    udpClient.Close()
 
-connect "use_synth :pluck\nplay :E2, sustain:10"
+sonicPiSend "use_synth :pluck\nplay :E2, sustain:10"
