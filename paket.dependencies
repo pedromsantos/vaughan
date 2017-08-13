@@ -6,3 +6,4 @@ nuget Unquote
 nuget NUnit.Runners
 nuget FsCheck.NUnit
 nuget FParsec
+nuget Rug.Osc

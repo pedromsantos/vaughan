@@ -81,5 +81,8 @@
     <Reference Include="FParsec">
       <HintPath>..\packages\FParsec\lib\portable-net45+netcore45+wpa81+wp8\FParsecCS.dll</HintPath>
     </Reference>
+    <Reference Include="Rug.OSC">
+      <HintPath>..\packages\Rug.Osc\lib\Rug.Osc.dll</HintPath>
+    </Reference>
   </ItemGroup>
 </Project>

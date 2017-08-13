@@ -162,3 +162,24 @@ let chord = chord C ChordQuality.Dominant7
 let chordNotes = chord.Notes |> List.map fst |> List.sort
 
 scalesFitting chord
+
+#r "../packages/Rug.Osc/lib/Rug.Osc"
+
+open System.Net
+open System.Net.Sockets
+open Rug.Osc
+
+let connect message = 
+    let RUN_COMMAND = "/run-code"
+    let STOP_COMMAND = "/stop-all-jobs"
+    let ID = "VAUGHAN_SONIC_PI_CLIENT"
+
+    let serverEndPoint = new IPEndPoint(IPAddress.Loopback, 4557)
+    let outSocket = new UdpClient()
+    let osc_message = OscMessage(RUN_COMMAND, ID, message).ToByteArray()
+   
+    outSocket.Connect(serverEndPoint)
+    outSocket.Send(osc_message, osc_message.Length) |> ignore
+    outSocket.Close()
+
+connect "play 64"
