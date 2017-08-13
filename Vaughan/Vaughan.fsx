@@ -172,7 +172,7 @@ open Rug.Osc
 let connect message = 
     let RUN_COMMAND = "/run-code"
     let STOP_COMMAND = "/stop-all-jobs"
-    let ID = "VAUGHAN_SONIC_PI_CLIENT"
+    let ID = "VAUGHAN_SONIC_PI_CLI"
 
     let serverEndPoint = new IPEndPoint(IPAddress.Loopback, 4557)
     let outSocket = new UdpClient()
@@ -182,4 +182,4 @@ let connect message =
     outSocket.Send(osc_message, osc_message.Length) |> ignore
     outSocket.Close()
 
-connect "play 64"
+connect "use_synth :pluck\nplay :E2, sustain:10"
