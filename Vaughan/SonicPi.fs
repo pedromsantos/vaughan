@@ -7,6 +7,7 @@
         open Rug.Osc
         open Domain
         open Notes
+        open Chords
 
         let private RUN_COMMAND = "/run-code"
         let private STOP_COMMAND = "/stop-all-jobs"
@@ -64,9 +65,15 @@
             udpClient.Send(osc_message, osc_message.Length) |> ignore
             udpClient.Close()
 
+        let chordToSonicPi (chord:Chord) octave = 
+            (notesMidiNumbers chord octave
+            |> List.fold (fun acc n -> sprintf "%s%i," acc n) "").TrimEnd(',')
+
         let rec toSonicPiScript = function
+            | Sleep secs -> sprintf "sleep %i" secs 
             | Synth synth -> sprintf "use_synth %s" (synthToSonicPySynth synth)
             | PlayNote (note, octave) -> sprintf "play %i" (midiNumber note octave)
-            | Statments s ->  s |> Seq.fold (fun acc elem -> 
-                                             sprintf "%s%s%s" acc (toSonicPiScript elem) Environment.NewLine) 
+            | PlayChord (chord, octave) -> sprintf "play [%s]" (chordToSonicPi chord octave) 
+            | Statments sts -> sts |> Seq.fold (fun acc st -> 
+                                             sprintf "%s%s%s" acc (toSonicPiScript st) Environment.NewLine) 
                                              ""

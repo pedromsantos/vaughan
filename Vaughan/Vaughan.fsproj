@@ -65,8 +65,9 @@
     <Compile Include="ScaleHarmonizer.fs" />
     <Compile Include="Guitar.fs" />
     <Compile Include="SpeechToMusic.fs" />
-     <Compile Include="SonicPi.fs" />
+    <Compile Include="SonicPi.fs" />
     <None Include="Vaughan.fsx" />
+    <None Include="SonicPi.fsx" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />

@@ -163,20 +163,3 @@ let chord = chord C ChordQuality.Dominant7
 let chordNotes = chord.Notes |> List.map fst |> List.sort
 
 scalesFitting chord
-
-#r "../packages/Rug.Osc/lib/Rug.Osc.dll"
-
-#load "Domain.fs"
-#load "Notes.fs"
-#load "SonicPi.fs"
-
-open Vaughan.Domain
-open Vaughan.Notes
-open Vaughan.SonicPi
-
-Statments[
-        Synth(Fm); 
-        PlayNote(E, OneLine)
-        ]
-|> toSonicPiScript
-|> sonicPiSend

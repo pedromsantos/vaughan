@@ -1,6 +1,7 @@
 namespace Vaughan
 
     module Domain =
+        [<Measure>] type s
         [<Measure>] type hz
         [<Measure>] type ht
         [<Measure>] type midiNote
@@ -133,84 +134,47 @@ namespace Vaughan
         type CreateChordFromIntent = ChordIntent -> Chord
 
         type Synths =
-            | Beep
-            | BladeRunnerStyleStrings
-            | BrownNoise
-            | ChipBass
-            | ChipLead
-            | ChipNoise
-            | ClipNoise
-            | DarkAmbience
-            | DetunedPulseWave
-            | DetunedSawWave
-            | DetunedTriangleWave
-            | DullBell
+            | Beep | BladeRunnerStyleStrings | BrownNoise 
+            | ChipBass | ChipLead | ChipNoise | ClipNoise
+            | DarkAmbience | DetunedPulseWave | DetunedSawWave | DetunedTriangleWave | DullBell
             | Fm
-            | GreyNoise
-            | Growl
-            | Hollow
-            | Hoover
-            | ModulatedBeepWave
-            | ModulatedDetunedSaWaves
-            | ModulatedFm
-            | ModulatedPulse
-            | ModulatedSawWave
-            | ModulatedSineWave
-            | ModulatedTriangleWave
+            | GreyNoise | Growl
+            | Hollow | Hoover
+            | ModulatedBeepWave | ModulatedDetunedSaWaves | ModulatedFm | ModulatedPulse
+            | ModulatedSawWave | ModulatedSineWave | ModulatedTriangleWave
             | Noise
-            | Piano
-            | Pluck
-            | PinkNoise
-            | PretyBell
+            | Piano | Pluck | PinkNoise | PretyBell | PulseWave | PulseWaveWithSub
             | TheProphet
-            | PulseWave
-            | SawWave
-            | SineWave
-            | SquareWave
-            | PulseWaveWithSub
-            | SuperSaw
-            | TB303Emulation
-            | TechSaws
-            | TriangleWave
+            | SawWave | SineWave | SquareWave | SuperSaw
+            | TB303Emulation | TechSaws | TriangleWave
             | Zawa
 
         type Fxs =
-            | Bitcrusher
-            | Krush
-            | Reverb
-            | GVerb
-            | LevelAmplifier
-            | Echo
-            | Slicer
-            | PanSlicer
-            | Wobble
-            | TechnofromIXILang
+            | BandPassFilter | BandEQFilter | Bitcrusher
             | Compressor
-            | Whammy
-            | ResonantLowPassFilter
-            | NormalisedResonantLowPassFilter
-            | ResonantHighPassFilter
-            | NormalisedResonantHighPassFilter
-            | HighPassFilter
-            | NormalisedHighPassFilter
-            | LowPassFilter
-            | NormalisedLowPassFilter
-            | Normaliser
             | Distortion
-            | Pan
-            | BandPassFilter
-            | NormalisedBandPassFilter
-            | ResonantBandPassFilter
-            | NormalisedResonantBandPassFilter
-            | BandEQFilter
-            | HyperbolicTangent
-            | PitchShift
-            | RingModulator
-            | Octaver
-            | Vowel
+            | Echo
             | Flanger
-
+            | GVerb
+            | HighPassFilter | HyperbolicTangent
+            | Krush
+            | LevelAmplifier | LowPassFilter
+            | NormalisedResonantLowPassFilter | NormalisedResonantHighPassFilter
+            | NormalisedHighPassFilter | NormalisedLowPassFilter | Normaliser
+            | NormalisedBandPassFilter | NormalisedResonantBandPassFilter
+            | Octaver
+            | PanSlicer | Pan | PitchShift
+            | Reverb | ResonantLowPassFilter | ResonantHighPassFilter
+            | ResonantBandPassFilter | RingModulator
+            | Slicer
+            | TechnofromIXILang
+            | Whammy
+            | Wobble
+            | Vowel
+            
         type Script =
             | Statments of Script seq
             | Synth of Synths
             | PlayNote of Note * Octave
+            | PlayChord of Chord * Octave
+            | Sleep of int<s>

@@ -152,6 +152,9 @@ namespace Vaughan
         let noteNames:NoteNames = fun chord ->
             chord.Notes |> List.map (note >> noteName)
 
+        let notesMidiNumbers = fun (chord:Chord) octave ->
+            chord.Notes |> List.map (fun n -> midiNumber (fst n) octave)
+
         let chord:CreateChord = fun root quality ->
             {
                 Notes= [(root, Root)] @ (intervalsForQuality quality |> List.map (fun i -> ((transpose root i), functionForInterval i)));
@@ -161,7 +164,6 @@ namespace Vaughan
 
         let add chords chord =
             chord :: chords |> rotateByOne
-          
 
         let toDrop2:ToDrop2 = fun chord ->
             if chord.Notes.Length = 4
