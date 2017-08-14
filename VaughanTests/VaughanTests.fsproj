@@ -69,6 +69,7 @@
     <Compile Include="GuitarTests.fs" />
     <Compile Include="SpeechToMusicTests.fs" />
     <Content Include="App.config" />
+    <Compile Include="SonicPiTests.fs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Vaughan\Vaughan.fsproj">
