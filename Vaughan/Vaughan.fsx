@@ -144,6 +144,7 @@ cMaj7.Notes |> printf "\n%A"
 (cMaj7 |> toDrop2).Notes |> printf "\n%A"
 (cMaj7 |> toDrop3).Notes |> printf "\n%A"
 
+
 inversionForFunctionAsLead cMaj Third |> printf "\n%A"
 inversionForFunctionAsBass cMaj Fifth |> printf "\n%A"
 invertionWithLeadClosestToNote cMaj CSharp |> printf "\n%A"
@@ -165,21 +166,17 @@ scalesFitting chord
 
 #r "../packages/Rug.Osc/lib/Rug.Osc.dll"
 
-open System.Net
-open System.Net.Sockets
-open Rug.Osc
+#load "Domain.fs"
+#load "Notes.fs"
+#load "SonicPi.fs"
 
-let sonicPiSend message = 
-    let RUN_COMMAND = "/run-code"
-    let STOP_COMMAND = "/stop-all-jobs"
-    let ID = "VAUGHAN_SONIC_PI_CLI"
+open Vaughan.Domain
+open Vaughan.Notes
+open Vaughan.SonicPi
 
-    let serverEndPoint = new IPEndPoint(IPAddress.Loopback, 4557)
-    let udpClient = new UdpClient()
-    let osc_message = OscMessage(RUN_COMMAND, ID, message).ToByteArray()
-   
-    udpClient.Connect(serverEndPoint)
-    udpClient.Send(osc_message, osc_message.Length) |> ignore
-    udpClient.Close()
-
-sonicPiSend "use_synth :pluck\nplay :E2, sustain:10"
+Statments[
+        Synth(Fm); 
+        PlayNote(E, OneLine)
+        ]
+|> toSonicPiScript
+|> sonicPiSend

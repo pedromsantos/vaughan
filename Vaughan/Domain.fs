@@ -131,3 +131,86 @@ namespace Vaughan
 
         type ParseChord = string -> ChordIntent
         type CreateChordFromIntent = ChordIntent -> Chord
+
+        type Synths =
+            | Beep
+            | BladeRunnerStyleStrings
+            | BrownNoise
+            | ChipBass
+            | ChipLead
+            | ChipNoise
+            | ClipNoise
+            | DarkAmbience
+            | DetunedPulseWave
+            | DetunedSawWave
+            | DetunedTriangleWave
+            | DullBell
+            | Fm
+            | GreyNoise
+            | Growl
+            | Hollow
+            | Hoover
+            | ModulatedBeepWave
+            | ModulatedDetunedSaWaves
+            | ModulatedFm
+            | ModulatedPulse
+            | ModulatedSawWave
+            | ModulatedSineWave
+            | ModulatedTriangleWave
+            | Noise
+            | Piano
+            | Pluck
+            | PinkNoise
+            | PretyBell
+            | TheProphet
+            | PulseWave
+            | SawWave
+            | SineWave
+            | SquareWave
+            | PulseWaveWithSub
+            | SuperSaw
+            | TB303Emulation
+            | TechSaws
+            | TriangleWave
+            | Zawa
+
+        type Fxs =
+            | Bitcrusher
+            | Krush
+            | Reverb
+            | GVerb
+            | LevelAmplifier
+            | Echo
+            | Slicer
+            | PanSlicer
+            | Wobble
+            | TechnofromIXILang
+            | Compressor
+            | Whammy
+            | ResonantLowPassFilter
+            | NormalisedResonantLowPassFilter
+            | ResonantHighPassFilter
+            | NormalisedResonantHighPassFilter
+            | HighPassFilter
+            | NormalisedHighPassFilter
+            | LowPassFilter
+            | NormalisedLowPassFilter
+            | Normaliser
+            | Distortion
+            | Pan
+            | BandPassFilter
+            | NormalisedBandPassFilter
+            | ResonantBandPassFilter
+            | NormalisedResonantBandPassFilter
+            | BandEQFilter
+            | HyperbolicTangent
+            | PitchShift
+            | RingModulator
+            | Octaver
+            | Vowel
+            | Flanger
+
+        type Script =
+            | Statments of Script seq
+            | Synth of Synths
+            | PlayNote of Note * Octave
