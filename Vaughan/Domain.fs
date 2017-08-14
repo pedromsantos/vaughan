@@ -181,4 +181,3 @@ namespace Vaughan
             | PlayNote of Note * Octave
             | PlayChord of Chord * Octave
             | Sleep of int<s>
-
