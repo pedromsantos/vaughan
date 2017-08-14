@@ -13,9 +13,11 @@ open Vaughan.SonicPi
 
 Statments[
         Synth(Fm); 
-        PlayNote(C, OneLine);
-        Sleep(1<s>)
-        PlayChord(chord C Major, TwoLine)
+        Fx(Reverb, [
+            PlayNote(C, OneLine);
+            Sleep(1<s>);
+            PlayChord(chord C Major, TwoLine)
+            ]);
         ]
 |> toSonicPiScript
 |> sonicPiSend

@@ -14,8 +14,7 @@
         let private ID = "VAUGHAN_SONIC_PI_CLI"
         let sonicPiEndPoint = new IPEndPoint(IPAddress.Loopback, 4557) 
 
-        let private synthToSonicPySynth synth =
-            match synth with
+        let private synthToSonicPySynth = function
             | Beep -> ":beep"
             | BladeRunnerStyleStrings -> ":blade"
             | BrownNoise -> ":bnoise"
@@ -57,6 +56,30 @@
             | TriangleWave -> ":tri"
             | Zawa -> ":zawa"
 
+        let fxToSonicPiFx = function
+            | BandPassFilter -> "bpf:" | BandEQFilter -> ":band_eq" | Bitcrusher -> ":bitcrusher" 
+            | Compressor -> ":compressor" 
+            | Distortion -> ":distortion" 
+            | Echo -> ":echo" 
+            | Flanger -> ":flanger" 
+            | GVerb -> ":gverb" 
+            | HighPassFilter -> ":hpf"
+            | Krush -> ":krush" 
+            | LevelAmplifier -> ":level"  | LowPassFilter -> ":lpf"
+            | Mono -> ":mono"
+            | NormalisedResonantLowPassFilter -> ":nlpf"  | NormalisedResonantHighPassFilter -> ":nrbpf" 
+            | NormalisedHighPassFilter -> ":nhpf"  | NormalisedLowPassFilter -> ":nrlpf"  | Normaliser -> ":normaliser" 
+            | NormalisedBandPassFilter -> ":nbpf"  | NormalisedResonantBandPassFilter -> ":nrhpf" 
+            | Octaver -> ":octaver" 
+            | PanSlicer -> ":panslicer"  | Pan -> ":pan"  | PitchShift -> ":pitch_shift" 
+            | Reverb -> ":reverb"  | ResonantLowPassFilter -> ":rlpf"  | ResonantHighPassFilter -> ":rhpf" 
+            | ResonantBandPassFilter -> ":rbpf"  | RingModulator -> ":ring_mod" 
+            | Slicer -> ":slicer" 
+            | TechnofromIXILang -> ":ixi_techno" 
+            | Whammy -> ":whammy" 
+            | Wobble -> ":wobble" 
+            | Vowel -> ":vowel" 
+
         let sonicPiSend message =
             use udpClient = new UdpClient()
             let osc_message = OscMessage(RUN_COMMAND, ID, message).ToByteArray()
@@ -69,11 +92,15 @@
             (notesMidiNumbers chord octave
             |> List.fold (fun acc n -> sprintf "%s%i," acc n) "").TrimEnd(',')
 
+        let parseInnerStatments statments parser =
+            (statments |> Seq.fold (fun acc st -> 
+                sprintf "%s%s%s" acc (parser st) Environment.NewLine) 
+                "")
+
         let rec toSonicPiScript = function
             | Sleep secs -> sprintf "sleep %i" secs 
             | Synth synth -> sprintf "use_synth %s" (synthToSonicPySynth synth)
             | PlayNote (note, octave) -> sprintf "play %i" (midiNumber note octave)
             | PlayChord (chord, octave) -> sprintf "play [%s]" (chordToSonicPi chord octave) 
-            | Statments sts -> sts |> Seq.fold (fun acc st -> 
-                                             sprintf "%s%s%s" acc (toSonicPiScript st) Environment.NewLine) 
-                                             ""
+            | Fx (fx, sts) -> sprintf "with_fx %s do\n%send" (fxToSonicPiFx fx) (parseInnerStatments sts toSonicPiScript)
+            | Statments sts -> parseInnerStatments sts toSonicPiScript

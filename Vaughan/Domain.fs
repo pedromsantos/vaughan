@@ -156,9 +156,10 @@ namespace Vaughan
             | Echo
             | Flanger
             | GVerb
-            | HighPassFilter | HyperbolicTangent
+            | HighPassFilter
             | Krush
             | LevelAmplifier | LowPassFilter
+            | Mono
             | NormalisedResonantLowPassFilter | NormalisedResonantHighPassFilter
             | NormalisedHighPassFilter | NormalisedLowPassFilter | Normaliser
             | NormalisedBandPassFilter | NormalisedResonantBandPassFilter
@@ -178,3 +179,4 @@ namespace Vaughan
             | PlayNote of Note * Octave
             | PlayChord of Chord * Octave
             | Sleep of int<s>
+            | Fx of Fxs * Script seq
