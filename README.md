@@ -19,6 +19,39 @@ Navigate to https://repl.it/FJHh/79 there is some sample code included with the 
 
 ## Usage
 
+### SonicPI integration (Experimental, still very new may change a lot)
+
+There is nows a DSL for communicating with SonicPi, requires SonicPi on machine and requires SonicPi to be running.
+
+### Example usage
+
+```fsharp
+#r "../packages/Rug.Osc/lib/Rug.Osc.dll"
+
+#load "Infrastructure.fs"
+#load "Domain.fs"
+#load "Notes.fs"
+#load "Chords.fs"
+#load "SonicPi.fs"
+
+open Vaughan.Domain
+open Vaughan.Notes
+open Vaughan.Chords
+open Vaughan.SonicPi
+
+Statments[
+        Synth(Fm); 
+        Fx(Reverb, [
+            PlayNote(C, OneLine);
+            Sleep(1<s>);
+            PlayChord(chord C Major, TwoLine)
+            ]);
+        ]
+|> toSonicPiScript
+//|> printfn "%s" //Uncomment to see SonicPi generated code
+|> sonicPiSend
+```
+
 ### Notes
 
 ```fsharp
