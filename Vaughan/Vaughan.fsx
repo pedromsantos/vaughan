@@ -163,7 +163,7 @@ let chordNotes = chord.Notes |> List.map fst |> List.sort
 
 scalesFitting chord
 
-#r "../packages/Rug.Osc/lib/Rug.Osc"
+#r "../packages/Rug.Osc/lib/Rug.Osc.dll"
 
 open System.Net
 open System.Net.Sockets
