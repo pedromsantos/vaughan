@@ -12,8 +12,8 @@ open Vaughan.Chords
 open Vaughan.SonicPi
 
 Statments[
-        Synth(Fm); 
-        Fx(Reverb, [
+        UseSynth(Fm); 
+        WithFx(Reverb, [
             PlayNote(C, OneLine);
             Sleep(1<s>);
             PlayChord(chord C Major, TwoLine)

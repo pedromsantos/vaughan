@@ -175,8 +175,10 @@ namespace Vaughan
             
         type Script =
             | Statments of Script seq
-            | Synth of Synths
+            | UseSynth of Synths
+            | WithFx of Fxs * Script seq
+            | WithSynth of Synths * Script seq
             | PlayNote of Note * Octave
             | PlayChord of Chord * Octave
             | Sleep of int<s>
-            | Fx of Fxs * Script seq
+

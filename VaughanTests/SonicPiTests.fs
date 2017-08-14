@@ -10,8 +10,22 @@
         open Vaughan.SonicPi
 
         [<Test>]
-        let ``Should generate SonicPi DSL for synth``() =
-            Synth(Fm) |> toSonicPiScript =! "use_synth :fm"
+        let ``Should generate SonicPi DSL for use synth``() =
+            UseSynth(Fm) |> toSonicPiScript =! "use_synth :fm"
+
+        [<Test>]
+        let ``Should generate SonicPi DSL for synth block withempty block``() =
+            WithSynth(Fm, []) |> toSonicPiScript =! "with_synth :fm do\nend"
+
+        [<Test>]
+        let ``Should generate SonicPi DSL for synth block with one instruction block``() =
+            WithSynth(Fm, [PlayNote(C, OneLine)]) 
+            |> toSonicPiScript =! "with_synth :fm do\nplay 48\nend"
+
+        [<Test>]
+        let ``Should generate SonicPi DSL for synth block with two instructions block``() =
+            WithSynth(Fm, [PlayNote(C, OneLine); PlayNote(C, OneLine)]) 
+            |> toSonicPiScript =! "with_synth :fm do\nplay 48\nplay 48\nend"
 
         [<Test>]
         let ``Should generate SonicPi DSL for sleep``() =
@@ -31,16 +45,16 @@
 
         [<Test>]
         let ``Should generate SonicPi DSL for fx empty block``() =
-            Fx(Reverb,[]) |> toSonicPiScript =! "with_fx :reverb do\nend"
+            WithFx(Reverb,[]) |> toSonicPiScript =! "with_fx :reverb do\nend"
 
         [<Test>]
         let ``Should generate SonicPi DSL for fx one instruction block``() =
-            Fx(Reverb,[PlayNote(C, OneLine)]) 
+            WithFx(Reverb,[PlayNote(C, OneLine)]) 
             |> toSonicPiScript =! "with_fx :reverb do\nplay 48\nend"
 
         [<Test>]
         let ``Should generate SonicPi DSL for fx two instructions block``() =
-            Fx(Reverb,[PlayNote(C, OneLine); PlayNote(C, OneLine)]) 
+            WithFx(Reverb,[PlayNote(C, OneLine); PlayNote(C, OneLine)]) 
             |> toSonicPiScript =! "with_fx :reverb do\nplay 48\nplay 48\nend"
 
         [<Test>]
@@ -50,5 +64,5 @@
 
         [<Test>]
         let ``Should generate SonicPi DSL with two instructions block``() =
-            Statments([Synth(Fm); PlayNote(C, OneLine);]) 
+            Statments([UseSynth(Fm); PlayNote(C, OneLine);]) 
             |> toSonicPiScript =! "use_synth :fm\nplay 48\n"

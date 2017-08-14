@@ -99,8 +99,9 @@
 
         let rec toSonicPiScript = function
             | Sleep secs -> sprintf "sleep %i" secs 
-            | Synth synth -> sprintf "use_synth %s" (synthToSonicPySynth synth)
+            | UseSynth synth -> sprintf "use_synth %s" (synthToSonicPySynth synth)
             | PlayNote (note, octave) -> sprintf "play %i" (midiNumber note octave)
             | PlayChord (chord, octave) -> sprintf "play [%s]" (chordToSonicPi chord octave) 
-            | Fx (fx, sts) -> sprintf "with_fx %s do\n%send" (fxToSonicPiFx fx) (parseInnerStatments sts toSonicPiScript)
+            | WithFx (fx, sts) -> sprintf "with_fx %s do\n%send" (fxToSonicPiFx fx) (parseInnerStatments sts toSonicPiScript)
+            | WithSynth (synth, sts) -> sprintf "with_synth %s do\n%send" (synthToSonicPySynth synth) (parseInnerStatments sts toSonicPiScript)
             | Statments sts -> parseInnerStatments sts toSonicPiScript
