@@ -80,6 +80,17 @@
             | Wobble -> ":wobble" 
             | Vowel -> ":vowel" 
 
+        let playOptionToSonicPiPlayOption = function
+            | Amplitude(v) -> "amp" 
+            | Panning(v) -> "pan"
+            | Release(v) -> "release"
+            | Attack(v) -> "attack"
+            | AttackLevel(v) -> "attack_level"
+            | Sustain(v) -> "sustain"
+            | SustainLevel(v) -> "sustain_level"
+            | Decay(v) -> "decay"
+            | DecayLevel(v) -> "decay_level"
+
         let sonicPiSend message =
             use udpClient = new UdpClient()
             let osc_message = OscMessage(RUN_COMMAND, ID, message).ToByteArray()
@@ -92,16 +103,32 @@
             (notesMidiNumbers chord octave
             |> List.fold (fun acc n -> sprintf "%s%i," acc n) "").TrimEnd(',')
 
-        let generateInnerStatments statments parser =
+        let generateInnerStatments statments generator =
             (statments |> Seq.fold (fun acc st -> 
-                sprintf "%s%s\n" acc (parser st)) 
+                sprintf "%s%s\n" acc (generator st)) 
                 "")
+        
+        let playOptionValue = function
+            | Amplitude(v) -> float(v)
+            | Panning(v) -> float(v)
+            | Release(v) -> float(v)
+            | Attack(v) -> float(v)
+            | AttackLevel(v) -> float(v)
+            | Sustain(v) -> float(v)
+            | SustainLevel(v) -> float(v)
+            | Decay(v) -> float(v)
+            | DecayLevel(v) -> float(v)
+
+        let generatePlayOptionsStatments playOptions = 
+            (playOptions |> List.fold (fun acc option -> 
+                sprintf "%s,%s:%.2f" acc (playOptionToSonicPiPlayOption option) (playOptionValue option)) 
+                "") 
 
         let rec toSonicPiScript = function
             | Sleep secs -> sprintf "sleep %i" secs 
             | UseSynth synth -> sprintf "use_synth %s" (synthToSonicPySynth synth)
-            | PlayNote (note, octave, opt) -> sprintf "play %i" (midiNumber note octave)
-            | PlayChord (chord, octave, opt) -> sprintf "play [%s]" (chordToSonicPi chord octave) 
+            | PlayNote (note, octave, opts) -> sprintf "play %i%s" (midiNumber note octave) (generatePlayOptionsStatments opts)
+            | PlayChord (chord, octave, opts) -> sprintf "play [%s]" (chordToSonicPi chord octave) 
             | WithFx (fx, sts) -> sprintf "with_fx %s do\n%send" (fxToSonicPiFx fx) (generateInnerStatments sts toSonicPiScript)
             | WithSynth (synth, sts) -> sprintf "with_synth %s do\n%send" (synthToSonicPySynth synth) (generateInnerStatments sts toSonicPiScript)
             | Statments sts -> generateInnerStatments sts toSonicPiScript

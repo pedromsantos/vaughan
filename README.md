@@ -19,9 +19,9 @@ Navigate to https://repl.it/FJHh/79 there is some sample code included with the 
 
 ## Usage
 
-### SonicPI integration (Experimental, still very new may change a lot)
+### SonicPI integration (Experimental, still very new, may change a lot)
 
-There is nows a DSL for communicating with SonicPi, requires SonicPi on machine and requires SonicPi to be running.
+There is now a DSL for communicating with SonicPi, requires SonicPi on machine and requires SonicPi to be running.
 
 ### Example usage
 

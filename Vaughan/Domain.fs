@@ -6,6 +6,7 @@ namespace Vaughan
         [<Measure>] type ht
         [<Measure>] type pan
         [<Measure>] type loud
+        [<Measure>] type beat
         [<Measure>] type midiNote
 
         type Note =
@@ -176,14 +177,21 @@ namespace Vaughan
             | Vowel
         
         type PlayOption = 
-            | Amplitude of int<loud> 
-            | Panning of int<pan>
+            | Amplitude of float<loud> 
+            | Panning of float<pan>
+            | Release of float<beat>
+            | Attack of float<beat>
+            | AttackLevel of float<beat>
+            | Sustain of float<beat>
+            | SustainLevel of float<beat>
+            | Decay of float<beat>
+            | DecayLevel of float<beat>
 
         type Script =
             | Statments of Script seq
             | UseSynth of Synths
             | WithFx of Fxs * Script seq
             | WithSynth of Synths * Script seq
-            | PlayNote of Note * Octave * PlayOption seq option
-            | PlayChord of Chord * Octave * PlayOption seq option
+            | PlayNote of Note * Octave * PlayOption list
+            | PlayChord of Chord * Octave * PlayOption list
             | Sleep of int<s>

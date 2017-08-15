@@ -14,9 +14,9 @@ open Vaughan.SonicPi
 Statments[
     WithSynth(Fm, [
                 WithFx(Reverb, [
-                            PlayNote(C, OneLine, None);
+                            PlayNote(C, OneLine, [Amplitude(5.0<loud>); Panning(-1.0<pan>)]);
                             Sleep(1<s>);
-                            PlayChord(chord C Major, TwoLine, None)
+                            PlayChord(chord C Major, TwoLine, [Amplitude(1.0<loud>); Panning(1.0<pan>)])
                             ])
                 ])]
 |> toSonicPiScript
