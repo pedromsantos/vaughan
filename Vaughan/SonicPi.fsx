@@ -13,7 +13,7 @@ open Vaughan.SonicPi
 
 Statments[
     WithSynth(Fm, [
-                WithFx(Reverb, [], [
+                WithFx(Reverb, [Mix(1.0)], [
                             PlayNote(C, OneLine, [Amplitude(0.5<loud>);
                                                     Panning(0.0<pan>);
                                                     Attack(2.0<beat>);

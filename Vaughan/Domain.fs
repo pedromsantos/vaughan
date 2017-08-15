@@ -196,7 +196,7 @@ namespace Vaughan
         type Script =
             | Statments of Script seq
             | UseSynth of Synths
-            | WithFx of Fxs * PlayOption list * Script seq
+            | WithFx of Fxs * FxOption list * Script seq
             | WithSynth of Synths * Script seq
             | PlayNote of Note * Octave * PlayOption list
             | PlayChord of Chord * Octave * PlayOption list

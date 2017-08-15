@@ -106,3 +106,23 @@
         [<Test>]
         let ``Should generate SonicPi DSL for play note with amplitude and panning``() =
             PlayNote(C, OneLine, [Amplitude(2.0<loud>); Panning(1.0<pan>)])|> toSonicPiScript =! "play 48,amp:2.00,pan:1.00"
+
+        [<Test>]
+        let ``Should generate SonicPi DSL for fx with amplitude``() =
+            WithFx(Reverb, [Amp(1.0<loud>)], [PlayNote(C, OneLine, [])]) 
+            |> toSonicPiScript =! "with_fx :reverb,amp:1.00 do\nplay 48\nend"
+
+        [<Test>]
+        let ``Should generate SonicPi DSL for fx with pre amplitude``() =
+            WithFx(Reverb, [PreAmp(1.0<loud>)], [PlayNote(C, OneLine, [])]) 
+            |> toSonicPiScript =! "with_fx :reverb,pre_amp:1.00 do\nplay 48\nend"
+
+        [<Test>]
+        let ``Should generate SonicPi DSL for fx with mix``() =
+            WithFx(Reverb, [Mix(1.0)], [PlayNote(C, OneLine, [])]) 
+            |> toSonicPiScript =! "with_fx :reverb,mix:1.00 do\nplay 48\nend"
+
+        [<Test>]
+        let ``Should generate SonicPi DSL for fx with pre mix``() =
+            WithFx(Reverb, [PreMix(1.0)], [PlayNote(C, OneLine, [])]) 
+            |> toSonicPiScript =! "with_fx :reverb,pre_mix:1.00 do\nplay 48\nend"

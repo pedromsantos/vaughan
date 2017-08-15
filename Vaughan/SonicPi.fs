@@ -91,6 +91,29 @@
             | Decay(v) -> "decay"
             | DecayLevel(v) -> "decay_level"
 
+        let playOptionValue = function
+            | Amplitude(v) -> float(v)
+            | Panning(v) -> float(v)
+            | Release(v) -> float(v)
+            | Attack(v) -> float(v)
+            | AttackLevel(v) -> float(v)
+            | Sustain(v) -> float(v)
+            | SustainLevel(v) -> float(v)
+            | Decay(v) -> float(v)
+            | DecayLevel(v) -> float(v)
+
+        let fxOptionToSonicPiFxOption = function
+            | Amp(v) -> "amp" 
+            | PreAmp(v) -> "pre_amp" 
+            | Mix(v) -> "mix"
+            | PreMix(v) -> "pre_mix" 
+
+        let fxOptionValue = function
+            | Amp(v) -> float(v)
+            | PreAmp(v) -> float(v)
+            | Mix(v) -> float(v)
+            | PreMix(v) -> float(v)
+
         let sonicPiSend message =
             use udpClient = new UdpClient()
             let osc_message = OscMessage(RUN_COMMAND, ID, message).ToByteArray()
@@ -106,22 +129,16 @@
         let generateInnerStatments statments generator =
             (statments |> Seq.fold (fun acc st -> 
                 sprintf "%s%s\n" acc (generator st)) 
-                "")
-        
-        let playOptionValue = function
-            | Amplitude(v) -> float(v)
-            | Panning(v) -> float(v)
-            | Release(v) -> float(v)
-            | Attack(v) -> float(v)
-            | AttackLevel(v) -> float(v)
-            | Sustain(v) -> float(v)
-            | SustainLevel(v) -> float(v)
-            | Decay(v) -> float(v)
-            | DecayLevel(v) -> float(v)
+                "") 
 
         let generatePlayOptionsStatments playOptions = 
             (playOptions |> List.fold (fun acc option -> 
                 sprintf "%s,%s:%.2f" acc (playOptionToSonicPiPlayOption option) (playOptionValue option)) 
+                "") 
+
+        let generateFxOptionsStatments playOptions = 
+            (playOptions |> List.fold (fun acc option -> 
+                sprintf "%s,%s:%.2f" acc (fxOptionToSonicPiFxOption option) (fxOptionValue option)) 
                 "") 
 
         let rec toSonicPiScript = function
@@ -129,6 +146,6 @@
             | UseSynth synth -> sprintf "use_synth %s" (synthToSonicPySynth synth)
             | PlayNote (note, octave, opts) -> sprintf "play %i%s" (midiNumber note octave) (generatePlayOptionsStatments opts)
             | PlayChord (chord, octave, opts) -> sprintf "play [%s]" (chordToSonicPi chord octave) 
-            | WithFx (fx, opts, sts) -> sprintf "with_fx %s do\n%send" (fxToSonicPiFx fx) (generateInnerStatments sts toSonicPiScript)
+            | WithFx (fx, opts, sts) -> sprintf "with_fx %s%s do\n%send" (fxToSonicPiFx fx) (generateFxOptionsStatments opts) (generateInnerStatments sts toSonicPiScript)
             | WithSynth (synth, sts) -> sprintf "with_synth %s do\n%send" (synthToSonicPySynth synth) (generateInnerStatments sts toSonicPiScript)
             | Statments sts -> generateInnerStatments sts toSonicPiScript
