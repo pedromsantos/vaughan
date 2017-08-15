@@ -4,6 +4,8 @@ namespace Vaughan
         [<Measure>] type s
         [<Measure>] type hz
         [<Measure>] type ht
+        [<Measure>] type pan
+        [<Measure>] type loud
         [<Measure>] type midiNote
 
         type Note =
@@ -172,12 +174,16 @@ namespace Vaughan
             | Whammy
             | Wobble
             | Vowel
-            
+        
+        type PlayOption = 
+            | Amplitude of int<loud> 
+            | Panning of int<pan>
+
         type Script =
             | Statments of Script seq
             | UseSynth of Synths
             | WithFx of Fxs * Script seq
             | WithSynth of Synths * Script seq
-            | PlayNote of Note * Octave
-            | PlayChord of Chord * Octave
+            | PlayNote of Note * Octave * PlayOption seq option
+            | PlayChord of Chord * Octave * PlayOption seq option
             | Sleep of int<s>

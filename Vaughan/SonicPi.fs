@@ -92,7 +92,7 @@
             (notesMidiNumbers chord octave
             |> List.fold (fun acc n -> sprintf "%s%i," acc n) "").TrimEnd(',')
 
-        let parseInnerStatments statments parser =
+        let generateInnerStatments statments parser =
             (statments |> Seq.fold (fun acc st -> 
                 sprintf "%s%s\n" acc (parser st)) 
                 "")
@@ -100,8 +100,8 @@
         let rec toSonicPiScript = function
             | Sleep secs -> sprintf "sleep %i" secs 
             | UseSynth synth -> sprintf "use_synth %s" (synthToSonicPySynth synth)
-            | PlayNote (note, octave) -> sprintf "play %i" (midiNumber note octave)
-            | PlayChord (chord, octave) -> sprintf "play [%s]" (chordToSonicPi chord octave) 
-            | WithFx (fx, sts) -> sprintf "with_fx %s do\n%send" (fxToSonicPiFx fx) (parseInnerStatments sts toSonicPiScript)
-            | WithSynth (synth, sts) -> sprintf "with_synth %s do\n%send" (synthToSonicPySynth synth) (parseInnerStatments sts toSonicPiScript)
-            | Statments sts -> parseInnerStatments sts toSonicPiScript
+            | PlayNote (note, octave, opt) -> sprintf "play %i" (midiNumber note octave)
+            | PlayChord (chord, octave, opt) -> sprintf "play [%s]" (chordToSonicPi chord octave) 
+            | WithFx (fx, sts) -> sprintf "with_fx %s do\n%send" (fxToSonicPiFx fx) (generateInnerStatments sts toSonicPiScript)
+            | WithSynth (synth, sts) -> sprintf "with_synth %s do\n%send" (synthToSonicPySynth synth) (generateInnerStatments sts toSonicPiScript)
+            | Statments sts -> generateInnerStatments sts toSonicPiScript
