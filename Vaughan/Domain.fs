@@ -187,10 +187,16 @@ namespace Vaughan
             | Decay of float<beat>
             | DecayLevel of float<beat>
 
+        type FxOption =
+            | Amp of float<loud>
+            | PreAmp of float<loud>
+            | Mix of float
+            | PreMix of float
+
         type Script =
             | Statments of Script seq
             | UseSynth of Synths
-            | WithFx of Fxs * Script seq
+            | WithFx of Fxs * PlayOption list * Script seq
             | WithSynth of Synths * Script seq
             | PlayNote of Note * Octave * PlayOption list
             | PlayChord of Chord * Octave * PlayOption list

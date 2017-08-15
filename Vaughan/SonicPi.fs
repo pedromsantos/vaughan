@@ -129,6 +129,6 @@
             | UseSynth synth -> sprintf "use_synth %s" (synthToSonicPySynth synth)
             | PlayNote (note, octave, opts) -> sprintf "play %i%s" (midiNumber note octave) (generatePlayOptionsStatments opts)
             | PlayChord (chord, octave, opts) -> sprintf "play [%s]" (chordToSonicPi chord octave) 
-            | WithFx (fx, sts) -> sprintf "with_fx %s do\n%send" (fxToSonicPiFx fx) (generateInnerStatments sts toSonicPiScript)
+            | WithFx (fx, opts, sts) -> sprintf "with_fx %s do\n%send" (fxToSonicPiFx fx) (generateInnerStatments sts toSonicPiScript)
             | WithSynth (synth, sts) -> sprintf "with_synth %s do\n%send" (synthToSonicPySynth synth) (generateInnerStatments sts toSonicPiScript)
             | Statments sts -> generateInnerStatments sts toSonicPiScript

@@ -45,16 +45,16 @@
 
         [<Test>]
         let ``Should generate SonicPi DSL for fx empty block``() =
-            WithFx(Reverb,[]) |> toSonicPiScript =! "with_fx :reverb do\nend"
+            WithFx(Reverb,[], []) |> toSonicPiScript =! "with_fx :reverb do\nend"
 
         [<Test>]
         let ``Should generate SonicPi DSL for fx one instruction block``() =
-            WithFx(Reverb,[PlayNote(C, OneLine, [])]) 
+            WithFx(Reverb, [], [PlayNote(C, OneLine, [])]) 
             |> toSonicPiScript =! "with_fx :reverb do\nplay 48\nend"
 
         [<Test>]
         let ``Should generate SonicPi DSL for fx two instructions block``() =
-            WithFx(Reverb,[PlayNote(C, OneLine, []); PlayNote(C, OneLine, [])]) 
+            WithFx(Reverb, [], [PlayNote(C, OneLine, []); PlayNote(C, OneLine, [])]) 
             |> toSonicPiScript =! "with_fx :reverb do\nplay 48\nplay 48\nend"
 
         [<Test>]
