@@ -15,7 +15,7 @@
 
         [<Test>]
         let ``Should generate SonicPi DSL for synth block withempty block``() =
-            WithSynth(Fm, []) |> toSonicPiScript =! "with_synth :fm do\nend"
+            WithSynth(Fm, []) |> toSonicPiScript =! sprintf "with_synth :fm do\nend"
 
         [<Test>]
         let ``Should generate SonicPi DSL for synth block with one instruction block``() =

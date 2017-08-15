@@ -94,7 +94,7 @@
 
         let parseInnerStatments statments parser =
             (statments |> Seq.fold (fun acc st -> 
-                sprintf "%s%s%s" acc (parser st) Environment.NewLine) 
+                sprintf "%s%s\n" acc (parser st)) 
                 "")
 
         let rec toSonicPiScript = function
