@@ -1,19 +1,16 @@
 namespace Vaughan
 
     module Infrastructure =
-        let rotateByOne list =
-            match list with
+        let rotateByOne = function
             | [] -> []
             | f::t -> t @ [f]
 
-        let swapFirstTwo list =
-            match list with
+        let swapFirstTwo = function
             | [] -> []
             | f::s::r -> s::f::r
             | f -> f
 
-        let swapSecondTwo list =
-            match list with
+        let swapSecondTwo = function
             | [] -> []
             | f::s::t::r -> f::t::s::r
             | f -> f
