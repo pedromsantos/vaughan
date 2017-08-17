@@ -12,7 +12,7 @@
         let private RUN_COMMAND = "/run-code"
         let private STOP_COMMAND = "/stop-all-jobs"
         let private ID = "VAUGHAN_SONIC_PI_CLI"
-        let sonicPiEndPoint = new IPEndPoint(IPAddress.Loopback, 4557) 
+        let private sonicPiEndPoint = new IPEndPoint(IPAddress.Loopback, 4557) 
 
         let private synthToSonicPySynth = function
             | Beep -> ":beep"
@@ -56,7 +56,7 @@
             | TriangleWave -> ":tri"
             | Zawa -> ":zawa"
 
-        let fxToSonicPiFx = function
+        let private fxToSonicPiFx = function
             | BandPassFilter -> "bpf:" | BandEQFilter -> ":band_eq" | Bitcrusher -> ":bitcrusher" 
             | Compressor -> ":compressor" 
             | Distortion -> ":distortion" 
@@ -80,7 +80,7 @@
             | Wobble -> ":wobble" 
             | Vowel -> ":vowel" 
 
-        let playOptionToSonicPiPlayOption = function
+        let private playOptionToSonicPiPlayOption = function
             | Amplitude(v) -> "amp" 
             | Panning(v) -> "pan"
             | Release(v) -> "release"
@@ -91,7 +91,7 @@
             | Decay(v) -> "decay"
             | DecayLevel(v) -> "decay_level"
 
-        let playOptionValue = function
+        let private playOptionValue = function
             | Amplitude(v) -> float(v)
             | Panning(v) -> float(v)
             | Release(v) -> float(v)
@@ -102,50 +102,42 @@
             | Decay(v) -> float(v)
             | DecayLevel(v) -> float(v)
 
-        let fxOptionToSonicPiFxOption = function
+        let private fxOptionToSonicPiFxOption = function
             | Amp(v) -> "amp" 
             | PreAmp(v) -> "pre_amp" 
             | Mix(v) -> "mix"
             | PreMix(v) -> "pre_mix" 
 
-        let fxOptionValue = function
+        let private fxOptionValue = function
             | Amp(v) -> float(v)
             | PreAmp(v) -> float(v)
             | Mix(v) -> float(v)
             | PreMix(v) -> float(v)
 
-        let sonicPiSend message =
-            use udpClient = new UdpClient()
-            let osc_message = OscMessage(RUN_COMMAND, ID, message).ToByteArray()
-   
-            udpClient.Connect(sonicPiEndPoint)
-            udpClient.Send(osc_message, osc_message.Length) |> ignore
-            udpClient.Close()
-
-        let chordToSonicPi (chord:Chord) octave = 
+        let private chordToSonicPi (chord:Chord) octave = 
             (Chords.notesMidiNumbers chord octave
             |> List.fold (fun acc n -> sprintf "%s%i," acc n) "").TrimEnd(',')
 
-        let scaleToSonicPi (notes:ScaleNotes) octave = 
+        let private scaleToSonicPi (notes:ScaleNotes) octave = 
             (Notes.notesMidiNumbers notes octave
             |> List.fold (fun acc n -> sprintf "%s%i," acc n) "").TrimEnd(',')
 
-        let generateInnerStatments statments generator =
+        let private generateInnerStatments statments generator =
             (statments |> Seq.fold (fun acc st -> 
                 sprintf "%s%s\n" acc (generator st)) 
                 "") 
 
-        let generatePlayOptionsStatments playOptions = 
+        let private generatePlayOptionsStatments playOptions = 
             (playOptions |> List.fold (fun acc option -> 
                 sprintf "%s,%s:%.2f" acc (playOptionToSonicPiPlayOption option) (playOptionValue option)) 
                 "") 
 
-        let generateFxOptionsStatments playOptions = 
-            (playOptions |> List.fold (fun acc option -> 
+        let private generateFxOptionsStatments fxOptions = 
+            (fxOptions |> List.fold (fun acc option -> 
                 sprintf "%s,%s:%.2f" acc (fxOptionToSonicPiFxOption option) (fxOptionValue option)) 
                 "")
 
-        let generateSonicPiList list = 
+        let private generateSonicPiList list = 
             (list |> List.fold (fun acc item -> 
                 sprintf "%s%.2f" acc (float(item))) 
                 "")
@@ -159,3 +151,11 @@
             | WithFx (fx, opts, sts) -> sprintf "with_fx %s%s do\n%send" (fxToSonicPiFx fx) (generateFxOptionsStatments opts) (generateInnerStatments sts toSonicPiScript)
             | WithSynth (synth, sts) -> sprintf "with_synth %s do\n%send" (synthToSonicPySynth synth) (generateInnerStatments sts toSonicPiScript)
             | Statments sts -> generateInnerStatments sts toSonicPiScript
+
+        let sonicPiSend message =
+            use udpClient = new UdpClient()
+            let osc_message = OscMessage(RUN_COMMAND, ID, message).ToByteArray()
+   
+            udpClient.Connect(sonicPiEndPoint)
+            udpClient.Send(osc_message, osc_message.Length) |> ignore
+            udpClient.Close()
