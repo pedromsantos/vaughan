@@ -200,4 +200,5 @@ namespace Vaughan
             | WithSynth of Synths * Script seq
             | PlayNote of Note * Octave * PlayOption list
             | PlayChord of Chord * Octave * PlayOption list
+            | PlayPatternTimed of ScaleNotes * Octave * float<beat> list * PlayOption list
             | Sleep of int<s>

@@ -126,3 +126,8 @@
         let ``Should generate SonicPi DSL for fx with pre mix``() =
             WithFx(Reverb, [PreMix(1.0)], [PlayNote(C, OneLine, [])]) 
             |> toSonicPiScript =! "with_fx :reverb,pre_mix:1.00 do\nplay 48\nend"
+
+        [<Test>]
+        let ``Should generate SonicPi DSL for play pattern timed``() =
+            PlayPatternTimed([C; E; G; B], OneLine, [0.5<beat>], [])
+            |> toSonicPiScript =! "play_pattern_timed [48,52,55,59],[0.50]" 

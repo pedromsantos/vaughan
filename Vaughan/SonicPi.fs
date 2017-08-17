@@ -123,7 +123,11 @@
             udpClient.Close()
 
         let chordToSonicPi (chord:Chord) octave = 
-            (notesMidiNumbers chord octave
+            (Chords.notesMidiNumbers chord octave
+            |> List.fold (fun acc n -> sprintf "%s%i," acc n) "").TrimEnd(',')
+
+        let scaleToSonicPi (notes:ScaleNotes) octave = 
+            (Notes.notesMidiNumbers notes octave
             |> List.fold (fun acc n -> sprintf "%s%i," acc n) "").TrimEnd(',')
 
         let generateInnerStatments statments generator =
@@ -139,13 +143,19 @@
         let generateFxOptionsStatments playOptions = 
             (playOptions |> List.fold (fun acc option -> 
                 sprintf "%s,%s:%.2f" acc (fxOptionToSonicPiFxOption option) (fxOptionValue option)) 
-                "") 
+                "")
+
+        let generateSonicPiList list = 
+            (list |> List.fold (fun acc item -> 
+                sprintf "%s%.2f" acc (float(item))) 
+                "")
 
         let rec toSonicPiScript = function
             | Sleep secs -> sprintf "sleep %i" secs 
             | UseSynth synth -> sprintf "use_synth %s" (synthToSonicPySynth synth)
             | PlayNote (note, octave, opts) -> sprintf "play %i%s" (midiNumber note octave) (generatePlayOptionsStatments opts)
-            | PlayChord (chord, octave, opts) -> sprintf "play [%s]" (chordToSonicPi chord octave) 
+            | PlayChord (chord, octave, opts) -> sprintf "play [%s]%s" (chordToSonicPi chord octave) (generatePlayOptionsStatments opts)
+            | PlayPatternTimed (notes, octave, times, opts) -> sprintf "play_pattern_timed [%s],[%s]%s" (scaleToSonicPi notes octave) (generateSonicPiList times) (generatePlayOptionsStatments opts)
             | WithFx (fx, opts, sts) -> sprintf "with_fx %s%s do\n%send" (fxToSonicPiFx fx) (generateFxOptionsStatments opts) (generateInnerStatments sts toSonicPiScript)
             | WithSynth (synth, sts) -> sprintf "with_synth %s do\n%send" (synthToSonicPySynth synth) (generateInnerStatments sts toSonicPiScript)
             | Statments sts -> generateInnerStatments sts toSonicPiScript

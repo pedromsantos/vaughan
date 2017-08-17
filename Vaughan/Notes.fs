@@ -174,3 +174,6 @@ namespace Vaughan
             let power = double(pitch note - pitch A) / octaveRange
             let frequency = (2.0 ** power) * a4Frequency
             adjustFrequencyForOctave octave frequency
+
+        let notesMidiNumbers = fun (notes:ScaleNotes) octave ->
+            notes |> List.map (fun n -> midiNumber n octave)
