@@ -139,10 +139,10 @@
 
         [<Test>]
         let ``Should generate SonicPi iteration DSL with zero instruction in block``() =
-            Iteration(2, []) 
+            Repeat(2, []) 
             |> toSonicPiScript =! "2.times do\nend"
 
         [<Test>]
         let ``Should generate SonicPi iteration DSL with one instruction in block``() =
-            Iteration(2, [PlayNote(C, OneLine, [])]) 
+            Repeat(2, [PlayNote(C, OneLine, [])]) 
             |> toSonicPiScript =! "2.times do\nplay 48\nend"

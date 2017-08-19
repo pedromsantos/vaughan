@@ -150,7 +150,7 @@
             | PlayPatternTimed (notes, octave, times, opts) -> sprintf "play_pattern_timed [%s],[%s]%s" (scaleToSonicPi notes octave) (generateSonicPiList times) (generatePlayOptionsStatments opts)
             | WithFx (fx, opts, sts) -> sprintf "with_fx %s%s do\n%send" (fxToSonicPiFx fx) (generateFxOptionsStatments opts) (generateInnerStatments sts toSonicPiScript)
             | WithSynth (synth, sts) -> sprintf "with_synth %s do\n%send" (synthToSonicPySynth synth) (generateInnerStatments sts toSonicPiScript)
-            | Iteration (repeats, sts) -> sprintf "%i.times do\n%send" repeats (generateInnerStatments sts toSonicPiScript)
+            | Repeat (repeats, sts) -> sprintf "%i.times do\n%send" repeats (generateInnerStatments sts toSonicPiScript)
             | Statments sts -> generateInnerStatments sts toSonicPiScript
 
         let sonicPiSend message =

@@ -14,7 +14,7 @@ open Vaughan.SonicPi
 Statments[
     WithSynth(Fm, [
                 WithFx(Reverb, [Mix(0.5)], [
-                                        Iteration(2, [
+                                        Repeat(2, [
                                                     PlayNote(C, OneLine, [
                                                                         Amplitude(0.5<loud>);
                                                                         Panning(0.0<pan>);
