@@ -198,7 +198,8 @@ namespace Vaughan
             | UseSynth of Synths
             | WithFx of Fxs * FxOption list * Script seq
             | WithSynth of Synths * Script seq
+            | Iteration of int * Script seq
             | PlayNote of Note * Octave * PlayOption list
             | PlayChord of Chord * Octave * PlayOption list
             | PlayPatternTimed of ScaleNotes * Octave * float<beat> list * PlayOption list
-            | Sleep of int<s>
+            | Sleep of int<beat>

@@ -29,7 +29,7 @@
 
         [<Test>]
         let ``Should generate SonicPi DSL for sleep``() =
-            Sleep(1<s>) |> toSonicPiScript =! "sleep 1"
+            Sleep(1<beat>) |> toSonicPiScript =! "sleep 1"
 
         [<Test>]
         let ``Should generate SonicPi DSL for play note``() =
@@ -136,3 +136,13 @@
         let ``Should generate SonicPi DSL for play pattern timed different times``() =
             PlayPatternTimed([C; E; G; B], OneLine, [0.5<beat>; 0.75<beat>], [])
             |> toSonicPiScript =! "play_pattern_timed [48,52,55,59],[0.50,0.75]" 
+
+        [<Test>]
+        let ``Should generate SonicPi iteration DSL with zero instruction in block``() =
+            Iteration(2, []) 
+            |> toSonicPiScript =! "2.times do\nend"
+
+        [<Test>]
+        let ``Should generate SonicPi iteration DSL with one instruction in block``() =
+            Iteration(2, [PlayNote(C, OneLine, [])]) 
+            |> toSonicPiScript =! "2.times do\nplay 48\nend"

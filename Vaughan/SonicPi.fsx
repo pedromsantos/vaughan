@@ -14,14 +14,19 @@ open Vaughan.SonicPi
 Statments[
     WithSynth(Fm, [
                 WithFx(Reverb, [Mix(0.5)], [
-                            PlayNote(C, OneLine, [Amplitude(0.5<loud>);
-                                                    Panning(0.0<pan>);
-                                                    Attack(2.0<beat>);
-                                                    Release(1.0<beat>)])
-                            Sleep(2<s>);
-                            PlayChord(chord C Major, TwoLine, [Amplitude(1.0<loud>); Panning(1.0<pan>)]);
-                            Sleep(1<s>);
-                            PlayPatternTimed([C; E; G; B], OneLine, [0.5<beat>; 0.75<beat>], [])
+                                        Iteration(2, [
+                                                    PlayNote(C, OneLine, [
+                                                                        Amplitude(0.5<loud>);
+                                                                        Panning(0.0<pan>);
+                                                                        Attack(2.0<beat>);
+                                                                        Release(2.0<beat>)])
+                                                    PlayChord(chord C Major, TwoLine, [
+                                                                                    Amplitude(1.0<loud>); 
+                                                                                    Release(2.0<beat>); 
+                                                                                    Panning(1.0<pan>)]);
+                                                    Sleep(2<beat>);
+                                                    PlayPatternTimed([C; E; G; B], OneLine, [1.0<beat>;], [])
+                                    ])
                             ])
                 ])]
 |> toSonicPiScript
