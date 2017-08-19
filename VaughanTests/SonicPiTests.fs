@@ -131,3 +131,8 @@
         let ``Should generate SonicPi DSL for play pattern timed``() =
             PlayPatternTimed([C; E; G; B], OneLine, [0.5<beat>], [])
             |> toSonicPiScript =! "play_pattern_timed [48,52,55,59],[0.50]" 
+
+        [<Test>]
+        let ``Should generate SonicPi DSL for play pattern timed different times``() =
+            PlayPatternTimed([C; E; G; B], OneLine, [0.5<beat>; 0.75<beat>], [])
+            |> toSonicPiScript =! "play_pattern_timed [48,52,55,59],[0.50,0.75]" 

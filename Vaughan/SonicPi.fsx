@@ -18,10 +18,10 @@ Statments[
                                                     Panning(0.0<pan>);
                                                     Attack(2.0<beat>);
                                                     Release(1.0<beat>)])
-                            Sleep(1<s>);
+                            Sleep(2<s>);
                             PlayChord(chord C Major, TwoLine, [Amplitude(1.0<loud>); Panning(1.0<pan>)]);
                             Sleep(1<s>);
-                            PlayPatternTimed([C; E; G; B], OneLine, [0.5<beat>], [])
+                            PlayPatternTimed([C; E; G; B], OneLine, [0.5<beat>; 0.75<beat>], [])
                             ])
                 ])]
 |> toSonicPiScript

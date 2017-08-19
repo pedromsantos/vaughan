@@ -139,8 +139,8 @@
 
         let private generateSonicPiList list = 
             (list |> List.fold (fun acc item -> 
-                sprintf "%s%.2f" acc (float(item))) 
-                "")
+                sprintf "%s%.2f," acc (float(item))) 
+                "").TrimEnd(',')
 
         let rec toSonicPiScript = function
             | Sleep secs -> sprintf "sleep %i" secs 
