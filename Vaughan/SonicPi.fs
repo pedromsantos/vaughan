@@ -145,6 +145,8 @@
         let rec toSonicPiScript = function
             | Sleep secs -> sprintf "sleep %i" secs 
             | UseSynth synth -> sprintf "use_synth %s" (synthToSonicPySynth synth)
+            | UseBpm bpm -> sprintf "use_bpm %i" (int(bpm))
+            | WithBpm (bpm, sts) -> sprintf "with_bpm %i do\n%send" (int(bpm)) (generateInnerStatments sts toSonicPiScript)
             | PlayNote (note, octave, opts) -> sprintf "play %i%s" (midiNumber note octave) (generatePlayOptionsStatments opts)
             | PlayChord (chord, octave, opts) -> sprintf "play [%s]%s" (chordToSonicPi chord octave) (generatePlayOptionsStatments opts)
             | PlayPatternTimed (notes, octave, times, opts) -> sprintf "play_pattern_timed [%s],[%s]%s" (scaleToSonicPi notes octave) (generateSonicPiList times) (generatePlayOptionsStatments opts)

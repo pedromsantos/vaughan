@@ -14,7 +14,7 @@
             UseSynth(Fm) |> toSonicPiScript =! "use_synth :fm"
 
         [<Test>]
-        let ``Should generate SonicPi DSL for synth block withempty block``() =
+        let ``Should generate SonicPi DSL for synth block with empty block``() =
             WithSynth(Fm, []) |> toSonicPiScript =! sprintf "with_synth :fm do\nend"
 
         [<Test>]
@@ -146,3 +146,11 @@
         let ``Should generate SonicPi iteration DSL with one instruction in block``() =
             Repeat(2, [PlayNote(C, OneLine, [])]) 
             |> toSonicPiScript =! "2.times do\nplay 48\nend"
+
+        [<Test>]
+        let ``Should generate SonicPi DSL for use bpm``() =
+            UseBpm(60<bpm>) |> toSonicPiScript =! "use_bpm 60"
+
+        [<Test>]
+        let ``Should generate SonicPi DSL for bpm block with empty block``() =
+            WithBpm(80<bpm>, []) |> toSonicPiScript =! sprintf "with_bpm 80 do\nend"

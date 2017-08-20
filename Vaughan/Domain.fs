@@ -5,6 +5,7 @@ namespace Vaughan
         [<Measure>] type hz
         [<Measure>] type ht
         [<Measure>] type pan
+        [<Measure>] type bpm
         [<Measure>] type loud
         [<Measure>] type beat
         [<Measure>] type midiNote
@@ -191,10 +192,12 @@ namespace Vaughan
             | Amp of float<loud>
             | PreAmp of float<loud>
             | Mix of float
-            | PreMix of float
+            | PreMix of float 
 
         type Script =
             | Statments of Script seq
+            | UseBpm of int<bpm>
+            | WithBpm of int<bpm> * Script seq
             | UseSynth of Synths
             | WithFx of Fxs * FxOption list * Script seq
             | WithSynth of Synths * Script seq
