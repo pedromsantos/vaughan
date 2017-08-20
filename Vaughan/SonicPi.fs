@@ -143,7 +143,7 @@
                 "").TrimEnd(',')
 
         let rec toSonicPiScript = function
-            | Sleep secs -> sprintf "sleep %i" secs 
+            | Rest beats -> sprintf "sleep %i"beats
             | UseSynth synth -> sprintf "use_synth %s" (synthToSonicPySynth synth)
             | UseBpm bpm -> sprintf "use_bpm %i" (int(bpm))
             | WithBpm (bpm, sts) -> sprintf "with_bpm %i do\n%send" (int(bpm)) (generateInnerStatments sts toSonicPiScript)

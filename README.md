@@ -53,7 +53,7 @@ Statments[
                                                                                         Amplitude(1.0<loud>); 
                                                                                         Release(2.0<beat>); 
                                                                                         Panning(1.0<pan>)]);
-                                                        Sleep(2<beat>);
+                                                        Rest(2<beat>);
                                                         PlayPatternTimed([C; E; G; B], OneLine, [1.0<beat>;], [])
                                         ])
                                 ])

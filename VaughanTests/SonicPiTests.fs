@@ -29,7 +29,7 @@
 
         [<Test>]
         let ``Should generate SonicPi DSL for sleep``() =
-            Sleep(1<beat>) |> toSonicPiScript =! "sleep 1"
+            Rest(1<beat>) |> toSonicPiScript =! "sleep 1"
 
         [<Test>]
         let ``Should generate SonicPi DSL for play note``() =

@@ -205,4 +205,4 @@ namespace Vaughan
             | PlayNote of Note * Octave * PlayOption list
             | PlayChord of Chord * Octave * PlayOption list
             | PlayPatternTimed of ScaleNotes * Octave * float<beat> list * PlayOption list
-            | Sleep of int<beat>
+            | Rest of int<beat>
