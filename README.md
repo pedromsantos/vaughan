@@ -54,7 +54,7 @@ Statments[
                                                                                         Release(2.0<beat>); 
                                                                                         Panning(1.0<pan>)]);
                                                         Rest(2<beat>);
-                                                        Arpeggio([C; E; G; B], OneLine, [1.0<beat>;], [])
+                                                        Arpeggio([C; E; G; B], OneLine, [1.0<beat>], [])
                                         ])
                                 ])
             ])]

@@ -202,6 +202,7 @@ namespace Vaughan
             | WithFx of Fxs * FxOption list * Script seq
             | WithSynth of Synths * Script seq
             | Repeat of int * Script seq
+            | LiveLoop of string * Script seq
             | PlayNote of Note * Octave * PlayOption list
             | PlayChord of Chord * Octave * PlayOption list
             | Arpeggio of ScaleNotes * Octave * float<beat> list * PlayOption list

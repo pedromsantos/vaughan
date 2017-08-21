@@ -129,12 +129,12 @@
 
         [<Test>]
         let ``Should generate SonicPi DSL for play pattern timed``() =
-            PlayPatternTimed([C; E; G; B], OneLine, [0.5<beat>], [])
+            Arpeggio([C; E; G; B], OneLine, [0.5<beat>], [])
             |> toSonicPiScript =! "play_pattern_timed [48,52,55,59],[0.50]" 
 
         [<Test>]
         let ``Should generate SonicPi DSL for play pattern timed different times``() =
-            PlayPatternTimed([C; E; G; B], OneLine, [0.5<beat>; 0.75<beat>], [])
+            Arpeggio([C; E; G; B], OneLine, [0.5<beat>; 0.75<beat>], [])
             |> toSonicPiScript =! "play_pattern_timed [48,52,55,59],[0.50,0.75]" 
 
         [<Test>]
@@ -152,5 +152,10 @@
             UseBpm(60<bpm>) |> toSonicPiScript =! "use_bpm 60"
 
         [<Test>]
-        let ``Should generate SonicPi DSL for bpm block with empty block``() =
-            WithBpm(80<bpm>, []) |> toSonicPiScript =! sprintf "with_bpm 80 do\nend"
+        let ``Should generate SonicPi DSL for live loop block with empty block``() =
+            LiveLoop("foo", []) |> toSonicPiScript =! sprintf "live_loop :foo do\nend"
+
+        [<Test>]
+        let ``Should generate SonicPi DSL for live loop block with non empty block``() =
+            LiveLoop("foo", [PlayNote(C, OneLine, [])]) 
+            |> toSonicPiScript =! sprintf "live_loop :foo do\nplay 48\nend"
