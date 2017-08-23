@@ -138,12 +138,12 @@
             |> toSonicPiScript =! "play_pattern_timed [48,52,55,59],[0.50,0.75]" 
 
         [<Test>]
-        let ``Should generate SonicPi iteration DSL with zero instruction in block``() =
+        let ``Should generate SonicPi iteration DSL with empty block``() =
             Repeat(2, []) 
             |> toSonicPiScript =! "2.times do\nend"
 
         [<Test>]
-        let ``Should generate SonicPi iteration DSL with one instruction in block``() =
+        let ``Should generate SonicPi iteration DSL with non empty block``() =
             Repeat(2, [PlayNote(C, OneLine, [])]) 
             |> toSonicPiScript =! "2.times do\nplay 48\nend"
 
@@ -159,3 +159,7 @@
         let ``Should generate SonicPi DSL for live loop block with non empty block``() =
             LiveLoop("foo", [PlayNote(C, OneLine, [])]) 
             |> toSonicPiScript =! sprintf "live_loop :foo do\nplay 48\nend"
+
+        [<Test>]
+        let ``Should generate SonicPi DSL for play sample``() =
+            PlaySample(LoopingSample(Garzul), [])|> toSonicPiScript =! "sample :loop_garzul"

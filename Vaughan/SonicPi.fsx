@@ -29,6 +29,19 @@ Statments[
                                                     Arpeggio([C; E; G; B], OneLine, [1.0<beat>], [])
                                                     ])
                                                 ])
-                ])]
+                ])
+        ]
+|> toSonicPiScript
+|> sonicPiSend
+
+Statments[
+        UseBpm(120<bpm>)
+        LiveLoop("Foo", [
+                    PlaySample(LoopingSample(Garzul), []);
+                    UseSynth(TheProphet); 
+                    PlayNote(C, Great, [Release(8.0<beat>)]);
+                    Rest(8<beat>)
+                    ])
+        ]
 |> toSonicPiScript
 |> sonicPiSend

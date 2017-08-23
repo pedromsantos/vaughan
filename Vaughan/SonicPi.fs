@@ -15,7 +15,7 @@
         let private sonicPiEndPoint = new IPEndPoint(IPAddress.Loopback, 4557) 
 
         let private synthToSonicPySynth = function
-            | Beep -> ":beep"
+            | Synths.Beep -> ":beep"
             | BladeRunnerStyleStrings -> ":blade"
             | BrownNoise -> ":bnoise"
             | ChipBass -> ":chipbass"
@@ -40,7 +40,7 @@
             | ModulatedSineWave -> ":mod_sine"
             | ModulatedTriangleWave -> ":mod_tri"
             | Noise -> ":noise"
-            | Piano -> ":piano"
+            | Synths.Piano -> ":piano"
             | Pluck -> ":pluck"
             | PinkNoise -> ":pnoise"
             | PretyBell -> ":pretty_bell"
@@ -55,6 +55,44 @@
             | TechSaws -> ":tech_saws"
             | TriangleWave -> ":tri"
             | Zawa -> ":zawa"
+
+        let private drumSampleToSonicPi = function
+            | HeavyKick -> ":drum_heavy_kick"
+            | TomMidSoft -> ":drum_tom_mid_soft"
+            | TomMidHard -> ":drum_tom_mid_hard"
+            | TomLoSoft -> ":drum_tom_lo_soft"
+            | TomLoHard -> ":drum_tom_lo_hard"
+            | TomHiSoft -> ":drum_tom_hi_soft"
+            | TomHiHard-> ":drum_tom_hi_hard"
+            | SplashSoft -> ":drum_splash_soft"
+            | SplashHard-> ":drum_splash_hard"
+            | SnareSoft -> ":drum_snare_soft"
+            | SnareHard-> ":drum_snare_hard"
+            | CymbalSoft -> ":drum_cymbal_soft"
+            | CymbalHard -> ":drum_cymbal_hard"
+            | CymbalOpen -> ":drum_cymbal_open"
+            | CymbalClosed -> ":drum_cymbal_closed"
+            | CymbalPedal-> ":drum_cymbal_pedal"
+            | BassSoft -> ":drum_bass_soft"
+            | BassHard-> ":drum_bass_hard"
+
+        let loopingSampleToSonicPi = function
+            | Industrial -> ":loop_industrial"
+            | Compus-> ":loop_compus"
+            | Amen-> ":loop_amen"
+            | AmenFull-> ":loop_amen_full"
+            | Garzul-> ":loop_garzul"
+            | Mika-> ":loop_mika"
+            | Breakbeat-> ":loop_breakbeat"
+
+        let private sampleToSonicPi sample =
+            match sample with 
+            | DrumSample s -> drumSampleToSonicPi s
+            | ElectricSoundSample s -> ""
+            | GuitarSample s -> ""
+            | AmbientSample s -> ""
+            | BassSample s -> ""
+            | LoopingSample s -> loopingSampleToSonicPi s
 
         let private fxToSonicPiFx = function
             | BandPassFilter -> "bpf:" | BandEQFilter -> ":band_eq" | Bitcrusher -> ":bitcrusher" 
@@ -130,7 +168,7 @@
         let private generatePlayOptionsStatments playOptions = 
             (playOptions |> List.fold (fun acc option -> 
                 sprintf "%s,%s:%.2f" acc (playOptionToSonicPiPlayOption option) (playOptionValue option)) 
-                "") 
+                "")
 
         let private generateFxOptionsStatments fxOptions = 
             (fxOptions |> List.fold (fun acc option -> 
@@ -149,6 +187,7 @@
             | WithBpm (bpm, sts) -> sprintf "with_bpm %i do\n%send" (int(bpm)) (generateInnerStatments sts toSonicPiScript)
             | PlayNote (note, octave, opts) -> sprintf "play %i%s" (midiNumber note octave) (generatePlayOptionsStatments opts)
             | PlayChord (chord, octave, opts) -> sprintf "play [%s]%s" (chordToSonicPi chord octave) (generatePlayOptionsStatments opts)
+            | PlaySample (sample, opts)-> sprintf "sample %s%s" (sampleToSonicPi sample) (generatePlayOptionsStatments opts)
             | Arpeggio (notes, octave, times, opts) -> sprintf "play_pattern_timed [%s],[%s]%s" (scaleToSonicPi notes octave) (generateSonicPiList times) (generatePlayOptionsStatments opts)
             | WithFx (fx, opts, sts) -> sprintf "with_fx %s%s do\n%send" (fxToSonicPiFx fx) (generateFxOptionsStatments opts) (generateInnerStatments sts toSonicPiScript)
             | WithSynth (synth, sts) -> sprintf "with_synth %s do\n%send" (synthToSonicPySynth synth) (generateInnerStatments sts toSonicPiScript)

@@ -152,6 +152,89 @@ namespace Vaughan
             | SawWave | SineWave | SquareWave | SuperSaw
             | TB303Emulation | TechSaws | TriangleWave
             | Zawa
+        
+        type DrumSamples =
+            | HeavyKick
+            | TomMidSoft | TomMidHard | TomLoSoft | TomLoHard | TomHiSoft | TomHiHard
+            | SplashSoft | SplashHard
+            | SnareSoft | SnareHard
+            | CymbalSoft | CymbalHard | CymbalOpen | CymbalClosed | CymbalPedal
+            | BassSoft | BassHard
+
+        type ElectricSoundSamples =
+            | Triangle
+            | Snare
+            | LoSnare | HiSnare | MidSnare
+            | Cymbal
+            | SoftKick
+            | FiltSnare
+            | FuzzTom
+            | Chime
+            | Bong
+            | Twang
+            | Wood
+            | Pop
+            | Beep
+            | Blip
+            | Blip2
+            | Ping
+            | Bell
+            | Flip
+            | Tick
+            | Hollow_kick
+            | Twip
+            | Plip
+            | Blup
+
+        type GuitarSamples =
+            | Harmonics
+            | EFifths
+            | ESlide
+            | Em9
+
+        type PercussiveSamples =
+            | Bell
+            | Snap
+            | Snap2
+
+        type AmbientSamples =
+            | SoftBuzz
+            | Swoosh
+            | Drone
+            | GlassHum
+            | GlassRub
+            | HauntedHum
+            | Piano
+            | LunarLand
+            | DarkWoosh
+            | Choir
+
+        type BassSamples =
+            | Hit
+            | Hard
+            | Thick
+            | Drop
+            | Woodsy
+            | Voxy
+            | VoxyHit
+            | Dnb
+        
+        type LoopingSamples =
+            | Industrial
+            | Compus
+            | Amen
+            | AmenFull
+            | Garzul
+            | Mika
+            | Breakbeat
+
+        type Samples =
+            | DrumSample of DrumSamples
+            | ElectricSoundSample of ElectricSoundSamples
+            | GuitarSample of GuitarSamples
+            | AmbientSample of AmbientSamples
+            | BassSample of BassSamples
+            | LoopingSample of LoopingSamples
 
         type Fxs =
             | BandPassFilter | BandEQFilter | Bitcrusher
@@ -205,5 +288,6 @@ namespace Vaughan
             | LiveLoop of string * Script seq
             | PlayNote of Note * Octave * PlayOption list
             | PlayChord of Chord * Octave * PlayOption list
+            | PlaySample of Samples * PlayOption list
             | Arpeggio of ScaleNotes * Octave * float<beat> list * PlayOption list
             | Rest of int<beat>
