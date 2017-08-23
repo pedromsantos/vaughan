@@ -162,4 +162,4 @@
 
         [<Test>]
         let ``Should generate SonicPi DSL for play sample``() =
-            PlaySample(LoopingSample(Garzul), [])|> toSonicPiScript =! "sample :loop_garzul"
+            PlaySample(LoopingSample Garzul, [])|> toSonicPiScript =! "sample :loop_garzul"

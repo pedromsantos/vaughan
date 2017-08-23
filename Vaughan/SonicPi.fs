@@ -9,10 +9,12 @@
         open Notes
         open Chords
 
+        let private ID = "VAUGHAN_CLI"
+
         let private RUN_COMMAND = "/run-code"
         let private STOP_COMMAND = "/stop-all-jobs"
-        let private ID = "VAUGHAN_SONIC_PI_CLI"
-        let private sonicPiEndPoint = new IPEndPoint(IPAddress.Loopback, 4557) 
+
+        let private sonicPiEndPoint = new IPEndPoint(IPAddress.Loopback, 4557)
 
         let private synthToSonicPySynth = function
             | Synths.Beep -> ":beep"
@@ -85,8 +87,7 @@
             | Mika-> ":loop_mika"
             | Breakbeat-> ":loop_breakbeat"
 
-        let private sampleToSonicPi sample =
-            match sample with 
+        let private sampleToSonicPi = function
             | DrumSample s -> drumSampleToSonicPi s
             | ElectricSoundSample s -> ""
             | GuitarSample s -> ""
@@ -181,7 +182,7 @@
                 "").TrimEnd(',')
 
         let rec toSonicPiScript = function
-            | Rest beats -> sprintf "sleep %i"beats
+            | Rest beats -> sprintf "sleep %i" beats
             | UseSynth synth -> sprintf "use_synth %s" (synthToSonicPySynth synth)
             | UseBpm bpm -> sprintf "use_bpm %i" (int(bpm))
             | WithBpm (bpm, sts) -> sprintf "with_bpm %i do\n%send" (int(bpm)) (generateInnerStatments sts toSonicPiScript)
@@ -195,10 +196,18 @@
             | LiveLoop (name, sts) -> sprintf "live_loop :%s do\n%send" name (generateInnerStatments sts toSonicPiScript)
             | Statments sts -> generateInnerStatments sts toSonicPiScript
 
-        let sonicPiSend message =
+        let sonicPiRun code =
             use udpClient = new UdpClient()
-            let osc_message = OscMessage(RUN_COMMAND, ID, message).ToByteArray()
+            let osc_message = OscMessage(RUN_COMMAND, [|ID; code|]).ToByteArray()
    
+            udpClient.Connect(sonicPiEndPoint)
+            udpClient.Send(osc_message, osc_message.Length) |> ignore
+            udpClient.Close()
+           
+        let sonicPiStop =
+            use udpClient = new UdpClient()
+            let osc_message = OscMessage(STOP_COMMAND, [|ID|]).ToByteArray()
+
             udpClient.Connect(sonicPiEndPoint)
             udpClient.Send(osc_message, osc_message.Length) |> ignore
             udpClient.Close()

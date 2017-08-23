@@ -68,6 +68,7 @@
     <Compile Include="SonicPi.fs" />
     <None Include="Vaughan.fsx" />
     <None Include="SonicPi.fsx" />
+    <None Include="SonicPiLiveLoop.fsx" />
   </ItemGroup>
   <ItemGroup>
     <Reference Include="mscorlib" />

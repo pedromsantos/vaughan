@@ -12,7 +12,7 @@ open Vaughan.Chords
 open Vaughan.SonicPi
 
 Statments[
-        UseBpm(120<bpm>)
+        UseBpm 120<bpm>;
         WithSynth(Fm, [
                     WithFx(Reverb, [Mix(0.5)], [
                                             Repeat(2, [
@@ -25,23 +25,11 @@ Statments[
                                                                                     Amplitude(1.0<loud>); 
                                                                                     Release(2.0<beat>); 
                                                                                     Panning(1.0<pan>)]);
-                                                    Rest(2<beat>);
+                                                    Rest 2<beat>;
                                                     Arpeggio([C; E; G; B], OneLine, [1.0<beat>], [])
                                                     ])
                                                 ])
                 ])
         ]
 |> toSonicPiScript
-|> sonicPiSend
-
-Statments[
-        UseBpm(120<bpm>)
-        LiveLoop("Foo", [
-                    PlaySample(LoopingSample(Garzul), []);
-                    UseSynth(TheProphet); 
-                    PlayNote(C, Great, [Release(8.0<beat>)]);
-                    Rest(8<beat>)
-                    ])
-        ]
-|> toSonicPiScript
-|> sonicPiSend
+|> sonicPiRun
