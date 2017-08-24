@@ -163,7 +163,7 @@
             | PlaySample of Samples * PlayOption list
             | Arpeggio of ScaleNotes * Octave * float<beat> list * PlayOption list
             | Rest of int<beat>
-            | Song of Song
+            | Section of Section
 
         let private ID = "VAUGHAN_CLI"
 
@@ -336,6 +336,23 @@
             (list |> List.fold (fun acc item -> 
                 sprintf "%s%.2f," acc (float(item))) 
                 "").TrimEnd(',')
+        
+        let private midiBeatNote ((note, octave, duration):BeatNote) =
+            midiNumber note octave
+
+        let private playBeatNotes (beatNotes:BeatNotes) =
+            sprintf "play [%s]\n" 
+                ((beatNotes |> List.fold 
+                    (fun acc n -> sprintf "%s%i," acc (midiBeatNote n)) "").TrimEnd(','))
+        
+        let private playBarBeat ((beat, beatNotes):BarBeat) =
+            sprintf "%s\nsleep 1\n" (playBeatNotes beatNotes)
+
+        let private playBar (bar:Bar) =
+            sprintf "%s" (bar |> List.fold (fun acc b -> sprintf "%s%s" acc (playBarBeat b)) "")
+
+        let private playBars (bars:Bar list) =
+            sprintf "%s" (bars |> List.fold (fun acc b -> sprintf "%s%s" acc (playBar b)) "")
 
         let rec toSonicPiScript = function
             | Rest beats -> sprintf "sleep %i" beats
@@ -345,7 +362,7 @@
             | PlayNote (note, octave, opts) -> sprintf "play %i%s" (midiNumber note octave) (generatePlayOptionsStatments opts)
             | PlayChord (chord, octave, opts) -> sprintf "play [%s]%s" (chordToSonicPi chord octave) (generatePlayOptionsStatments opts)
             | PlaySample (sample, opts)-> sprintf "sample %s%s" (sampleToSonicPi sample) (generatePlayOptionsStatments opts)
-            | Song (s) -> ""
+            | Section (ts, key, bars) -> playBars bars
             | Arpeggio (notes, octave, times, opts) -> sprintf "play_pattern_timed [%s],[%s]%s" (scaleToSonicPi notes octave) (generateSonicPiList times) (generatePlayOptionsStatments opts)
             | WithFx (fx, opts, sts) -> sprintf "with_fx %s%s do\n%send" (fxToSonicPiFx fx) (generateFxOptionsStatments opts) (generateInnerStatments sts toSonicPiScript)
             | WithSynth (synth, sts) -> sprintf "with_synth %s do\n%send" (synthToSonicPySynth synth) (generateInnerStatments sts toSonicPiScript)
@@ -360,7 +377,6 @@
             udpClient.Connect(sonicPiEndPoint)
             udpClient.Send(osc_message, osc_message.Length) |> ignore
             udpClient.Close()
-            System.Text.Encoding.UTF8.GetString osc_message
            
         let sonicPiStop =
             use udpClient = new UdpClient()
@@ -369,4 +385,3 @@
             udpClient.Connect(sonicPiEndPoint)
             udpClient.Send(osc_message, osc_message.Length) |> ignore
             udpClient.Close()
-            System.Text.Encoding.UTF8.GetString osc_message

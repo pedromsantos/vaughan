@@ -33,30 +33,30 @@ Statments[
 |> toSonicPiScript
 |> sonicPiRun
 
-let song = Song([
+let section = Section(
                 (4<beat>, Quarter), 
                 CMajor,
                 [
                     [
-                        1.0<beat>, [(C, Quarter); (E, Quarter); (G, Quarter)];
-                        2.0<beat>, [(C, Quarter); (E, Quarter); (G, Quarter)];
-                        3.0<beat>, [(C, Quarter); (E, Quarter); (G, Quarter)];
-                        4.0<beat>, [(C, Quarter); (E, Quarter); (G, Quarter)]
+                        1.0<beat>, [(C, OneLine, Quarter); (E, OneLine, Quarter); (G, OneLine, Quarter)];
+                        2.0<beat>, [(C, OneLine, Quarter); (E, OneLine, Quarter); (G, OneLine, Quarter)];
+                        3.0<beat>, [(C, OneLine, Quarter); (E, OneLine, Quarter); (G, OneLine, Quarter)];
+                        4.0<beat>, [(C, OneLine, Quarter); (E, OneLine, Quarter); (G, OneLine, Quarter)]
                     ];
                     [
-                        1.0<beat>, [(C, Quarter); (E, Quarter); (G, Quarter)];
-                        2.0<beat>, [(C, Quarter); (E, Quarter); (G, Quarter)];
-                        3.0<beat>, [(C, Quarter); (E, Quarter); (G, Quarter)];
-                        4.0<beat>, [(C, Quarter); (E, Quarter); (G, Quarter)]
+                        1.0<beat>, [(C, OneLine, Quarter); (E, OneLine, Quarter); (G, OneLine, Quarter)];
+                        2.0<beat>, [(C, OneLine, Quarter); (E, OneLine, Quarter); (G, OneLine, Quarter)];
+                        3.0<beat>, [(C, OneLine, Quarter); (E, OneLine, Quarter); (G, OneLine, Quarter)];
+                        4.0<beat>, [(C, OneLine, Quarter); (E, OneLine, Quarter); (G, OneLine, Quarter)]
                     ];
                     [
-                        1.0<beat>, [(C, Quarter); (E, Quarter); (G, Quarter)];
-                        2.0<beat>, [(C, Quarter); (E, Quarter); (G, Quarter)];
-                        3.0<beat>, [(C, Quarter); (E, Quarter); (G, Quarter)];
-                        4.0<beat>, [(C, Quarter); (E, Quarter); (G, Quarter)]
+                        1.0<beat>, [(C, OneLine, Quarter); (E, OneLine, Quarter); (G, OneLine, Quarter)];
+                        2.0<beat>, [(C, OneLine, Quarter); (E, OneLine, Quarter); (G, OneLine, Quarter)];
+                        3.0<beat>, [(C, OneLine, Quarter); (E, OneLine, Quarter); (G, OneLine, Quarter)];
+                        4.0<beat>, [(C, OneLine, Quarter); (E, OneLine, Quarter); (G, OneLine, Quarter)]
                     ];
-                ]])
+                ])
 
-Statments[UseBpm 120<bpm>; WithSynth(Pluck, [song])]
+Statments[UseBpm 120<bpm>; WithSynth(Pluck, [section])]
 |> toSonicPiScript
 |> sonicPiRun

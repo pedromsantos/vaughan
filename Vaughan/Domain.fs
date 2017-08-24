@@ -18,16 +18,6 @@ namespace Vaughan
             | Whole | Half | Quarter | Eigth
             | Sixteenth | ThirtySecond
             | SixtyFourth | HundredTwentyEighth
-        
-        type BeatNote = Note * Duration
-
-        type BeatNotes = BeatNote list
-
-        type BarBeat = float<beat> * BeatNotes
-
-        type TimeSignature = int<beat> * Duration
-
-        type Bar = BarBeat list
 
         type SharpNote = Note -> Note
         type FlatNote = Note -> Note
@@ -60,6 +50,12 @@ namespace Vaughan
         type Frequency = Note -> Octave -> float<hz>
         type NoteMidiName = Note -> Octave -> string
         type NoteMidiNumber = Note -> Octave -> int<midiNote>
+
+        type BeatNote = Note * Octave * Duration
+        type BeatNotes = BeatNote list
+        type BarBeat = float<beat> * BeatNotes
+        type TimeSignature = int<beat> * Duration
+        type Bar = BarBeat list
 
         type Key =
             | AMajor | AFlatMajor | BMajor | BFlatMajor | CMajor
