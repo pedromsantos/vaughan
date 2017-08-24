@@ -7,8 +7,6 @@
 #load "SonicPi.fs"
 
 open Vaughan.Domain
-open Vaughan.Notes
-open Vaughan.Chords
 open Vaughan.SonicPi
 
 Statments
@@ -18,12 +16,11 @@ Statments
                     [
                         PlaySample(LoopingSample Garzul, []);
                         UseSynth TheProphet;
-                        PlayNote(C, Great, [Release(8.0<beat>)]);
+                        PlayNote(G, Great, [Release(8.0<beat>)]);
                         Rest 8<beat>
                     ])
     ]
 |> toSonicPiScript
 |> sonicPiRun
-
 
 sonicPiStop

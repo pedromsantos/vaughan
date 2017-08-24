@@ -94,6 +94,18 @@ namespace Vaughan
             let roundToThousands = 1000.0
             (round(roundToThousands * float(noteFrequency)) / roundToThousands) * 1.0<hz>
 
+        let durationMultipliers timeSignature = 
+            let durations =[1.0; 1.0/2.0; 1.0/4.0; 1.0/8.0; 1.0/16.0; 1.0/32.0; 1.0/64.0; 1.0/128.0] 
+            match (snd timeSignature) with
+            | Whole -> durations |> List.map (fun d -> d * 1.0)
+            | Half -> durations |> List.map (fun d -> d * 2.0)
+            | Quarter -> durations |> List.map (fun d -> d * 4.0)
+            | Eigth -> durations |> List.map (fun d -> d * 8.0)
+            | Sixteenth -> durations |> List.map (fun d -> d * 16.0)
+            | ThirtySecond -> durations |> List.map (fun d -> d * 32.0)
+            | SixtyFourth -> durations |> List.map (fun d -> d * 64.0)
+            | HundredTwentyEighth -> durations |> List.map (fun d -> d * 128.0)
+
         let sharp:SharpNote = fun note ->
             (noteAttributes note).Sharp
 
@@ -177,3 +189,16 @@ namespace Vaughan
 
         let notesMidiNumbers = fun (notes:ScaleNotes) octave ->
             notes |> List.map (fun n -> midiNumber n octave)
+
+        let durationToBeats timeSignature duration =
+            (match duration with
+            | Whole -> (durationMultipliers timeSignature).[0]
+            | Half -> (durationMultipliers timeSignature).[1]
+            | Quarter -> (durationMultipliers timeSignature).[2]
+            | Eigth -> (durationMultipliers timeSignature).[3]
+            | Sixteenth -> (durationMultipliers timeSignature).[4]
+            | ThirtySecond -> (durationMultipliers timeSignature).[5]
+            | SixtyFourth -> (durationMultipliers timeSignature).[6]
+            | HundredTwentyEighth -> (durationMultipliers timeSignature).[7]) * 1.0<beat> 
+
+        

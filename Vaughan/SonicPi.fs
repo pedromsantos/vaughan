@@ -9,6 +9,162 @@
         open Notes
         open Chords
 
+        type Synths =
+            | Beep | BladeRunnerStyleStrings | BrownNoise 
+            | ChipBass | ChipLead | ChipNoise | ClipNoise
+            | DarkAmbience | DetunedPulseWave | DetunedSawWave | DetunedTriangleWave | DullBell
+            | Fm
+            | GreyNoise | Growl
+            | Hollow | Hoover
+            | ModulatedBeepWave | ModulatedDetunedSaWaves | ModulatedFm | ModulatedPulse
+            | ModulatedSawWave | ModulatedSineWave | ModulatedTriangleWave
+            | Noise
+            | Piano | Pluck | PinkNoise | PretyBell | PulseWave | PulseWaveWithSub
+            | TheProphet
+            | SawWave | SineWave | SquareWave | SuperSaw
+            | TB303Emulation | TechSaws | TriangleWave
+            | Zawa
+        
+        type DrumSamples =
+            | HeavyKick
+            | TomMidSoft | TomMidHard | TomLoSoft | TomLoHard | TomHiSoft | TomHiHard
+            | SplashSoft | SplashHard
+            | SnareSoft | SnareHard
+            | CymbalSoft | CymbalHard | CymbalOpen | CymbalClosed | CymbalPedal
+            | BassSoft | BassHard
+
+        type ElectricSoundSamples =
+            | Triangle
+            | Snare
+            | LoSnare | HiSnare | MidSnare
+            | Cymbal
+            | SoftKick
+            | FiltSnare
+            | FuzzTom
+            | Chime
+            | Bong
+            | Twang
+            | Wood
+            | Pop
+            | Beep
+            | Blip
+            | Blip2
+            | Ping
+            | Bell
+            | Flip
+            | Tick
+            | Hollow_kick
+            | Twip
+            | Plip
+            | Blup
+
+        type GuitarSamples =
+            | Harmonics
+            | EFifths
+            | ESlide
+            | Em9
+
+        type PercussiveSamples =
+            | Bell
+            | Snap
+            | Snap2
+
+        type AmbientSamples =
+            | SoftBuzz
+            | Swoosh
+            | Drone
+            | GlassHum
+            | GlassRub
+            | HauntedHum
+            | Piano
+            | LunarLand
+            | DarkWoosh
+            | Choir
+
+        type BassSamples =
+            | Hit
+            | Hard
+            | Thick
+            | Drop
+            | Woodsy
+            | Voxy
+            | VoxyHit
+            | Dnb
+        
+        type LoopingSamples =
+            | Industrial
+            | Compus
+            | Amen
+            | AmenFull
+            | Garzul
+            | Mika
+            | Breakbeat
+
+        type Samples =
+            | DrumSample of DrumSamples
+            | ElectricSoundSample of ElectricSoundSamples
+            | GuitarSample of GuitarSamples
+            | AmbientSample of AmbientSamples
+            | BassSample of BassSamples
+            | LoopingSample of LoopingSamples
+
+        type Fxs =
+            | BandPassFilter | BandEQFilter | Bitcrusher
+            | Compressor
+            | Distortion
+            | Echo
+            | Flanger
+            | GVerb
+            | HighPassFilter
+            | Krush
+            | LevelAmplifier | LowPassFilter
+            | Mono
+            | NormalisedResonantLowPassFilter | NormalisedResonantHighPassFilter
+            | NormalisedHighPassFilter | NormalisedLowPassFilter | Normaliser
+            | NormalisedBandPassFilter | NormalisedResonantBandPassFilter
+            | Octaver
+            | PanSlicer | Pan | PitchShift
+            | Reverb | ResonantLowPassFilter | ResonantHighPassFilter
+            | ResonantBandPassFilter | RingModulator
+            | Slicer
+            | TechnofromIXILang
+            | Whammy
+            | Wobble
+            | Vowel
+        
+        type PlayOption = 
+            | Amplitude of float<loud> 
+            | Panning of float<pan>
+            | Release of float<beat>
+            | Attack of float<beat>
+            | AttackLevel of float<beat>
+            | Sustain of float<beat>
+            | SustainLevel of float<beat>
+            | Decay of float<beat>
+            | DecayLevel of float<beat>
+
+        type FxOption =
+            | Amp of float<loud>
+            | PreAmp of float<loud>
+            | Mix of float
+            | PreMix of float
+
+        type Script =
+            | Statments of Script seq
+            | UseBpm of int<bpm>
+            | WithBpm of int<bpm> * Script seq
+            | UseSynth of Synths
+            | WithFx of Fxs * FxOption list * Script seq
+            | WithSynth of Synths * Script seq
+            | Repeat of int * Script seq
+            | LiveLoop of string * Script seq
+            | PlayNote of Note * Octave * PlayOption list
+            | PlayChord of Chord * Octave * PlayOption list
+            | PlaySample of Samples * PlayOption list
+            | Arpeggio of ScaleNotes * Octave * float<beat> list * PlayOption list
+            | Rest of int<beat>
+            | Song of Song
+
         let private ID = "VAUGHAN_CLI"
 
         let private RUN_COMMAND = "/run-code"
@@ -189,6 +345,7 @@
             | PlayNote (note, octave, opts) -> sprintf "play %i%s" (midiNumber note octave) (generatePlayOptionsStatments opts)
             | PlayChord (chord, octave, opts) -> sprintf "play [%s]%s" (chordToSonicPi chord octave) (generatePlayOptionsStatments opts)
             | PlaySample (sample, opts)-> sprintf "sample %s%s" (sampleToSonicPi sample) (generatePlayOptionsStatments opts)
+            | Song (s) -> ""
             | Arpeggio (notes, octave, times, opts) -> sprintf "play_pattern_timed [%s],[%s]%s" (scaleToSonicPi notes octave) (generateSonicPiList times) (generatePlayOptionsStatments opts)
             | WithFx (fx, opts, sts) -> sprintf "with_fx %s%s do\n%send" (fxToSonicPiFx fx) (generateFxOptionsStatments opts) (generateInnerStatments sts toSonicPiScript)
             | WithSynth (synth, sts) -> sprintf "with_synth %s do\n%send" (synthToSonicPySynth synth) (generateInnerStatments sts toSonicPiScript)
@@ -203,6 +360,7 @@
             udpClient.Connect(sonicPiEndPoint)
             udpClient.Send(osc_message, osc_message.Length) |> ignore
             udpClient.Close()
+            System.Text.Encoding.UTF8.GetString osc_message
            
         let sonicPiStop =
             use udpClient = new UdpClient()
@@ -211,3 +369,4 @@
             udpClient.Connect(sonicPiEndPoint)
             udpClient.Send(osc_message, osc_message.Length) |> ignore
             udpClient.Close()
+            System.Text.Encoding.UTF8.GetString osc_message

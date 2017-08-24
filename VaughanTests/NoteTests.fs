@@ -111,6 +111,22 @@ namespace VaughanTests
             intervalBetween C BFlat =! MinorSeventh
             intervalBetween C B =! MajorSeventh
 
+        [<Test>]
+        let ``Should create beats from timeSignature and duration``() =
+            (durationToBeats (1.0<beat>, Whole) Whole) =! 1.0<beat>
+            (durationToBeats (2.0<beat>, Half) Half) =! 1.0<beat>
+
+            (durationToBeats (4.0<beat>, Quarter) Whole) =! 4.0<beat>
+            (durationToBeats (4.0<beat>, Quarter) Half) =! 2.0<beat>
+            (durationToBeats (4.0<beat>, Quarter) Quarter) =! 1.0<beat>
+            (durationToBeats (4.0<beat>, Quarter) Eigth) =! 0.5<beat>
+            (durationToBeats (4.0<beat>, Quarter) Sixteenth) =! 0.25<beat>
+            (durationToBeats (4.0<beat>, Quarter) ThirtySecond) =! 0.125<beat>
+
+            (durationToBeats (3.0<beat>, Quarter) Quarter) =! 1.0<beat>
+
+            (durationToBeats (12.0<beat>, Eigth) Eigth) =! 1.0<beat>
+
         [<Property>]
         let ``Interval between same note is a unisson interval`` (note :Note) =
             (intervalBetween note note) = Unisson

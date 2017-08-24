@@ -7,7 +7,6 @@
 #load "SonicPi.fs"
 
 open Vaughan.Domain
-open Vaughan.Notes
 open Vaughan.Chords
 open Vaughan.SonicPi
 
@@ -31,5 +30,33 @@ Statments[
                                                 ])
                 ])
         ]
+|> toSonicPiScript
+|> sonicPiRun
+
+let song = Song([
+                (4<beat>, Quarter), 
+                CMajor,
+                [
+                    [
+                        1.0<beat>, [(C, Quarter); (E, Quarter); (G, Quarter)];
+                        2.0<beat>, [(C, Quarter); (E, Quarter); (G, Quarter)];
+                        3.0<beat>, [(C, Quarter); (E, Quarter); (G, Quarter)];
+                        4.0<beat>, [(C, Quarter); (E, Quarter); (G, Quarter)]
+                    ];
+                    [
+                        1.0<beat>, [(C, Quarter); (E, Quarter); (G, Quarter)];
+                        2.0<beat>, [(C, Quarter); (E, Quarter); (G, Quarter)];
+                        3.0<beat>, [(C, Quarter); (E, Quarter); (G, Quarter)];
+                        4.0<beat>, [(C, Quarter); (E, Quarter); (G, Quarter)]
+                    ];
+                    [
+                        1.0<beat>, [(C, Quarter); (E, Quarter); (G, Quarter)];
+                        2.0<beat>, [(C, Quarter); (E, Quarter); (G, Quarter)];
+                        3.0<beat>, [(C, Quarter); (E, Quarter); (G, Quarter)];
+                        4.0<beat>, [(C, Quarter); (E, Quarter); (G, Quarter)]
+                    ];
+                ]])
+
+Statments[UseBpm 120<bpm>; WithSynth(Pluck, [song])]
 |> toSonicPiScript
 |> sonicPiRun

@@ -14,6 +14,21 @@ namespace Vaughan
             | C | CSharp | DFlat | D | DSharp | EFlat | E | F | FSharp
             | GFlat | G | GSharp | AFlat | A | ASharp | BFlat | B
 
+        type Duration =
+            | Whole | Half | Quarter | Eigth
+            | Sixteenth | ThirtySecond
+            | SixtyFourth | HundredTwentyEighth
+        
+        type BeatNote = Note * Duration
+
+        type BeatNotes = BeatNote list
+
+        type BarBeat = float<beat> * BeatNotes
+
+        type TimeSignature = int<beat> * Duration
+
+        type Bar = BarBeat list
+
         type SharpNote = Note -> Note
         type FlatNote = Note -> Note
         type NaturalNote = Note -> Note
@@ -57,6 +72,10 @@ namespace Vaughan
         type KeyNotes = Note list
         
         type IKeyNotes = Key -> KeyNotes
+
+        type Section = TimeSignature * Key * Bar list
+
+        type Song = Section list
 
         type ChordQuality =
             | Major | Augmented
@@ -136,158 +155,3 @@ namespace Vaughan
 
         type ParseChord = string -> ChordIntent
         type CreateChordFromIntent = ChordIntent -> Chord
-
-        type Synths =
-            | Beep | BladeRunnerStyleStrings | BrownNoise 
-            | ChipBass | ChipLead | ChipNoise | ClipNoise
-            | DarkAmbience | DetunedPulseWave | DetunedSawWave | DetunedTriangleWave | DullBell
-            | Fm
-            | GreyNoise | Growl
-            | Hollow | Hoover
-            | ModulatedBeepWave | ModulatedDetunedSaWaves | ModulatedFm | ModulatedPulse
-            | ModulatedSawWave | ModulatedSineWave | ModulatedTriangleWave
-            | Noise
-            | Piano | Pluck | PinkNoise | PretyBell | PulseWave | PulseWaveWithSub
-            | TheProphet
-            | SawWave | SineWave | SquareWave | SuperSaw
-            | TB303Emulation | TechSaws | TriangleWave
-            | Zawa
-        
-        type DrumSamples =
-            | HeavyKick
-            | TomMidSoft | TomMidHard | TomLoSoft | TomLoHard | TomHiSoft | TomHiHard
-            | SplashSoft | SplashHard
-            | SnareSoft | SnareHard
-            | CymbalSoft | CymbalHard | CymbalOpen | CymbalClosed | CymbalPedal
-            | BassSoft | BassHard
-
-        type ElectricSoundSamples =
-            | Triangle
-            | Snare
-            | LoSnare | HiSnare | MidSnare
-            | Cymbal
-            | SoftKick
-            | FiltSnare
-            | FuzzTom
-            | Chime
-            | Bong
-            | Twang
-            | Wood
-            | Pop
-            | Beep
-            | Blip
-            | Blip2
-            | Ping
-            | Bell
-            | Flip
-            | Tick
-            | Hollow_kick
-            | Twip
-            | Plip
-            | Blup
-
-        type GuitarSamples =
-            | Harmonics
-            | EFifths
-            | ESlide
-            | Em9
-
-        type PercussiveSamples =
-            | Bell
-            | Snap
-            | Snap2
-
-        type AmbientSamples =
-            | SoftBuzz
-            | Swoosh
-            | Drone
-            | GlassHum
-            | GlassRub
-            | HauntedHum
-            | Piano
-            | LunarLand
-            | DarkWoosh
-            | Choir
-
-        type BassSamples =
-            | Hit
-            | Hard
-            | Thick
-            | Drop
-            | Woodsy
-            | Voxy
-            | VoxyHit
-            | Dnb
-        
-        type LoopingSamples =
-            | Industrial
-            | Compus
-            | Amen
-            | AmenFull
-            | Garzul
-            | Mika
-            | Breakbeat
-
-        type Samples =
-            | DrumSample of DrumSamples
-            | ElectricSoundSample of ElectricSoundSamples
-            | GuitarSample of GuitarSamples
-            | AmbientSample of AmbientSamples
-            | BassSample of BassSamples
-            | LoopingSample of LoopingSamples
-
-        type Fxs =
-            | BandPassFilter | BandEQFilter | Bitcrusher
-            | Compressor
-            | Distortion
-            | Echo
-            | Flanger
-            | GVerb
-            | HighPassFilter
-            | Krush
-            | LevelAmplifier | LowPassFilter
-            | Mono
-            | NormalisedResonantLowPassFilter | NormalisedResonantHighPassFilter
-            | NormalisedHighPassFilter | NormalisedLowPassFilter | Normaliser
-            | NormalisedBandPassFilter | NormalisedResonantBandPassFilter
-            | Octaver
-            | PanSlicer | Pan | PitchShift
-            | Reverb | ResonantLowPassFilter | ResonantHighPassFilter
-            | ResonantBandPassFilter | RingModulator
-            | Slicer
-            | TechnofromIXILang
-            | Whammy
-            | Wobble
-            | Vowel
-        
-        type PlayOption = 
-            | Amplitude of float<loud> 
-            | Panning of float<pan>
-            | Release of float<beat>
-            | Attack of float<beat>
-            | AttackLevel of float<beat>
-            | Sustain of float<beat>
-            | SustainLevel of float<beat>
-            | Decay of float<beat>
-            | DecayLevel of float<beat>
-
-        type FxOption =
-            | Amp of float<loud>
-            | PreAmp of float<loud>
-            | Mix of float
-            | PreMix of float 
-
-        type Script =
-            | Statments of Script seq
-            | UseBpm of int<bpm>
-            | WithBpm of int<bpm> * Script seq
-            | UseSynth of Synths
-            | WithFx of Fxs * FxOption list * Script seq
-            | WithSynth of Synths * Script seq
-            | Repeat of int * Script seq
-            | LiveLoop of string * Script seq
-            | PlayNote of Note * Octave * PlayOption list
-            | PlayChord of Chord * Octave * PlayOption list
-            | PlaySample of Samples * PlayOption list
-            | Arpeggio of ScaleNotes * Octave * float<beat> list * PlayOption list
-            | Rest of int<beat>
