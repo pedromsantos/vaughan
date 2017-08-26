@@ -7,7 +7,6 @@
 #load "SonicPi.fs"
 
 open Vaughan.Domain
-open Vaughan.Chords
 open Vaughan.SonicPi
 
 let section = Section(
