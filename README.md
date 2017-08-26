@@ -14,8 +14,8 @@ Navigate to https://repl.it/FJHh/79 there is some sample code included with the 
 
 1. Clone the repository to your machine
 2. Build
-  1. On Windows VS2015/VS2017
-  2. On macos Visual Studio for macos
+  1. On Windows execute build.cmd (requires Powershell)
+  2. On macos / unix execute build.sh (requires mono, curl and jq)
 
 ## Usage
 
