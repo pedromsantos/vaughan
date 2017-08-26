@@ -1,4 +1,4 @@
-﻿#r "../packages/Rug.Osc/lib/Rug.Osc.dll"
+﻿#r "../packages/Bespoke-OSC-Library/lib/Bespoke.Common.Osc.dll"
 
 #load "Infrastructure.fs"
 #load "Domain.fs"

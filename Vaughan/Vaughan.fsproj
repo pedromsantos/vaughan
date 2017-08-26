@@ -80,13 +80,16 @@
     <Reference Include="System.Core" />
     <Reference Include="System.Numerics" />
     <Reference Include="FParsec">
-      <HintPath>..\packages\FParsec\lib\portable-net45+netcore45+wpa81+wp8\FParsec.dll</HintPath>
+      <HintPath>..\packages\FParsec\lib\net40-client\FParsec.dll</HintPath>
     </Reference>
     <Reference Include="FParsec">
-      <HintPath>..\packages\FParsec\lib\portable-net45+netcore45+wpa81+wp8\FParsecCS.dll</HintPath>
+      <HintPath>..\packages\FParsec\lib\net40-client\FParsecCS.dll</HintPath>
     </Reference>
-    <Reference Include="Rug.OSC">
-      <HintPath>..\packages\Rug.Osc\lib\Rug.Osc.dll</HintPath>
+    <Reference Include="Bespoke.Common">
+      <HintPath>..\packages\Bespoke-OSC-Library\lib\Bespoke.Common.dll</HintPath>
+    </Reference>
+    <Reference Include="Bespoke.Common.Osc">
+      <HintPath>..\packages\Bespoke-OSC-Library\lib\Bespoke.Common.Osc.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

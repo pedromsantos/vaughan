@@ -3,8 +3,7 @@
     module SonicPi =
         open System
         open System.Net
-        open System.Net.Sockets
-        open Rug.Osc
+        open Bespoke.Common.Osc
         open Domain
         open Notes
         open Chords
@@ -371,17 +370,18 @@
             | Statments sts -> generateInnerStatments sts toSonicPiScript
 
         let sonicPiRun code =
-            use udpClient = new UdpClient()
-            let osc_message = OscMessage(RUN_COMMAND, [|ID; code|]).ToByteArray()
-   
-            udpClient.Connect(sonicPiEndPoint)
-            udpClient.Send(osc_message, osc_message.Length) |> ignore
-            udpClient.Close()
+            OscPacket.LittleEndianByteOrder <- false
+
+            let osc_message = OscMessage(sonicPiEndPoint, RUN_COMMAND)
+            osc_message.Append(ID) |> ignore
+            osc_message.Append(code) |> ignore
+
+            osc_message.Send(sonicPiEndPoint) |> ignore
            
         let sonicPiStop =
-            use udpClient = new UdpClient()
-            let osc_message = OscMessage(STOP_COMMAND, [|ID|]).ToByteArray()
+            OscPacket.LittleEndianByteOrder <- false
 
-            udpClient.Connect(sonicPiEndPoint)
-            udpClient.Send(osc_message, osc_message.Length) |> ignore
-            udpClient.Close()
+            let osc_message = OscMessage(sonicPiEndPoint, STOP_COMMAND)
+            osc_message.Append(ID) |> ignore
+
+            osc_message.Send(sonicPiEndPoint) |> ignore

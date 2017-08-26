@@ -1,9 +1,7 @@
 source https://www.nuget.org/api/v2
+nuget Bespoke-OSC-Library
 nuget FAKE
-nuget FSharp.Core
-nuget NUnit
 nuget Unquote
 nuget NUnit.Runners
 nuget FsCheck.NUnit
 nuget FParsec
-nuget Rug.Osc
