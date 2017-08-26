@@ -8,7 +8,7 @@ Vaughan is named after Blues guitarist [Stevie Ray Vaughan](https://en.wikipedia
 
 ### Online
 
-Navigate to https://repl.it/FJHh/79 there is some sample code included with the source. The SpeechToMusic module is not available as I have not found a way to add FParsec dependency in repl.it
+Navigate to https://repl.it/FJHh/79 (a bit outdated and no SonicPi integration) there is some sample code included with the source. The SpeechToMusic module is not available as I have not found a way to add FParsec dependency in repl.it
 
 ### On your own evironment
 
