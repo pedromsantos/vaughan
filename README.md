@@ -94,7 +94,7 @@ Statments
 ```
 Execute sample code above: ```cd Vaughan``` and ```sharpi SonicPiLiveLoop.fsx``` to stop this script sound, for now, you have to do it from SonicPi interface (could not get message to halt execution to work yet).
 
-### Song DSL example (very very early, lots of changes here)
+### Song DSL example (very very early, lots of changes expected here)
 
 ```fsharp
 
