@@ -164,13 +164,6 @@
             | Rest of int<beat>
             | Section of Section
 
-        let private ID = "VAUGHAN_CLI"
-
-        let private RUN_COMMAND = "/run-code"
-        let private STOP_COMMAND = "/stop-all-jobs"
-
-        let private sonicPiEndPoint = new IPEndPoint(IPAddress.Loopback, 4557)
-
         let private synthToSonicPySynth = function
             | Synths.Beep -> ":beep"
             | BladeRunnerStyleStrings -> ":blade"
@@ -368,6 +361,13 @@
             | Repeat (repeats, sts) -> sprintf "%i.times do\n%send" repeats (generateInnerStatments sts toSonicPiScript)
             | LiveLoop (name, sts) -> sprintf "live_loop :%s do\n%send" name (generateInnerStatments sts toSonicPiScript)
             | Statments sts -> generateInnerStatments sts toSonicPiScript
+        
+        let private ID = "VAUGHAN_CLI"
+
+        let private RUN_COMMAND = "/run-code"
+        let private STOP_COMMAND = "/stop-all-jobs"
+
+        let private sonicPiEndPoint = new IPEndPoint(IPAddress.Loopback, 4557)
 
         let sonicPiRun code =
             OscPacket.LittleEndianByteOrder <- false
