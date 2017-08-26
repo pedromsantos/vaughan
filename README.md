@@ -14,8 +14,8 @@ Navigate to https://repl.it/FJHh/79 there is some sample code included with the 
 
 1. Clone the repository to your machine
 2. Build
-  1. On Windows execute build.cmd (requires Powershell)
-  2. On macos / unix execute build.sh (requires mono, curl and jq)
+3. On Windows execute build.cmd (requires Powershell)
+4. On macos / unix execute build.sh (requires mono, curl and jq)
 
 ## Usage
 
@@ -61,6 +61,8 @@ Statments[
 |> toSonicPiScript
 |> sonicPiSend
 ```
+Execute sample code above: ```cd Vaughan``` and ```fsharpi SonicPi.fsx```
+
 ### Live loop example
 
 ```fsharp
@@ -90,6 +92,8 @@ Statments
 |> toSonicPiScript
 |> sonicPiRun
 ```
+Execute sample code above: ```cd Vaughan``` and ```sharpi SonicPiLiveLoop.fsx``` to stop this script sound, for now, you have to do it from SonicPi interface (could not get message to halt execution to work yet).
+
 ### Song DSL example (very very early, lots of changes here)
 
 ```fsharp
@@ -130,6 +134,7 @@ Statments[UseBpm 120<bpm>; WithSynth(Pluck, [section])]
 |> toSonicPiScript
 |> sonicPiRun
 ```
+Execute sample code above: ```cd Vaughan``` and ```fsharpi SonicPiSong.fsx```
 
 ### Notes
 
