@@ -1,41 +1,42 @@
 namespace VaughanTests
     module KeyTests =
-        open NUnit.Framework
+        open Xunit
+        open FsUnit
+        open FsUnit.Xunit
         open FsCheck
-        open FsCheck.NUnit
-        open Swensen.Unquote
+        open FsCheck.Xunit
         open Vaughan.Domain
         open Vaughan.Notes
         open Vaughan.Keys
 
-        [<Test>]
+        [<Fact>]
         let ``Should have notes for key``() =
-            keyNotes CMajor =! [ C; D; E; F; G; A; B ]
-            keyNotes GMajor =! [ G; A; B; C; D; E; FSharp ]
-            keyNotes DMajor =! [ D; E; FSharp; G; A; B; CSharp ]
-            keyNotes AMajor =! [ A; B; CSharp; D; E; FSharp; GSharp ]
-            keyNotes EMajor =! [ E; FSharp; GSharp; A; B; CSharp; DSharp ]
-            keyNotes BMajor =! [ B; CSharp; DSharp; E; FSharp; GSharp; ASharp ]
-            keyNotes FSharpMajor =! [ FSharp; GSharp; ASharp; B; CSharp; DSharp; F ]
-            keyNotes DFlatMajor =! [ DFlat; EFlat; F; GFlat; AFlat; BFlat; C ]
-            keyNotes AFlatMajor =! [ AFlat; BFlat; C; DFlat; EFlat; F; G ]
-            keyNotes GFlatMajor =! [ GFlat; AFlat; BFlat; B; DFlat; EFlat; F ]
-            keyNotes EFlatMajor =! [ EFlat; F; G; AFlat; BFlat; C; D ]
-            keyNotes BFlatMajor =! [ BFlat; C; D; EFlat; F; G; A ]
-            keyNotes FMajor =! [ F; G; A; BFlat; C; D; E ]
+            keyNotes CMajor |> should equal [ C; D; E; F; G; A; B ]
+            keyNotes GMajor |> should equal [ G; A; B; C; D; E; FSharp ]
+            keyNotes DMajor |> should equal [ D; E; FSharp; G; A; B; CSharp ]
+            keyNotes AMajor |> should equal [ A; B; CSharp; D; E; FSharp; GSharp ]
+            keyNotes EMajor |> should equal [ E; FSharp; GSharp; A; B; CSharp; DSharp ]
+            keyNotes BMajor |> should equal [ B; CSharp; DSharp; E; FSharp; GSharp; ASharp ]
+            keyNotes FSharpMajor |> should equal [ FSharp; GSharp; ASharp; B; CSharp; DSharp; F ]
+            keyNotes DFlatMajor |> should equal [ DFlat; EFlat; F; GFlat; AFlat; BFlat; C ]
+            keyNotes AFlatMajor |> should equal [ AFlat; BFlat; C; DFlat; EFlat; F; G ]
+            keyNotes GFlatMajor |> should equal [ GFlat; AFlat; BFlat; B; DFlat; EFlat; F ]
+            keyNotes EFlatMajor |> should equal [ EFlat; F; G; AFlat; BFlat; C; D ]
+            keyNotes BFlatMajor |> should equal [ BFlat; C; D; EFlat; F; G; A ]
+            keyNotes FMajor |> should equal [ F; G; A; BFlat; C; D; E ]
 
-            keyNotes AMinor =! [ A; B; C; D; E; F; G ]
-            keyNotes EMinor =! [ E; FSharp; G; A; B; C; D ]
-            keyNotes BMinor =! [ B; CSharp; D; E; FSharp; G; A ]
-            keyNotes FSharpMinor =! [ FSharp; GSharp; A; B; CSharp; D; E ]
-            keyNotes CSharpMinor =! [ CSharp; DSharp; E; FSharp; GSharp; A; B ]
-            keyNotes GSharpMinor =! [ GSharp; ASharp; B; CSharp; DSharp; E; FSharp ]
-            keyNotes EFlatMinor =! [ EFlat; F; GFlat; AFlat; BFlat; B; DFlat ]
-            keyNotes BFlatMinor =! [ BFlat; C; DFlat; EFlat; F; GFlat; AFlat ]
-            keyNotes FMinor =! [ F; G; AFlat; BFlat; C; DFlat; EFlat ]
-            keyNotes CMinor =! [ C; D; EFlat; F; G; AFlat; BFlat ]
-            keyNotes GMinor =! [ G; A; BFlat; C; D; EFlat; F ]
-            keyNotes DMinor =! [ D; E; F; G; A; BFlat; C ]
+            keyNotes AMinor |> should equal [ A; B; C; D; E; F; G ]
+            keyNotes EMinor |> should equal [ E; FSharp; G; A; B; C; D ]
+            keyNotes BMinor |> should equal [ B; CSharp; D; E; FSharp; G; A ]
+            keyNotes FSharpMinor |> should equal [ FSharp; GSharp; A; B; CSharp; D; E ]
+            keyNotes CSharpMinor |> should equal [ CSharp; DSharp; E; FSharp; GSharp; A; B ]
+            keyNotes GSharpMinor |> should equal [ GSharp; ASharp; B; CSharp; DSharp; E; FSharp ]
+            keyNotes EFlatMinor |> should equal [ EFlat; F; GFlat; AFlat; BFlat; B; DFlat ]
+            keyNotes BFlatMinor |> should equal [ BFlat; C; DFlat; EFlat; F; GFlat; AFlat ]
+            keyNotes FMinor |> should equal [ F; G; AFlat; BFlat; C; DFlat; EFlat ]
+            keyNotes CMinor |> should equal [ C; D; EFlat; F; G; AFlat; BFlat ]
+            keyNotes GMinor |> should equal [ G; A; BFlat; C; D; EFlat; F ]
+            keyNotes DMinor |> should equal [ D; E; F; G; A; BFlat; C ]
 
         [<Property>]
         let ``Major keys have formula R, W, W, H, W, W, W, H and Minor keys have formula R, W, H, W, W, H, W, W`` (key :Key) =

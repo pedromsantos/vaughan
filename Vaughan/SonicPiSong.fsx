@@ -1,4 +1,4 @@
-﻿#r "../packages/Bespoke-OSC-Library/lib/Bespoke.Common.Osc.dll"
+﻿#r "../packages/bespoke-osc-library/1.0.0/lib/Bespoke.Common.Osc.dll"
 
 #load "Infrastructure.fs"
 #load "Domain.fs"
@@ -10,7 +10,7 @@ open Vaughan.Domain
 open Vaughan.SonicPi
 
 let section = Section(
-                (4<beat>, Quarter), 
+                (4<beat>, Quarter),
                 CMajor,
                 [
                     [

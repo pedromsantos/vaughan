@@ -1,7 +1,0 @@
-source https://www.nuget.org/api/v2
-nuget Bespoke-OSC-Library
-nuget FAKE
-nuget Unquote
-nuget NUnit.Runners
-nuget FsCheck.NUnit
-nuget FParsec

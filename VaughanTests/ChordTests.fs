@@ -1,9 +1,10 @@
 namespace VaughanTests
     module ChordTests =
-        open NUnit.Framework
+        open Xunit
+        open FsUnit
+        open FsUnit.Xunit
         open FsCheck
-        open FsCheck.NUnit
-        open Swensen.Unquote
+        open FsCheck.Xunit
         open Vaughan.Domain
         open Vaughan.Notes
         open Vaughan.Chords
@@ -41,26 +42,26 @@ namespace VaughanTests
         let cMaj13 = {Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh); (A, Thirteenth)]; ChordType=Closed; Name=""}
         let cMaj13sharp11 = {Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh); (A, Thirteenth); (FSharp, Eleventh)]; ChordType=Closed; Name=""}
 
-        [<Test>]
+        [<Fact>]
         let ``Chord should return note names``() =
-            noteNames cMaj7 =! ["C"; "E"; "G"; "B"]
+            noteNames cMaj7 |> should equal ["C"; "E"; "G"; "B"]
 
-        [<Test>]
+        [<Fact>]
         let ``Chord should return lowest note for bass``() =
-            bass cDim7 =! C
+            bass cDim7 |> should equal C
 
-        [<Test>]
+        [<Fact>]
         let ``Chord should return highest note for lead``() =
-            lead cMin7 =! BFlat
+            lead cMin7 |> should equal BFlat
 
-        [<Test>]
+        [<Fact>]
         let ``Chord should be named after the root``() =
-            test <@ (name cMin7b5).StartsWith("C") @>
+            (name cMin7b5) |> should startWith "C"
 
         [<Property>]
         let ``Chords should be named after the root`` (root :Note) (quality: ChordQuality) =
             let chord = chord root quality
-            (name chord).StartsWith(noteName root)
+            (name chord) |> should startWith (noteName root)
 
         [<Property>]
         let ``Major chords should be named after the quality`` (root :Note) (quality: ChordQuality) =
@@ -90,85 +91,85 @@ namespace VaughanTests
                         || (name chord).StartsWith((noteName root) + "11")
                         || (name chord).StartsWith((noteName root) + "13"))
 
-        [<Test>]
+        [<Fact>]
         let ``Chord should be named after the quality``() =
-            test <@ (name cMaj).StartsWith("CMaj") @>
-            test <@ (name cAug).StartsWith("CAug") @>
-            test <@ (name cMin).StartsWith("CMin") @>
-            test <@ (name cDim).StartsWith("CDim") @>
-            test <@ (name cMaj7).StartsWith("CMaj7") @>
-            test <@ (name cAug7).StartsWith("CAug7") @>
-            test <@ (name cMin7).StartsWith("CMin7") @>
-            test <@ (name cDim7).StartsWith("CDim7") @>
-            test <@ (name c6).StartsWith("C6") @>
+            name cMaj |> should startWith "CMaj"
+            name cAug |> should startWith "CAug"
+            name cMin |> should startWith "CMin"
+            name cDim |> should startWith "CDim"
+            name cMaj7 |> should startWith "CMaj7"
+            name cAug7 |> should startWith "CAug7"
+            name cMin7 |> should startWith "CMin7"
+            name cDim7 |> should startWith "CDim7"
+            name c6 |> should startWith "C6"
 
-        [<Test>]
+        [<Fact>]
         let ``Should create chord from root and function``() =
-            (chord C Major).Notes =! cMaj.Notes
-            (chord C Augmented).Notes =! cAug.Notes
-            (chord C Minor).Notes =! cMin.Notes
-            (chord C Diminished).Notes =! cDim.Notes
-            (chord C Major7).Notes =! cMaj7.Notes
-            (chord C Augmented7).Notes =! cAug7.Notes
-            (chord C Minor7).Notes =! cMin7.Notes
-            (chord C Diminished7).Notes =! cDim7.Notes
-            (chord C Minor7b5).Notes =! cMin7b5.Notes
-            (chord C Major6).Notes =! c6.Notes
-            (chord C Major6Add9).Notes =! c6add9.Notes
-            (chord C Major6Flat5Add9).Notes =! c6flat5add9.Notes
-            (chord C Dominant7Flat5).Notes =! c7flat5.Notes
-            (chord C Dominant7Flat9).Notes =! c7flat9.Notes
-            (chord C Dominant7Sharp9).Notes =! c7sharp9.Notes
-            (chord C Dominant7Flat5Flat9).Notes =! c7flat5flat9.Notes
-            (chord C Dominant7Flat5Sharp9).Notes =! c7flat5sharp9.Notes
-            (chord C Dominant9).Notes =! c9.Notes
-            (chord C Dominant11).Notes =! c11.Notes
-            (chord C Dominant13).Notes =! c13.Notes
-            (chord C Major9).Notes =! cMaj9.Notes
-            (chord C Major11).Notes =! cMaj11.Notes
-            (chord C Major13).Notes =! cMaj13.Notes
-            (chord C Major9Sharp11).Notes =! cMaj9Sharp11.Notes
-            (chord C Major13Sharp11).Notes =! cMaj13sharp11.Notes
-            (chord C Minor6).Notes =! cMin6.Notes
-            (chord C Minor6Add9).Notes =! cMin6add9.Notes
-            (chord C MinorMaj7).Notes =! cMinMaj7.Notes
-            (chord C Minor9).Notes =! cMin9.Notes
-            (chord C MinorMaj9).Notes =! cMinMaj9.Notes
+            (chord C Major).Notes |> should equal cMaj.Notes
+            (chord C Augmented).Notes |> should equal cAug.Notes
+            (chord C Minor).Notes |> should equal cMin.Notes
+            (chord C Diminished).Notes |> should equal cDim.Notes
+            (chord C Major7).Notes |> should equal cMaj7.Notes
+            (chord C Augmented7).Notes |> should equal cAug7.Notes
+            (chord C Minor7).Notes |> should equal cMin7.Notes
+            (chord C Diminished7).Notes |> should equal cDim7.Notes
+            (chord C Minor7b5).Notes |> should equal cMin7b5.Notes
+            (chord C Major6).Notes |> should equal c6.Notes
+            (chord C Major6Add9).Notes |> should equal c6add9.Notes
+            (chord C Major6Flat5Add9).Notes |> should equal c6flat5add9.Notes
+            (chord C Dominant7Flat5).Notes |> should equal c7flat5.Notes
+            (chord C Dominant7Flat9).Notes |> should equal c7flat9.Notes
+            (chord C Dominant7Sharp9).Notes |> should equal c7sharp9.Notes
+            (chord C Dominant7Flat5Flat9).Notes |> should equal c7flat5flat9.Notes
+            (chord C Dominant7Flat5Sharp9).Notes |> should equal c7flat5sharp9.Notes
+            (chord C Dominant9).Notes |> should equal c9.Notes
+            (chord C Dominant11).Notes |> should equal c11.Notes
+            (chord C Dominant13).Notes |> should equal c13.Notes
+            (chord C Major9).Notes |> should equal cMaj9.Notes
+            (chord C Major11).Notes |> should equal cMaj11.Notes
+            (chord C Major13).Notes |> should equal cMaj13.Notes
+            (chord C Major9Sharp11).Notes |> should equal cMaj9Sharp11.Notes
+            (chord C Major13Sharp11).Notes |> should equal cMaj13sharp11.Notes
+            (chord C Minor6).Notes |> should equal cMin6.Notes
+            (chord C Minor6Add9).Notes |> should equal cMin6add9.Notes
+            (chord C MinorMaj7).Notes |> should equal cMinMaj7.Notes
+            (chord C Minor9).Notes |> should equal cMin9.Notes
+            (chord C MinorMaj9).Notes |> should equal cMinMaj9.Notes
 
-        [<Test>]
+        [<Fact>]
         let ``Should filter function from chord``() =
-            (c9 |> skipFunction Fifth).Notes =! [(C, Root); (E, Third); (BFlat, Seventh); (D, Ninth)]
-            (c9 |> skipFunction Root).Notes =! [(E, Third); (G, Fifth); (BFlat, Seventh); (D, Ninth)]
-            (c9 |> skipFunction Seventh).Notes =! [(C, Root); (E, Third); (G, Fifth); (D, Ninth)]
+            (c9 |> skipFunction Fifth).Notes |> should equal [(C, Root); (E, Third); (BFlat, Seventh); (D, Ninth)]
+            (c9 |> skipFunction Root).Notes |> should equal [(E, Third); (G, Fifth); (BFlat, Seventh); (D, Ninth)]
+            (c9 |> skipFunction Seventh).Notes |> should equal [(C, Root); (E, Third); (G, Fifth); (D, Ninth)]
 
-        [<Test>]
+        [<Fact>]
         let ``Should invert chord for first inversion``() =
-            (invert cMaj).Notes =! [(E, Third); (G, Fifth); (C, Root)]
-            (invert cAug).Notes =! [(E, Third); (GSharp, Fifth); (C, Root)]
-            (invert cMin).Notes =! [(EFlat, Third); (G, Fifth); (C, Root)]
-            (invert cDim).Notes =! [(EFlat, Third); (GFlat, Fifth); (C, Root)]
-            (invert cMaj7).Notes =! [(E, Third); (G, Fifth); (B, Seventh); (C, Root)]
-            (invert cAug7).Notes =! [(E, Third); (GSharp, Fifth); (B, Seventh); (C, Root)]
-            (invert cMin7).Notes =! [(EFlat, Third); (G, Fifth); (BFlat, Seventh); (C, Root)]
-            (invert cDim7).Notes =! [(EFlat, Third); (GFlat, Fifth); (A, Seventh); (C, Root)]
-            (invert cMin7b5).Notes =! [(EFlat, Third); (GFlat, Fifth); (BFlat, Seventh); (C, Root)]
+            (invert cMaj).Notes |> should equal [(E, Third); (G, Fifth); (C, Root)]
+            (invert cAug).Notes |> should equal [(E, Third); (GSharp, Fifth); (C, Root)]
+            (invert cMin).Notes |> should equal [(EFlat, Third); (G, Fifth); (C, Root)]
+            (invert cDim).Notes |> should equal [(EFlat, Third); (GFlat, Fifth); (C, Root)]
+            (invert cMaj7).Notes |> should equal [(E, Third); (G, Fifth); (B, Seventh); (C, Root)]
+            (invert cAug7).Notes |> should equal [(E, Third); (GSharp, Fifth); (B, Seventh); (C, Root)]
+            (invert cMin7).Notes |> should equal [(EFlat, Third); (G, Fifth); (BFlat, Seventh); (C, Root)]
+            (invert cDim7).Notes |> should equal [(EFlat, Third); (GFlat, Fifth); (A, Seventh); (C, Root)]
+            (invert cMin7b5).Notes |> should equal [(EFlat, Third); (GFlat, Fifth); (BFlat, Seventh); (C, Root)]
 
         [<Property>]
         let ``Should put third on bass for first inversion`` (root :Note) (quality: ChordQuality) =
             let chord = chord root quality
             snd (invert chord).Notes.Head = Third
 
-        [<Test>]
+        [<Fact>]
         let ``Should invert chord for second inversion``() =
-            (cMaj |> invert |> invert).Notes =! [(G, Fifth); (C, Root); (E, Third)]
-            (cAug |> invert |> invert).Notes =! [(GSharp, Fifth); (C, Root); (E, Third)]
-            (cMin |> invert |> invert).Notes =! [(G, Fifth); (C, Root); (EFlat, Third)]
-            (cDim |> invert |> invert).Notes =! [(GFlat, Fifth); (C, Root); (EFlat, Third)]
-            (cMaj7 |> invert |> invert).Notes =! [(G, Fifth); (B, Seventh); (C, Root); (E, Third)]
-            (cAug7 |> invert |> invert).Notes =! [(GSharp, Fifth); (B, Seventh); (C, Root); (E, Third)]
-            (cMin7 |> invert |> invert).Notes =! [(G, Fifth); (BFlat, Seventh); (C, Root); (EFlat, Third)]
-            (cDim7 |> invert |> invert).Notes =! [(GFlat, Fifth); (A, Seventh); (C, Root); (EFlat, Third)]
-            (cMin7b5 |> invert |> invert).Notes =! [(GFlat, Fifth); (BFlat, Seventh); (C, Root); (EFlat, Third)]
+            (cMaj |> invert |> invert).Notes |> should equal [(G, Fifth); (C, Root); (E, Third)]
+            (cAug |> invert |> invert).Notes |> should equal [(GSharp, Fifth); (C, Root); (E, Third)]
+            (cMin |> invert |> invert).Notes |> should equal [(G, Fifth); (C, Root); (EFlat, Third)]
+            (cDim |> invert |> invert).Notes |> should equal [(GFlat, Fifth); (C, Root); (EFlat, Third)]
+            (cMaj7 |> invert |> invert).Notes |> should equal [(G, Fifth); (B, Seventh); (C, Root); (E, Third)]
+            (cAug7 |> invert |> invert).Notes |> should equal [(GSharp, Fifth); (B, Seventh); (C, Root); (E, Third)]
+            (cMin7 |> invert |> invert).Notes |> should equal [(G, Fifth); (BFlat, Seventh); (C, Root); (EFlat, Third)]
+            (cDim7 |> invert |> invert).Notes |> should equal [(GFlat, Fifth); (A, Seventh); (C, Root); (EFlat, Third)]
+            (cMin7b5 |> invert |> invert).Notes |> should equal [(GFlat, Fifth); (BFlat, Seventh); (C, Root); (EFlat, Third)]
 
         [<Property>]
         let ``Should put fifth on bass for second inversion`` (root :Note) (quality: ChordQuality) =
@@ -176,13 +177,13 @@ namespace VaughanTests
             snd (chord |> invert |> invert).Notes.Head = Fifth
 
 
-        [<Test>]
+        [<Fact>]
         let ``Should invert chord for third inversion``() =
-            (cMaj7 |> invert |> invert |> invert).Notes =! [(B, Seventh); (C, Root); (E, Third); (G, Fifth)]
-            (cAug7 |> invert |> invert |> invert).Notes =! [(B, Seventh); (C, Root); (E, Third); (GSharp, Fifth)]
-            (cMin7 |> invert |> invert |> invert).Notes =! [(BFlat, Seventh); (C, Root); (EFlat, Third); (G, Fifth)]
-            (cDim7 |> invert |> invert |> invert).Notes =! [(A, Seventh); (C, Root); (EFlat, Third); (GFlat, Fifth)]
-            (cMin7b5 |> invert |> invert |> invert).Notes =! [(BFlat, Seventh); (C, Root); (EFlat, Third); (GFlat, Fifth)]
+            (cMaj7 |> invert |> invert |> invert).Notes |> should equal [(B, Seventh); (C, Root); (E, Third); (G, Fifth)]
+            (cAug7 |> invert |> invert |> invert).Notes |> should equal [(B, Seventh); (C, Root); (E, Third); (GSharp, Fifth)]
+            (cMin7 |> invert |> invert |> invert).Notes |> should equal [(BFlat, Seventh); (C, Root); (EFlat, Third); (G, Fifth)]
+            (cDim7 |> invert |> invert |> invert).Notes |> should equal [(A, Seventh); (C, Root); (EFlat, Third); (GFlat, Fifth)]
+            (cMin7b5 |> invert |> invert |> invert).Notes |> should equal [(BFlat, Seventh); (C, Root); (EFlat, Third); (GFlat, Fifth)]
 
         [<Property>]
         let ``Should put sixth or seventh on bass for third inversion`` (root :Note) (quality: ChordQuality) =
@@ -193,14 +194,14 @@ namespace VaughanTests
                             || snd (chord |> invert |> invert |> invert).Notes.Head = Sixth)
 
 
-        [<Test>]
+        [<Fact>]
         let ``Should loop inversions``() =
-            cMaj7 |> invert |> invert |> invert |> invert =! cMaj7
-            cAug7 |> invert |> invert |> invert |> invert =! cAug7
+            cMaj7 |> invert |> invert |> invert |> invert |> should equal cMaj7
+            cAug7 |> invert |> invert |> invert |> invert |> should equal cAug7
 
-        [<Test>]
+        [<Fact>]
         let ``Should transform chord to drop2``() =
-            (cMaj7 |> toDrop2).Notes =! [(C, Root); (G, Fifth); (B, Seventh); (E, Third);]
+            (cMaj7 |> toDrop2).Notes |> should equal [(C, Root); (G, Fifth); (B, Seventh); (E, Third);]
 
         [<Property>]
         let ``Drop 2 chords have third on lead and root on bass`` (root :Note) (quality: ChordQuality) =
@@ -211,9 +212,9 @@ namespace VaughanTests
 
             (chord.Notes.Length = 4) ==> lazy (lead = Third && bass = Root)
 
-        [<Test>]
+        [<Fact>]
         let ``Should transform chord to drop3``() =
-            (cMaj7 |> toDrop3).Notes =! [(C, Root); (B, Seventh); (E, Third); (G, Fifth)]
+            (cMaj7 |> toDrop3).Notes |> should equal [(C, Root); (B, Seventh); (E, Third); (G, Fifth)]
 
         [<Property>]
         let ``Drop 3 chords have fifth on lead`` (root :Note) (quality: ChordQuality) =
@@ -224,12 +225,12 @@ namespace VaughanTests
 
             (chord.Notes.Length = 4) ==> lazy (lead = Fifth && bass = Root)
 
-        [<Test>]
+        [<Fact>]
         let ``Should invert drop2``() =
-            (cMaj7 |> toDrop2 |> invert).Notes =! [(E, Third); (B, Seventh); (C, Root); (G, Fifth);]
-            (cMaj7 |> toDrop2 |> invert |> invert).Notes =! [(G, Fifth); (C, Root); (E, Third); (B, Seventh);]
-            (cMaj7 |> toDrop2 |> invert |> invert |> invert ).Notes =! [(B, Seventh); (E, Third); (G, Fifth); (C, Root); ]
-            (cMaj7 |> toDrop2 |> invert |> invert |> invert |> invert).Notes =! [(C, Root); (G, Fifth); (B, Seventh); (E, Third);]
+            (cMaj7 |> toDrop2 |> invert).Notes |> should equal [(E, Third); (B, Seventh); (C, Root); (G, Fifth);]
+            (cMaj7 |> toDrop2 |> invert |> invert).Notes |> should equal [(G, Fifth); (C, Root); (E, Third); (B, Seventh);]
+            (cMaj7 |> toDrop2 |> invert |> invert |> invert ).Notes |> should equal [(B, Seventh); (E, Third); (G, Fifth); (C, Root); ]
+            (cMaj7 |> toDrop2 |> invert |> invert |> invert |> invert).Notes |> should equal [(C, Root); (G, Fifth); (B, Seventh); (E, Third);]
 
         [<Property>]
         let ``First inversion drop 2 chords have fifth on lead and third on bass`` (root :Note) (quality: ChordQuality) =
@@ -267,12 +268,12 @@ namespace VaughanTests
 
             (chord.Notes.Length = 4) ==> lazy (bass = Root && lead = Third)
 
-        [<Test>]
+        [<Fact>]
         let ``Should invert drop3``() =
-            (cMaj7 |> toDrop3 |> invert).Notes =! [(E, Third); (C, Root); (G, Fifth); (B, Seventh)]
-            (cMaj7 |> toDrop3 |> invert |> invert).Notes =! [(G, Fifth); (E, Third); (B, Seventh); (C, Root);]
-            (cMaj7 |> toDrop3 |> invert |> invert |> invert).Notes =! [(B, Seventh); (G, Fifth); (C, Root); (E, Third);]
-            (cMaj7 |> toDrop3 |> invert |> invert |> invert |> invert).Notes =! [(C, Root); (B, Seventh); (E, Third); (G, Fifth)]
+            (cMaj7 |> toDrop3 |> invert).Notes |> should equal [(E, Third); (C, Root); (G, Fifth); (B, Seventh)]
+            (cMaj7 |> toDrop3 |> invert |> invert).Notes |> should equal [(G, Fifth); (E, Third); (B, Seventh); (C, Root);]
+            (cMaj7 |> toDrop3 |> invert |> invert |> invert).Notes |> should equal [(B, Seventh); (G, Fifth); (C, Root); (E, Third);]
+            (cMaj7 |> toDrop3 |> invert |> invert |> invert |> invert).Notes |> should equal [(C, Root); (B, Seventh); (E, Third); (G, Fifth)]
 
         [<Property>]
         let ``First inversion drop 3 chords have third on lead and seventh or sixth on bass`` (root :Note) (quality: ChordQuality) =
@@ -310,9 +311,9 @@ namespace VaughanTests
 
             (chord.Notes.Length = 4) ==> lazy (bass = Root && lead = Fifth)
 
-        [<Test>]
+        [<Fact>]
         let ``Should choose invertion that satisfies having a specific function as lead``() =
-            (inversionForFunctionAsLead cMaj Third).Notes =! (cMaj |> invert |> invert).Notes
+            (inversionForFunctionAsLead cMaj Third).Notes |> should equal (cMaj |> invert |> invert).Notes
 
         [<Property>]
         let ``Should choose invertion that satisfies having a root as lead`` (root :Note) (quality: ChordQuality) =
@@ -335,9 +336,9 @@ namespace VaughanTests
 
             invertedChord.Notes |> List.last |> snd = Fifth
 
-        [<Test>]
+        [<Fact>]
         let ``Should choose invertion that satisfies having a specific function as bass``() =
-            (inversionForFunctionAsBass cMaj Fifth).Notes =! (cMaj |> invert |> invert).Notes
+            (inversionForFunctionAsBass cMaj Fifth).Notes |> should equal (cMaj |> invert |> invert).Notes
 
         [<Property>]
         let ``Should choose invertion that satisfies having a root as bass`` (root :Note) (quality: ChordQuality) =
@@ -382,23 +383,23 @@ namespace VaughanTests
 
             (distancesToProvidedNote |> List.min) = (distancesToProvidedNote |> List.head)
 
-        [<Test>]
+        [<Fact>]
         let ``It should return an empty list of fitting chords for an empty list of notes`` () =
             let fittingChords = chordsFitting [A; B]
 
-            fittingChords =! []
+            fittingChords |> should be Empty
 
         [<Property>]
         let ``It should return an empty list of fitting chords for list of notes with one note`` (note :Note) =
             let fittingChords = chordsFitting [note]
 
-            fittingChords =! []
+            fittingChords |> should be Empty
 
         [<Property>]
         let ``It should return an empty list of fitting chords for list of notes with two notes`` (note1 :Note)  (note2 :Note) =
             let fittingChords = chordsFitting [note1; note2]
 
-            fittingChords =! []
+            fittingChords |> should be Empty
 
         [<Property>]
         let ``It should return the fitting chord for list of notes from triad`` (root :Note) (quality :ChordQuality) =

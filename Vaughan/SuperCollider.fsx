@@ -1,9 +1,8 @@
-﻿#r "../packages/Bespoke-OSC-Library/lib/Bespoke.Common.Osc.dll"
+﻿#r "../packages/bespoke-osc-library/1.0.0/lib/Bespoke.Common.Osc.dll"
 
 open System
 open System.Net
 open Bespoke.Common.Osc
-
 OscPacket.LittleEndianByteOrder <- false
 
 let superCollider = new IPEndPoint(IPAddress.Loopback, 57110)
@@ -25,16 +24,16 @@ let stop() =
     msg.Append(0) |> ignore
     msg.Send(superCollider) |> ignore
 
-let private sinOsc freq =                
+let private sinOsc freq =
     let id = nextId()
-    
+
     let msg = new OscMessage(superCollider, "/s_new")
     msg.Append("default") |> ignore
     msg.Append(id) |> ignore
     msg.Append(1) |> ignore
     msg.Append(0) |> ignore
     msg.Append("freq") |> ignore
-    msg.Append(tofloat32 freq) |> ignore        
+    msg.Append(tofloat32 freq) |> ignore
     msg.Send(superCollider)
 
 sinOsc 440.0

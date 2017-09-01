@@ -1,4 +1,4 @@
-﻿#r "../packages/Bespoke-OSC-Library/lib/Bespoke.Common.Osc.dll"
+﻿#r "../packages/bespoke-osc-library/1.0.0/lib/Bespoke.Common.Osc.dll"
 
 #load "Infrastructure.fs"
 #load "Domain.fs"
@@ -12,7 +12,7 @@ open Vaughan.SonicPi
 Statments
     [
         UseBpm 120<bpm>;
-        LiveLoop("Foo", 
+        LiveLoop("Foo",
                     [
                         PlaySample(LoopingSample Garzul, []);
                         UseSynth TheProphet;

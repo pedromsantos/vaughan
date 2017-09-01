@@ -1,4 +1,4 @@
-﻿#r "../packages/Bespoke-OSC-Library/lib/Bespoke.Common.Osc.dll"
+﻿#r "../packages/bespoke-osc-library/1.0.0/lib/Bespoke.Common.Osc.dll"
 
 #load "Infrastructure.fs"
 #load "Domain.fs"
@@ -21,8 +21,8 @@ Statments[
                                                                         Attack(2.0<beat>);
                                                                         Release(2.0<beat>)]);
                                                     PlayChord(chord C Major, TwoLine, [
-                                                                                    Amplitude(1.0<loud>); 
-                                                                                    Release(2.0<beat>); 
+                                                                                    Amplitude(1.0<loud>);
+                                                                                    Release(2.0<beat>);
                                                                                     Panning(1.0<pan>)]);
                                                     Rest 2<beat>;
                                                     Arpeggio([C; E; G; B], OneLine, [1.0<beat>], [])

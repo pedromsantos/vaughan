@@ -1,9 +1,10 @@
 namespace VaughanTests
     module ScalesHormonizerTests =
-        open NUnit.Framework
+        open Xunit
+        open FsUnit
+        open FsUnit.Xunit
         open FsCheck
-        open FsCheck.NUnit
-        open Swensen.Unquote
+        open FsCheck.Xunit
         open Vaughan.Domain
         open Vaughan.ScaleHarmonizer
         open Vaughan.Scales
@@ -44,27 +45,27 @@ namespace VaughanTests
         let aFlatMaj7 = {chord with Notes= [(AFlat, Root); (C, Third); (EFlat, Fifth); (G, Seventh)]}
         let bDim7 = {chord with Notes= [(B, Root); (D, Third); (F, Fifth); (AFlat, Seventh)]} 
 
-        [<Test>]
+        [<Fact>]
         let ``Should create triads for Ionian scale`` () =
             let cIonian = createScaleNotes Ionian C
-            (triadsHarmonizer ScaleDegree.I cIonian).Notes =! cMaj.Notes
-            (triadsHarmonizer ScaleDegree.II cIonian).Notes =! dMin.Notes
-            (triadsHarmonizer ScaleDegree.III cIonian).Notes =! eMin.Notes
-            (triadsHarmonizer ScaleDegree.IV cIonian).Notes =! fMaj.Notes
-            (triadsHarmonizer ScaleDegree.V cIonian).Notes =! gMaj.Notes
-            (triadsHarmonizer ScaleDegree.VI cIonian).Notes =! aMin.Notes
-            (triadsHarmonizer ScaleDegree.VII cIonian).Notes =! bDim.Notes
+            (triadsHarmonizer ScaleDegree.I cIonian).Notes |> should equal cMaj.Notes
+            (triadsHarmonizer ScaleDegree.II cIonian).Notes |> should equal dMin.Notes
+            (triadsHarmonizer ScaleDegree.III cIonian).Notes |> should equal eMin.Notes
+            (triadsHarmonizer ScaleDegree.IV cIonian).Notes |> should equal fMaj.Notes
+            (triadsHarmonizer ScaleDegree.V cIonian).Notes |> should equal gMaj.Notes
+            (triadsHarmonizer ScaleDegree.VI cIonian).Notes |> should equal aMin.Notes
+            (triadsHarmonizer ScaleDegree.VII cIonian).Notes |> should equal bDim.Notes
 
-        [<Test>]
+        [<Fact>]
         let ``Should create triads for Harmonic Minor scale`` () =
             let cMinor = createScaleNotes HarmonicMinor C
-            (triadsHarmonizer ScaleDegree.I cMinor).Notes =! cMin.Notes
-            (triadsHarmonizer ScaleDegree.II cMinor).Notes =! dDim.Notes
-            (triadsHarmonizer ScaleDegree.III cMinor).Notes =! eFlatAug.Notes
-            (triadsHarmonizer ScaleDegree.IV cMinor).Notes =! fMin.Notes
-            (triadsHarmonizer ScaleDegree.V cMinor).Notes =! gMaj.Notes
-            (triadsHarmonizer ScaleDegree.VI cMinor).Notes =! aFlatMaj.Notes
-            (triadsHarmonizer ScaleDegree.VII cMinor).Notes =! bDim.Notes
+            (triadsHarmonizer ScaleDegree.I cMinor).Notes |> should equal cMin.Notes
+            (triadsHarmonizer ScaleDegree.II cMinor).Notes |> should equal dDim.Notes
+            (triadsHarmonizer ScaleDegree.III cMinor).Notes |> should equal eFlatAug.Notes
+            (triadsHarmonizer ScaleDegree.IV cMinor).Notes |> should equal fMin.Notes
+            (triadsHarmonizer ScaleDegree.V cMinor).Notes |> should equal gMaj.Notes
+            (triadsHarmonizer ScaleDegree.VI cMinor).Notes |> should equal aFlatMaj.Notes
+            (triadsHarmonizer ScaleDegree.VII cMinor).Notes |> should equal bDim.Notes
 
         [<Property(Arbitrary = [| typeof<DiatonicScales> |])>]
         let ``Should create triads for scale`` (scaleType: ScaleType) (scaleDegree: ScaleDegree) (root: Note)=
@@ -76,27 +77,27 @@ namespace VaughanTests
             |> List.forall (
                 fun e -> e = MajorThird || e = MinorThird || e = MajorSecond || e = PerfectFourth)
 
-        [<Test>]
+        [<Fact>]
         let ``Should create seventh chords for Ionian scale`` () =
             let cIonian = createScaleNotes Ionian C
-            (seventhsHarmonizer ScaleDegree.I cIonian).Notes =! cMaj7.Notes
-            (seventhsHarmonizer ScaleDegree.II cIonian).Notes =! dMin7.Notes
-            (seventhsHarmonizer ScaleDegree.III cIonian).Notes =! eMin7.Notes
-            (seventhsHarmonizer ScaleDegree.IV cIonian).Notes =! fMaj7.Notes
-            (seventhsHarmonizer ScaleDegree.V cIonian).Notes =! gDom7.Notes
-            (seventhsHarmonizer ScaleDegree.VI cIonian).Notes =! aMin7.Notes
-            (seventhsHarmonizer ScaleDegree.VII cIonian).Notes =! bMin7b5.Notes
+            (seventhsHarmonizer ScaleDegree.I cIonian).Notes |> should equal cMaj7.Notes
+            (seventhsHarmonizer ScaleDegree.II cIonian).Notes |> should equal dMin7.Notes
+            (seventhsHarmonizer ScaleDegree.III cIonian).Notes |> should equal eMin7.Notes
+            (seventhsHarmonizer ScaleDegree.IV cIonian).Notes |> should equal fMaj7.Notes
+            (seventhsHarmonizer ScaleDegree.V cIonian).Notes |> should equal gDom7.Notes
+            (seventhsHarmonizer ScaleDegree.VI cIonian).Notes |> should equal aMin7.Notes
+            (seventhsHarmonizer ScaleDegree.VII cIonian).Notes |> should equal bMin7b5.Notes
 
-        [<Test>]
+        [<Fact>]
         let ``Should create seventh chords for Harmonic Minor scale`` () =
             let cMinor = createScaleNotes HarmonicMinor C
-            (seventhsHarmonizer ScaleDegree.I cMinor).Notes =! cMinMaj7.Notes
-            (seventhsHarmonizer ScaleDegree.II cMinor).Notes =! dMin7b5.Notes
-            (seventhsHarmonizer ScaleDegree.III cMinor).Notes =! eFlatAug7.Notes
-            (seventhsHarmonizer ScaleDegree.IV cMinor).Notes =! fMin7.Notes
-            (seventhsHarmonizer ScaleDegree.V cMinor).Notes =! gDom7.Notes
-            (seventhsHarmonizer ScaleDegree.VI cMinor).Notes =! aFlatMaj7.Notes
-            (seventhsHarmonizer ScaleDegree.VII cMinor).Notes =! bDim7.Notes
+            (seventhsHarmonizer ScaleDegree.I cMinor).Notes |> should equal cMinMaj7.Notes
+            (seventhsHarmonizer ScaleDegree.II cMinor).Notes |> should equal dMin7b5.Notes
+            (seventhsHarmonizer ScaleDegree.III cMinor).Notes |> should equal eFlatAug7.Notes
+            (seventhsHarmonizer ScaleDegree.IV cMinor).Notes |> should equal fMin7.Notes
+            (seventhsHarmonizer ScaleDegree.V cMinor).Notes |> should equal gDom7.Notes
+            (seventhsHarmonizer ScaleDegree.VI cMinor).Notes |> should equal aFlatMaj7.Notes
+            (seventhsHarmonizer ScaleDegree.VII cMinor).Notes |> should equal bDim7.Notes
 
         [<Property(Arbitrary = [| typeof<DiatonicScales> |])>]
         let ``Should create seventh chords for scale`` (scaleType: ScaleType) (scaleDegree: ScaleDegree) (root: Note) =
@@ -108,13 +109,13 @@ namespace VaughanTests
             |> List.forall (
                 fun e -> e = MajorThird || e = MinorThird || e = MajorSecond || e = PerfectFourth)
 
-        [<Test>]
+        [<Fact>]
         let ``Should create ninth chords for Ionian scale`` () =
             let cIonian = createScaleNotes Ionian C
-            (ninthsHarmonizer ScaleDegree.I cIonian).Notes =! cMaj9.Notes
-            (ninthsHarmonizer ScaleDegree.II cIonian).Notes =! dMin9.Notes
-            (ninthsHarmonizer ScaleDegree.III cIonian).Notes =! eMin9.Notes
-            (ninthsHarmonizer ScaleDegree.IV cIonian).Notes =! fMaj9.Notes
-            (ninthsHarmonizer ScaleDegree.V cIonian).Notes =! gDom9.Notes
-            (ninthsHarmonizer ScaleDegree.VI cIonian).Notes =! aMin9.Notes
-            (ninthsHarmonizer ScaleDegree.VII cIonian).Notes =! bMin9b5.Notes
+            (ninthsHarmonizer ScaleDegree.I cIonian).Notes |> should equal cMaj9.Notes
+            (ninthsHarmonizer ScaleDegree.II cIonian).Notes |> should equal dMin9.Notes
+            (ninthsHarmonizer ScaleDegree.III cIonian).Notes |> should equal eMin9.Notes
+            (ninthsHarmonizer ScaleDegree.IV cIonian).Notes |> should equal fMaj9.Notes
+            (ninthsHarmonizer ScaleDegree.V cIonian).Notes |> should equal gDom9.Notes
+            (ninthsHarmonizer ScaleDegree.VI cIonian).Notes |> should equal aMin9.Notes
+            (ninthsHarmonizer ScaleDegree.VII cIonian).Notes |> should equal bMin9b5.Notes

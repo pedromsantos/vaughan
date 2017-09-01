@@ -9,7 +9,7 @@
         open Chords
 
         type Synths =
-            | Beep | BladeRunnerStyleStrings | BrownNoise 
+            | Beep | BladeRunnerStyleStrings | BrownNoise
             | ChipBass | ChipLead | ChipNoise | ClipNoise
             | DarkAmbience | DetunedPulseWave | DetunedSawWave | DetunedTriangleWave | DullBell
             | Fm
@@ -23,7 +23,7 @@
             | SawWave | SineWave | SquareWave | SuperSaw
             | TB303Emulation | TechSaws | TriangleWave
             | Zawa
-        
+
         type DrumSamples =
             | HeavyKick
             | TomMidSoft | TomMidHard | TomLoSoft | TomLoHard | TomHiSoft | TomHiHard
@@ -46,8 +46,7 @@
             | Wood
             | Pop
             | Beep
-            | Blip
-            | Blip2
+            | Blip | Blip2
             | Ping
             | Bell
             | Flip
@@ -89,7 +88,7 @@
             | Voxy
             | VoxyHit
             | Dnb
-        
+
         type LoopingSamples =
             | Industrial
             | Compus
@@ -130,9 +129,9 @@
             | Whammy
             | Wobble
             | Vowel
-        
-        type PlayOption = 
-            | Amplitude of float<loud> 
+
+        type PlayOption =
+            | Amplitude of float<loud>
             | Panning of float<pan>
             | Release of float<beat>
             | Attack of float<beat>
@@ -244,31 +243,31 @@
             | LoopingSample s -> loopingSampleToSonicPi s
 
         let private fxToSonicPiFx = function
-            | BandPassFilter -> "bpf:" | BandEQFilter -> ":band_eq" | Bitcrusher -> ":bitcrusher" 
-            | Compressor -> ":compressor" 
-            | Distortion -> ":distortion" 
-            | Echo -> ":echo" 
-            | Flanger -> ":flanger" 
-            | GVerb -> ":gverb" 
+            | BandPassFilter -> "bpf:" | BandEQFilter -> ":band_eq" | Bitcrusher -> ":bitcrusher"
+            | Compressor -> ":compressor"
+            | Distortion -> ":distortion"
+            | Echo -> ":echo"
+            | Flanger -> ":flanger"
+            | GVerb -> ":gverb"
             | HighPassFilter -> ":hpf"
-            | Krush -> ":krush" 
+            | Krush -> ":krush"
             | LevelAmplifier -> ":level"  | LowPassFilter -> ":lpf"
             | Mono -> ":mono"
-            | NormalisedResonantLowPassFilter -> ":nlpf"  | NormalisedResonantHighPassFilter -> ":nrbpf" 
-            | NormalisedHighPassFilter -> ":nhpf"  | NormalisedLowPassFilter -> ":nrlpf"  | Normaliser -> ":normaliser" 
-            | NormalisedBandPassFilter -> ":nbpf"  | NormalisedResonantBandPassFilter -> ":nrhpf" 
-            | Octaver -> ":octaver" 
-            | PanSlicer -> ":panslicer"  | Pan -> ":pan"  | PitchShift -> ":pitch_shift" 
-            | Reverb -> ":reverb"  | ResonantLowPassFilter -> ":rlpf"  | ResonantHighPassFilter -> ":rhpf" 
-            | ResonantBandPassFilter -> ":rbpf"  | RingModulator -> ":ring_mod" 
-            | Slicer -> ":slicer" 
-            | TechnofromIXILang -> ":ixi_techno" 
-            | Whammy -> ":whammy" 
-            | Wobble -> ":wobble" 
-            | Vowel -> ":vowel" 
+            | NormalisedResonantLowPassFilter -> ":nlpf"  | NormalisedResonantHighPassFilter -> ":nrbpf"
+            | NormalisedHighPassFilter -> ":nhpf"  | NormalisedLowPassFilter -> ":nrlpf"  | Normaliser -> ":normaliser"
+            | NormalisedBandPassFilter -> ":nbpf"  | NormalisedResonantBandPassFilter -> ":nrhpf"
+            | Octaver -> ":octaver"
+            | PanSlicer -> ":panslicer"  | Pan -> ":pan"  | PitchShift -> ":pitch_shift"
+            | Reverb -> ":reverb"  | ResonantLowPassFilter -> ":rlpf"  | ResonantHighPassFilter -> ":rhpf"
+            | ResonantBandPassFilter -> ":rbpf"  | RingModulator -> ":ring_mod"
+            | Slicer -> ":slicer"
+            | TechnofromIXILang -> ":ixi_techno"
+            | Whammy -> ":whammy"
+            | Wobble -> ":wobble"
+            | Vowel -> ":vowel"
 
         let private playOptionToSonicPiPlayOption = function
-            | Amplitude(v) -> "amp" 
+            | Amplitude(v) -> "amp"
             | Panning(v) -> "pan"
             | Release(v) -> "release"
             | Attack(v) -> "attack"
@@ -290,10 +289,10 @@
             | DecayLevel(v) -> float(v)
 
         let private fxOptionToSonicPiFxOption = function
-            | Amp(v) -> "amp" 
-            | PreAmp(v) -> "pre_amp" 
+            | Amp(v) -> "amp"
+            | PreAmp(v) -> "pre_amp"
             | Mix(v) -> "mix"
-            | PreMix(v) -> "pre_mix" 
+            | PreMix(v) -> "pre_mix"
 
         let private fxOptionValue = function
             | Amp(v) -> float(v)
@@ -301,42 +300,42 @@
             | Mix(v) -> float(v)
             | PreMix(v) -> float(v)
 
-        let private chordToSonicPi (chord:Chord) octave = 
+        let private chordToSonicPi (chord:Chord) octave =
             (Chords.notesMidiNumbers chord octave
             |> List.fold (fun acc n -> sprintf "%s%i," acc n) "").TrimEnd(',')
 
-        let private scaleToSonicPi (notes:ScaleNotes) octave = 
+        let private scaleToSonicPi (notes:ScaleNotes) octave =
             (Notes.notesMidiNumbers notes octave
             |> List.fold (fun acc n -> sprintf "%s%i," acc n) "").TrimEnd(',')
 
         let private generateInnerStatments statments generator =
-            (statments |> Seq.fold (fun acc st -> 
-                sprintf "%s%s\n" acc (generator st)) 
-                "") 
-
-        let private generatePlayOptionsStatments playOptions = 
-            (playOptions |> List.fold (fun acc option -> 
-                sprintf "%s,%s:%.2f" acc (playOptionToSonicPiPlayOption option) (playOptionValue option)) 
+            (statments |> Seq.fold (fun acc st ->
+                sprintf "%s%s\n" acc (generator st))
                 "")
 
-        let private generateFxOptionsStatments fxOptions = 
-            (fxOptions |> List.fold (fun acc option -> 
-                sprintf "%s,%s:%.2f" acc (fxOptionToSonicPiFxOption option) (fxOptionValue option)) 
+        let private generatePlayOptionsStatments playOptions =
+            (playOptions |> List.fold (fun acc option ->
+                sprintf "%s,%s:%.2f" acc (playOptionToSonicPiPlayOption option) (playOptionValue option))
                 "")
 
-        let private generateSonicPiList list = 
-            (list |> List.fold (fun acc item -> 
-                sprintf "%s%.2f," acc (float(item))) 
+        let private generateFxOptionsStatments fxOptions =
+            (fxOptions |> List.fold (fun acc option ->
+                sprintf "%s,%s:%.2f" acc (fxOptionToSonicPiFxOption option) (fxOptionValue option))
+                "")
+
+        let private generateSonicPiList list =
+            (list |> List.fold (fun acc item ->
+                sprintf "%s%.2f," acc (float(item)))
                 "").TrimEnd(',')
-        
+
         let private midiBeatNote ((note, octave, duration):BeatNote) =
             midiNumber note octave
 
         let private playBeatNotes (beatNotes:BeatNotes) =
-            sprintf "play [%s]\n" 
-                ((beatNotes |> List.fold 
+            sprintf "play [%s]\n"
+                ((beatNotes |> List.fold
                     (fun acc n -> sprintf "%s%i," acc (midiBeatNote n)) "").TrimEnd(','))
-        
+
         let private playBarBeat ((beat, beatNotes):BarBeat) =
             sprintf "%s\nsleep 1\n" (playBeatNotes beatNotes)
 
@@ -361,7 +360,7 @@
             | Repeat (repeats, sts) -> sprintf "%i.times do\n%send" repeats (generateInnerStatments sts toSonicPiScript)
             | LiveLoop (name, sts) -> sprintf "live_loop :%s do\n%send" name (generateInnerStatments sts toSonicPiScript)
             | Statments sts -> generateInnerStatments sts toSonicPiScript
-        
+
         let private ID = "VAUGHAN_CLI"
 
         let private RUN_COMMAND = "/run-code"
@@ -377,7 +376,7 @@
             osc_message.Append(code) |> ignore
 
             osc_message.Send(sonicPiEndPoint) |> ignore
-           
+
         let sonicPiStop =
             OscPacket.LittleEndianByteOrder <- false
 
