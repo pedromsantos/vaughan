@@ -1,6 +1,18 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
+    <PackageId>Vaughan</PackageId>
+    <PackageVersion>0.2.0</PackageVersion>
+    <Title>Vaughan</Title>
+    <Authors>Pedro Moreira Santos</Authors>
+    <PackageLicenseUrl>https://github.com/pedromsantos/vaughan/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/pedromsantos/vaughan</PackageProjectUrl>
+    <Description>F# music library</Description>
+    <PackageReleaseNotes>Migrate to .Net Core 2.0</PackageReleaseNotes>
+    <Copyright>Copyright 2017</Copyright>
+    <PackageTags>F# Music Guitar</PackageTags>
+    <Owners>Pedro Moreira Santos</Owners>
+    <Summary>F# music library</Summary>
   </PropertyGroup>
   <ItemGroup>
     <PackageReference Include="Bespoke-OSC-Library" Version="1.0.0" />

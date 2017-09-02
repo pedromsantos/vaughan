@@ -23,7 +23,6 @@
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="15.3.0-preview-20170628-02" />
     <PackageReference Include="xunit" Version="2.2.0" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
-    <PackageReference Include="Bespoke-OSC-Library" Version="1.0.0" />
     <PackageReference Include="FsCheck.Xunit" Version="2.9.2" />
     <PackageReference Include="FsUnit.xUnit" Version="3.0.0" />
   </ItemGroup>
