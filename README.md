@@ -4,6 +4,8 @@ Vaughan is named after Blues guitarist [Stevie Ray Vaughan](https://en.wikipedia
 
 [![NuGet](http://img.shields.io/nuget/v/Vaughan.svg)](https://www.nuget.org/packages/Vaughan)
 
+The library is now migrated to .Net Core 2.0 and .Net Standard 2.0.
+
 ## Getting started
 
 ### Online
