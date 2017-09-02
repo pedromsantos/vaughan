@@ -14,11 +14,11 @@ Navigate to [repl.it](https://repl.it/FJHh/79) (a bit outdated and no SonicPi in
 
 ### On your own environment
 
-1.Clone the repository to your machine
-2.Open a terminal and navigate to the repository folder
-3.Restore dependencies using ```dotnet restore```
-4.Build the project using ```dotnet build```
-5.(optional) Execute the tests using ```dotnet test VaughanTests```
+1. Clone the repository to your machine
+2. Open a terminal and navigate to the repository folder
+3. Restore dependencies using ```dotnet restore```
+4. Build the project using ```dotnet build```
+5. (optional) Execute the tests using ```dotnet test VaughanTests```
 
 ## Documentation
 
