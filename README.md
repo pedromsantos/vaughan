@@ -4,13 +4,13 @@ Vaughan is named after Blues guitarist [Stevie Ray Vaughan](https://en.wikipedia
 
 [![NuGet](http://img.shields.io/nuget/v/Vaughan.svg)](https://www.nuget.org/packages/Vaughan)
 
-The library is now migrated to .Net Core 2.0 and .Net Standard 2.0.
+The library is now migrated to [.Net Core 2.0](https://blogs.msdn.microsoft.com/dotnet/2017/08/14/announcing-net-standard-2-0/) and [.Net Standard 2.0](https://blogs.msdn.microsoft.com/dotnet/2017/08/14/announcing-net-standard-2-0/).
 
 ## Getting started
 
 ### Online
 
-Navigate to https://repl.it/FJHh/79 (a bit outdated and no SonicPi integration) there is some sample code included with the source. The SpeechToMusic module is not available as I have not found a way to add FParsec dependency in repl.it
+Navigate to [repl.it](https://repl.it/FJHh/79) (a bit outdated and no SonicPi integration) there is some sample code included with the source. The SpeechToMusic module is not available as I have not found a way to add FParsec dependency in repl.it
 
 ### On your own environment
 
