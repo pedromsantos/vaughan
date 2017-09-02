@@ -2,21 +2,23 @@
 
 Vaughan is named after Blues guitarist [Stevie Ray Vaughan](https://en.wikipedia.org/wiki/Stevie_Ray_Vaughan)
 
-[![NuGet](http://img.shields.io/nuget/v/Vaughan.svg)](https://www.nuget.org/packages/Vaughan) (Very old version)
+[![NuGet](http://img.shields.io/nuget/v/Vaughan.svg)](https://www.nuget.org/packages/Vaughan)
+
+The library is now migrated to [.Net Core 2.0](https://blogs.msdn.microsoft.com/dotnet/2017/08/14/announcing-net-standard-2-0/) and [.Net Standard 2.0](https://blogs.msdn.microsoft.com/dotnet/2017/08/14/announcing-net-standard-2-0/).
 
 ## Getting started
 
 ### Online
 
-Navigate to https://repl.it/FJHh/79 (a bit outdated and no SonicPi integration) there is some sample code included with the source. The SpeechToMusic module is not available as I have not found a way to add FParsec dependency in repl.it
+Navigate to [repl.it](https://repl.it/FJHh/79) (a bit outdated and no SonicPi integration) there is some sample code included with the source. The SpeechToMusic module is not available as I have not found a way to add FParsec dependency in repl.it
 
 ### On your own environment
 
-1.Clone the repository to your machine
-2.Open a terminal and navigate to the repository folder
-3.Restore dependencies using ```dotnet restore```
-4.Build the project using ```dotnet build```
-5.(optional) Execute the tests using ```dotnet test VaughanTests```
+1. Clone the repository to your machine
+2. Open a terminal and navigate to the repository folder
+3. Restore dependencies using ```dotnet restore```
+4. Build the project using ```dotnet build```
+5. (optional) Execute the tests using ```dotnet test VaughanTests```
 
 ## Documentation
 
