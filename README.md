@@ -27,7 +27,7 @@ There is now a DSL for communicating with SonicPi, requires SonicPi on machine a
 ### Example usage
 
 ```fsharp
-#r "../packages/Rug.Osc/lib/Rug.Osc.dll"
+#r "../packages/bespoke-osc-library/1.0.0/lib/Bespoke.Common.Osc.dll"
 
 #load "Infrastructure.fs"
 #load "Domain.fs"
@@ -36,38 +36,39 @@ There is now a DSL for communicating with SonicPi, requires SonicPi on machine a
 #load "SonicPi.fs"
 
 open Vaughan.Domain
-open Vaughan.Notes
 open Vaughan.Chords
 open Vaughan.SonicPi
 
 Statments[
-        UseBpm(120<bpm>)
+        UseBpm 120<bpm>;
         WithSynth(Fm, [
                     WithFx(Reverb, [Mix(0.5)], [
                                             Repeat(2, [
-                                                        PlayNote(C, OneLine, [
-                                                                            Amplitude(0.5<loud>);
-                                                                            Panning(0.0<pan>);
-                                                                            Attack(2.0<beat>);
-                                                                            Release(2.0<beat>)])
-                                                        PlayChord(chord C Major, TwoLine, [
-                                                                                        Amplitude(1.0<loud>);
-                                                                                        Release(2.0<beat>);
-                                                                                        Panning(1.0<pan>)]);
-                                                        Rest(2<beat>);
-                                                        Arpeggio([C; E; G; B], OneLine, [1.0<beat>], [])
-                                        ])
-                                ])
-            ])]
+                                                    PlayNote(C, OneLine, [
+                                                                        Amplitude(0.5<loud>);
+                                                                        Panning(0.0<pan>);
+                                                                        Attack(2.0<beat>);
+                                                                        Release(2.0<beat>)]);
+                                                    PlayChord(chord C Major, TwoLine, [
+                                                                                    Amplitude(1.0<loud>);
+                                                                                    Release(2.0<beat>);
+                                                                                    Panning(1.0<pan>)]);
+                                                    Rest 2<beat>;
+                                                    Arpeggio([C; E; G; B], OneLine, [1.0<beat>], [])
+                                                    ])
+                                                ])
+                ])
+        ]
 |> toSonicPiScript
-|> sonicPiSend
+|> sonicPiRun
 ```
+
 Execute sample code above: ```cd Vaughan``` and ```fsharpi SonicPi.fsx```
 
 ### Live loop example
 
 ```fsharp
-#r "../packages/Rug.Osc/lib/Rug.Osc.dll"
+#r "../packages/bespoke-osc-library/1.0.0/lib/Bespoke.Common.Osc.dll"
 
 #load "Infrastructure.fs"
 #load "Domain.fs"
@@ -76,9 +77,8 @@ Execute sample code above: ```cd Vaughan``` and ```fsharpi SonicPi.fsx```
 #load "SonicPi.fs"
 
 open Vaughan.Domain
-open Vaughan.Notes
-open Vaughan.Chords
 open Vaughan.SonicPi
+
 Statments
     [
         UseBpm 120<bpm>;
@@ -86,19 +86,24 @@ Statments
                     [
                         PlaySample(LoopingSample Garzul, []);
                         UseSynth TheProphet;
-                        PlayNote(C, Great, [Release(8.0<beat>)]);
+                        PlayNote(G, Great, [Release(8.0<beat>)]);
                         Rest 8<beat>
                     ])
     ]
 |> toSonicPiScript
 |> sonicPiRun
+
+sonicPiStop
 ```
+
 Execute sample code above: ```cd Vaughan``` and ```sharpi SonicPiLiveLoop.fsx``` to stop this script sound, for now, you have to do it from SonicPi interface (could not get message to halt execution to work yet).
 
 ### Song DSL example (very very early, lots of changes expected here)
 
 ```fsharp
+#r "../packages/bespoke-osc-library/1.0.0/lib/Bespoke.Common.Osc.dll"
 
+#load "Infrastructure.fs"
 #load "Domain.fs"
 #load "Notes.fs"
 #load "Chords.fs"
@@ -135,6 +140,7 @@ Statments[UseBpm 120<bpm>; WithSynth(Pluck, [section])]
 |> toSonicPiScript
 |> sonicPiRun
 ```
+
 Execute sample code above: ```cd Vaughan``` and ```fsharpi SonicPiSong.fsx```
 
 ### Notes
