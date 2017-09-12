@@ -6,7 +6,7 @@ Vaughan, named after blues guitarist [Stevie Ray Vaughan](https://en.wikipedia.o
 ## NuGet package
 [![NuGet](http://img.shields.io/nuget/v/Vaughan.svg)](https://www.nuget.org/packages/Vaughan)
 
-The library is now migrated to [.Net Core 2.0](https://blogs.msdn.microsoft.com/dotnet/2017/08/14/announcing-net-standard-2-0/) and [.Net Standard 2.0](https://blogs.msdn.microsoft.com/dotnet/2017/08/14/announcing-net-standard-2-0/).
+The library is now a [.NET Standard 2.0 compatible framework](https://blogs.msdn.microsoft.com/dotnet/2017/08/14/announcing-net-standard-2-0/) and [.NET Core 2.0 (Only if you want to build the Unit Tests project)](https://blogs.msdn.microsoft.com/dotnet/2017/08/14/announcing-net-standard-2-0/).
 
 ## Getting started
 
