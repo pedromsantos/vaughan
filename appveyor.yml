@@ -3,5 +3,7 @@ image: Visual Studio 2017
 build_script:
 - ps: >-
     ./build/install-dotnet.ps1
-    dotnet --version
+    dotnet restore
+    dotnet build
+    dotnet test ./VaughanTests
 test: off
