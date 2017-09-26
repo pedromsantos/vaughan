@@ -1,0 +1,9 @@
+language: csharp
+mono: none
+dist: trusty
+dotnet: 2.0.0
+sudo: required
+script:
+  - dotnet restore
+  - dotnet test ./VaughanTests
+  - dotnet pack -o . /p:Version=0.2.0.$TRAVIS_BUILD_NUMBER
