@@ -5,7 +5,8 @@ install:
     ./build/install-dotnet.ps1
     dotnet --version
 build_script:
-    cmd: dotnet restore
-    cmd: dotnet build
-    cmd: dotnet test ./VaughanTests
+- cmd: >-
+    dotnet restore
+    dotnet build
+    dotnet test ./VaughanTests
 test: off
