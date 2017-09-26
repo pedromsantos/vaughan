@@ -9,4 +9,4 @@ script:
   - dotnet test -c Release ./VaughanTests
   - dotnet pack -o . /p:Version=0.2.0.$TRAVIS_BUILD_NUMBER
   - if [ "$TRAVIS_BRANCH" != "master" ]; then travis_terminate $TRAVIS_TEST_RESULT; fi;
-  - dotnet nuget push Vaughan*.nupkg -k $NugetApiKey -s https://www.nuget.org/
+  - dotnet nuget push ./Vaughan/bin/Release/Vaughan.*.nupkg -k $NugetApiKey -s https://www.nuget.org/
