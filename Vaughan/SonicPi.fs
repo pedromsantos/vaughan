@@ -159,7 +159,7 @@
             | PlayNote of Note * Octave * PlayOption list
             | PlayChord of Chord * Octave * PlayOption list
             | PlaySample of Samples * PlayOption list
-            | Arpeggio of ScaleNotes * Octave * float<beat> list * PlayOption list
+            | PlayArpeggio of ScaleNotes * Octave * float<beat> list * PlayOption list
             | Rest of int<beat>
             | Section of Section
 
@@ -345,6 +345,13 @@
         let private playBars (bars:Bar list) =
             sprintf "%s" (bars |> List.fold (fun acc b -> sprintf "%s%s" acc (playBar b)) "")
 
+        let private ID = "VAUGHAN_CLI"
+
+        let private RUN_COMMAND = "/run-code"
+        let private STOP_COMMAND = "/stop-all-jobs"
+
+        let private sonicPiEndPoint = new IPEndPoint(IPAddress.Loopback, 4557)
+
         let rec toSonicPiScript = function
             | Rest beats -> sprintf "sleep %i" beats
             | UseSynth synth -> sprintf "use_synth %s" (synthToSonicPySynth synth)
@@ -354,19 +361,12 @@
             | PlayChord (chord, octave, opts) -> sprintf "play [%s]%s" (chordToSonicPi chord octave) (generatePlayOptionsStatments opts)
             | PlaySample (sample, opts)-> sprintf "sample %s%s" (sampleToSonicPi sample) (generatePlayOptionsStatments opts)
             | Section (ts, key, bars) -> playBars bars
-            | Arpeggio (notes, octave, times, opts) -> sprintf "play_pattern_timed [%s],[%s]%s" (scaleToSonicPi notes octave) (generateSonicPiList times) (generatePlayOptionsStatments opts)
+            | PlayArpeggio (notes, octave, times, opts) -> sprintf "play_pattern_timed [%s],[%s]%s" (scaleToSonicPi notes octave) (generateSonicPiList times) (generatePlayOptionsStatments opts)
             | WithFx (fx, opts, sts) -> sprintf "with_fx %s%s do\n%send" (fxToSonicPiFx fx) (generateFxOptionsStatments opts) (generateInnerStatments sts toSonicPiScript)
             | WithSynth (synth, sts) -> sprintf "with_synth %s do\n%send" (synthToSonicPySynth synth) (generateInnerStatments sts toSonicPiScript)
             | Repeat (repeats, sts) -> sprintf "%i.times do\n%send" repeats (generateInnerStatments sts toSonicPiScript)
             | LiveLoop (name, sts) -> sprintf "live_loop :%s do\n%send" name (generateInnerStatments sts toSonicPiScript)
             | Statments sts -> generateInnerStatments sts toSonicPiScript
-
-        let private ID = "VAUGHAN_CLI"
-
-        let private RUN_COMMAND = "/run-code"
-        let private STOP_COMMAND = "/stop-all-jobs"
-
-        let private sonicPiEndPoint = new IPEndPoint(IPAddress.Loopback, 4557)
 
         let sonicPiRun code =
             OscPacket.LittleEndianByteOrder <- false
@@ -374,7 +374,6 @@
             let osc_message = OscMessage(sonicPiEndPoint, RUN_COMMAND)
             osc_message.Append(ID) |> ignore
             osc_message.Append(code) |> ignore
-
             osc_message.Send(sonicPiEndPoint) |> ignore
 
         let sonicPiStop =
