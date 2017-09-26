@@ -5,5 +5,8 @@ dotnet: 2.0.0
 sudo: required
 script:
   - dotnet restore
-  - dotnet test ./VaughanTests
+    dotnet build -c Release
+  - dotnet test -c Release ./VaughanTests
   - dotnet pack -o . /p:Version=0.2.0.$TRAVIS_BUILD_NUMBER
+  - if [ "$TRAVIS_BRANCH" != "master" ]; then travis_terminate $TRAVIS_TEST_RESULT; fi;
+  - dotnet nuget push Vaughan*.nupkg -k $NugetApiKey -s https://www.nuget.org/
