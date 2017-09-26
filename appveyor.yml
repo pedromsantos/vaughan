@@ -1,10 +1,11 @@
 version: 0.0.{build}
 image: Visual Studio 2017
-build_script:
+install:
 - ps: >-
     ./build/install-dotnet.ps1
     dotnet --version
-    dotnet restore
-    dotnet build
-    dotnet test ./VaughanTests
+build_script:
+    cmd: dotnet restore
+    cmd: dotnet build
+    cmd: dotnet test ./VaughanTests
 test: off
