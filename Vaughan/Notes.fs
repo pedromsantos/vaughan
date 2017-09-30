@@ -4,7 +4,7 @@ namespace Vaughan
         open Domain
 
         type private NoteAttributes = {Name:string; Sharp:Note; Flat:Note; Pitch:int}
-        type private IntervalAttributes = {Name:string; Distance:int<ht>; Transpose: (Note -> Note)}
+        type private IntervalAttributes = {Name:string; Distance:int<ht>;}
         type private OctaveAttributes = {Value:float; MidiName:string; MidiNumber:int<midiNote>}
         type private INoteAttributes = Note -> NoteAttributes
         type private ITransposeNoteForInterval = Note -> Interval -> Note
@@ -34,33 +34,30 @@ namespace Vaughan
             let natural = id
 
             match interval with
-            | Unisson -> {Name="Unisson"; Distance=0<ht>; Transpose=natural}
-            | MinorSecond -> {Name="MinorSecond"; Distance=1<ht>; Transpose=flat}
-            | MajorSecond -> {Name="MajorSecond"; Distance=2<ht>; Transpose=sharp}
-            | AugmentedSecond -> {Name="AugmentedSecond"; Distance=3<ht>; Transpose=sharp}
-            | MinorThird -> {Name="MinorThird"; Distance=3<ht>; Transpose=flat}
-            | MajorThird -> {Name="MajorThird"; Distance=4<ht>; Transpose=sharp}
-            | PerfectFourth -> {Name="PerfectForth"; Distance=5<ht>; Transpose=sharp}
-            | AugmentedFourth -> {Name="AugmentedForth"; Distance=6<ht>; Transpose=sharp}
-            | DiminishedFifth -> {Name="DiminishedFifth"; Distance=6<ht>; Transpose=flat}
-            | PerfectFifth -> {Name="PerfectFifth"; Distance=7<ht>; Transpose=sharp}
-            | AugmentedFifth -> {Name="AugmentedFifth"; Distance=8<ht>; Transpose=sharp}
-            | MinorSixth -> {Name="MinorSixth"; Distance=8<ht>; Transpose=flat}
-            | MajorSixth -> {Name="MajorSixth"; Distance=9<ht>; Transpose=sharp}
-            | DiminishedSeventh -> {Name="DiminishSeventh"; Distance=9<ht>; Transpose=flat}
-            | MinorSeventh -> {Name="MinorSeventh"; Distance=10<ht>; Transpose=flat}
-            | MajorSeventh -> {Name="MajorSeventh"; Distance=11<ht>; Transpose=sharp}
-            | PerfectOctave -> {Name="PerfectOctave"; Distance=12<ht>; Transpose=natural}
-            | MinorNinth -> {Name="MinorNinth"; Distance=13<ht>; Transpose=flat}
-            | MajorNinth -> {Name="MajorNinth"; Distance=14<ht>; Transpose=sharp}
-            | AugmentedNinth -> {Name="AugmentedNinth"; Distance=15<ht>; Transpose=sharp}
-            | PerfectEleventh -> {Name="PerfectEleventh"; Distance=17<ht>; Transpose=sharp}
-            | AugmentedEleventh -> {Name="AugmentedEleventh"; Distance=18<ht>; Transpose=sharp}
-            | MinorThirteenth -> {Name="MinorThirteenth"; Distance=20<ht>; Transpose=flat}
-            | MajorThirteenth -> {Name="MajorThirteenth"; Distance=21<ht>; Transpose=sharp}
-
-        let private sharpOrFlatNoteForInterval:ITransposeNoteForInterval = fun note interval ->
-            (intervalAttributes interval).Transpose note
+            | Unisson -> {Name="Unisson"; Distance=0<ht>;}
+            | MinorSecond -> {Name="MinorSecond"; Distance=1<ht>;}
+            | MajorSecond -> {Name="MajorSecond"; Distance=2<ht>;}
+            | AugmentedSecond -> {Name="AugmentedSecond"; Distance=3<ht>;}
+            | MinorThird -> {Name="MinorThird"; Distance=3<ht>;}
+            | MajorThird -> {Name="MajorThird"; Distance=4<ht>;}
+            | PerfectFourth -> {Name="PerfectForth"; Distance=5<ht>;}
+            | AugmentedFourth -> {Name="AugmentedForth"; Distance=6<ht>;}
+            | DiminishedFifth -> {Name="DiminishedFifth"; Distance=6<ht>;}
+            | PerfectFifth -> {Name="PerfectFifth"; Distance=7<ht>;}
+            | AugmentedFifth -> {Name="AugmentedFifth"; Distance=8<ht>;}
+            | MinorSixth -> {Name="MinorSixth"; Distance=8<ht>;}
+            | MajorSixth -> {Name="MajorSixth"; Distance=9<ht>;}
+            | DiminishedSeventh -> {Name="DiminishSeventh"; Distance=9<ht>;}
+            | MinorSeventh -> {Name="MinorSeventh"; Distance=10<ht>;}
+            | MajorSeventh -> {Name="MajorSeventh"; Distance=11<ht>;}
+            | PerfectOctave -> {Name="PerfectOctave"; Distance=12<ht>;}
+            | MinorNinth -> {Name="MinorNinth"; Distance=13<ht>;}
+            | MajorNinth -> {Name="MajorNinth"; Distance=14<ht>;}
+            | AugmentedNinth -> {Name="AugmentedNinth"; Distance=15<ht>;}
+            | PerfectEleventh -> {Name="PerfectEleventh"; Distance=17<ht>;}
+            | AugmentedEleventh -> {Name="AugmentedEleventh"; Distance=18<ht>;}
+            | MinorThirteenth -> {Name="MinorThirteenth"; Distance=20<ht>;}
+            | MajorThirteenth -> {Name="MajorThirteenth"; Distance=21<ht>;}
         
         let private octaveProperties octave =
             match octave with 
@@ -173,12 +170,21 @@ namespace Vaughan
             toOctaveDistance interval = toOctaveDistance otherInterval
 
         let transpose:TransposeNote = fun noteToTranspose transposingInterval ->
-            let rec loop note =
-                if isSameInterval (intervalBetween noteToTranspose note) transposingInterval
-                    then note
-                    else loop (sharpOrFlatNoteForInterval note transposingInterval)
-
-            loop (sharpOrFlatNoteForInterval noteToTranspose transposingInterval) 
+            match transposingInterval with
+            | Unisson | PerfectOctave 
+                -> [noteToTranspose]
+            | MinorSecond | MinorThird | DiminishedFifth | MinorSixth
+            | DiminishedSeventh | MinorSeventh | MinorNinth
+            | MajorNinth | MinorThirteenth 
+                -> [C; DFlat; D; EFlat; E; F; GFlat; G; AFlat; A; BFlat; B]
+            | MajorSecond | AugmentedSecond | MajorThird
+            | PerfectFourth | AugmentedFourth | PerfectFifth
+            | AugmentedFifth | MajorSixth | MajorSeventh 
+            | AugmentedNinth | PerfectEleventh | AugmentedEleventh
+            | MajorThirteenth 
+                -> [C; CSharp; D; DSharp; E; F; FSharp; G; GSharp; A; ASharp; B]
+            |> List.filter (fun n -> isSameInterval (intervalBetween noteToTranspose n) transposingInterval)
+            |> List.head
 
         let frequency:Frequency = fun note octave ->
             let octaveRange = 12.0
