@@ -1,6 +1,7 @@
 namespace Vaughan
 
     module Infrastructure =
+
         let rotateByOne = function
             | [] -> []
             | f::t -> t @ [f]
@@ -23,6 +24,10 @@ namespace Vaughan
                     yield! next()
                 }
             next()
+         
+        let min (minOf:'a->'a->'a) (list:'a list) =
+            list 
+            |> List.fold (fun acc c -> minOf c acc) (list |> List.head)
 
         let private sequenceToIndexValueTupleSequence sequence =
             sequence |> Seq.mapi (fun i v -> i, v)
@@ -33,11 +38,6 @@ namespace Vaughan
             |> Seq.filter (fun (i, _) -> i % 2 = 0)
             |> Seq.map snd
 
-        let rec min (minOf:'a->'a->'a) (list:'a list) =
-            match list with
-            | [] -> None
-            | [x] -> Some(x)
-            | c1::c2::rest -> min minOf ((minOf c1 c2)::rest)
 
         let cappedMinimum number cap =
             if number < cap then cap else number

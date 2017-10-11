@@ -24,10 +24,10 @@ namespace Vaughan
             |> List.head
 
         let private invertionWithNoteClosestToNote chord note desiredPosition =
-            (allInversions chord
+            allInversions chord
             |> min (fun c1 c2 ->
                 if (measureAbsoluteSemitones (desiredPosition c1) note) < (measureAbsoluteSemitones (desiredPosition c2) note)
-                then c1 else c2)).Value
+                then c1 else c2)
 
         let inversionForFunctionAsLead:InversionForFunctionAsLead = fun chord desiredNoteFunction ->
             inversionForFunction chord desiredNoteFunction List.last
