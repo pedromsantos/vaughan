@@ -15,8 +15,8 @@ namespace Vaughan
             | _ -> repeatInversion (chord |> invert) (times - 1)
 
         let private allInversions (chord:Chord) =
-            [for index in 1 .. (chord.Notes |> List.length) do yield chord]
-            |> List.fold (fun x acc -> [acc] @ x) []
+            let notesInChord = chord.Notes |> List.length
+            [for index in 1 .. notesInChord do yield repeatInversion chord index]
 
         let private inversionForFunction (chord:Chord) desiredNoteFunction desiredPosition =
             allInversions chord
@@ -27,7 +27,7 @@ namespace Vaughan
             allInversions chord
             |> min (fun c1 c2 ->
                 if (measureAbsoluteSemitones (desiredPosition c1) note) < (measureAbsoluteSemitones (desiredPosition c2) note)
-                then c1 else c2
+                then c1 else c2)
 
         let inversionForFunctionAsLead:InversionForFunctionAsLead = fun chord desiredNoteFunction ->
             inversionForFunction chord desiredNoteFunction List.last

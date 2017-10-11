@@ -26,8 +26,7 @@ namespace Vaughan
             next()
          
         let min (minOf:'a->'a->'a) (list:'a list) =
-            list
-            |> List.fold minOf (list |> List.head)
+            list |> List.fold minOf (list |> List.head)
 
         let private sequenceToIndexValueTupleSequence sequence =
             sequence |> Seq.mapi (fun i v -> i, v)
