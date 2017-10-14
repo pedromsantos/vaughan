@@ -23,10 +23,7 @@ namespace Vaughan
                         yield element
                     yield! next()
                 }
-            next()
-         
-        let min (minOf:'a->'a->'a) (list:'a list) =
-            list |> List.fold minOf (list |> List.head)
+            next() 
 
         let private sequenceToIndexValueTupleSequence sequence =
             sequence |> Seq.mapi (fun i v -> i, v)

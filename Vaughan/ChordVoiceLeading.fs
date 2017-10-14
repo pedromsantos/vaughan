@@ -23,11 +23,20 @@ namespace Vaughan
             |> List.filter (fun (c:Chord) -> isLeadFunctionOnChordDesiredFunction c desiredNoteFunction desiredPosition)
             |> List.head
 
+        let closestChord (minOf:Chord->Chord->Chord) (list:Chord list) =
+            list |> List.fold minOf (list |> List.head)
+        
+        let distanceBetweenNoteAndChordNote chord desiredPosition note = 
+            measureAbsoluteSemitones (desiredPosition chord) note
+            
+        let chordWithNoteInDesiredPositionCosestToNote note desiredPosition c1 c2 = 
+            if (distanceBetweenNoteAndChordNote c1 desiredPosition note) < 
+                (distanceBetweenNoteAndChordNote c2 desiredPosition note)
+            then c1 else c2
+                 
         let private invertionWithNoteClosestToNote chord note desiredPosition =
             allInversions chord
-            |> min (fun c1 c2 ->
-                if (measureAbsoluteSemitones (desiredPosition c1) note) < (measureAbsoluteSemitones (desiredPosition c2) note)
-                then c1 else c2)
+            |> closestChord (chordWithNoteInDesiredPositionCosestToNote note desiredPosition)
 
         let inversionForFunctionAsLead:InversionForFunctionAsLead = fun chord desiredNoteFunction ->
             inversionForFunction chord desiredNoteFunction List.last
