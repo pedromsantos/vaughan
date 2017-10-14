@@ -27,18 +27,18 @@ namespace Vaughan
             let private isRaisable fret =
                 not (isRaised fret) && not (isMuted fret)
 
-            let private unstretchFret highestFret fret = 
+            let private unstretchFret highestFret fret =
                 if isStretched fret highestFret && isRaisable fret
                 then raiseOctave fret else fret
 
-            let private highestFret frets = 
+            let private highestFret frets =
                 frets |> List.maxBy (fun f -> f.Fret)
 
             let raiseOpenFrets frets =
                 frets
                 |> List.map (fun fret -> if isOpen fret then raiseOctave fret else fret)
-            
-            let unstretch frets = 
+
+            let unstretch frets =
                 frets |> List.map (fun f -> unstretchFret (highestFret frets) f)
 
          [<AutoOpen>]
@@ -67,7 +67,7 @@ namespace Vaughan
                 | 3 -> ThirdString
                 | 2 -> SecondString
                 | _ -> FirstString
-            
+
             let fretForMutedString = -1
 
             let openStringNote guitarString =
@@ -83,12 +83,12 @@ namespace Vaughan
                 { GuitarString = guitarString; Fret = fretForMutedString; Note = openStringNote guitarString }
 
             let createStringFret guitarString note =
-                { createMutedStringFret guitarString with Fret = int(fretNoteOnString note guitarString); Note = note }  
+                { createMutedStringFret guitarString with Fret = int(fretNoteOnString note guitarString); Note = note }
 
         open Domain
         open Notes
         open Chords
-        open Infrastructure 
+        open Infrastructure
 
         [<AutoOpen>]
         module private MapDropChords =
@@ -196,7 +196,7 @@ namespace Vaughan
                 (guitarChord.Frets |> List.head).GuitarString
 
             let private isNinthChord (chord:Chord) =
-                chord.Notes |> List.exists (fun n -> snd n = Ninth) 
+                chord.Notes |> List.exists (fun n -> snd n = Ninth)
 
             let chordName guitarChord =
                 guitarChord.Chord.Name

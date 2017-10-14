@@ -25,15 +25,15 @@ namespace Vaughan
 
         let closestChord (minOf:Chord->Chord->Chord) (list:Chord list) =
             list |> List.fold minOf (list |> List.head)
-        
-        let distanceBetweenNoteAndChordNote chord desiredPosition note = 
+
+        let distanceBetweenNoteAndChordNote chord desiredPosition note =
             measureAbsoluteSemitones (desiredPosition chord) note
-            
-        let chordWithNoteInDesiredPositionCosestToNote note desiredPosition c1 c2 = 
-            if (distanceBetweenNoteAndChordNote c1 desiredPosition note) < 
+
+        let chordWithNoteInDesiredPositionCosestToNote note desiredPosition c1 c2 =
+            if (distanceBetweenNoteAndChordNote c1 desiredPosition note) <
                 (distanceBetweenNoteAndChordNote c2 desiredPosition note)
             then c1 else c2
-                 
+
         let private invertionWithNoteClosestToNote chord note desiredPosition =
             allInversions chord
             |> closestChord (chordWithNoteInDesiredPositionCosestToNote note desiredPosition)

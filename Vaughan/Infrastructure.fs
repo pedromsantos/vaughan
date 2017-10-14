@@ -23,7 +23,7 @@ namespace Vaughan
                         yield element
                     yield! next()
                 }
-            next() 
+            next()
 
         let private sequenceToIndexValueTupleSequence sequence =
             sequence |> Seq.mapi (fun i v -> i, v)

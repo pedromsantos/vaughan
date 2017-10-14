@@ -41,12 +41,12 @@ namespace Vaughan
         type MeasureAbsoluteSemitones = Note -> Note -> int<ht>
         type IntervalBetween = Note -> Note -> Interval
         type TransposeNote = Note -> Interval -> Note
-       
-        type Octave = 
+
+        type Octave =
             | SubContra | Contra | Great | Small
             | OneLine | TwoLine | ThreeLine | FourLine
             | FiveLine | SixLine | SevenLine
-        
+
         type Frequency = Note -> Octave -> float<hz>
         type NoteMidiName = Note -> Octave -> string
         type NoteMidiNumber = Note -> Octave -> int<midiNote>
@@ -66,7 +66,7 @@ namespace Vaughan
             | GSharpMinor | EFlatMinor
 
         type KeyNotes = Note list
-        
+
         type IKeyNotes = Key -> KeyNotes
 
         type Section = TimeSignature * Key * Bar list

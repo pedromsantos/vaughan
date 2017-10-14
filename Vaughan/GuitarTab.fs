@@ -31,7 +31,7 @@
             (guitarChord.Frets |> List.head).GuitarString
 
         let private isNinthChord (chord:Chord) =
-            chord.Notes |> List.exists (fun n -> snd n = Ninth) 
+            chord.Notes |> List.exists (fun n -> snd n = Ninth)
 
         let chordName guitarChord =
             guitarChord.Chord.Name

@@ -181,13 +181,13 @@ namespace Vaughan
 
         let toOpen:ToOpen = fun chord ->
             {chord with ChordType=Open}
-        
+
         let (=>) root quality =
             chord root quality
 
         let (/./) chords chord =
             add chords chord
-        
+
         let ( !* ) chord =
             toOpen chord
 

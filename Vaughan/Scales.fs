@@ -73,9 +73,9 @@ namespace Vaughan
             ]
 
         let private scaleContainChordTones scale chordTones =
-            ( scale |> List.filter 
-                                    (fun x -> 
-                                             (List.contains x chordTones)) 
+            ( scale |> List.filter
+                                    (fun x ->
+                                             (List.contains x chordTones))
                                              |> List.sort) = (chordTones |> List.sort)
 
         let scalesFitting (chord:Chord) =
