@@ -114,6 +114,7 @@ namespace Vaughan
                         let fret = mapNoteToFret guitarString (fst chordNotes.[0]) shouldSkipString
                         let unmapedChordNotes = unmapedChordNotes chordNotes shouldSkipString guitarString
                         mapChordNoteToString (nextString guitarString) unmapedChordNotes (fret::mappedChordNotes)
+                
                 mapChordNoteToString bassString chord.Notes []
 
             let dropChordToGuitarChord bassString chord =
