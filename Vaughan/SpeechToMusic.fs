@@ -2,7 +2,6 @@ namespace Vaughan
 
     module SpeechToMusic =
         open FParsec
-        open Domain
         open Notes
         open Chords
 

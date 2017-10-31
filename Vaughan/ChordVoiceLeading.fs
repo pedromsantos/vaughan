@@ -2,9 +2,7 @@ namespace Vaughan
 
     module ChordVoiceLeading =
         open Chords
-        open Domain
         open Notes
-        open Infrastructure
 
         let private isLeadFunctionOnChordDesiredFunction (chord:Chord) desiredNoteFunction desiredPosition =
             snd (chord.Notes |> desiredPosition) = desiredNoteFunction

@@ -1,7 +1,6 @@
 namespace Vaughan
 
     module Chords =
-        open Domain
         open Notes
         open Infrastructure
 

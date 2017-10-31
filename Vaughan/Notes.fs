@@ -1,13 +1,10 @@
 namespace Vaughan
 
     module Notes =
-        open Domain
-
         type private NoteAttributes = {Name:string; Sharp:Note; Flat:Note; Pitch:int}
         type private IntervalAttributes = {Name:string; Distance:int<ht>;}
         type private OctaveAttributes = {Value:float; MidiName:string; MidiNumber:int<midiNote>}
         type private INoteAttributes = Note -> NoteAttributes
-        type private ITransposeNoteForInterval = Note -> Interval -> Note
 
         let private noteAttributes:INoteAttributes = function
             | C -> {Name="C"; Sharp=CSharp; Flat=B; Pitch=0}
@@ -29,10 +26,6 @@ namespace Vaughan
             | B -> {Name="B"; Sharp=C; Flat=BFlat; Pitch=11}
 
         let private intervalAttributes interval =
-            let sharp = fun n -> (noteAttributes n).Sharp
-            let flat = fun n -> (noteAttributes n).Flat
-            let natural = id
-
             match interval with
             | Unisson -> {Name="Unisson"; Distance=0<ht>;}
             | MinorSecond -> {Name="MinorSecond"; Distance=1<ht>;}

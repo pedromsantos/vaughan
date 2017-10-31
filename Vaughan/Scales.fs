@@ -1,7 +1,6 @@
 namespace Vaughan
 
     module Scales =
-        open Domain
         open Notes
         open Chords
 

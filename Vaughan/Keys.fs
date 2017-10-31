@@ -1,11 +1,9 @@
 namespace Vaughan
 
     module Keys =
-        open Domain
         open Notes
 
         type private KeyAttributes = {Root:Note; Accidentals:int}
-        type private IKeyAttributes = Key -> KeyAttributes
 
         let private keyFormula = function
             | AMajor -> {Root=A; Accidentals=3}

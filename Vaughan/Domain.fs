@@ -1,5 +1,6 @@
 namespace Vaughan
 
+    [<AutoOpen>]
     module Domain =
         [<Measure>] type s
         [<Measure>] type hz

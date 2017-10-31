@@ -160,6 +160,5 @@ printfn "\n"
 printfn "Scales Fitting"
 
 let chord = chord C ChordQuality.Dominant7
-let chordNotes = chord.Notes |> List.map fst |> List.sort
 
 scalesFitting chord

@@ -4,7 +4,6 @@
         open System
         open System.Net
         open Bespoke.Common.Osc
-        open Domain
         open Notes
         open Chords
 
@@ -51,7 +50,7 @@
             | Bell
             | Flip
             | Tick
-            | Hollow_kick
+            | HollowKick
             | Twip
             | Plip
             | Blup
@@ -350,7 +349,7 @@
         let private RUN_COMMAND = "/run-code"
         let private STOP_COMMAND = "/stop-all-jobs"
 
-        let private sonicPiEndPoint = new IPEndPoint(IPAddress.Loopback, 4557)
+        let private sonicPiEndPoint = IPEndPoint(IPAddress.Loopback, 4557)
 
         let rec toSonicPiScript = function
             | Rest beats -> sprintf "sleep %i" beats

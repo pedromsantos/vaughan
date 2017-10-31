@@ -2,7 +2,6 @@ namespace Vaughan
 
     module ScaleHarmonizer =
         open Infrastructure
-        open Domain
         open Chords
 
         let private thirds (fromPosition:ScaleDegree) scale =

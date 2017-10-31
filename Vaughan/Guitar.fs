@@ -3,7 +3,6 @@ namespace Vaughan
     module Guitar =
         [<AutoOpen>]
         module private GuitarFrets =
-            open Domain
             open Notes
 
             let private isOpen fret =
@@ -43,7 +42,6 @@ namespace Vaughan
 
          [<AutoOpen>]
          module private GuitarStrings =
-            open Domain
             open Notes
 
             type private GuitarStringAttributes = {Name:string; OpenStringNote:Note; Index:int}
@@ -85,9 +83,7 @@ namespace Vaughan
             let createStringFret guitarString note =
                 { createMutedStringFret guitarString with Fret = int(fretNoteOnString note guitarString); Note = note }
 
-        open Domain
         open Notes
-        open Chords
         open Infrastructure
 
         [<AutoOpen>]
@@ -166,9 +162,6 @@ namespace Vaughan
 
     module GuitarTab =
         open System
-        open Domain
-        open Notes
-        open Chords
         open Guitar
         open Infrastructure
 
@@ -184,8 +177,6 @@ namespace Vaughan
 
         let private startTab = "||-" |> List.replicate 6
 
-        let private barTab = "-|-" |> List.replicate 6
-
         let private endTab =  ("-||" + Environment.NewLine) |> List.replicate 6
 
         [<AutoOpen>]
@@ -195,9 +186,6 @@ namespace Vaughan
 
             let private stringForBass guitarChord =
                 (guitarChord.Frets |> List.head).GuitarString
-
-            let private isNinthChord (chord:Chord) =
-                chord.Notes |> List.exists (fun n -> snd n = Ninth)
 
             let chordName guitarChord =
                 guitarChord.Chord.Name
