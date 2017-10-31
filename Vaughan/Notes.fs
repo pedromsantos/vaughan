@@ -58,9 +58,9 @@ namespace Vaughan
             | AugmentedEleventh -> {Name="AugmentedEleventh"; Distance=18<ht>;}
             | MinorThirteenth -> {Name="MinorThirteenth"; Distance=20<ht>;}
             | MajorThirteenth -> {Name="MajorThirteenth"; Distance=21<ht>;}
-        
+
         let private octaveProperties octave =
-            match octave with 
+            match octave with
             | SubContra -> {Value = -16.0; MidiName = "0"; MidiNumber = 0<midiNote>}
             | Contra -> {Value = -8.0; MidiName = "1"; MidiNumber = 12<midiNote>}
             | Great -> {Value = -4.0; MidiName = "2"; MidiNumber = 24<midiNote>}
@@ -73,7 +73,7 @@ namespace Vaughan
             | SixLine -> {Value = 32.0; MidiName = "9"; MidiNumber = 108<midiNote>}
             | SevenLine -> {Value = 64.0; MidiName = "10"; MidiNumber = 120<midiNote>}
 
-        let private octaveValue octave = 
+        let private octaveValue octave =
             (octaveProperties octave).Value
 
         let private octaveMidiName octave =
@@ -84,15 +84,15 @@ namespace Vaughan
 
         let private adjustFrequencyForOctave octave frequency =
             let octaveValue = octaveValue octave * 1.0<hz>
-            let noteFrequency = 
+            let noteFrequency =
                 if octaveValue < 0.0<hz>
                     then frequency / (-1.0</hz> * octaveValue)
                     else float(frequency * octaveValue) * 1.0<hz>
             let roundToThousands = 1000.0
             (round(roundToThousands * float(noteFrequency)) / roundToThousands) * 1.0<hz>
 
-        let durationMultipliers timeSignature = 
-            let durations =[1.0; 1.0/2.0; 1.0/4.0; 1.0/8.0; 1.0/16.0; 1.0/32.0; 1.0/64.0; 1.0/128.0] 
+        let durationMultipliers timeSignature =
+            let durations =[1.0; 1.0/2.0; 1.0/4.0; 1.0/8.0; 1.0/16.0; 1.0/32.0; 1.0/64.0; 1.0/128.0]
             match (snd timeSignature) with
             | Whole -> durations |> List.map (fun d -> d * 1.0)
             | Half -> durations |> List.map (fun d -> d * 2.0)
@@ -171,14 +171,14 @@ namespace Vaughan
 
         let transpose:TransposeNote = fun noteToTranspose transposingInterval ->
             match transposingInterval with
-            | Unisson | PerfectOctave 
+            | Unisson | PerfectOctave
                 -> [noteToTranspose]
-            | MinorSecond | MinorThird | DiminishedFifth | MinorSixth | DiminishedSeventh 
-            | MinorSeventh | MinorNinth | MajorNinth | MinorThirteenth 
+            | MinorSecond | MinorThird | DiminishedFifth | MinorSixth | DiminishedSeventh
+            | MinorSeventh | MinorNinth | MajorNinth | MinorThirteenth
                 -> [C; DFlat; D; EFlat; E; F; GFlat; G; AFlat; A; BFlat; B]
-            | MajorSecond | AugmentedSecond | MajorThird | PerfectFourth 
-            | AugmentedFourth | PerfectFifth | AugmentedFifth | MajorSixth | MajorSeventh 
-            | AugmentedNinth | PerfectEleventh | AugmentedEleventh | MajorThirteenth 
+            | MajorSecond | AugmentedSecond | MajorThird | PerfectFourth
+            | AugmentedFourth | PerfectFifth | AugmentedFifth | MajorSixth | MajorSeventh
+            | AugmentedNinth | PerfectEleventh | AugmentedEleventh | MajorThirteenth
                 -> [C; CSharp; D; DSharp; E; F; FSharp; G; GSharp; A; ASharp; B]
             |> List.filter (fun n -> isSameInterval (intervalBetween noteToTranspose n) transposingInterval)
             |> List.head
@@ -202,6 +202,4 @@ namespace Vaughan
             | Sixteenth -> (durationMultipliers timeSignature).[4]
             | ThirtySecond -> (durationMultipliers timeSignature).[5]
             | SixtyFourth -> (durationMultipliers timeSignature).[6]
-            | HundredTwentyEighth -> (durationMultipliers timeSignature).[7]) * 1.0<beat> 
-
-        
+            | HundredTwentyEighth -> (durationMultipliers timeSignature).[7]) * 1.0<beat>
