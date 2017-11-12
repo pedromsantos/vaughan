@@ -1,4 +1,4 @@
-namespace VaughanTests    
+namespace VaughanTests
     module NoteTests =
         open Xunit
         open FsUnit
@@ -260,7 +260,7 @@ namespace VaughanTests
         [<Fact>]
         let ``Should have frequency of 55Hz for A1``() =
             (float(440.0<hz> / 8.0)) |> should (equalWithin 0.1) (float(frequency A Octave.Contra))
-        
+
         [<Fact>]
         let ``Should have frequency of 110Hz for A2``() =
             (float(440.0<hz> / 4.0)) |> should (equalWithin 0.1) (float(frequency A Octave.Great))
@@ -299,36 +299,36 @@ namespace VaughanTests
 
         [<Property>]
         let ``Small octave divides by 2 frequency of One line octave`` (note :Note) =
-           (float(frequency note Octave.OneLine / 2.0)) |> should (equalWithin 0.1) (float(frequency note Octave.Small)) 
+           (float(frequency note Octave.OneLine / 2.0)) |> should (equalWithin 0.1) (float(frequency note Octave.Small))
 
         [<Property>]
         let ``Great octave divides by 4 frequency of One line octave`` (note :Note) =
-           (float(frequency note Octave.OneLine / 4.0)) |> should (equalWithin 0.1) (float(frequency note Octave.Great)) 
+           (float(frequency note Octave.OneLine / 4.0)) |> should (equalWithin 0.1) (float(frequency note Octave.Great))
 
         [<Property>]
         let ``Contra octave divides by 8 frequency of One line octave`` (note :Note) =
-           (float(frequency note Octave.OneLine / 8.0)) |> should (equalWithin 0.1) (float(frequency note Octave.Contra))  
+           (float(frequency note Octave.OneLine / 8.0)) |> should (equalWithin 0.1) (float(frequency note Octave.Contra))
 
         [<Property>]
         let ``Two line octave doubles frequency of One line octave`` (note :Note) =
-           (float(frequency note Octave.OneLine * 2.0)) |> should (equalWithin 0.1) (float(frequency note Octave.TwoLine)) 
+           (float(frequency note Octave.OneLine * 2.0)) |> should (equalWithin 0.1) (float(frequency note Octave.TwoLine))
 
         [<Property>]
         let ``Three line octave quadruples frequency of One line octave`` (note :Note) =
-           (float(frequency note Octave.OneLine * 4.0)) |> should (equalWithin 0.1) (float(frequency note Octave.ThreeLine)) 
+           (float(frequency note Octave.OneLine * 4.0)) |> should (equalWithin 0.1) (float(frequency note Octave.ThreeLine))
 
         [<Property>]
         let ``Four line octave multiplies by 8 frequency of One line octave`` (note :Note) =
-           (float(frequency note Octave.OneLine * 8.0)) |> should (equalWithin 0.1) (float(frequency note Octave.FourLine)) 
+           (float(frequency note Octave.OneLine * 8.0)) |> should (equalWithin 0.1) (float(frequency note Octave.FourLine))
 
         [<Property>]
         let ``Five line octave multiplies by 16 frequency of One line octave`` (note :Note) =
-           (float(frequency note Octave.OneLine * 16.0)) |> should (equalWithin 0.1) (float(frequency note Octave.FiveLine)) 
+           (float(frequency note Octave.OneLine * 16.0)) |> should (equalWithin 0.1) (float(frequency note Octave.FiveLine))
 
         [<Property>]
         let ``Six line octave multiplies by 32 frequency of One line octave`` (note :Note) =
            (float(frequency note Octave.OneLine * 32.0)) |> should (equalWithin 0.1) (float(frequency note Octave.SixLine))
-        
+
         [<Property>]
         let ``Should have midi name note+0 for note at sub contra octave``(note :Note) =
             midiName note Octave.SubContra |> should equal (noteName note + "0")
@@ -348,7 +348,7 @@ namespace VaughanTests
         [<Property>]
         let ``Should have midi name note+4 for note at one line octave``(note :Note) =
             midiName note Octave.OneLine |> should equal (noteName note + "4")
-        
+
         [<Property>]
         let ``Should have midi name note+5 for note at two line octave``(note :Note) =
             midiName note Octave.TwoLine |> should equal (noteName note + "5")
@@ -393,7 +393,7 @@ namespace VaughanTests
         let ``Should have midi number from 48 to 59 on one line octave``(note :Note) =
             (midiNumber note Octave.OneLine) |> should be (greaterThan 47<midiNote>)
             (midiNumber note Octave.OneLine) |> should be (lessThan 60<midiNote>)
-        
+
         [<Property>]
         let ``Should have midi number from 60 to 71 on two line octave``(note :Note) =
             (midiNumber note Octave.TwoLine) |> should be (greaterThan 59<midiNote>)

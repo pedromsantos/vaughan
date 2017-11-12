@@ -3,6 +3,7 @@ namespace Vaughan
     module SpeechToMusic =
         open FParsec
         open Notes
+        open Scales
         open Chords
 
         type private UserState = unit
@@ -14,7 +15,7 @@ namespace Vaughan
 
         let private any parsers = parsers |> List.reduce (<|>)
 
-        let private parseNote: Parser<_> =
+        let private parseNoteName: Parser<_> =
             any [
                     (stringCIReturn "a" A);
                     (stringCIReturn "b" B);
@@ -33,6 +34,35 @@ namespace Vaughan
                     (notFollowedByString "b" >>% natural)
                 ] |> skipSpaces
 
+        let private parseScaleType: Parser<_> =
+            any [
+                    (stringCIReturn "Ionian" Ionian);
+                    (stringCIReturn "Dorianb2" Dorianb2);
+                    (stringCIReturn "Dorian" Dorian);
+                    (stringCIReturn "Phrygian" Phrygian);
+                    (stringCIReturn "LydianDominant" LydianDominant);
+                    (stringCIReturn "LydianAugmented" LydianAugmented);
+                    (stringCIReturn "Lydian" Lydian);
+                    (stringCIReturn "Mixolydianb6" Mixolydianb6);
+                    (stringCIReturn "Mixolydian" Mixolydian);
+                    (stringCIReturn "Aolian" Aolian);
+                    (stringCIReturn "LocrianSharp2" LocrianSharp2);
+                    (stringCIReturn "Locrian" Locrian);
+                    (stringCIReturn "MajorPentatonic" MajorPentatonic);
+                    (stringCIReturn "MinorPentatonic" MinorPentatonic);
+                    (stringCIReturn "Blues" Blues);
+                    (stringCIReturn "HarmonicMinor" HarmonicMinor);
+                    (stringCIReturn "MelodicMinor" MelodicMinor);
+                    (stringCIReturn "NeapolitanMinor" NeapolitanMinor);
+                    (stringCIReturn "Bebop" Bebop);
+                    (stringCIReturn "AlteredDominant" AlteredDominant);
+                    (stringCIReturn "HalfWholeDiminished" HalfWholeDiminished);
+                    (stringCIReturn "WholeTone" WholeTone);
+                    (stringCIReturn "SixthDiminishedScale" SixthDiminishedScale);
+                    (stringCIReturn "MinorSixthDiminishedScale" MinorSixthDiminishedScale);
+                    (stringCIReturn "DominantDiminishedScale" DominantDiminishedScale);
+                    (stringCIReturn "Dominantb5DiminishedScale" Dominantb5DiminishedScale);
+                ] |> skipSpaces
         let private parseMajorQuality: Parser<_> =
             any [
                     (stringCIReturn "major" Major)
@@ -98,12 +128,15 @@ namespace Vaughan
                     (notFollowedByString "seven" >>% id)
                 ] |> skipSpaces
 
-        let private rootParser: Parser<_> =
-            pipe2 parseNote parseAccident
+        let private noteParser: Parser<_> =
+            pipe2 parseNoteName parseAccident
                 (fun note applyAccidentToNote -> applyAccidentToNote note)
 
+        let private scaleParser: Parser<_> =
+            pipe2 noteParser parseScaleType
+                (fun r t -> createScale t r)
         let private triadParser: Parser<_> =
-            pipe2 rootParser parseQuality
+            pipe2 noteParser parseQuality
                 (fun r q -> {Root=r; Quality=q;})
 
         let private seventhChordParser: Parser<_> =
@@ -115,6 +148,18 @@ namespace Vaughan
                     seventhChordParser
                     triadParser;
                 ]
+
+        let parseNote text =
+            let parsed = run noteParser text
+            match parsed with
+            | Success(note, _, _) -> note
+            | Failure(errorMsg, _, _) -> invalidOp errorMsg
+
+        let parseScale text =
+            let parsed = run scaleParser text
+            match parsed with
+            | Success(scale, _, _) -> scale
+            | Failure(errorMsg, _, _) -> invalidOp errorMsg
 
         let parseChord:ParseChord = fun text ->
             let parsed = run chordParser text

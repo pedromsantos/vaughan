@@ -7,7 +7,7 @@
     <PackageLicenseUrl>https://github.com/pedromsantos/vaughan/blob/master/LICENSE</PackageLicenseUrl>
     <PackageProjectUrl>https://github.com/pedromsantos/vaughan</PackageProjectUrl>
     <Description>F# music library</Description>
-    <PackageReleaseNotes>Migrate to .Net Core 2.0</PackageReleaseNotes>
+    <PackageReleaseNotes>New functionalities in parsing text to music</PackageReleaseNotes>
     <Copyright>Copyright 2017</Copyright>
     <PackageTags>F# Music Guitar</PackageTags>
     <Owners>Pedro Moreira Santos</Owners>
@@ -29,10 +29,5 @@
     <Compile Include="Guitar.fs" />
     <Compile Include="SonicPi.fs" />
     <Compile Include="SpeechToMusic.fs" />
-    <Compile Include="SampleCode.fsx" />
-    <Compile Include="SonicPi.fsx" />
-    <Compile Include="SonicPiLiveLoop.fsx" />
-    <Compile Include="SonicPiSong.fsx" />
-    <Compile Include="SuperCollider.fsx" />
   </ItemGroup>
 </Project>

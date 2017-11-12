@@ -15,6 +15,46 @@
             open Vaughan.ScaleHarmonizer
 
             [<Fact>]
+            let ``Should parse textual representation of notes``() =
+                (parseNote "C") |> should equal C
+                (parseNote "C#") |> should equal CSharp
+                (parseNote "Db") |> should equal DFlat
+                (parseNote "D") |> should equal D
+                (parseNote "D#") |> should equal DSharp
+                (parseNote "Eb") |> should equal EFlat
+                (parseNote "E") |> should equal E
+                (parseNote "F") |> should equal F
+                (parseNote "F#") |> should equal FSharp
+                (parseNote "Gb") |> should equal GFlat
+                (parseNote "G") |> should equal G
+                (parseNote "G#") |> should equal GSharp
+                (parseNote "Ab") |> should equal AFlat
+                (parseNote "A") |> should equal A
+                (parseNote "A#") |> should equal ASharp
+                (parseNote "Bb") |> should equal BFlat
+                (parseNote "B") |> should equal B
+
+            [<Fact>]
+            let ``Should parse textual representation of scales``() =
+                (parseScale "C Ionian") |> should equal (createScale Ionian C)
+                (parseScale "C# MajorPentatonic") |> should equal (createScale MajorPentatonic CSharp)
+                (parseScale "Db MinorPentatonic") |> should equal (createScale MinorPentatonic DFlat)
+                (parseScale "D Dorian") |> should equal (createScale Dorian D)
+                (parseScale "D# Blues") |> should equal (createScale Blues DSharp)
+                (parseScale "Eb HarmonicMinor") |> should equal (createScale HarmonicMinor EFlat)
+                (parseScale "E Phrygian") |> should equal (createScale Phrygian E)
+                (parseScale "F Lydian") |> should equal (createScale Lydian F)
+                (parseScale "F# MelodicMinor") |> should equal (createScale MelodicMinor FSharp)
+                (parseScale "Gb Dorianb2") |> should equal (createScale Dorianb2 GFlat)
+                (parseScale "G Mixolydian") |> should equal (createScale Mixolydian G)
+                (parseScale "G# LydianAugmented") |> should equal (createScale LydianAugmented GSharp)
+                (parseScale "Ab NeapolitanMinor") |> should equal (createScale NeapolitanMinor AFlat)
+                (parseScale "A Aolian") |> should equal (createScale Aolian A)
+                (parseScale "A# LydianDominant") |> should equal (createScale LydianDominant ASharp)
+                (parseScale "Bb Bebop") |> should equal (createScale Bebop BFlat)
+                (parseScale "B Locrian") |> should equal (createScale Locrian B)
+
+            [<Fact>]
             let ``Should parse textual representation of triads``() =
                 (parseChord "C Major") |> should equal { Root=C; Quality=Major }
                 (parseChord "C# Maj") |> should equal { Root=CSharp; Quality=Major }
