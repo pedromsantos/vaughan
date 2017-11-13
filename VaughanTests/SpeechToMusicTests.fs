@@ -53,6 +53,33 @@
                 (parseScale "A# LydianDominant") |> should equal (createScale LydianDominant ASharp)
                 (parseScale "Bb Bebop") |> should equal (createScale Bebop BFlat)
                 (parseScale "B Locrian") |> should equal (createScale Locrian B)
+                
+            [<Fact>]
+            let ``Should parse textual representation of intervals``() =
+                (parseInterval "Unisson") |> should equal Unisson
+                (parseInterval "MinorSecond") |> should equal MinorSecond
+                (parseInterval "MajorSecond") |> should equal MajorSecond
+                (parseInterval "AugmentedSecond") |> should equal AugmentedSecond
+                (parseInterval "MinorThird") |> should equal MinorThird
+                (parseInterval "MajorThird") |> should equal MajorThird
+                (parseInterval "PerfectFourth") |> should equal PerfectFourth
+                (parseInterval "AugmentedFourth") |> should equal AugmentedFourth
+                (parseInterval "DiminishedFifth") |> should equal DiminishedFifth 
+                (parseInterval "PerfectFifth") |> should equal PerfectFifth
+                (parseInterval "AugmentedFifth") |> should equal AugmentedFifth
+                (parseInterval "MinorSixth") |> should equal MinorSixth
+                (parseInterval "MajorSixth") |> should equal MajorSixth
+                (parseInterval "DiminishedSeventh") |> should equal DiminishedSeventh
+                (parseInterval "MinorSeventh") |> should equal MinorSeventh
+                (parseInterval "MajorSeventh") |> should equal MajorSeventh
+                (parseInterval "PerfectOctave") |> should equal PerfectOctave
+                (parseInterval "MajorNinth") |> should equal MajorNinth
+                (parseInterval "MajorNinth") |> should equal MajorNinth
+                (parseInterval "AugmentedNinth") |> should equal AugmentedNinth
+                (parseInterval "PerfectEleventh") |> should equal PerfectEleventh
+                (parseInterval "AugmentedEleventh") |> should equal AugmentedEleventh
+                (parseInterval "MinorThirteenth") |> should equal MinorThirteenth
+                (parseInterval "MajorThirteenth") |> should equal MajorThirteenth
 
             [<Fact>]
             let ``Should parse textual representation of triads``() =
