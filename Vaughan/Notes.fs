@@ -33,8 +33,8 @@ namespace Vaughan
             | AugmentedSecond -> {Name="AugmentedSecond"; Distance=3<ht>;}
             | MinorThird -> {Name="MinorThird"; Distance=3<ht>;}
             | MajorThird -> {Name="MajorThird"; Distance=4<ht>;}
-            | PerfectFourth -> {Name="PerfectForth"; Distance=5<ht>;}
-            | AugmentedFourth -> {Name="AugmentedForth"; Distance=6<ht>;}
+            | PerfectFourth -> {Name="PerfectFourth"; Distance=5<ht>;}
+            | AugmentedFourth -> {Name="AugmentedFourth"; Distance=6<ht>;}
             | DiminishedFifth -> {Name="DiminishedFifth"; Distance=6<ht>;}
             | PerfectFifth -> {Name="PerfectFifth"; Distance=7<ht>;}
             | AugmentedFifth -> {Name="AugmentedFifth"; Distance=8<ht>;}
