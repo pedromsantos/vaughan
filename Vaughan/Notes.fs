@@ -40,7 +40,7 @@ namespace Vaughan
             | AugmentedFifth -> {Name="AugmentedFifth"; Distance=8<ht>;}
             | MinorSixth -> {Name="MinorSixth"; Distance=8<ht>;}
             | MajorSixth -> {Name="MajorSixth"; Distance=9<ht>;}
-            | DiminishedSeventh -> {Name="DiminishSeventh"; Distance=9<ht>;}
+            | DiminishedSeventh -> {Name="DiminishedSeventh"; Distance=9<ht>;}
             | MinorSeventh -> {Name="MinorSeventh"; Distance=10<ht>;}
             | MajorSeventh -> {Name="MajorSeventh"; Distance=11<ht>;}
             | PerfectOctave -> {Name="PerfectOctave"; Distance=12<ht>;}

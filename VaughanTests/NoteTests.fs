@@ -239,6 +239,7 @@ namespace VaughanTests
             intervalName MajorSixth |> should equal "MajorSixth"
             intervalName MinorSeventh |> should equal "MinorSeventh"
             intervalName MajorSeventh |> should equal "MajorSeventh"
+            intervalName DiminishedSeventh |> should equal "DiminishedSeventh"
             intervalName PerfectOctave |> should equal "PerfectOctave"
 
         [<Fact>]
