@@ -73,7 +73,7 @@
                 (parseInterval "MinorSeventh") |> should equal MinorSeventh
                 (parseInterval "MajorSeventh") |> should equal MajorSeventh
                 (parseInterval "PerfectOctave") |> should equal PerfectOctave
-                (parseInterval "MajorNinth") |> should equal MajorNinth
+                (parseInterval "MinorNinth") |> should equal MinorNinth
                 (parseInterval "MajorNinth") |> should equal MajorNinth
                 (parseInterval "AugmentedNinth") |> should equal AugmentedNinth
                 (parseInterval "PerfectEleventh") |> should equal PerfectEleventh

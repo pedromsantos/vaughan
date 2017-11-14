@@ -83,6 +83,7 @@ namespace Vaughan
                     (stringCIReturn "MinorSeventh" MinorSeventh);
                     (stringCIReturn "MajorSeventh" MajorSeventh);
                     (stringCIReturn "PerfectOctave" PerfectOctave);
+                    (stringCIReturn "MinorNinth" MinorNinth);
                     (stringCIReturn "MajorNinth" MajorNinth);
                     (stringCIReturn "AugmentedNinth" AugmentedNinth);
                     (stringCIReturn "PerfectEleventh" PerfectEleventh);
