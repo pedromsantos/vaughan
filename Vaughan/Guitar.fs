@@ -83,7 +83,6 @@ namespace Vaughan
             let createStringFret guitarString note =
                 { createMutedStringFret guitarString with Fret = int(fretNoteOnString note guitarString); Note = note }
 
-        open Notes
         open Infrastructure
 
         [<AutoOpen>]

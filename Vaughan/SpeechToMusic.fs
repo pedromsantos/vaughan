@@ -63,7 +63,7 @@ namespace Vaughan
                     (stringCIReturn "DominantDiminishedScale" DominantDiminishedScale);
                     (stringCIReturn "Dominantb5DiminishedScale" Dominantb5DiminishedScale);
                 ] |> skipSpaces
-                
+
         let private intervalParser: Parser<_> =
             any [
                     (stringCIReturn "Unisson" Unisson);
@@ -91,7 +91,7 @@ namespace Vaughan
                     (stringCIReturn "AugmentedEleventh" AugmentedEleventh);
                     (stringCIReturn "MajorThirteenth" MajorThirteenth)
                 ] |> skipSpaces
-                
+
         let private parseMajorQuality: Parser<_> =
             any [
                     (stringCIReturn "major" Major)
@@ -164,7 +164,7 @@ namespace Vaughan
         let private scaleParser: Parser<_> =
             pipe2 noteParser parseScaleType
                 (fun r t -> createScale t r)
-                
+
         let private triadParser: Parser<_> =
             pipe2 noteParser parseQuality
                 (fun r q -> {Root=r; Quality=q;})
@@ -190,7 +190,7 @@ namespace Vaughan
             match parsed with
             | Success(scale, _, _) -> scale
             | Failure(errorMsg, _, _) -> invalidOp errorMsg
-            
+
         let parseInterval text =
             let parsed = run intervalParser text
             match parsed with
