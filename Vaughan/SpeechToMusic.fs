@@ -33,6 +33,21 @@ namespace Vaughan
                     (notFollowedByString "#" >>% natural);
                     (notFollowedByString "b" >>% natural)
                 ] |> skipSpaces
+                
+        let private parseMidiOctave: Parser<_> =
+                any [
+                        (stringReturn "0" SubContra);
+                        (stringReturn "10" SevenLine);
+                        (stringReturn "1" Contra);
+                        (stringReturn "2" Great);
+                        (stringReturn "3" Small);
+                        (stringReturn "4" OneLine);
+                        (stringReturn "5" TwoLine);
+                        (stringReturn "6" ThreeLine);
+                        (stringReturn "7" FourLine);
+                        (stringReturn "8" FiveLine);
+                        (stringReturn "9" SixLine);       
+                ] |> skipSpaces
 
         let private parseScaleType: Parser<_> =
             any [
@@ -91,6 +106,21 @@ namespace Vaughan
                     (stringCIReturn "AugmentedEleventh" AugmentedEleventh);
                     (stringCIReturn "MajorThirteenth" MajorThirteenth)
                 ] |> skipSpaces
+                
+        let private octaveParser: Parser<_> =
+             any [
+                     (stringCIReturn "SubContra" SubContra);
+                     (stringCIReturn "Contra" Contra);
+                     (stringCIReturn "Great" Great);
+                     (stringCIReturn "Small" Small);
+                     (stringCIReturn "OneLine" OneLine);
+                     (stringCIReturn "TwoLine" TwoLine);
+                     (stringCIReturn "ThreeLine" ThreeLine);
+                     (stringCIReturn "FourLine" FourLine);
+                     (stringCIReturn "FiveLine" FiveLine);
+                     (stringCIReturn "SixLine" SixLine);
+                     (stringCIReturn "SevenLine" SevenLine);
+             ] |> skipSpaces
 
         let private parseMajorQuality: Parser<_> =
             any [
@@ -160,6 +190,10 @@ namespace Vaughan
         let private noteParser: Parser<_> =
             pipe2 parseNoteName parseAccident
                 (fun note applyAccidentToNote -> applyAccidentToNote note)
+                
+        let private midiNoteParser: Parser<_> =
+            pipe3 parseNoteName parseAccident parseMidiOctave
+                (fun note applyAccidentToNote octave -> (applyAccidentToNote note), octave)
 
         let private scaleParser: Parser<_> =
             pipe2 noteParser parseScaleType
@@ -179,24 +213,36 @@ namespace Vaughan
                     triadParser;
                 ]
 
-        let parseNote text =
+        let parseNote:ParseNote = fun text ->
             let parsed = run noteParser text
             match parsed with
             | Success(note, _, _) -> note
             | Failure(errorMsg, _, _) -> invalidOp errorMsg
+            
+        let parseMidiNote:ParseMidiNote = fun text ->
+            let parsed = run midiNoteParser text
+            match parsed with
+            | Success(note, _, _) -> note
+            | Failure(errorMsg, _, _) -> invalidOp errorMsg
 
-        let parseScale text =
+        let parseScale:ParseScale = fun text ->
             let parsed = run scaleParser text
             match parsed with
             | Success(scale, _, _) -> scale
             | Failure(errorMsg, _, _) -> invalidOp errorMsg
 
-        let parseInterval text =
+        let parseInterval:ParseInterval = fun text ->
             let parsed = run intervalParser text
             match parsed with
             | Success(interval, _, _) -> interval
             | Failure(errorMsg, _, _) -> invalidOp errorMsg
-
+            
+        let parseOctave:ParseOctave = fun text ->
+            let parsed = run octaveParser text
+            match parsed with
+            | Success(octave, _, _) -> octave
+            | Failure(errorMsg, _, _) -> invalidOp errorMsg
+        
         let parseChord:ParseChord = fun text ->
             let parsed = run chordParser text
             match parsed with

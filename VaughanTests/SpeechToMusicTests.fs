@@ -33,6 +33,26 @@
                 (parseNote "A#") |> should equal ASharp
                 (parseNote "Bb") |> should equal BFlat
                 (parseNote "B") |> should equal B
+            
+            [<Fact>]
+            let ``Should parse textual representation of midi notes``() =
+                (parseMidiNote "C0") |> should equal (C, SubContra)
+                (parseMidiNote "C#1") |> should equal (CSharp, Contra)
+                (parseMidiNote "Db2") |> should equal (DFlat, Great)
+                (parseMidiNote "D3") |> should equal (D, Small)
+                (parseMidiNote "D#4") |> should equal (DSharp, OneLine)
+                (parseMidiNote "Eb5") |> should equal (EFlat, TwoLine)
+                (parseMidiNote "E6") |> should equal (E, ThreeLine)
+                (parseMidiNote "F7") |> should equal (F, FourLine)
+                (parseMidiNote "F#8") |> should equal (FSharp, FiveLine)
+                (parseMidiNote "Gb9") |> should equal (GFlat, SixLine)
+                (parseMidiNote "G10") |> should equal (G, SevenLine)
+                (parseMidiNote "G#4") |> should equal (GSharp, OneLine)
+                (parseMidiNote "Ab5") |> should equal (AFlat, TwoLine)
+                (parseMidiNote "A6") |> should equal (A, ThreeLine)
+                (parseMidiNote "A#3") |> should equal (ASharp, Small)
+                (parseMidiNote "Bb4") |> should equal (BFlat, OneLine)
+                (parseMidiNote "B5") |> should equal (B, TwoLine)
 
             [<Fact>]
             let ``Should parse textual representation of scales``() =
@@ -80,6 +100,20 @@
                 (parseInterval "AugmentedEleventh") |> should equal AugmentedEleventh
                 (parseInterval "MinorThirteenth") |> should equal MinorThirteenth
                 (parseInterval "MajorThirteenth") |> should equal MajorThirteenth
+
+            [<Fact>]
+            let ``Should parse textual representation of octaves``() =
+                (parseOctave "SubContra") |> should equal SubContra
+                (parseOctave "Contra") |> should equal Contra
+                (parseOctave "Great") |> should equal Great 
+                (parseOctave "Small") |> should equal Small 
+                (parseOctave "OneLine") |> should equal OneLine 
+                (parseOctave "TwoLine") |> should equal TwoLine 
+                (parseOctave "ThreeLine") |> should equal ThreeLine
+                (parseOctave "FourLine") |> should equal FourLine
+                (parseOctave "FiveLine") |> should equal FiveLine
+                (parseOctave "SixLine") |> should equal SixLine
+                (parseOctave "SevenLine") |> should equal SevenLine
 
             [<Fact>]
             let ``Should parse textual representation of triads``() =

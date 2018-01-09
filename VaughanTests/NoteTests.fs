@@ -269,6 +269,20 @@ namespace VaughanTests
             fromDistance 12<ht> |> should equal PerfectOctave
 
         [<Fact>]
+        let ``Should relate octave with its name``() =
+            octaveName SubContra |> should equal "SubContra"
+            octaveName Contra |> should equal "Contra"
+            octaveName Great |> should equal "Great"
+            octaveName Small |> should equal "Small"
+            octaveName OneLine |> should equal "OneLine"
+            octaveName TwoLine |> should equal "TwoLine"
+            octaveName ThreeLine |> should equal "ThreeLine"
+            octaveName FourLine |> should equal "FourLine"
+            octaveName FiveLine |> should equal "FiveLine"
+            octaveName SixLine |> should equal "SixLine"
+            octaveName SevenLine |> should equal "SevenLine"
+                    
+        [<Fact>]
         let ``Should have frequency of 55Hz for A1``() =
             (float(440.0<hz> / 8.0)) |> should (equalWithin 0.1) (float(frequency A Octave.Contra))
 

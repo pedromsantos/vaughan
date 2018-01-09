@@ -196,3 +196,17 @@ namespace Vaughan
             | ThirtySecond -> (durationMultipliers timeSignature).[5]
             | SixtyFourth -> (durationMultipliers timeSignature).[6]
             | HundredTwentyEighth -> (durationMultipliers timeSignature).[7]) * 1.0<beat>
+            
+        let octaveName:OctaveName = fun (octave:Octave) ->
+            match octave with
+            | SubContra -> "SubContra"
+            | Contra -> "Contra"
+            | Great -> "Great" 
+            | Small -> "Small"
+            | OneLine -> "OneLine" 
+            | TwoLine -> "TwoLine" 
+            | ThreeLine -> "ThreeLine" 
+            | FourLine -> "FourLine"
+            | FiveLine -> "FiveLine" 
+            | SixLine -> "SixLine" 
+            | SevenLine -> "SevenLine"
