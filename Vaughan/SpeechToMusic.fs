@@ -6,7 +6,7 @@ namespace Vaughan
         open Scales
         open Chords
 
-        type private ChordIntent = { Root: Note; Quality:ChordQuality; Structure: ChordType }
+        type private ChordIntent = { Root: Note; Quality:ChordQuality; ToStructure: (Chord -> Chord) }
 
         type private UserState = unit
         type private Parser<'t> = Parser<'t, UserState>
@@ -171,12 +171,12 @@ namespace Vaughan
 
         let private chordStructureParser: Parser<_> =
             any [
-                    (stringCIReturn "drop2" Drop2);
-                    (stringCIReturn "drop 2" Drop2);
-                    (stringCIReturn "drop3" Drop3);
-                    (stringCIReturn "drop 3" Drop3);
-                    (stringCIReturn "closed" Closed);
-                    (stringCIReturn "" Closed);
+                    (stringCIReturn "drop2" toDrop2);
+                    (stringCIReturn "drop 2" toDrop2);
+                    (stringCIReturn "drop3" toDrop3);
+                    (stringCIReturn "drop 3" toDrop3);
+                    (stringCIReturn "closed" toClosed);
+                    (stringCIReturn "" toClosed);
                 ] |> skipSpaces
 
         let private updateChordIntentWithSeventhQuality chord =
@@ -213,12 +213,12 @@ namespace Vaughan
 
         let private triadParser: Parser<_> =
             pipe2 noteParser qualityParser
-                (fun r q-> {Root=r; Quality=q; Structure = Closed})
+                (fun r q-> {Root=r; Quality=q; ToStructure = toClosed})
 
         let private seventhChordParser: Parser<_> =
             pipe3 triadParser seventhQualityParser chordStructureParser
                 (fun triad seventhQualityUpdater structure->
-                    {(triad |> seventhQualityUpdater) with Structure = structure})
+                    {(triad |> seventhQualityUpdater) with ToStructure = structure})
 
         let private chordParser: Parser<_> =
             any [
@@ -227,12 +227,8 @@ namespace Vaughan
                 ]
 
         let private createChordFrom = fun chordIntent ->
-            let parsedChord = chord chordIntent.Root chordIntent.Quality
-
-            match chordIntent.Structure with
-            | Drop2 -> parsedChord |> toDrop2
-            | Drop3 -> parsedChord |> toDrop3
-            | _ -> parsedChord |> toClosed
+            (chord chordIntent.Root chordIntent.Quality)
+            |> chordIntent.ToStructure
 
         let parseNote:ParseNote = fun text ->
             let parsed = run noteParser text
