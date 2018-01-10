@@ -152,12 +152,9 @@ namespace Vaughan
         type Shapify = GuitarChord -> string
         type TabifyAll = GuitarChord list -> string
 
-        type ChordIntent = { Root: Note; Quality:ChordQuality; }
-
-        type ParseChord = string -> ChordIntent
+        type ParseChord = string -> Chord
         type ParseInterval = string -> Interval
         type ParseOctave = string -> Octave
         type ParseScale = string -> Scale
         type ParseNote = string -> Note
         type ParseMidiNote = string -> MidiNote
-        type CreateChordFromIntent = ChordIntent -> Chord

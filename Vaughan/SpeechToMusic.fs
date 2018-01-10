@@ -6,6 +6,8 @@ namespace Vaughan
         open Scales
         open Chords
 
+        type private ChordIntent = { Root: Note; Quality:ChordQuality; Structure: ChordType }
+
         type private UserState = unit
         type private Parser<'t> = Parser<'t, UserState>
 
@@ -33,7 +35,7 @@ namespace Vaughan
                     (notFollowedByString "#" >>% natural);
                     (notFollowedByString "b" >>% natural)
                 ] |> skipSpaces
-                
+
         let private parseMidiOctave: Parser<_> =
                 any [
                         (stringReturn "0" SubContra);
@@ -46,7 +48,7 @@ namespace Vaughan
                         (stringReturn "6" ThreeLine);
                         (stringReturn "7" FourLine);
                         (stringReturn "8" FiveLine);
-                        (stringReturn "9" SixLine);       
+                        (stringReturn "9" SixLine);
                 ] |> skipSpaces
 
         let private parseScaleType: Parser<_> =
@@ -106,7 +108,7 @@ namespace Vaughan
                     (stringCIReturn "AugmentedEleventh" AugmentedEleventh);
                     (stringCIReturn "MajorThirteenth" MajorThirteenth)
                 ] |> skipSpaces
-                
+
         let private octaveParser: Parser<_> =
              any [
                      (stringCIReturn "SubContra" SubContra);
@@ -158,13 +160,23 @@ namespace Vaughan
                     (stringCIReturn "dom" Dominant7)
                 ] |> skipSpaces
 
-        let private parseQuality: Parser<_> =
+        let private qualityParser: Parser<_> =
             any [
                     parseMajorQuality
                     parseMinorQuality
                     parseAugmentedQuality
                     parseDiminishedQuality
                     parseDominantQuality
+                ] |> skipSpaces
+
+        let private chordStructureParser: Parser<_> =
+            any [
+                    (stringCIReturn "drop2" Drop2);
+                    (stringCIReturn "drop 2" Drop2);
+                    (stringCIReturn "drop3" Drop3);
+                    (stringCIReturn "drop 3" Drop3);
+                    (stringCIReturn "closed" Closed);
+                    (stringCIReturn "" Closed);
                 ] |> skipSpaces
 
         let private updateChordIntentWithSeventhQuality chord =
@@ -175,7 +187,7 @@ namespace Vaughan
             | {Quality=Augmented} -> { chord with Quality = Augmented7 }
             | {Quality=_} -> { chord with Quality = Dominant7 }
 
-        let private parseSeventhQuality: Parser<_> =
+        let private seventhQualityParser: Parser<_> =
             any [
                     (stringCIReturn "7" updateChordIntentWithSeventhQuality);
                     (stringCIReturn "7th" updateChordIntentWithSeventhQuality);
@@ -190,7 +202,7 @@ namespace Vaughan
         let private noteParser: Parser<_> =
             pipe2 parseNoteName parseAccident
                 (fun note applyAccidentToNote -> applyAccidentToNote note)
-                
+
         let private midiNoteParser: Parser<_> =
             pipe3 parseNoteName parseAccident parseMidiOctave
                 (fun note applyAccidentToNote octave -> (applyAccidentToNote note), octave)
@@ -200,12 +212,13 @@ namespace Vaughan
                 (fun r t -> createScale t r)
 
         let private triadParser: Parser<_> =
-            pipe2 noteParser parseQuality
-                (fun r q -> {Root=r; Quality=q;})
+            pipe2 noteParser qualityParser
+                (fun r q-> {Root=r; Quality=q; Structure = Closed})
 
         let private seventhChordParser: Parser<_> =
-            pipe2 triadParser parseSeventhQuality
-                (fun triad seventhQualityUpdater -> seventhQualityUpdater triad)
+            pipe3 triadParser seventhQualityParser chordStructureParser
+                (fun triad seventhQualityUpdater structure->
+                    {(triad |> seventhQualityUpdater) with Structure = structure})
 
         let private chordParser: Parser<_> =
             any [
@@ -213,12 +226,20 @@ namespace Vaughan
                     triadParser;
                 ]
 
+        let private createChordFrom = fun chordIntent ->
+            let parsedChord = chord chordIntent.Root chordIntent.Quality
+
+            match chordIntent.Structure with
+            | Drop2 -> parsedChord |> toDrop2
+            | Drop3 -> parsedChord |> toDrop3
+            | _ -> parsedChord |> toClosed
+
         let parseNote:ParseNote = fun text ->
             let parsed = run noteParser text
             match parsed with
             | Success(note, _, _) -> note
             | Failure(errorMsg, _, _) -> invalidOp errorMsg
-            
+
         let parseMidiNote:ParseMidiNote = fun text ->
             let parsed = run midiNoteParser text
             match parsed with
@@ -236,18 +257,15 @@ namespace Vaughan
             match parsed with
             | Success(interval, _, _) -> interval
             | Failure(errorMsg, _, _) -> invalidOp errorMsg
-            
+
         let parseOctave:ParseOctave = fun text ->
             let parsed = run octaveParser text
             match parsed with
             | Success(octave, _, _) -> octave
             | Failure(errorMsg, _, _) -> invalidOp errorMsg
-        
+
         let parseChord:ParseChord = fun text ->
             let parsed = run chordParser text
             match parsed with
-            | Success(chordDefinition, _, _) -> chordDefinition
+            | Success(chordDefinition, _, _) -> createChordFrom chordDefinition
             | Failure(errorMsg, _, _) -> invalidOp errorMsg
-
-        let createChord:CreateChordFromIntent = fun chordIntent ->
-            chord chordIntent.Root chordIntent.Quality
