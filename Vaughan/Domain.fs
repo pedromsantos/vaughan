@@ -13,7 +13,7 @@ namespace Vaughan
 
         type Note =
             | C | CSharp | DFlat | D | DSharp | EFlat | E | F | FSharp
-            | GFlat | G | GSharp | AFlat | A | ASharp | BFlat | B       
+            | GFlat | G | GSharp | AFlat | A | ASharp | BFlat | B
 
         type Duration =
             | Whole | Half | Quarter | Eigth
@@ -47,10 +47,11 @@ namespace Vaughan
             | SubContra | Contra | Great | Small
             | OneLine | TwoLine | ThreeLine | FourLine
             | FiveLine | SixLine | SevenLine
-            
+
         type MidiNote = Note * Octave
 
         type OctaveName = Octave -> string
+        type OctaveMidiNumber = Octave -> int
         type Frequency = Note -> Octave -> float<hz>
         type NoteMidiName = Note -> Octave -> string
         type NoteMidiNumber = Note -> Octave -> int<midiNote>

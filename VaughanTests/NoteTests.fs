@@ -281,7 +281,21 @@ namespace VaughanTests
             octaveName FiveLine |> should equal "FiveLine"
             octaveName SixLine |> should equal "SixLine"
             octaveName SevenLine |> should equal "SevenLine"
-                    
+
+        [<Fact>]
+        let ``Should relate octave with its midi number``() =
+            octaveMidiNumber SubContra |> should equal 0
+            octaveMidiNumber Contra |> should equal 1
+            octaveMidiNumber Great |> should equal 2
+            octaveMidiNumber Small |> should equal 3
+            octaveMidiNumber OneLine |> should equal 4
+            octaveMidiNumber TwoLine |> should equal 5
+            octaveMidiNumber ThreeLine |> should equal 6
+            octaveMidiNumber FourLine |> should equal 7
+            octaveMidiNumber FiveLine |> should equal 8
+            octaveMidiNumber SixLine |> should equal 9
+            octaveMidiNumber SevenLine |> should equal 10
+
         [<Fact>]
         let ``Should have frequency of 55Hz for A1``() =
             (float(440.0<hz> / 8.0)) |> should (equalWithin 0.1) (float(frequency A Octave.Contra))

@@ -72,7 +72,7 @@ namespace Vaughan
         let private octaveMidiName octave =
             (octaveProperties octave).MidiName
 
-        let private octaveMidiNumber octave =
+        let private octaveMidiNoteMultiplier octave =
             (octaveProperties octave).MidiNumber
 
         let private adjustFrequencyForOctave octave frequency =
@@ -114,7 +114,7 @@ namespace Vaughan
             (noteAttributes note).Pitch
 
         let midiNumber:NoteMidiNumber = fun note octave ->
-            ((pitch note) + int(octaveMidiNumber octave)) * 1<midiNote>
+            ((pitch note) + int(octaveMidiNoteMultiplier octave)) * 1<midiNote>
 
         let intervalName:IntervalName = fun interval ->
             (intervalAttributes interval).Name
@@ -196,17 +196,31 @@ namespace Vaughan
             | ThirtySecond -> (durationMultipliers timeSignature).[5]
             | SixtyFourth -> (durationMultipliers timeSignature).[6]
             | HundredTwentyEighth -> (durationMultipliers timeSignature).[7]) * 1.0<beat>
-            
+
         let octaveName:OctaveName = fun (octave:Octave) ->
             match octave with
             | SubContra -> "SubContra"
             | Contra -> "Contra"
-            | Great -> "Great" 
+            | Great -> "Great"
             | Small -> "Small"
-            | OneLine -> "OneLine" 
-            | TwoLine -> "TwoLine" 
-            | ThreeLine -> "ThreeLine" 
+            | OneLine -> "OneLine"
+            | TwoLine -> "TwoLine"
+            | ThreeLine -> "ThreeLine"
             | FourLine -> "FourLine"
-            | FiveLine -> "FiveLine" 
-            | SixLine -> "SixLine" 
+            | FiveLine -> "FiveLine"
+            | SixLine -> "SixLine"
             | SevenLine -> "SevenLine"
+
+        let octaveMidiNumber:OctaveMidiNumber = fun octave ->
+            match octave with
+            | SubContra -> 0
+            | Contra -> 1
+            | Great -> 2
+            | Small -> 3
+            | OneLine -> 4
+            | TwoLine -> 5
+            | ThreeLine -> 6
+            | FourLine -> 7
+            | FiveLine -> 8
+            | SixLine -> 9
+            | SevenLine -> 10
