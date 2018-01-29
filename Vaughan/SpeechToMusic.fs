@@ -133,6 +133,7 @@ namespace Vaughan
 
         let private parseMinorQuality: Parser<_> =
             any [
+                    (stringCIReturn "Minor" Minor);
                     (stringCIReturn "minor" Minor);
                     (stringCIReturn "min" Minor);
                     (stringReturn "m" Minor);
@@ -162,8 +163,8 @@ namespace Vaughan
 
         let private qualityParser: Parser<_> =
             any [
-                    parseMajorQuality
                     parseMinorQuality
+                    parseMajorQuality
                     parseAugmentedQuality
                     parseDiminishedQuality
                     parseDominantQuality

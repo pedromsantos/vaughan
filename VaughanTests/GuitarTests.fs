@@ -14,7 +14,7 @@ namespace VaughanTests
 
         let cIonian = createScaleNotes Ionian C
 
-        let cMaj = triadsHarmonizer ScaleDegree.I cIonian 
+        let cMaj = triadsHarmonizer ScaleDegree.I cIonian
 
         [<Property(Arbitrary = [| typeof<DiatonicScales> |])>]
         let ``Should map diatonic closed triads to guitar fretboard`` (scaleType: ScaleType) (scaleDegree: ScaleDegree) (root: Note) (bassString: GuitarString) () =
@@ -175,7 +175,7 @@ namespace VaughanTests
         open VaughanTests.DiatonicScalesArbitrary
 
         let cIonian = createScaleNotes Ionian C
-        let cMaj = triadsHarmonizer ScaleDegree.I cIonian 
+        let cMaj = triadsHarmonizer ScaleDegree.I cIonian
 
         let createTriad (scaleType: ScaleType) (scaleDegree: ScaleDegree) (root: Note) (bassString: GuitarString) =
             let scale = createScaleNotes scaleType root

@@ -134,6 +134,8 @@
                 (parseChord "C Maj 7") |> should equal (chord C Major7)
                 (parseChord "CMaj7") |> should equal (chord C Major7)
                 (parseChord "C minor 7") |> should equal (chord C Minor7)
+                (parseChord "C Minor 7") |> should equal (chord C Minor7)
+                (parseChord "CMinor7") |> should equal (chord C Minor7)
                 (parseChord "C min 7") |> should equal (chord C Minor7)
                 (parseChord "Cmin7") |> should equal (chord C Minor7)
                 (parseChord "C augmented 7") |> should equal (chord C Augmented7)
