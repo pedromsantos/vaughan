@@ -1,0 +1,11 @@
+source https://api.nuget.org/v3/index.json
+
+nuget Fake
+nuget FSharp.Core
+nuget Bespoke-OSC-Library 1.0.0
+nuget FParsec
+nuget FsCheck.Xunit 
+nuget FsUnit.xUnit 
+nuget Microsoft.NET.Test.Sdk
+nuget xunit 
+nuget xunit.runner.visualstudio 

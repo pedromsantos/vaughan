@@ -1,4 +1,5 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netstandard2.0</TargetFramework>
     <PackageId>Vaughan</PackageId>
@@ -14,10 +15,6 @@
     <Summary>F# music library</Summary>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Bespoke-OSC-Library" Version="1.0.0" />
-    <PackageReference Include="FParsec" Version="1.0.3" />
-  </ItemGroup>
-  <ItemGroup>
     <Compile Include="Infrastructure.fs" />
     <Compile Include="Domain.fs" />
     <Compile Include="Notes.fs" />
@@ -30,4 +27,5 @@
     <Compile Include="SonicPi.fs" />
     <Compile Include="SpeechToMusic.fs" />
   </ItemGroup>
+  <Import Project="..\.paket\Paket.Restore.targets" />
 </Project>
