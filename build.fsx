@@ -82,5 +82,9 @@ Target "Test" (fun _ ->
   ==> "InstallDotNetCLI"
   ==> "Restore"
   ==> "Build"
+  
+"Clean"
+  ==> "InstallDotNetCLI"
+  ==> "Restore"
   ==> "Test"
 RunTargetOrDefault "Build"

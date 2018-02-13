@@ -2,7 +2,7 @@
 if test "$OS" = "Windows_NT"
 then
   # use .Net
-
+  .paket/paket.bootstrapper.exe
   .paket/paket.exe restore
   exit_code=$?
   if [ $exit_code -ne 0 ]; then
