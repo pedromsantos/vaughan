@@ -5,6 +5,6 @@ dotnet: 2.0.0
 sudo: required
 script:
   - chmod u+x build.sh
-  - ./build.sh
+  - ./build.sh Test
   - if [ "$TRAVIS_BRANCH" != "master" ]; then travis_terminate $TRAVIS_TEST_RESULT; fi;
   - dotnet nuget push ./Vaughan/Vaughan.*.nupkg -k $NugetApiKey -s https://www.nuget.org/
