@@ -387,19 +387,19 @@ namespace VaughanTests
         let ``It should return an empty list of fitting chords for an empty list of notes`` () =
             let fittingChords = chordsFitting [A; B]
 
-            fittingChords |> List.exists (fun _ -> true) |> not
+            fittingChords |> should be Empty
 
         [<Property>]
         let ``It should return an empty list of fitting chords for list of notes with one note`` (note :Note) =
             let fittingChords = chordsFitting [note]
 
-            fittingChords |> List.exists (fun _ -> true ) |> not
+            fittingChords |> should be Empty
 
         [<Property>]
         let ``It should return an empty list of fitting chords for list of notes with two notes`` (note1 :Note)  (note2 :Note) =
             let fittingChords = chordsFitting [note1; note2]
 
-            fittingChords |> List.exists (fun _ -> true) |> not
+            fittingChords |> should be Empty
 
         [<Property>]
         let ``It should return the fitting chord for list of notes from triad`` (root :Note) (quality :ChordQuality) =

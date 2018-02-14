@@ -373,7 +373,6 @@ FakesAssemblies/
 _Pvt_Extensions
 
 # Paket dependency manager
-!.paket/paket.bootstrapper.exe
 .paket/paket.exe
 .paket
 paket-files/

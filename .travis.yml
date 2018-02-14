@@ -1,10 +1,12 @@
 language: csharp
-mono: latest
+mono: none
 dist: trusty
 dotnet: 2.0.0
 sudo: required
 script:
-  - chmod u+x build.sh
-  - ./build.sh Test
+  - dotnet restore
+  - dotnet build -c Release
+  - dotnet test -c Release ./VaughanTests
+  - dotnet pack -o . /p:Version=0.3.0.$TRAVIS_BUILD_NUMBER-alpha
   - if [ "$TRAVIS_BRANCH" != "master" ]; then travis_terminate $TRAVIS_TEST_RESULT; fi;
   - dotnet nuget push ./Vaughan/Vaughan.*.nupkg -k $NugetApiKey -s https://www.nuget.org/
