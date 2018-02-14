@@ -1,11 +1,6 @@
 
 Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 2012
-Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = ".paket", ".paket", "{95EFF58C-C5CB-4179-95EF-3D651284A40C}"
-	ProjectSection(SolutionItems) = preProject
-		paket.dependencies = paket.dependencies
-	EndProjectSection
-EndProject
 Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "Vaughan", "Vaughan\Vaughan.fsproj", "{675750F0-C479-4274-B47B-00DADB6096EF}"
 EndProject
 Project("{f2a71f9b-5d33-465a-a702-920d77279786}") = "VaughanTests", "VaughanTests\VaughanTests.fsproj", "{95DFF539-C1B0-487A-A6E4-F0CD70D2FF32}"
