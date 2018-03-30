@@ -293,6 +293,7 @@ namespace Vaughan
             let private arpeggioFretsForString (guitarString:int) arpeggio =
                 (arpeggioFretsByString arpeggio).[guitarString]
                 |> List.map (fun f -> f.Fret)
+                |> List.sort
 
             let private notesOnArpeggio arpeggio =                  
                 arpeggio
