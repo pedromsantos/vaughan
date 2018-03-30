@@ -13,7 +13,8 @@
         let isMinorSixthDiminishedScale = function MinorSixthDiminishedScale _ -> true | _ -> false
         let isDominantDiminishedScale= function DominantDiminishedScale _ -> true | _ -> false
         let isDominantb5DiminishedScale = function Dominantb5DiminishedScale _ -> true | _ -> false
-        let isisHalfWholeDiminishedScale = function HalfWholeDiminished _ -> true | _ -> false
+        let isHalfWholeDiminishedScale = function HalfWholeDiminished _ -> true | _ -> false
+        let isLydianAugmented = function LydianAugmented _ -> true | _ -> false
 
         type DiatonicScales =
             static member DU () = Arb.Default.Derive () |> Arb.filter (not << isBlues) 
@@ -26,5 +27,6 @@
                                                         |> Arb.filter (not << isMinorSixthDiminishedScale) 
                                                         |> Arb.filter (not << isDominantDiminishedScale)
                                                         |> Arb.filter (not << isDominantb5DiminishedScale)
-                                                        |> Arb.filter (not << isisHalfWholeDiminishedScale)
+                                                        |> Arb.filter (not << isHalfWholeDiminishedScale)
+                                                        |> Arb.filter (not << isLydianAugmented)
 
