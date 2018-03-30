@@ -147,10 +147,15 @@ namespace Vaughan
         type Fret = {GuitarString:GuitarString; Fret:int; Note:Note}
         type Frets = Fret list
         type GuitarChord = {Chord:Chord; Frets:Frets}
+        type GuitarArpeggio = {BaseChord:Chord; ArpeggioFrets:Frets}
+        
+        type CreateGuitarChord = GuitarString -> Chord -> GuitarChord
+        type CreateGuitarArpeggio = int -> int -> Chord -> GuitarArpeggio
 
         type Tabify = GuitarChord -> string
         type Shapify = GuitarChord -> string
         type TabifyAll = GuitarChord list -> string
+        type TabifyArpeggio = GuitarArpeggio -> string
 
         type ParseChord = string -> Chord
         type ParseInterval = string -> Interval

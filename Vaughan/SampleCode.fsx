@@ -21,6 +21,30 @@ open Vaughan.ChordVoiceLeading
 let cIonian = createScaleNotes Ionian C
 
 (cIonian
+|> triadsHarmonizer ScaleDegree.I
+|> createGuitarArpeggio 2 5)
+|> tabifyArpeggio
+|> printf "\n%s"
+
+(cIonian
+|> triadsHarmonizer ScaleDegree.I
+|> createGuitarArpeggio 1 4)
+|> tabifyArpeggio
+|> printf "\n%s"
+
+(cIonian
+|> triadsHarmonizer ScaleDegree.I
+|> createGuitarArpeggio 7 10)
+|> tabifyArpeggio
+|> printf "\n%s"
+
+(cIonian
+|> triadsHarmonizer ScaleDegree.I
+|> createGuitarArpeggio 0 3)
+|> tabifyArpeggio
+|> printf "\n%s"
+
+(cIonian
 |> seventhsHarmonizer ScaleDegree.I
 |> toDrop3
 |> createGuitarChord SixthString)
