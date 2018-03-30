@@ -493,7 +493,7 @@ E||---0--3---------------------||
 ### Example usage
 
 ```fsharp
-#load "./Infrastructure.fs"
+#load "Infrastructure.fs"
 #load "Domain.fs"
 #load "Notes.fs"
 #load "Chords.fs"
@@ -503,7 +503,6 @@ E||---0--3---------------------||
 #load "Guitar.fs"
 #load "ChordVoiceLeading.fs"
 
-open Vaughan.Infrastructure
 open Vaughan.Domain
 open Vaughan.Notes
 open Vaughan.Chords
@@ -517,21 +516,45 @@ open Vaughan.ChordVoiceLeading
 let cIonian = createScaleNotes Ionian C
 
 (cIonian
-|> seventhsHarmonizer ScaleDegrees.I
+|> triadsHarmonizer ScaleDegree.I
+|> createGuitarArpeggio 2 5)
+|> tabifyArpeggio
+|> printf "\n%s"
+
+(cIonian
+|> triadsHarmonizer ScaleDegree.I
+|> createGuitarArpeggio 1 4)
+|> tabifyArpeggio
+|> printf "\n%s"
+
+(cIonian
+|> triadsHarmonizer ScaleDegree.I
+|> createGuitarArpeggio 7 10)
+|> tabifyArpeggio
+|> printf "\n%s"
+
+(cIonian
+|> triadsHarmonizer ScaleDegree.I
+|> createGuitarArpeggio 0 3)
+|> tabifyArpeggio
+|> printf "\n%s"
+
+(cIonian
+|> seventhsHarmonizer ScaleDegree.I
 |> toDrop3
 |> createGuitarChord SixthString)
 |> tabify
 |> printf "\n%s"
 
 (cIonian
-|> seventhsHarmonizer ScaleDegrees.I
+|> seventhsHarmonizer ScaleDegree.I
 |> toDrop2
 |> createGuitarChord FifthString)
 |> tabify
 |> printf "\n%s"
 
 (cIonian
-|> triadsHarmonizer ScaleDegrees.I
+|> triadsHarmonizer ScaleDegree.I
 |> createGuitarChord FifthString)
 |> tabify
 |> printf "\n%s"
@@ -549,52 +572,52 @@ chord C Major9
 |> printf "\n%s"
 
 createScaleNotes Aolian DSharp
-|> triadsHarmonizer ScaleDegrees.III
+|> triadsHarmonizer ScaleDegree.III
 |> createGuitarChord SixthString
 |> tabify
 |> printf "\n%s"
 
 createScaleNotes Ionian A
-|> seventhsHarmonizer ScaleDegrees.I
+|> seventhsHarmonizer ScaleDegree.I
 |> toDrop2
 |> createGuitarChord FifthString
 |> tabify
 |> printf "\n%s"
 
 createScaleNotes Ionian C
-|> seventhsHarmonizer ScaleDegrees.I
+|> seventhsHarmonizer ScaleDegree.I
 |> toDrop3
 |> createGuitarChord FifthString
 |> tabify
 |> printf "\n%s"
 
 createScaleNotes Aolian FSharp
-|> seventhsHarmonizer ScaleDegrees.III
+|> seventhsHarmonizer ScaleDegree.III
 |> toDrop3
 |> createGuitarChord SixthString
 |> tabify
 |> printf "\n%s"
 
 createScaleNotes HarmonicMinor BFlat
-|> seventhsHarmonizer ScaleDegrees.VII
+|> seventhsHarmonizer ScaleDegree.VII
 |> createGuitarChord SixthString
 |> tabify
 |> printf "\n%s"
 
 createScaleNotes HarmonicMinor C
-|> seventhsHarmonizer ScaleDegrees.VII
+|> seventhsHarmonizer ScaleDegree.VII
 |> createGuitarChord SixthString
 |> tabify
 |> printf "\n%s"
 
 createScaleNotes HarmonicMinor C
-|> seventhsHarmonizer ScaleDegrees.VII
+|> seventhsHarmonizer ScaleDegree.VII
 |> createGuitarChord SixthString
 |> tabify
 |> printf "\n%A"
 
 createScaleNotes HarmonicMinor C
-|> seventhsHarmonizer ScaleDegrees.VII
+|> seventhsHarmonizer ScaleDegree.VII
 |> toOpen
 |> createGuitarChord SixthString
 |> tabify
@@ -616,7 +639,8 @@ measureAbsoluteSemitones C G |> printf "\n%A"
 intervalBetween C FSharp |> printf "\n%A"
 transpose C MajorSixth |> printf "\n%A"
 intervalName DiminishedFifth |> printf "\n%A"
-fromDistance 6 |> printf "\n%A"
+fromDistance 6<ht> |> printf "\n%A"
+toDistance PerfectFifth |> printf "\n%A"
 
 keyNotes CMajor |> printf "\n%A"
 keyNotes EFlatMajor |> printf "\n%A"
@@ -639,6 +663,7 @@ cMaj7.Notes |> printf "\n%A"
 (cMaj7 |> toDrop2).Notes |> printf "\n%A"
 (cMaj7 |> toDrop3).Notes |> printf "\n%A"
 
+
 inversionForFunctionAsLead cMaj Third |> printf "\n%A"
 inversionForFunctionAsBass cMaj Fifth |> printf "\n%A"
 invertionWithLeadClosestToNote cMaj CSharp |> printf "\n%A"
@@ -654,7 +679,6 @@ printfn "\n"
 printfn "Scales Fitting"
 
 let chord = chord C ChordQuality.Dominant7
-let chordNotes = chord.Notes |> List.map fst |> List.sort
 
 scalesFitting chord
 ```
@@ -662,8 +686,36 @@ scalesFitting chord
 #### Output
 
 ```
+e||---------------------3---||
+B||------------------5------||
+G||---------------5---------||
+D||---------2--5------------||
+A||------3------------------||
+E||---3---------------------||
+
+e||------------------3---||
+B||---------------1------||
+G||-------------1--------||
+D||---------2------------||
+A||------3---------------||
+E||---3------------------||
+
+e||---------------------8---||
+B||------------------8------||
+G||---------------9---------||
+D||------------10-----------||
+A||------7--10--------------||
+E||---8---------------------||
+
+e||---------------------0--3---||
+B||------------------1---------||
+G||---------------0------------||
+D||------------2---------------||
+A||---------3------------------||
+E||---0--3---------------------||
+
       CMaj7
-E||-------------||
+e||-------------||
 B||----8--------||
 G||----9--------||
 D||----9--------||
@@ -671,7 +723,7 @@ A||-------------||
 E||----8--------||
 
       CMaj7
-E||-------------||
+e||-------------||
 B||----5--------||
 G||----4--------||
 D||----5--------||
@@ -679,7 +731,7 @@ A||----3--------||
 E||-------------||
 
       CMaj
-E||------------||
+e||------------||
 B||------------||
 G||----12------||
 D||----14------||
@@ -687,7 +739,7 @@ A||----15------||
 E||------------||
 
       C9
-E||----------||
+e||----------||
 B||----3-----||
 G||----3-----||
 D||----2-----||
@@ -695,7 +747,7 @@ A||----3-----||
 E||----------||
 
       CMaj9
-E||-------------||
+e||-------------||
 B||----3--------||
 G||----4--------||
 D||----2--------||
@@ -703,7 +755,7 @@ A||----3--------||
 E||-------------||
 
       GbMaj
-E||-------------||
+e||-------------||
 B||-------------||
 G||-------------||
 D||----11-------||
@@ -711,7 +763,7 @@ A||----13-------||
 E||----14-------||
 
       AMaj7
-E||-------------||
+e||-------------||
 B||----14-------||
 G||----13-------||
 D||----14-------||
@@ -719,7 +771,7 @@ A||----12-------||
 E||-------------||
 
       CMaj7
-E||----3--------||
+e||----3--------||
 B||----5--------||
 G||----4--------||
 D||-------------||
@@ -727,7 +779,7 @@ A||----3--------||
 E||-------------||
 
       AMaj7
-E||-------------||
+e||-------------||
 B||----5--------||
 G||----6--------||
 D||----6--------||
@@ -735,7 +787,7 @@ A||-------------||
 E||----5--------||
 
       ADim7
-E||----2--------||
+e||----2--------||
 B||----1--------||
 G||----2--------||
 D||----1--------||
@@ -743,7 +795,7 @@ A||----3--------||
 E||----2--------||
 
       BDim7
-E||----1--------||
+e||----1--------||
 B||----3--------||
 G||----1--------||
 D||----3--------||
@@ -751,7 +803,7 @@ A||----2--------||
 E||----1--------||
 
 "      BDim7
-E||----1--------||
+e||----1--------||
 B||----3--------||
 G||----1--------||
 D||----3--------||
@@ -759,7 +811,7 @@ A||----2--------||
 E||----1--------||
 "
 "      BDim7
-E||----1--------||
+e||----1--------||
 B||----0--------||
 G||----1--------||
 D||----0--------||
@@ -767,7 +819,7 @@ A||----2--------||
 E||----1--------||
 "
       GMaj   CMaj   AMin   DMaj
-E||----3------0------0------2-------||
+e||----3------0------0------2-------||
 B||----0------1------1------3-------||
 G||----0------0------2------2-------||
 D||----0------2------2------0-------||
@@ -784,6 +836,7 @@ DiminishedFifth
 A
 "DiminishedFifth"
 DiminishedFifth
+7
 [C; D; E; F; G; A; B]
 [EFlat; F; G; AFlat; BFlat; C; D]
 [D; E; F; G; A; BFlat; C]
@@ -812,7 +865,7 @@ B
  ChordType = Closed;
  Name = "CMaj";}
 
-chordsFitting
+Chords Fitting
 
 [{Notes = [(A, Root); (D, Third); (F, Fifth)];
   ChordType = Closed;
@@ -822,4 +875,32 @@ chordsFitting
 [{Notes = [(C, Root); (E, Third); (G, Fifth); (B, Seventh)];
   ChordType = Closed;
   Name = "CMaj7";}]
+
+Scales Fitting
+val cIonian : Vaughan.Domain.ScaleNotes = [C; D; E; F; G; A; B]
+val cMaj7 : Vaughan.Domain.Chord =
+  {Notes = [(C, Root); (E, Third); (G, Fifth); (B, Seventh)];
+   ChordType = Closed;
+   Name = "CMaj7";}
+val cMaj : Vaughan.Domain.Chord =
+  {Notes = [(C, Root); (E, Third); (G, Fifth)];
+   ChordType = Closed;
+   Name = "CMaj";}
+val chord : Vaughan.Domain.Chord =
+  {Notes = [(C, Root); (E, Third); (G, Fifth); (BFlat, Seventh)];
+   ChordType = Closed;
+   Name = "C7";}
+val it : Vaughan.Domain.Scale list =
+  [{Scale = Mixolydian;
+    Notes = [C; D; E; F; G; A; BFlat];};
+   {Scale = LydianDominant;
+    Notes = [C; D; E; FSharp; G; A; BFlat];};
+   {Scale = Mixolydianb6;
+    Notes = [C; D; E; F; G; AFlat; BFlat];};
+   {Scale = Bebop;
+    Notes = [C; D; E; F; G; A; BFlat; B];};
+   {Scale = HalfWholeDiminished;
+    Notes = [C; DFlat; EFlat; E; FSharp; G; A; BFlat];};
+   {Scale = DominantDiminishedScale;
+    Notes = [C; D; E; F; G; GSharp; BFlat; B];}]
  ```
