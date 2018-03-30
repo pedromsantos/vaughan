@@ -209,17 +209,6 @@ namespace VaughanTests
                             && tab.Contains (string frets.[2].Fret))
                             
         [<Property(Arbitrary = [| typeof<DiatonicScales> |])>]
-        let ``Should map diatonic triad arpeggio to guitar tab`` (scaleType: ScaleType) (scaleDegree: ScaleDegree) (root: Note) () =
-            let scale = createScaleNotes scaleType root
-            let chord = triadsHarmonizer scaleDegree scale
-            let guitarArpeggio = createGuitarArpeggio 1 4 chord
-            let frets = guitarArpeggio.ArpeggioFrets |> List.filter (fun f -> f.Fret > -1)
-            let tab = tabifyArpeggio guitarArpeggio
-            tab.Contains (string frets.[0].Fret)
-            && tab.Contains (string frets.[1].Fret)
-            && tab.Contains (string frets.[2].Fret)
-
-        [<Property(Arbitrary = [| typeof<DiatonicScales> |])>]
         let ``Should map diatonic closed seventh chord to guitar tab`` (scaleType: ScaleType) (scaleDegree: ScaleDegree) (root: Note) (bassString: GuitarString) () =
             (bassString <> ThirdString && bassString <> SecondString && bassString <> FirstString)
                 ==> lazy (
