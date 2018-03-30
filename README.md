@@ -408,7 +408,7 @@ A|----3-------5-------7-------8--------|
 E|-------------------------------------|
 ```
 
-### Guitar chord tab drawing from textual chord
+### Guitar arpeggio tab drawing
 
 ```fsharp
 open Vaughan.Notes
@@ -418,24 +418,76 @@ open Vaughan.Guitar
 open Vaughan.GuitarTab
 open Vaughan.ScaleHarmonizer
 open Vaughan.SpeechToMusic
+
+let cIonian = createScaleNotes Ionian C
 ```
 
 ```fsharp
-"C Major"
-|> parseChord
-|> createChord
-|> createGuitarChord SixthString
-|> tabify
+(cIonian
+|> triadsHarmonizer ScaleDegree.I
+|> createGuitarArpeggio 2 5)
+|> tabifyArpeggio
+|> printf "\n%s"
 ```
 Output:
 ```
-  CMaj
-E|---|
-B|---|
-G|---|
-D|-5-|
-A|-7-|
-E|-8-|
+e||---------------------3---||
+B||------------------5------||
+G||---------------5---------||
+D||---------2--5------------||
+A||------3------------------||
+E||---3---------------------||
+```
+
+```fsharp
+(cIonian
+|> triadsHarmonizer ScaleDegree.I
+|> createGuitarArpeggio 1 4)
+|> tabifyArpeggio
+|> printf "\n%s"
+```
+Output:
+```
+e||------------------3---||
+B||---------------1------||
+G||-------------1--------||
+D||---------2------------||
+A||------3---------------||
+E||---3------------------||
+```
+
+```fsharp
+(cIonian
+|> triadsHarmonizer ScaleDegree.I
+|> createGuitarArpeggio 7 10)
+|> tabifyArpeggio
+|> printf "\n%s"
+```
+Output:
+```
+e||---------------------8---||
+B||------------------8------||
+G||---------------9---------||
+D||------------10-----------||
+A||------7--10--------------||
+E||---8---------------------||
+```
+
+```fsharp
+(cIonian
+|> triadsHarmonizer ScaleDegree.I
+|> createGuitarArpeggio 0 3)
+|> tabifyArpeggio
+|> printf "\n%s"
+```
+Output:
+```
+e||---------------------0--3---||
+B||------------------1---------||
+G||---------------0------------||
+D||------------2---------------||
+A||---------3------------------||
+E||---0--3---------------------||
 ```
 
 ### Example usage
