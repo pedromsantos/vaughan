@@ -417,7 +417,6 @@ open Vaughan.Scales
 open Vaughan.Guitar
 open Vaughan.GuitarTab
 open Vaughan.ScaleHarmonizer
-open Vaughan.SpeechToMusic
 
 let cIonian = createScaleNotes Ionian C
 ```
