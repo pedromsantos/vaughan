@@ -1,4 +1,30 @@
+#load "Infrastructure.fs"
+#load "Domain.fs"
+#load "Notes.fs"
+#load "Chords.fs"
+#load "Keys.fs"
+#load "Scales.fs"
+#load "ScaleHarmonizer.fs"
+#load "Guitar.fs"
+#load "ChordVoiceLeading.fs"
 
+open Vaughan.Domain
+open Vaughan.Notes
+open Vaughan.Chords
+open Vaughan.Keys
+open Vaughan.Scales
+open Vaughan.ScaleHarmonizer
+open Vaughan.Guitar
+open Vaughan.GuitarTab
+open Vaughan.ChordVoiceLeading
+
+let cIonian = createScaleNotes Ionian C
+
+(cIonian
+|> seventhsHarmonizer ScaleDegree.I
+|> createGuitarArpeggio 7 10)
+|> tabifyArpeggio
+|> printf "\n%s"
 
 (cIonian
 |> triadsHarmonizer ScaleDegree.I
