@@ -42,6 +42,12 @@ createScale Ionian C
 let cIonian = createScaleNotes Ionian C
 
 (cIonian
+|> triadsHarmonizer ScaleDegree.I
+|> createGuitarArpeggio 9 22)
+|> tabifyArpeggio
+|> printf "\n%s"
+
+(cIonian
 |> seventhsHarmonizer ScaleDegree.I
 |> createGuitarArpeggio 7 10)
 |> tabifyArpeggio
