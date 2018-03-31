@@ -308,10 +308,8 @@ namespace Vaughan
                 melodicLine.[guitarString]
 
             let private renderMelodicLineForGuitarString melodicLine =
-                let notesToTab = melodicLine |> List.length
-
                 melodicLine
-                |> List.mapi (fun i f -> sprintf "--%i" f) 
+                |> List.map (fun f -> sprintf "--%i" f) 
                 |> List.reduce (+)
 
             let private renderTab tab =
