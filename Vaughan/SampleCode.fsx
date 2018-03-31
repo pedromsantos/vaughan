@@ -18,6 +18,27 @@ open Vaughan.Guitar
 open Vaughan.GuitarTab
 open Vaughan.ChordVoiceLeading
 
+createScale Ionian C 
+|> createGuitarScale 2 6
+|> createGuitarMelodicLineFromScale
+|> tabifyMelodicLine
+|> printf "\n%s"
+
+createScale Ionian C 
+|> createGuitarScale 4 8
+|> tabifyScale
+|> printf "\n%s"
+
+createScale Ionian C 
+|> createGuitarScale 7 10
+|> tabifyScale
+|> printf "\n%s"
+
+createScale Ionian C 
+|> createGuitarScale 9 13
+|> tabifyScale
+|> printf "\n%s"
+
 let cIonian = createScaleNotes Ionian C
 
 (cIonian
@@ -54,84 +75,84 @@ let cIonian = createScaleNotes Ionian C
 |> seventhsHarmonizer ScaleDegree.I
 |> toDrop3
 |> createGuitarChord SixthString)
-|> tabify
+|> tabifyChord
 |> printf "\n%s"
 
 (cIonian
 |> seventhsHarmonizer ScaleDegree.I
 |> toDrop2
 |> createGuitarChord FifthString)
-|> tabify
+|> tabifyChord
 |> printf "\n%s"
 
 (cIonian
 |> triadsHarmonizer ScaleDegree.I
 |> createGuitarChord FifthString)
-|> tabify
+|> tabifyChord
 |> printf "\n%s"
 
 chord C Dominant9
 |> skipFunction Fifth
 |> createGuitarChord FifthString
-|> tabify
+|> tabifyChord
 |> printf "\n%s"
 
 chord C Major9
 |> skipFunction Fifth
 |> createGuitarChord FifthString
-|> tabify
+|> tabifyChord
 |> printf "\n%s"
 
 createScaleNotes Aolian DSharp
 |> triadsHarmonizer ScaleDegree.III
 |> createGuitarChord SixthString
-|> tabify
+|> tabifyChord
 |> printf "\n%s"
 
 createScaleNotes Ionian A
 |> seventhsHarmonizer ScaleDegree.I
 |> toDrop2
 |> createGuitarChord FifthString
-|> tabify
+|> tabifyChord
 |> printf "\n%s"
 
 createScaleNotes Ionian C
 |> seventhsHarmonizer ScaleDegree.I
 |> toDrop3
 |> createGuitarChord FifthString
-|> tabify
+|> tabifyChord
 |> printf "\n%s"
 
 createScaleNotes Aolian FSharp
 |> seventhsHarmonizer ScaleDegree.III
 |> toDrop3
 |> createGuitarChord SixthString
-|> tabify
+|> tabifyChord
 |> printf "\n%s"
 
 createScaleNotes HarmonicMinor BFlat
 |> seventhsHarmonizer ScaleDegree.VII
 |> createGuitarChord SixthString
-|> tabify
+|> tabifyChord
 |> printf "\n%s"
 
 createScaleNotes HarmonicMinor C
 |> seventhsHarmonizer ScaleDegree.VII
 |> createGuitarChord SixthString
-|> tabify
+|> tabifyChord
 |> printf "\n%s"
 
 createScaleNotes HarmonicMinor C
 |> seventhsHarmonizer ScaleDegree.VII
 |> createGuitarChord SixthString
-|> tabify
+|> tabifyChord
 |> printf "\n%A"
 
 createScaleNotes HarmonicMinor C
 |> seventhsHarmonizer ScaleDegree.VII
 |> toOpen
 |> createGuitarChord SixthString
-|> tabify
+|> tabifyChord
 |> printf "\n%A"
 
 [(!*(G=>Major) |~ SixthString);

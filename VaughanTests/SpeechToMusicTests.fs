@@ -162,7 +162,7 @@
                 |> parseChord
                 |> toTriad
                 |> createGuitarChord SixthString
-                |> tabify |> should equal ("      AMaj   " + Environment.NewLine+
+                |> tabifyChord |> should equal ("      AMaj   " + Environment.NewLine+
                             "e||------------||" + Environment.NewLine +
                             "B||------------||" + Environment.NewLine +
                             "G||------------||" + Environment.NewLine +

@@ -20,7 +20,7 @@ namespace Vaughan
             let private isStretched fret other =
                 (fretDistance fret other) > 5
 
-            let private raiseOctave (fret:Fret) =
+            let raiseOctave (fret:Fret) =
                 {fret with Fret = fret.Fret + int(toDistance PerfectOctave)}
 
             let private isRaisable fret =
@@ -153,27 +153,36 @@ namespace Vaughan
                 chordToGuitarChord (fun f -> f.Fret <> 0) bassString chord
             
         [<AutoOpen>]
-        module private MapChordsToArpeggios =
-            let private mapAllChordNotesToFretsOnString allowedFrets guitarStringIndex (chord:Chord) =
+        module private MapMelodicLines =
+            let private filterAllowedFrets allowedFrets (frets: Fret list) =
+                frets |> List.map (fun f -> if allowedFrets f then f else raiseOctave f)
+                |> List.filter allowedFrets 
+
+            let private mapAllNotesToFretsOnString allowedFrets guitarStringIndex (notes:Note list) =
                 let guitarString = indexToGuitarString guitarStringIndex
                 let frets = 
-                    [for chordNoteIndex in 0 .. (chord.Notes.Length - 1)
-                        do yield (createStringFret guitarString (fst chord.Notes.[chordNoteIndex]))]
-                    |> List.filter allowedFrets
+                    [for noteIndex in 0 .. (notes.Length - 1)
+                        do yield (createStringFret guitarString notes.[noteIndex])]
+                    |> filterAllowedFrets allowedFrets
                 match frets with
                 | [] -> [createMutedStringFret guitarString]
                 | _ -> frets
-                
             
-            let private generateAllFretCombinations allowedFrets chord =
-                [for guitarStringIndex in 1 .. 6
-                    do yield (mapAllChordNotesToFretsOnString allowedFrets guitarStringIndex chord)]
+            let private generateAllFretCombinations allowedFrets (notes:Note list) =
+                [for guitarStringIndex in 1 .. 6 
+                    do yield (mapAllNotesToFretsOnString allowedFrets guitarStringIndex notes)]
                 |> List.collect id 
                             
             let chordToGuitarArpeggio allowedFrets chord =
                 {
                     BaseChord = chord;
-                    ArpeggioFrets = chord |> generateAllFretCombinations allowedFrets
+                    ArpeggioFrets = generateAllFretCombinations allowedFrets (chord.Notes |> List.map fst)
+                }
+
+            let scaleToGuitarScale allowedFrets scale =
+                {
+                    Scale = scale;
+                    Frets = generateAllFretCombinations allowedFrets (scale.Notes)
                 }
             
         let createGuitarChord:CreateGuitarChord = fun bassString chord ->
@@ -190,10 +199,19 @@ namespace Vaughan
             |> toClosed  
             |> chordToGuitarArpeggio (fun f -> f.Fret >= minFret && f.Fret <= maxFret)
 
+        let createGuitarScale:CreateGuitarScale = fun minFret maxFret scale ->
+            scale
+            |> scaleToGuitarScale (fun f -> f.Fret >= minFret && f.Fret <= maxFret)
+
         let createGuitarMelodicLineFromArpeggio:CreateGuitarMelodicLineFromArpeggio = fun arpeggio ->
             arpeggio.ArpeggioFrets 
             |> List.groupBy (fun f -> f.GuitarString)
             |> List.map (snd >> (fun f -> f |> List.sort |> List.map (fun f -> f.Fret)))
+
+        let createGuitarMelodicLineFromScale:CreateGuitarMelodicLineFromScale = fun scale ->
+            scale.Frets
+            |> List.groupBy (fun f -> f.GuitarString)
+            |> List.map (snd >> (fun f -> f |> List.sort |> List.map (fun f -> f.Fret))) 
 
     module GuitarTab =
         open System
@@ -289,17 +307,11 @@ namespace Vaughan
             let private melodicLinePartForGuitarString (guitarString:int) (melodicLine:GuitarMelodicLine) =
                 melodicLine.[guitarString]
 
-            let private renderMelodicLineForGuitarString (guitarString:int) melodicLine =
+            let private renderMelodicLineForGuitarString melodicLine =
                 let notesToTab = melodicLine |> List.length
 
                 melodicLine
-                |> List.mapi (fun i f -> 
-                                        if notesToTab = 1 || i = 0
-                                        then sprintf "%s%i%s" "--" f "--" 
-                                        else 
-                                            if guitarString = 0
-                                            then sprintf "%i%s" f "--"
-                                            else sprintf "%i%s" f "-----")
+                |> List.mapi (fun i f -> sprintf "--%i" f) 
                 |> List.reduce (+)
 
             let private renderTab tab =
@@ -315,16 +327,17 @@ namespace Vaughan
                     match gs with
                     | 6 -> acc |> List.rev
                     | _ ->
-                            let guitarStringTab = melodicLinePartForGuitarString gs melodicLine |> renderMelodicLineForGuitarString gs
+                            let guitarStringTab = melodicLinePartForGuitarString gs melodicLine |> renderMelodicLineForGuitarString
                             
                             let notesToTab = melodicLinePartForGuitarString gs melodicLine |> List.length
                             let leftPad = String.replicate (t - notesToTab) "---"
                             let rigtPads = (notesOn melodicLine) - t - notesToTab + 1
                             let rigtPad = String.replicate (if rigtPads < 0 then 0 else rigtPads) "---"
                             let paddedTab = sprintf "%s%s%s" leftPad guitarStringTab rigtPad
-                            let equalizedTab = if acc.Length > 0 then paddedTab.Substring (0, (acc.Head.Length)) else paddedTab
+                            let equalizedTab = if acc.Length > 0 && paddedTab.Length > acc.Head.Length then paddedTab.Substring (0, (acc.Head.Length)) else paddedTab
+                            let tab = if acc.Length > 0 && equalizedTab.Length < acc.Head.Length then equalizedTab + String.replicate (acc.Head.Length - equalizedTab.Length) "-" else equalizedTab
 
-                            loop (gs + 1) (t - notesToTab) (equalizedTab::acc)
+                            loop (gs + 1) (t - notesToTab) (tab::acc)
 
                 loop 0 (notesOn melodicLine) []
                 |> renderTab 
@@ -370,12 +383,23 @@ namespace Vaughan
             (tabifyChordNames guitarChords) @ (tabifyChords guitarChords)
             |> List.fold (+) ""
 
-        let tabify:Tabify = fun guitarChord ->
+        let tabifyChord:TabifyChord = fun guitarChord ->
             tabifyAll [guitarChord]
         
         let tabifyArpeggio:TabifyArpeggio = fun guitarArpeggio ->
            guitarArpeggio
            |> createGuitarMelodicLineFromArpeggio
+           |> tabifyMelodicLine 
+           |> List.fold (+) ""
+
+        let tabifyScale:TabifyScale = fun guitarScale ->
+           guitarScale
+           |> createGuitarMelodicLineFromScale
+           |> tabifyMelodicLine 
+           |> List.fold (+) ""
+
+        let tabifyMelodicLine:TabifyMelodicLine = fun melodicLine ->
+           melodicLine
            |> tabifyMelodicLine 
            |> List.fold (+) ""
                     
