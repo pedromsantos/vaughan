@@ -290,10 +290,9 @@ namespace Vaughan
                 melodicLine.[guitarString]
 
             let private renderMelodicLineForGuitarString (guitarString:int) melodicLine =
-                let notesToTab = melodicLinePartForGuitarString guitarString melodicLine |> List.length
+                let notesToTab = melodicLine |> List.length
 
                 melodicLine
-                |> melodicLinePartForGuitarString guitarString
                 |> List.mapi (fun i f -> 
                                         if notesToTab = 1 || i = 0
                                         then sprintf "%s%i%s" "--" f "--" 
@@ -316,15 +315,16 @@ namespace Vaughan
                     match gs with
                     | 6 -> acc |> List.rev
                     | _ ->
+                            let guitarStringTab = melodicLinePartForGuitarString gs melodicLine |> renderMelodicLineForGuitarString gs
+                            
                             let notesToTab = melodicLinePartForGuitarString gs melodicLine |> List.length
-                            let padLeft = String.replicate (t - notesToTab) "---"
+                            let leftPad = String.replicate (t - notesToTab) "---"
                             let rigtPads = (notesOn melodicLine) - t - notesToTab + 1
-                            let padRigth = String.replicate (if rigtPads < 0 then 0 else rigtPads) "---"
-                            let frets = renderMelodicLineForGuitarString gs melodicLine
-                            let tab = sprintf "%s%s%s" padLeft frets padRigth
-                            let formatedTab = if acc.Length > 0 then tab.Substring (0, (acc.Head.Length)) else tab
+                            let rigtPad = String.replicate (if rigtPads < 0 then 0 else rigtPads) "---"
+                            let paddedTab = sprintf "%s%s%s" leftPad guitarStringTab rigtPad
+                            let equalizedTab = if acc.Length > 0 then paddedTab.Substring (0, (acc.Head.Length)) else paddedTab
 
-                            loop (gs + 1) (t - notesToTab) (formatedTab::acc)
+                            loop (gs + 1) (t - notesToTab) (equalizedTab::acc)
 
                 loop 0 (notesOn melodicLine) []
                 |> renderTab 
