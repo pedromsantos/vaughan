@@ -169,14 +169,6 @@ namespace VaughanTests
             let minFret = unmutedFrets |> List.map (fun f -> f.Fret) |> List.min
             minFret > 0 && maxFret < 5
 
-        [<Property(Arbitrary = [| typeof<DiatonicScales> |])>]
-        let ``Should map scale first position`` (scale: Scale) () =
-            let guitarScale = createGuitarScale 2 6 scale
-            let frets = guitarScale.Frets
-            let maxFret = frets |> List.map (fun f -> f.Fret) |> List.max
-            let minFret = frets |> List.map (fun f -> f.Fret) |> List.min
-            minFret > 1 && maxFret < 7
-
     module GuitarTabTests =
         open Xunit
         open FsUnit
