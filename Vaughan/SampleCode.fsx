@@ -6,6 +6,7 @@
 #load "Scales.fs"
 #load "ScaleHarmonizer.fs"
 #load "Guitar.fs"
+#load "ImprovisationGuitar.fs"
 #load "ChordVoiceLeading.fs"
 
 open Vaughan.Domain
@@ -16,13 +17,19 @@ open Vaughan.Scales
 open Vaughan.ScaleHarmonizer
 open Vaughan.Guitar
 open Vaughan.GuitarTab
+open Vaughan.ImprovisationGuitar
 open Vaughan.ChordVoiceLeading
 
-createScale Ionian C 
+[chord C Minor7; chord F Dominant7; chord BFlat Major7]
+|> tabifyArpeggiosFromChords 5 8
+|> List.map (fun t -> printf "\n%s" t)
+
+createScale Ionian BFlat 
 |> createGuitarScale 2 6
 |> createGuitarMelodicLineFromScale
 |> tabifyMelodicLine
 |> printf "\n%s"
+
 
 createScale Ionian C 
 |> createGuitarScale 4 8
@@ -39,61 +46,50 @@ createScale Ionian C
 |> tabifyScale
 |> printf "\n%s"
 
-let cIonian = createScaleNotes Ionian C
-
-(cIonian
-|> triadsHarmonizer ScaleDegree.I
-|> createGuitarArpeggio 9 22)
+chord C Major
+|> createGuitarArpeggio 9 22
 |> tabifyArpeggio
 |> printf "\n%s"
 
-(cIonian
-|> seventhsHarmonizer ScaleDegree.I
-|> createGuitarArpeggio 7 10)
+chord C Major
+|> createGuitarArpeggio 7 10
 |> tabifyArpeggio
 |> printf "\n%s"
 
-(cIonian
-|> triadsHarmonizer ScaleDegree.I
-|> createGuitarArpeggio 2 5)
+chord C Major
+|> createGuitarArpeggio 2 5
 |> tabifyArpeggio
 |> printf "\n%s"
 
-(cIonian
-|> triadsHarmonizer ScaleDegree.I
-|> createGuitarArpeggio 1 4)
+chord C Major
+|> createGuitarArpeggio 1 4
 |> tabifyArpeggio
 |> printf "\n%s"
 
-(cIonian
-|> triadsHarmonizer ScaleDegree.I
-|> createGuitarArpeggio 7 10)
+chord C Major
+|> createGuitarArpeggio 7 10
 |> tabifyArpeggio
 |> printf "\n%s"
 
-(cIonian
-|> triadsHarmonizer ScaleDegree.I
-|> createGuitarArpeggio 0 3)
+chord C Major
+|> createGuitarArpeggio 0 3
 |> tabifyArpeggio
 |> printf "\n%s"
 
-(cIonian
-|> seventhsHarmonizer ScaleDegree.I
+chord C Major7
 |> toDrop3
-|> createGuitarChord SixthString)
+|> createGuitarChord SixthString
 |> tabifyChord
 |> printf "\n%s"
 
-(cIonian
-|> seventhsHarmonizer ScaleDegree.I
+chord C Major7
 |> toDrop2
-|> createGuitarChord FifthString)
+|> createGuitarChord FifthString
 |> tabifyChord
 |> printf "\n%s"
 
-(cIonian
-|> triadsHarmonizer ScaleDegree.I
-|> createGuitarChord FifthString)
+chord C Major
+|> createGuitarChord FifthString
 |> tabifyChord
 |> printf "\n%s"
 

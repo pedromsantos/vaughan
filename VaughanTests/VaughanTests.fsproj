@@ -1,11 +1,14 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <IsPackable>false</IsPackable>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
-    <DebugType>full</DebugType>
+    <DebugType>Full</DebugType>
   </PropertyGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Vaughan\Vaughan.fsproj" />
+  </ItemGroup>
   <ItemGroup>
     <Compile Include="InfrastructureTests.fs" />
     <Compile Include="NoteTests.fs" />
@@ -17,6 +20,7 @@
     <Compile Include="GuitarTests.fs" />
     <Compile Include="SonicPiTests.fs" />
     <Compile Include="SpeechToMusicTests.fs" />
+    <Compile Include="ImprovisationGuitarTests.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
@@ -25,8 +29,5 @@
     <PackageReference Include="xunit.runner.visualstudio" Version="2.2.0" />
     <PackageReference Include="FsCheck.Xunit" Version="2.9.2" />
     <PackageReference Include="FsUnit.xUnit" Version="3.0.0" />
-  </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\Vaughan\Vaughan.fsproj" />
   </ItemGroup>
 </Project>

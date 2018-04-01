@@ -1,7 +1,6 @@
 namespace VaughanTests
     module GuitarTests =
         open Xunit
-        open FsUnit
         open FsUnit.Xunit
         open FsCheck
         open FsCheck.Xunit
@@ -159,6 +158,57 @@ namespace VaughanTests
                         {GuitarString=SecondString; Fret=3; Note=D};
                     ]
                     
+        [<Fact>]
+        let ``Should map C major triad arpeggio to guitar fretboard on first position``() =
+            cMaj
+            |> (createGuitarArpeggio 1 4)
+            |> should equal 
+                            {
+                                BaseChord = {
+                                                Notes = [(C, Root); (E, Third); (G, Fifth)]; 
+                                                ChordType = Closed; 
+                                                Name = "CMaj";};
+                                ArpeggioFrets = [
+                                                    {GuitarString = FirstString; Fret = 3; Note = G;}; 
+                                                    {GuitarString = SecondString; Fret = 1; Note = C;}; 
+                                                    {GuitarString = ThirdString; Fret = -1; Note = G;}; 
+                                                    {GuitarString = FourthString; Fret = 2; Note = E;};
+                                                    {GuitarString = FifthString; Fret = 3; Note = C;}; 
+                                                    {GuitarString = SixthString; Fret = 3; Note = G;}
+                                                ];}
+        
+        [<Fact>]
+        let ``Should create arpeggio melodic line for C major triad``() =
+            cMaj
+            |> (createGuitarArpeggio 1 4)
+            |> createGuitarMelodicLineFromArpeggio
+            |> should equal [[3]; [1]; [-1]; [2]; [3]; [3]]
+
+        [<Fact>]
+        let ``Should create arpeggio melodic line for C major 7 chord``() =
+            cIonian
+            |> seventhsHarmonizer ScaleDegree.I
+            |> createGuitarArpeggio 2 5
+            |> createGuitarMelodicLineFromArpeggio
+            |> should equal [[3]; [5]; [4; 5]; [2; 5]; [2; 3]; [3]]
+
+        [<Fact>]
+        let ``Should create scale melodic line for C Ionian scale``() =
+            createScale Ionian C
+            |> createGuitarScale 2 6
+            |> createGuitarMelodicLineFromScale
+            |> should equal [[3; 5]; [3; 5; 6]; [2; 4; 5]; [2; 3; 5]; [2; 3; 5]; [3; 5]]
+
+        [<Property>]
+        let ``Should create scale melodic line for scale on second position`` (scaleType: ScaleType) (root: Note) () =
+            let melodicLine = 
+                            createScale scaleType root
+                            |> createGuitarScale 2 6
+                            |> createGuitarMelodicLineFromScale
+            let maxFret = (melodicLine |> List.collect id |> List.max) 
+            let minFret = (melodicLine |> List.collect id |> List.min)
+            minFret > 1 && maxFret < 7
+
         [<Property(Arbitrary = [| typeof<DiatonicScales> |])>]
         let ``Should map diatonic closed triad arpeggios to guitar fretboard first position`` (scaleType: ScaleType) (scaleDegree: ScaleDegree) (root: Note) () =
             let scale = createScaleNotes scaleType root
@@ -171,7 +221,6 @@ namespace VaughanTests
 
     module GuitarTabTests =
         open Xunit
-        open FsUnit
         open FsUnit.Xunit
         open FsCheck
         open FsCheck.Xunit

@@ -1,9 +1,11 @@
 # Vaughan - F# music library
 
 ## About
+
 Vaughan, named after blues guitarist [Stevie Ray Vaughan](https://en.wikipedia.org/wiki/Stevie_Ray_Vaughan), is a library for working with music theory concepts, music notation, guitar tab notation and programmatically creating music.
 
 ## NuGet package
+
 [![NuGet](http://img.shields.io/nuget/v/Vaughan.svg)](https://www.nuget.org/packages/Vaughan)
 
 [![Build Status](https://travis-ci.org/pedromsantos/vaughan.svg?branch=master)](https://travis-ci.org/pedromsantos/vaughan)
@@ -202,7 +204,6 @@ open Vaughan.Scales
 | createScaleNotes Phrygian C        | [ C; DFlat; EFlat; F; G; AFlat; BFlat]     |
 | createScaleNotes LydianAugmented C | [ C; D; E; FSharp; GSharp; A; B ]          |
 
-
 ### Chords
 
 ```fsharp
@@ -273,8 +274,10 @@ createScaleNotes Ionian C
 |> createGuitarChord SixthString
 |> tabify
 ```
+
 Output:
-```
+
+``` text
   CMaj
 E|---|
 B|---|
@@ -291,8 +294,10 @@ createScaleNotes Ionian C
 |> createGuitarChord FifthString
 |> tabify
 ```
+
 Output:
-```
+
+``` text
   CMaj7
 E|---|
 B|-5-|
@@ -309,8 +314,10 @@ createScaleNotes Ionian A
 |> createGuitarChord FifthString
 |> tabify
 ```
+
 Output:
-```
+
+``` text
   AMaj7
 E|----|
 B|-14-|
@@ -319,14 +326,17 @@ D|-14-|
 A|-12-|
 E|----|
 ```
+
 ```fsharp
 createScaleNotes Ionian F
 |> seventhsHarmonizer ScaleDgrees.I
 |> createGuitarChord FourthString
 |> tabify
 ```
+
 Output:
-```
+
+``` text
   FMaj7
 E|-12-|
 B|-13-|
@@ -343,8 +353,10 @@ createScaleNotes Ionian C
 |> createGuitarChord SixthString
 |> tabify
 ```
+
 Output:
-```
+
+``` text
   CMaj7
 E|---|
 B|-8-|
@@ -361,8 +373,10 @@ createScaleNotes Ionian C
 |> createGuitarChord FifthString
 |> tabify
 ```
+
 Output:
-```
+
+``` text
   CMaj7
 E|-3-|
 B|-5-|
@@ -371,20 +385,23 @@ D|---|
 A|-3-|
 E|---|
 ```
+
 ```fsharp
 createScaleNotes Ionian C
 |> seventhsHarmonizer ScaleDgrees.I
 |> toDrop2
 |> createGuitarChord FifthString
 |> shapify
-Output:
 ```
+
 Output:
-```
+
+```text
 CMaj7
 EADGBE
 X3545X
 ```
+
 ```fsharp
 let cIonian = createScaleNotes Ionian C
 let cMaj = seventhsHarmonizer ScaleDgrees.I cIonian
@@ -397,8 +414,10 @@ let guitarChords =  [cMaj; dMin; eMin; fMaj]
 
 tabifyAll guitarChords
 ```
+
 Output:
-```
+
+```text
       CMaj7   DMin7   EMin7   FMaj7
 E|-------------------------------------|
 B|----5-------6-------8-------10-------|
@@ -420,14 +439,16 @@ open Vaughan.ScaleHarmonizer
 ```
 
 ```fsharp
-createScale Ionian C 
+createScale Ionian C
 |> createGuitarScale 2 6
 |> createGuitarMelodicLineFromScale
 |> tabifyMelodicLine
 |> printf "\n%s"
 ```
+
 Output:
-```
+
+```text
 e||---------------------------------------------3--5-||
 B||------------------------------------3--5--6-------||
 G||---------------------------2--4--5----------------||
@@ -437,13 +458,15 @@ E||---3--5-------------------------------------------||
 ```
 
 ```fsharp
-createScale Ionian C 
+createScale Ionian C
 |> createGuitarScale 4 8
 |> tabifyScale
 |> printf "\n%s"
 ```
+
 Output:
-```
+
+```text
 e||---------------------------------------------5--7--8-||
 B||------------------------------------5--6--8----------||
 G||---------------------------4--5--7-------------------||
@@ -453,13 +476,15 @@ E||---5--7--8-------------------------------------------||
 ```
 
 ```fsharp
-createScale Ionian C 
+createScale Ionian C
 |> createGuitarScale 7 10
 |> tabifyScale
 |> printf "\n%s"
 ```
+
 Output:
-```
+
+```text
 e||---------------------------------------------7--8--10-||
 B||---------------------------------------8--10----------||
 G||------------------------------7--9--10----------------||
@@ -469,13 +494,15 @@ E||---7--8--10-------------------------------------------||
 ```
 
 ```fsharp
-createScale Ionian C 
+createScale Ionian C
 |> createGuitarScale 9 13
 |> tabifyScale
 |> printf "\n%s"
 ```
+
 Output:
-```
+
+```text
 e||---------------------------------------------10--12--13-||
 B||------------------------------------10--12--13----------||
 G||---------------------------9--10--12--------------------||
@@ -493,6 +520,7 @@ open Vaughan.Scales
 open Vaughan.Guitar
 open Vaughan.GuitarTab
 open Vaughan.ScaleHarmonizer
+open Vaughan.ImprovisationGuitar
 
 let cIonian = createScaleNotes Ionian C
 ```
@@ -504,8 +532,10 @@ let cIonian = createScaleNotes Ionian C
 |> tabifyArpeggio
 |> printf "\n%s"
 ```
+
 Output:
-```
+
+```text
 e||---------------------3---||
 B||------------------5------||
 G||---------------5---------||
@@ -521,8 +551,10 @@ E||---3---------------------||
 |> tabifyArpeggio
 |> printf "\n%s"
 ```
+
 Output:
-```
+
+```text
 e||------------------3---||
 B||---------------1------||
 G||-------------1--------||
@@ -538,8 +570,10 @@ E||---3------------------||
 |> tabifyArpeggio
 |> printf "\n%s"
 ```
+
 Output:
-```
+
+```text
 e||---------------------8---||
 B||------------------8------||
 G||---------------9---------||
@@ -555,8 +589,10 @@ E||---8---------------------||
 |> tabifyArpeggio
 |> printf "\n%s"
 ```
+
 Output:
-```
+
+```text
 e||---------------------0--3---||
 B||------------------1---------||
 G||---------------0------------||
@@ -574,13 +610,48 @@ E||---0--3---------------------||
 ```
 
 Output:
-```
+
+```text
 e||------------------------------------------------12--15--20-||
 B||---------------------------------------13--17--20----------||
 G||------------------------------9--12--17--------------------||
 D||---------------------10--14--17----------------------------||
 A||------------10--15--19-------------------------------------||
 E||---12--15--20----------------------------------------------||
+```
+
+```fsharp
+[chord C Minor7; chord F Dominant7; chord BFlat Major7]
+|> tabifyArpeggiosFromChords 5 8
+|> List.map (fun t -> printf "\n%s" t)
+```
+
+Output:
+
+```text
+CMin7
+e||---------------------------6--8-||
+B||------------------------8-------||
+G||------------------5--8----------||
+D||------------5--8----------------||
+A||---------6----------------------||
+E||---6--8-------------------------||
+
+F7
+e||---------------------------5--8-||
+B||------------------------6-------||
+G||------------------5--8----------||
+D||---------------7----------------||
+A||---------6--8-------------------||
+E||---5--8-------------------------||
+
+BbMaj7
+e||---------------------------5--6-||
+B||------------------------6-------||
+G||---------------------7----------||
+D||---------------7--8-------------||
+A||---------5--8-------------------||
+E||---5--6-------------------------||
 ```
 
 ### Example usage
@@ -606,23 +677,23 @@ open Vaughan.Guitar
 open Vaughan.GuitarTab
 open Vaughan.ChordVoiceLeading
 
-createScale Ionian C 
+createScale Ionian C
 |> createGuitarScale 2 6
 |> createGuitarMelodicLineFromScale
 |> tabifyMelodicLine
 |> printf "\n%s"
 
-createScale Ionian C 
+createScale Ionian C
 |> createGuitarScale 4 8
 |> tabifyScale
 |> printf "\n%s"
 
-createScale Ionian C 
+createScale Ionian C
 |> createGuitarScale 7 10
 |> tabifyScale
 |> printf "\n%s"
 
-createScale Ionian C 
+createScale Ionian C
 |> createGuitarScale 9 13
 |> tabifyScale
 |> printf "\n%s"
@@ -804,7 +875,7 @@ scalesFitting chord
 
 #### Output
 
-```
+``` text
 e||---------------------------------------------3--5-||
 B||------------------------------------3--5--6-------||
 G||---------------------------2--4--5----------------||
