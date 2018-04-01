@@ -30,7 +30,6 @@ createScale Ionian BFlat
 |> tabifyMelodicLine
 |> printf "\n%s"
 
-
 createScale Ionian C 
 |> createGuitarScale 4 8
 |> tabifyScale

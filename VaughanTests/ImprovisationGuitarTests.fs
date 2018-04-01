@@ -1,5 +1,6 @@
 namespace VaughanTests
 
+    open System
     module ImprovisationGuitarTests =
         open Xunit
         open FsUnit.Xunit
@@ -10,7 +11,8 @@ namespace VaughanTests
         open Vaughan.Guitar
         open Vaughan.ScaleHarmonizer
         open Vaughan.Scales
-        open Vaughan.ImprovisationGuitar 
+        open Vaughan.SpeechToMusic
+        open Vaughan.ImprovisationGuitar
 
         [<Fact>]
         let ``Should create arpeggio melodic line from chords`` () =
@@ -25,3 +27,5 @@ namespace VaughanTests
             |> tabifyArpeggiosFromChords 2 5
             |> List.length 
             |> should equal 3 
+        
+        

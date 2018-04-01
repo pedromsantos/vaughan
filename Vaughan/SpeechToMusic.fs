@@ -1,10 +1,15 @@
 namespace Vaughan
 
     module SpeechToMusic =
+        open System
+
         open FParsec
         open Notes
         open Scales
         open Chords
+        open Guitar
+        open GuitarTab
+        open ImprovisationGuitar
 
         type private ChordIntent = { Root: Note; Quality:ChordQuality; ToStructure: (Chord -> Chord) }
 
@@ -266,3 +271,11 @@ namespace Vaughan
             match parsed with
             | Success(chordDefinition, _, _) -> createChordFrom chordDefinition
             | Failure(errorMsg, _, _) -> invalidOp errorMsg
+
+        let tabifyArpeggiosFromChordNames (minFret:int) (maxFret:int) (chords:string list) =
+            let parsedChords = chords |> List.map parseChord
+
+            parsedChords
+            |> createGuitarMelodicLineFromChords minFret maxFret
+            |> List.map tabifyMelodicLine
+            |> List.mapi (fun i ml -> (name parsedChords.[i]) + Environment.NewLine + ml)

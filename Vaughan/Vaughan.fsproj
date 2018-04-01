@@ -24,8 +24,8 @@
     <Compile Include="ChordVoiceLeading.fs" />
     <Compile Include="Guitar.fs" />
     <Compile Include="SonicPi.fs" />
-    <Compile Include="SpeechToMusic.fs" />
     <Compile Include="ImprovisationGuitar.fs" />
+    <Compile Include="SpeechToMusic.fs" />
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Bespoke-OSC-Library" Version="1.0.0" />
