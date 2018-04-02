@@ -7,6 +7,6 @@ script:
   - dotnet restore
   - dotnet build -c Release
   - dotnet test -c Release ./VaughanTests
-  - dotnet pack -o . /p:Version=0.3.0.$TRAVIS_BUILD_NUMBER-alpha
+  - dotnet pack -o . /p:Version=0.4.0.$TRAVIS_BUILD_NUMBER
   - if [ "$TRAVIS_BRANCH" != "master" ]; then travis_terminate $TRAVIS_TEST_RESULT; fi;
   - dotnet nuget push ./Vaughan/Vaughan.*.nupkg -k $NugetApiKey -s https://www.nuget.org/
