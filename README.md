@@ -28,128 +28,33 @@ Navigate to [repl.it](https://repl.it/FJHh/79) (a bit outdated and no SonicPi in
 
 ## Documentation
 
-### SonicPI integration (Experimental, still very new, may change a lot)
+### Table of Contents
 
-There is now a DSL for communicating with SonicPi, requires SonicPi on machine and requires SonicPi to be running.
+**[Notes](#notes)**</br>
 
-### SonicPI integration example
+**[Intervals](#intervals)**
 
-```fsharp
-#r "../packages/bespoke-osc-library/1.0.0/lib/Bespoke.Common.Osc.dll"
+**[Scales](#scales)**
 
-#load "Infrastructure.fs"
-#load "Domain.fs"
-#load "Notes.fs"
-#load "Chords.fs"
-#load "SonicPi.fs"
+**[Keys](#keys)**
 
-open Vaughan.Domain
-open Vaughan.Chords
-open Vaughan.SonicPi
+**[Chords](#chords)**
 
-Statments[
-        UseBpm 120<bpm>;
-        WithSynth(Fm, [
-                    WithFx(Reverb, [Mix(0.5)], [
-                                            Repeat(2, [
-                                                    PlayNote(C, OneLine, [
-                                                                        Amplitude(0.5<loud>);
-                                                                        Panning(0.0<pan>);
-                                                                        Attack(2.0<beat>);
-                                                                        Release(2.0<beat>)]);
-                                                    PlayChord(chord C Major, TwoLine, [
-                                                                                    Amplitude(1.0<loud>);
-                                                                                    Release(2.0<beat>);
-                                                                                    Panning(1.0<pan>)]);
-                                                    Rest 2<beat>;
-                                                    Arpeggio([C; E; G; B], OneLine, [1.0<beat>], [])
-                                                    ])
-                                                ])
-                ])
-        ]
-|> toSonicPiScript
-|> sonicPiRun
-```
+**[Scale harmonizing](#scale-harmonizing)**
 
-Execute sample code above: ```cd Vaughan``` and ```fsharpi SonicPi.fsx```
+**[Guitar chord tab drawing](#guitar-chord-tab-drawing)**
 
-### Live loop example
+**[Guitar scales tab drawing](#guitar-scales-tab-drawing)**
 
-```fsharp
-#r "../packages/bespoke-osc-library/1.0.0/lib/Bespoke.Common.Osc.dll"
+**[Guitar arpeggio tab drawing](#guitar-arpeggio-tab-drawing)**
 
-#load "Infrastructure.fs"
-#load "Domain.fs"
-#load "Notes.fs"
-#load "Chords.fs"
-#load "SonicPi.fs"
+**[Guitar, improvising over chords with arpegios](#guitar-improvising-over-chords-with-arpegios)**
 
-open Vaughan.Domain
-open Vaughan.SonicPi
+**[Guitar, improvising over chords with scale](#guitar-improvising-over-chords-with-scales-containing-all-chord-tones)**
 
-Statments
-    [
-        UseBpm 120<bpm>;
-        LiveLoop("Foo",
-                    [
-                        PlaySample(LoopingSample Garzul, []);
-                        UseSynth TheProphet;
-                        PlayNote(G, Great, [Release(8.0<beat>)]);
-                        Rest 8<beat>
-                    ])
-    ]
-|> toSonicPiScript
-|> sonicPiRun
+**[SonicPI integration](#sonicpi-integration)**
 
-sonicPiStop
-```
-
-Execute sample code above: ```cd Vaughan``` and ```sharpi SonicPiLiveLoop.fsx``` to stop this script sound, for now, you have to do it from SonicPi interface (could not get message to halt execution to work yet).
-
-### Song DSL example (very very early, lots of changes expected here)
-
-```fsharp
-#r "../packages/bespoke-osc-library/1.0.0/lib/Bespoke.Common.Osc.dll"
-
-#load "Infrastructure.fs"
-#load "Domain.fs"
-#load "Notes.fs"
-#load "Chords.fs"
-#load "SonicPi.fs"
-
-open Vaughan.Domain
-open Vaughan.SonicPi
-
-let section = Section(
-                (4<beat>, Quarter),
-                CMajor,
-                [
-                    [
-                        1.0<beat>, [(D, OneLine, Quarter); (F, OneLine, Quarter); (A, OneLine, Quarter)];
-                        2.0<beat>, [(D, OneLine, Quarter); (F, OneLine, Quarter); (A, OneLine, Quarter)];
-                        3.0<beat>, [(D, OneLine, Quarter); (F, OneLine, Quarter); (A, OneLine, Quarter)];
-                        4.0<beat>, [(D, OneLine, Quarter); (F, OneLine, Quarter); (A, OneLine, Quarter)]
-                    ];
-                    [
-                        1.0<beat>, [(G, OneLine, Quarter); (B, OneLine, Quarter); (D, OneLine, Quarter)];
-                        2.0<beat>, [(G, OneLine, Quarter); (B, OneLine, Quarter); (D, OneLine, Quarter)];
-                        3.0<beat>, [(G, OneLine, Quarter); (B, OneLine, Quarter); (D, OneLine, Quarter)];
-                        4.0<beat>, [(G, OneLine, Quarter); (B, OneLine, Quarter); (D, OneLine, Quarter)]
-                    ];
-                    [
-                        1.0<beat>, [(C, OneLine, Quarter); (E, OneLine, Quarter); (G, OneLine, Quarter)];
-                        2.0<beat>, [(C, OneLine, Quarter); (E, OneLine, Quarter); (G, OneLine, Quarter)];
-                        3.0<beat>, [(C, OneLine, Quarter); (E, OneLine, Quarter); (G, OneLine, Quarter)];
-                        4.0<beat>, [(C, OneLine, Quarter); (E, OneLine, Quarter); (G, OneLine, Quarter)]
-                    ];
-                ])
-
-Statments[UseBpm 120<bpm>; WithSynth(Pluck, [section])]
-|> toSonicPiScript
-|> sonicPiRun
-```
-
-Execute sample code above: ```cd Vaughan``` and ```fsharpi SonicPiSong.fsx```
+**[Example fsx](#example-usage)**
 
 ### Notes
 
@@ -619,7 +524,7 @@ A||------------10--15--19-------------------------------------||
 E||---12--15--20----------------------------------------------||
 ```
 
-### Guitar, improvising over chords with arpegios
+### Guitar improvising over chords with arpegios
 
 ```fsharp
 open Vaughan.Notes
@@ -699,7 +604,7 @@ A||---------5--8-------------------||
 E||---5--6-------------------------||
 ```
 
-### Guitar, improvising over chords with scales containing all chord tones
+### Guitar improvising over chords with scales containing all chord tones
 
 ```fsharp
 open Vaughan.Notes
@@ -1179,6 +1084,129 @@ D||---------------------6--7--8-------------------------||
 A||------------5--6--8----------------------------------||
 E||---5--6--8-------------------------------------------||
 ```
+
+#### SonicPI integration
+
+Experimental, still very new, may change a lot
+
+```fsharp
+#r "../packages/bespoke-osc-library/1.0.0/lib/Bespoke.Common.Osc.dll"
+
+#load "Infrastructure.fs"
+#load "Domain.fs"
+#load "Notes.fs"
+#load "Chords.fs"
+#load "SonicPi.fs"
+
+open Vaughan.Domain
+open Vaughan.Chords
+open Vaughan.SonicPi
+
+Statments[
+        UseBpm 120<bpm>;
+        WithSynth(Fm, [
+                    WithFx(Reverb, [Mix(0.5)], [
+                                            Repeat(2, [
+                                                    PlayNote(C, OneLine, [
+                                                                        Amplitude(0.5<loud>);
+                                                                        Panning(0.0<pan>);
+                                                                        Attack(2.0<beat>);
+                                                                        Release(2.0<beat>)]);
+                                                    PlayChord(chord C Major, TwoLine, [
+                                                                                    Amplitude(1.0<loud>);
+                                                                                    Release(2.0<beat>);
+                                                                                    Panning(1.0<pan>)]);
+                                                    Rest 2<beat>;
+                                                    Arpeggio([C; E; G; B], OneLine, [1.0<beat>], [])
+                                                    ])
+                                                ])
+                ])
+        ]
+|> toSonicPiScript
+|> sonicPiRun
+```
+
+Execute sample code above: ```cd Vaughan``` and ```fsharpi SonicPi.fsx```
+
+#### Live loop example
+
+```fsharp
+#r "../packages/bespoke-osc-library/1.0.0/lib/Bespoke.Common.Osc.dll"
+
+#load "Infrastructure.fs"
+#load "Domain.fs"
+#load "Notes.fs"
+#load "Chords.fs"
+#load "SonicPi.fs"
+
+open Vaughan.Domain
+open Vaughan.SonicPi
+
+Statments
+    [
+        UseBpm 120<bpm>;
+        LiveLoop("Foo",
+                    [
+                        PlaySample(LoopingSample Garzul, []);
+                        UseSynth TheProphet;
+                        PlayNote(G, Great, [Release(8.0<beat>)]);
+                        Rest 8<beat>
+                    ])
+    ]
+|> toSonicPiScript
+|> sonicPiRun
+
+sonicPiStop
+```
+
+Execute sample code above: ```cd Vaughan``` and ```sharpi SonicPiLiveLoop.fsx``` to stop this script sound, for now, you have to do it from SonicPi interface (could not get message to halt execution to work yet).
+
+#### Song DSL example
+
+DSL for communicating with SonicPi, requires SonicPi on machine and requires SonicPi to be running.
+
+```fsharp
+#r "../packages/bespoke-osc-library/1.0.0/lib/Bespoke.Common.Osc.dll"
+
+#load "Infrastructure.fs"
+#load "Domain.fs"
+#load "Notes.fs"
+#load "Chords.fs"
+#load "SonicPi.fs"
+
+open Vaughan.Domain
+open Vaughan.SonicPi
+
+let section = Section(
+                (4<beat>, Quarter),
+                CMajor,
+                [
+                    [
+                        1.0<beat>, [(D, OneLine, Quarter); (F, OneLine, Quarter); (A, OneLine, Quarter)];
+                        2.0<beat>, [(D, OneLine, Quarter); (F, OneLine, Quarter); (A, OneLine, Quarter)];
+                        3.0<beat>, [(D, OneLine, Quarter); (F, OneLine, Quarter); (A, OneLine, Quarter)];
+                        4.0<beat>, [(D, OneLine, Quarter); (F, OneLine, Quarter); (A, OneLine, Quarter)]
+                    ];
+                    [
+                        1.0<beat>, [(G, OneLine, Quarter); (B, OneLine, Quarter); (D, OneLine, Quarter)];
+                        2.0<beat>, [(G, OneLine, Quarter); (B, OneLine, Quarter); (D, OneLine, Quarter)];
+                        3.0<beat>, [(G, OneLine, Quarter); (B, OneLine, Quarter); (D, OneLine, Quarter)];
+                        4.0<beat>, [(G, OneLine, Quarter); (B, OneLine, Quarter); (D, OneLine, Quarter)]
+                    ];
+                    [
+                        1.0<beat>, [(C, OneLine, Quarter); (E, OneLine, Quarter); (G, OneLine, Quarter)];
+                        2.0<beat>, [(C, OneLine, Quarter); (E, OneLine, Quarter); (G, OneLine, Quarter)];
+                        3.0<beat>, [(C, OneLine, Quarter); (E, OneLine, Quarter); (G, OneLine, Quarter)];
+                        4.0<beat>, [(C, OneLine, Quarter); (E, OneLine, Quarter); (G, OneLine, Quarter)]
+                    ];
+                ])
+
+Statments[UseBpm 120<bpm>; WithSynth(Pluck, [section])]
+|> toSonicPiScript
+|> sonicPiRun
+```
+
+Execute sample code above: ```cd Vaughan``` and ```fsharpi SonicPiSong.fsx```
 
 ### Example usage
 
