@@ -276,6 +276,6 @@ namespace Vaughan
             let parsedChords = chords |> List.map parseChord
 
             parsedChords
-            |> createGuitarMelodicLineFromChords minFret maxFret
+            |> createArpeggioGuitarMelodicLineFromChords minFret maxFret
             |> List.map tabifyMelodicLine
             |> List.mapi (fun i ml -> (name parsedChords.[i]) + Environment.NewLine + ml)
