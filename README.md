@@ -30,6 +30,8 @@ Navigate to [repl.it](https://repl.it/FJHh/79) (a bit outdated and no SonicPi in
 
 ### Table of Contents
 
+#### Basics
+
 **[Notes](#notes)**</br>
 
 **[Intervals](#intervals)**
@@ -42,17 +44,25 @@ Navigate to [repl.it](https://repl.it/FJHh/79) (a bit outdated and no SonicPi in
 
 **[Scale harmonizing](#scale-harmonizing)**
 
-**[Guitar chord tab drawing](#guitar-chord-tab-drawing)**
+#### Guitar basics
 
-**[Guitar scales tab drawing](#guitar-scales-tab-drawing)**
+**[Chord tab drawing](#guitar-chord-tab-drawing)**
 
-**[Guitar arpeggio tab drawing](#guitar-arpeggio-tab-drawing)**
+**[Scale tab drawing](#guitar-scales-tab-drawing)**
 
-**[Guitar, improvising over chords with arpegios](#guitar-improvising-over-chords-with-arpegios)**
+**[Arpeggio tab drawing](#guitar-arpeggio-tab-drawing)**
 
-**[Guitar, improvising over chords with scale](#guitar-improvising-over-chords-with-scales-containing-all-chord-tones)**
+#### Guitar improvisation
+
+**[Improvising over chords with arpegios](#guitar-improvising-over-chords-with-arpegios)**
+
+**[Improvising over chords with scale](#guitar-improvising-over-chords-with-scales-containing-all-chord-tones)**
+
+#### SonicPI
 
 **[SonicPI integration](#sonicpi-integration)**
+
+#### Examples
 
 **[Example fsx](#example-usage)**
 
