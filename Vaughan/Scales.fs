@@ -71,7 +71,7 @@ namespace Vaughan
                 createScale Dominantb5DiminishedScale root;
             ]
 
-        let private scaleContainChordTones scale chordTones =
+        let private scaleContainAllChordTones scale chordTones =
             ( scale |> List.filter (fun x ->
                                          (List.contains x chordTones)) |> List.sort) 
                                          = (chordTones |> List.sort)
@@ -83,7 +83,7 @@ namespace Vaughan
             |> List.map (createAllScalesFrom 
                             >> (fun scls -> scls
                                             |> List.choose (fun scale -> 
-                                                (if scaleContainChordTones scale.Notes chordTones 
+                                                (if scaleContainAllChordTones scale.Notes chordTones 
                                                  then Some(scale) 
                                                  else None)))) 
             |> List.collect id

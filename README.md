@@ -520,7 +520,6 @@ open Vaughan.Scales
 open Vaughan.Guitar
 open Vaughan.GuitarTab
 open Vaughan.ScaleHarmonizer
-open Vaughan.ImprovisationGuitar
 
 let cIonian = createScaleNotes Ionian C
 ```
@@ -620,6 +619,18 @@ A||------------10--15--19-------------------------------------||
 E||---12--15--20----------------------------------------------||
 ```
 
+### Guitar, improvising over chords with arpegios
+
+```fsharp
+open Vaughan.Notes
+open Vaughan.Chords
+open Vaughan.Scales
+open Vaughan.Guitar
+open Vaughan.GuitarTab
+open Vaughan.ScaleHarmonizer
+open Vaughan.ImprovisationGuitar
+```
+
 ```fsharp
 [chord C Minor7; chord F Dominant7; chord BFlat Major7]
 |> tabifyArpeggiosFromChords 5 8
@@ -686,6 +697,18 @@ G||---------------------7----------||
 D||---------------7--8-------------||
 A||---------5--8-------------------||
 E||---5--6-------------------------||
+```
+
+### Guitar, improvising over chords with scales containing all chord tones
+
+```fsharp
+open Vaughan.Notes
+open Vaughan.Chords
+open Vaughan.Scales
+open Vaughan.Guitar
+open Vaughan.GuitarTab
+open Vaughan.ScaleHarmonizer
+open Vaughan.ImprovisationGuitar
 ```
 
 ```fsharp
