@@ -30,41 +30,24 @@ Navigate to [repl.it](https://repl.it/FJHh/79) (a bit outdated and no SonicPi in
 
 ### Table of Contents
 
-#### Basics
-
-**[Notes](#notes)**</br>
-
-**[Intervals](#intervals)**
-
-**[Scales](#scales)**
-
-**[Keys](#keys)**
-
-**[Chords](#chords)**
-
-**[Scale harmonizing](#scale-harmonizing)**
-
-#### Guitar basics
-
-**[Chord tab drawing](#guitar-chord-tab-drawing)**
-
-**[Scale tab drawing](#guitar-scales-tab-drawing)**
-
-**[Arpeggio tab drawing](#guitar-arpeggio-tab-drawing)**
-
-#### Guitar improvisation
-
-**[Improvising over chords with arpegios](#guitar-improvising-over-chords-with-arpegios)**
-
-**[Improvising over chords with scale](#guitar-improvising-over-chords-with-scales-containing-all-chord-tones)**
-
-#### SonicPI
-
-**[SonicPI integration](#sonicpi-integration)**
-
-#### Examples
-
-**[Example fsx](#example-usage)**
+* Basics
+  * [Notes](#notes)
+  * [Intervals](#intervals)
+  * [Scales](#scales)
+  * [Keys](#keys)
+  * [Chords](#chords)
+  * [Scale harmonizing](#scale-harmonizing)
+* Guitar basics
+  * [Chord tab drawing](#guitar-chord-tab-drawing)
+  * [Scale tab drawing](#guitar-scales-tab-drawing)
+  * [Arpeggio tab drawing](#guitar-arpeggio-tab-drawing)
+* Guitar improvisation
+  * [Improvising over chords with arpegios](#guitar-improvising-over-chords-with-arpegios)
+  * [Improvising over chords with scale](#guitar-improvising-over-chords-with-scales-containing-all-chord-tones)
+* SonicPI
+  * [SonicPI integration](#sonicpi-integration)
+* Examples
+  * [Example fsx](#example-usage)
 
 ### Notes
 
