@@ -1,12 +1,13 @@
 namespace VaughanTests
 
-    open System
     module ImprovisationGuitarTests =
         open Xunit
         open FsUnit.Xunit
         open FsCheck
         open FsCheck.Xunit
         open Vaughan.Domain
+        open Vaughan.Notes
+        open Vaughan.Scales
         open Vaughan.Chords
         open Vaughan.Guitar
         open Vaughan.ScaleHarmonizer
@@ -41,3 +42,10 @@ namespace VaughanTests
             |> tabifyScalesFromChords 2 5
             |> List.head 
             |> should startWith "CMin7"
+
+        [<Fact>]
+        let ``Should create melodic line from notes`` () =
+            createScaleNotes Ionian BFlat
+            |> createGuitarMelodicLineFromNotes 2 5
+            |> List.length 
+            |> should equal 6

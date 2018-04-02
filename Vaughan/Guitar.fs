@@ -184,6 +184,9 @@ namespace Vaughan
                     Scale = scale;
                     Frets = generateAllFretCombinations allowedFrets (scale.Notes)
                 }
+
+            let notesGuitarNotes allowedFrets (notes:Note list) =
+                notes |> generateAllFretCombinations allowedFrets
             
         let createGuitarChord:CreateGuitarChord = fun bassString chord ->
             match chord.ChordType with
@@ -203,13 +206,22 @@ namespace Vaughan
             scale
             |> scaleToGuitarScale (fun f -> f.Fret >= minFret && f.Fret <= maxFret)
 
+        let createGuitarNotes minFret maxFret notes =
+            notes
+            |> notesGuitarNotes (fun f -> f.Fret >= minFret && f.Fret <= maxFret)
+
         let createGuitarMelodicLineFromArpeggio:CreateGuitarMelodicLineFromArpeggio = fun arpeggio ->
-            arpeggio.ArpeggioFrets 
+            arpeggio.ArpeggioFrets
             |> List.groupBy (fun f -> f.GuitarString)
             |> List.map (snd >> (fun f -> f |> List.sort |> List.map (fun f -> f.Fret)))
 
         let createGuitarMelodicLineFromScale:CreateGuitarMelodicLineFromScale = fun scale ->
             scale.Frets
+            |> List.groupBy (fun f -> f.GuitarString)
+            |> List.map (snd >> (fun f -> f |> List.sort |> List.map (fun f -> f.Fret))) 
+
+        let createGuitarMelodicLineFromNotes:CreateGuitarMelodicLineFromNotes = fun frets ->
+            frets 
             |> List.groupBy (fun f -> f.GuitarString)
             |> List.map (snd >> (fun f -> f |> List.sort |> List.map (fun f -> f.Fret))) 
 

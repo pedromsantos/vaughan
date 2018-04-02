@@ -8,6 +8,7 @@ namespace Vaughan
         open Scales
         open Guitar
         open GuitarTab
+        open Infrastructure
 
         let createArpeggioGuitarMelodicLineFromChords minFret maxFret chords =
             chords
@@ -20,6 +21,11 @@ namespace Vaughan
                             >> ((fun sl -> sl |> List.map (fun s -> createGuitarScale minFret maxFret s)) 
                             >> (fun sl -> sl |> List.map (fun s -> sprintf "%s %A" (noteName s.Scale.Notes.[0]) s.Scale.Scale, createGuitarMelodicLineFromScale s))))
         
+        let createGuitarMelodicLineFromNotes minFret maxFret notes =
+            notes
+            |> createGuitarNotes minFret maxFret
+            |> createGuitarMelodicLineFromNotes
+
         let tabifyArpeggiosFromChords minFret maxFret chords =
             chords
             |> createArpeggioGuitarMelodicLineFromChords minFret maxFret
@@ -32,3 +38,6 @@ namespace Vaughan
             |> List.map (fun mls -> mls |> List.map (fun ml -> (fst ml) + Environment.NewLine + (snd ml |> tabifyMelodicLine)))
             |> List.mapi (fun i mls -> (name chords.[i])::mls)
             |> List.collect id
+
+
+
