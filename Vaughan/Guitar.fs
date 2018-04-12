@@ -403,13 +403,14 @@ namespace Vaughan
                 |> List.rev
 
             let renderNote (fret:Fret) =
-                let mutedStringTab = "---"
+                let mutedStringTab = sprintf "-%s-" (if fret.Fret > 9 then "--" else "-")
                 (renderMutedHigherStrings mutedStringTab [fret])
                 @ ([sprintf "-%i-" fret.Fret])
                 @ (renderMutedLowerStrings mutedStringTab [fret])
 
             let renderChord (chord:GuitarChord) =
-                let mutedStringTab = "---"
+                let highestFet = chord.Frets |> List.map (fun f -> f.Fret) |> List.max
+                let mutedStringTab = sprintf "-%s-" (if highestFet > 9 then "--" else "-")
                 (renderMutedHigherStrings mutedStringTab chord.Frets)
                 @ (renderFrets mutedStringTab chord.Frets)
                 @ (renderMutedLowerStrings mutedStringTab chord.Frets)

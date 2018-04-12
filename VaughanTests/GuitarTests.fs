@@ -552,14 +552,16 @@ namespace VaughanTests
         let ``Should render II V I in c major to guitar fretboard on sixth string``() =
             [
                 Chord(chord D Minor7 |> toDrop3 |> createGuitarChord SixthString);
+                Bar;
                 Chord(chord G Dominant7 |> toDrop3 |> createGuitarChord SixthString);
+                Bar;
                 Chord(chord C Major7 |> toDrop3 |> createGuitarChord SixthString);
             ]
             |> renderTab 
             |> should equal (
-                             "---------" + Environment.NewLine +
-                             "-10--3--8-" + Environment.NewLine +
-                             "-10--4--9-" + Environment.NewLine +
-                             "-10--3--9-" + Environment.NewLine +
-                             "---------" + Environment.NewLine +
-                             "-10--3--8-" + Environment.NewLine)
+                             "----|---|---" + Environment.NewLine +
+                             "-10-|-3-|-8-" + Environment.NewLine +
+                             "-10-|-4-|-9-" + Environment.NewLine +
+                             "-10-|-3-|-9-" + Environment.NewLine +
+                             "----|---|---" + Environment.NewLine +
+                             "-10-|-3-|-8-" + Environment.NewLine)
