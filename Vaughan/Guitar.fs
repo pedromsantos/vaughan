@@ -206,10 +206,6 @@ namespace Vaughan
             scale
             |> scaleToGuitarScale (fun f -> f.Fret >= minFret && f.Fret <= maxFret)
 
-        let createGuitarNotes minFret maxFret notes =
-            notes
-            |> notesGuitarNotes (fun f -> f.Fret >= minFret && f.Fret <= maxFret)
-
     module GuitarTab =
         open System
         open Guitar
@@ -362,13 +358,6 @@ namespace Vaughan
         let tabifyChord:TabifyChord = fun guitarChord ->
             tabifyAll [guitarChord]
         
-        let tabifyArpeggio:TabifyArpeggio = fun guitarArpeggio ->
-            [StandardTunning; Start] @ ([Arpeggio(guitarArpeggio)]) @ [End] 
-            |> renderTab
-
-        let tabifyScale:TabifyScale = fun guitarScale ->
-           [StandardTunning; Start] @ ([Scale(guitarScale)]) @ [End] |> renderTab
-
         let shapify:Shapify = fun guitarChord ->
             guitarChord.Chord.Name + Environment.NewLine +
             "EADGBE" + Environment.NewLine +
