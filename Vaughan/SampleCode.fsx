@@ -20,11 +20,11 @@ open Vaughan.GuitarTab
 open Vaughan.ImprovisationGuitar
 open Vaughan.ChordVoiceLeading
 
-[StandardTunning; Start; Scale(createScale Ionian C |> createGuitarScale 2 6); End]
+[StandardTunning; Start; Scale(createScale Ionian C |> guitarScale 2 6); End]
 |> renderTab
 |> printf "\n%s"
 
-[StandardTunning; Start; Arpeggio(createGuitarArpeggio 9 22 (chord C Major)); End]
+[StandardTunning; Start; Arpeggio(guitarArpeggio 9 22 (chord C Major)); End]
 |> renderTab 
 |> printf "\n%s"
 
@@ -40,137 +40,128 @@ open Vaughan.ChordVoiceLeading
 [
     StandardTunning;
     Start;
-    Chord(chord D Minor7 |> toDrop3 |> createGuitarChord SixthString);
-    Chord(chord G Dominant7 |> toDrop3 |> createGuitarChord SixthString);
-    Chord(chord C Major7 |> toDrop3 |> createGuitarChord SixthString);
+    Chord(chord D Minor7 |> toDrop3 |> guitarChord SixthString);
+    Chord(chord G Dominant7 |> toDrop3 |> guitarChord SixthString);
+    Chord(chord C Major7 |> toDrop3 |> guitarChord SixthString);
     End
 ]
 |> renderTab
 |> printf "\n%s"
 
-createScale Ionian C 
-|> createGuitarScale 4 8
-|> tabifyScale
+[StandardTunning; Start; Scale(createScale Ionian C |> guitarScale 4 8); End]
+|> renderTab
 |> printf "\n%s"
 
-createScale Ionian C 
-|> createGuitarScale 7 10
-|> tabifyScale
+[StandardTunning; Start; Scale(createScale Ionian C |> guitarScale 7 10); End]
+|> renderTab
 |> printf "\n%s"
 
-createScale Ionian C 
-|> createGuitarScale 9 13
-|> tabifyScale
+[StandardTunning; Start; Scale(createScale Ionian C |> guitarScale 9 13); End]
+|> renderTab
 |> printf "\n%s"
 
-chord C Major
-|> createGuitarArpeggio 9 22
-|> tabifyArpeggio
+[StandardTunning; Start; Arpeggio(chord C Major |> guitarArpeggio 9 22); End]
+|> renderTab
 |> printf "\n%s"
 
-chord C Major
-|> createGuitarArpeggio 7 10
-|> tabifyArpeggio
+[StandardTunning; Start; Arpeggio(chord C Major |> guitarArpeggio 7 10); End]
+|> renderTab
 |> printf "\n%s"
 
-chord C Major
-|> createGuitarArpeggio 2 5
-|> tabifyArpeggio
+[StandardTunning; Start; Arpeggio(chord C Major |> guitarArpeggio 4 5); End]
+|> renderTab
 |> printf "\n%s"
 
-chord C Major
-|> createGuitarArpeggio 1 4
-|> tabifyArpeggio
+[StandardTunning; Start; Arpeggio(chord C Major |> guitarArpeggio 1 4); End]
+|> renderTab
 |> printf "\n%s"
 
-chord C Major
-|> createGuitarArpeggio 7 10
-|> tabifyArpeggio
+[StandardTunning; Start; Arpeggio(chord C Major |> guitarArpeggio 7 10); End]
+|> renderTab
 |> printf "\n%s"
 
-chord C Major
-|> createGuitarArpeggio 0 3
-|> tabifyArpeggio
+[StandardTunning; Start; Arpeggio(chord C Major |> guitarArpeggio 0 13); End]
+|> renderTab
 |> printf "\n%s"
 
 chord C Major7
 |> toDrop3
-|> createGuitarChord SixthString
+|> guitarChord SixthString
 |> tabifyChord
 |> printf "\n%s"
 
 chord C Major7
 |> toDrop2
-|> createGuitarChord FifthString
+|> guitarChord FifthString
 |> tabifyChord
 |> printf "\n%s"
 
 chord C Major
-|> createGuitarChord FifthString
+|> guitarChord FifthString
 |> tabifyChord
 |> printf "\n%s"
 
 chord C Dominant9
 |> skipFunction Fifth
-|> createGuitarChord FifthString
+|> guitarChord FifthString
 |> tabifyChord
 |> printf "\n%s"
 
 chord C Major9
 |> skipFunction Fifth
-|> createGuitarChord FifthString
+|> guitarChord FifthString
 |> tabifyChord
 |> printf "\n%s"
 
 createScaleNotes Aolian DSharp
 |> triadsHarmonizer ScaleDegree.III
-|> createGuitarChord SixthString
+|> guitarChord SixthString
 |> tabifyChord
 |> printf "\n%s"
 
 createScaleNotes Ionian A
 |> seventhsHarmonizer ScaleDegree.I
 |> toDrop2
-|> createGuitarChord FifthString
+|> guitarChord FifthString
 |> tabifyChord
 |> printf "\n%s"
 
 createScaleNotes Ionian C
 |> seventhsHarmonizer ScaleDegree.I
 |> toDrop3
-|> createGuitarChord FifthString
+|> guitarChord FifthString
 |> tabifyChord
 |> printf "\n%s"
 
 createScaleNotes Aolian FSharp
 |> seventhsHarmonizer ScaleDegree.III
 |> toDrop3
-|> createGuitarChord SixthString
+|> guitarChord SixthString
 |> tabifyChord
 |> printf "\n%s"
 
 createScaleNotes HarmonicMinor BFlat
 |> seventhsHarmonizer ScaleDegree.VII
-|> createGuitarChord SixthString
+|> guitarChord SixthString
 |> tabifyChord
 |> printf "\n%s"
 
 createScaleNotes HarmonicMinor C
 |> seventhsHarmonizer ScaleDegree.VII
-|> createGuitarChord SixthString
+|> guitarChord SixthString
 |> tabifyChord
 |> printf "\n%s"
 
 createScaleNotes HarmonicMinor C
 |> seventhsHarmonizer ScaleDegree.VII
-|> createGuitarChord SixthString
+|> guitarChord SixthString
 |> tabifyChord
 |> printf "\n%A"
 
 createScaleNotes HarmonicMinor C
 |> seventhsHarmonizer ScaleDegree.VII
 |> toOpen
-|> createGuitarChord SixthString
+|> guitarChord SixthString
 |> tabifyChord
 |> printf "\n%A"
 
