@@ -20,8 +20,15 @@ open Vaughan.GuitarTab
 open Vaughan.ImprovisationGuitar
 open Vaughan.ChordVoiceLeading
 
+[StandardTunning; Start; Arpeggio(createGuitarArpeggio 9 22 (chord C Major)); End]
+|> renderTab 
+|> printf "\n%s"
+
 [
+    StandardTunning;
+    Start;
     Note({GuitarString=FirstString; Fret=8; Note=C})
+    End
 ]
 |> renderTab
 |> printf "\n%s"

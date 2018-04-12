@@ -391,15 +391,15 @@ namespace Vaughan
                 let mutedStrings = numberOfMutedLowStrings frets
                 List.replicate mutedStrings mutedStringTab
 
-            let private renderFret (mutedStringTab:string) (fret:Fret) =
+            let private renderChordNote (mutedStringTab:string) (fret:Fret) =
                 if fret.Fret = -1 then
                     mutedStringTab
                 else
                     sprintf "-%i-" fret.Fret
 
-            let private renderFrets mutedStringTab frets =
+            let private renderChordNotes mutedStringTab frets =
                 frets
-                |> List.map (fun fret -> renderFret mutedStringTab fret)
+                |> List.map (fun fret -> renderChordNote mutedStringTab fret)
                 |> List.rev
 
             let renderNote (fret:Fret) =
@@ -412,7 +412,7 @@ namespace Vaughan
                 let highestFet = chord.Frets |> List.map (fun f -> f.Fret) |> List.max
                 let mutedStringTab = sprintf "-%s-" (if highestFet > 9 then "--" else "-")
                 (renderMutedHigherStrings mutedStringTab chord.Frets)
-                @ (renderFrets mutedStringTab chord.Frets)
+                @ (renderChordNotes mutedStringTab chord.Frets)
                 @ (renderMutedLowerStrings mutedStringTab chord.Frets)
 
         [<AutoOpen>]
@@ -446,6 +446,14 @@ namespace Vaughan
             [0 .. 5]
             |> List.map (fun stringOrdinal -> mapTabColumsToTabLines stringOrdinal tabifiedChords)
 
+        let private renderNotes (frets:Fret list) =
+            frets
+            |> List.sortBy (fun f -> f.GuitarString, f.Fret)
+            |> List.rev
+            |> List.map renderNote
+            |> mapTabToGuitarStrings 
+            |> List.map (fun gss -> gss |> List.fold (fun acc gs -> gs + acc) "") 
+
         let renderTabPart = function
             | Rest -> emptyTab
             | Bar -> barTab
@@ -453,6 +461,7 @@ namespace Vaughan
             | End -> endTab
             | Note n -> renderNote n
             | Chord c -> renderChord c
+            | Arpeggio a -> renderNotes a.ArpeggioFrets
             | Mute m -> ["-x-"]
             | PalmMute pm -> ["-_-"]
             | Harmonic h -> ["-*-"]
@@ -502,5 +511,5 @@ namespace Vaughan
             |> List.map renderTabPart
             |> List.rev
             |> mapTabToGuitarStrings
-            |> List.map (fun gss -> gss |> List.fold (fun acc gs -> gs + acc) Environment.NewLine)
+            |> List.map (fun gss -> gss |> List.fold (fun acc gs -> gs + acc) "")
             |> List.fold (+) ""

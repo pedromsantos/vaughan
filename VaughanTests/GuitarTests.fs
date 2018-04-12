@@ -1,4 +1,5 @@
 namespace VaughanTests
+    open NHamcrest
     module GuitarTests =
         open Xunit
         open FsUnit.Xunit
@@ -525,43 +526,120 @@ namespace VaughanTests
         [<Fact>]
         let ``Should render c note to guitar fretboard on sixth string``() =
             let guitarNote = Note({GuitarString=SixthString; Fret=8; Note=C})
-            [guitarNote]
+            [StandardTunning; Start; guitarNote; End]
             |> renderTab 
             |> should equal (
-                             "---" + Environment.NewLine +
-                             "---" + Environment.NewLine +
-                             "---" + Environment.NewLine +
-                             "---" + Environment.NewLine +
-                             "---" + Environment.NewLine +
-                             "-8-" + Environment.NewLine)
+                             "e||-----||" + Environment.NewLine +
+                             "B||-----||" + Environment.NewLine +
+                             "G||-----||" + Environment.NewLine +
+                             "D||-----||" + Environment.NewLine +
+                             "A||-----||" + Environment.NewLine +
+                             "E||--8--||" + Environment.NewLine)
 
         [<Fact>]
         let ``Should render c major to guitar fretboard on sixth string``() =
             let guitarChord = createGuitarChord SixthString cMaj
-            [Chord(guitarChord)]
+            [StandardTunning; Start; Chord(guitarChord); End]
             |> renderTab 
             |> should equal (
-                             "---" + Environment.NewLine +
-                             "---" + Environment.NewLine +
-                             "---" + Environment.NewLine +
-                             "-5-" + Environment.NewLine +
-                             "-7-" + Environment.NewLine +
-                             "-8-" + Environment.NewLine)
+                             "e||-----||" + Environment.NewLine +
+                             "B||-----||" + Environment.NewLine +
+                             "G||-----||" + Environment.NewLine +
+                             "D||--5--||" + Environment.NewLine +
+                             "A||--7--||" + Environment.NewLine +
+                             "E||--8--||" + Environment.NewLine)
 
         [<Fact>]
         let ``Should render II V I in c major to guitar fretboard on sixth string``() =
             [
+                StandardTunning; 
+                Start
                 Chord(chord D Minor7 |> toDrop3 |> createGuitarChord SixthString);
                 Bar;
                 Chord(chord G Dominant7 |> toDrop3 |> createGuitarChord SixthString);
                 Bar;
                 Chord(chord C Major7 |> toDrop3 |> createGuitarChord SixthString);
+                End
             ]
             |> renderTab 
             |> should equal (
-                             "----|---|---" + Environment.NewLine +
-                             "-10-|-3-|-8-" + Environment.NewLine +
-                             "-10-|-4-|-9-" + Environment.NewLine +
-                             "-10-|-3-|-9-" + Environment.NewLine +
-                             "----|---|---" + Environment.NewLine +
-                             "-10-|-3-|-8-" + Environment.NewLine)
+                             "e||-----|---|----||" + Environment.NewLine +
+                             "B||--10-|-3-|-8--||" + Environment.NewLine +
+                             "G||--10-|-4-|-9--||" + Environment.NewLine +
+                             "D||--10-|-3-|-9--||" + Environment.NewLine +
+                             "A||-----|---|----||" + Environment.NewLine +
+                             "E||--10-|-3-|-8--||" + Environment.NewLine)
+
+        [<Fact>]
+        let ``Should render C major arpeggio to guitar fretboard on open position ``() =
+            [StandardTunning; Start; Arpeggio(createGuitarArpeggio 0 3 cMaj); End]
+            |> renderTab 
+            |> should equal (
+                             "e||--------------------0--3--||" + Environment.NewLine +
+                             "B||-----------------1--------||" + Environment.NewLine +
+                             "G||--------------0-----------||" + Environment.NewLine +
+                             "D||-----------2--------------||" + Environment.NewLine +
+                             "A||--------3-----------------||" + Environment.NewLine +
+                             "E||--0--3--------------------||" + Environment.NewLine)
+
+        [<Fact>]
+        let ``Should render C major arpeggio to guitar fretboard on second position ``() =
+            [StandardTunning; Start; Arpeggio(cIonian |> triadsHarmonizer ScaleDegree.I |> createGuitarArpeggio 2 5); End]
+            |> renderTab 
+            |> should equal (
+                             "e||--------------------3--||" + Environment.NewLine +
+                             "B||-----------------5-----||" + Environment.NewLine +
+                             "G||--------------5--------||" + Environment.NewLine +
+                             "D||--------2--5-----------||" + Environment.NewLine +
+                             "A||-----3-----------------||" + Environment.NewLine +
+                             "E||--3--------------------||" + Environment.NewLine)
+        
+        [<Fact>]
+        let ``Should render C major arpeggio to guitar fretboard on seventh position ``() =
+            [StandardTunning; Start; Arpeggio(cIonian |> triadsHarmonizer ScaleDegree.I |> createGuitarArpeggio 7 10); End]
+            |> renderTab
+            |> should equal (
+                             "e||----------------------8--||" + Environment.NewLine +
+                             "B||-------------------8-----||" + Environment.NewLine +
+                             "G||----------------9--------||" + Environment.NewLine +
+                             "D||------------10-----------||" + Environment.NewLine +
+                             "A||-----7--10---------------||" + Environment.NewLine +
+                             "E||--8----------------------||" + Environment.NewLine)
+
+        [<Fact>]
+        let ``Should render C major7 arpeggio to guitar fretboard on seventh position ``() =
+            [StandardTunning; Start; Arpeggio(cIonian |> seventhsHarmonizer ScaleDegree.I |> createGuitarArpeggio 7 10); End]
+            |> renderTab
+            |> should equal (
+                             "e||----------------------------7--8--||" + Environment.NewLine +
+                             "B||-------------------------8--------||" + Environment.NewLine +
+                             "G||----------------------9-----------||" + Environment.NewLine +
+                             "D||---------------9--10--------------||" + Environment.NewLine +
+                             "A||--------7--10---------------------||" + Environment.NewLine +
+                             "E||--7--8----------------------------||" + Environment.NewLine)
+
+        [<Fact>]
+        let ``Should render C major triad arpeggio to guitar fretboard from ninth fret to twenty second fret ``() =
+            [StandardTunning; Start; Arpeggio(cIonian |> triadsHarmonizer ScaleDegree.I |> createGuitarArpeggio 9 22); End]
+            |> renderTab
+            |> should equal (
+                             "e||-------------------------------------------------------------12--15--20--||" + Environment.NewLine +
+                             "B||-------------------------------------------------13--17--20--------------||" + Environment.NewLine +
+                             "G||--------------------------------------9--12--17--------------------------||" + Environment.NewLine +
+                             "D||--------------------------10--14--17-------------------------------------||" + Environment.NewLine +
+                             "A||--------------10--15--19-------------------------------------------------||" + Environment.NewLine +
+                             "E||--12--15--20-------------------------------------------------------------||" + Environment.NewLine)
+
+
+        // [<Fact>]
+        // let ``Should render C ionian scale to guitar fretboard on second position ``() =
+        //     createScale Ionian C
+        //     |> createGuitarScale 2 6
+        //     |> tabifyScale 
+        //     |> should equal (
+        //                      "e||---------------------------------------------3--5-||" + Environment.NewLine +
+        //                      "B||------------------------------------3--5--6-------||" + Environment.NewLine +
+        //                      "G||---------------------------2--4--5----------------||" + Environment.NewLine +
+        //                      "D||------------------2--3--5-------------------------||" + Environment.NewLine +
+        //                      "A||---------2--3--5----------------------------------||" + Environment.NewLine +
+        //                      "E||---3--5-------------------------------------------||" + Environment.NewLine)
