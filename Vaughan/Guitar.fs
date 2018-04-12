@@ -188,7 +188,7 @@ namespace Vaughan
             let notesGuitarNotes allowedFrets (notes:Note list) =
                 notes |> generateAllFretCombinations allowedFrets
             
-        let createGuitarChord:CreateGuitarChord = fun bassString chord ->
+        let guitarChord:CreateGuitarChord = fun bassString chord ->
             match chord.ChordType with
             | Drop2 | Drop3 | Triad -> dropChordToGuitarChord bassString chord
             | Open -> chordToGuitarOpenChord bassString chord
@@ -197,12 +197,12 @@ namespace Vaughan
         
         open Chords
         
-        let createGuitarArpeggio:CreateGuitarArpeggio = fun minFret maxFret chord ->
+        let guitarArpeggio:CreateGuitarArpeggio = fun minFret maxFret chord ->
             chord
             |> toClosed  
             |> chordToGuitarArpeggio (fun f -> f.Fret >= minFret && f.Fret <= maxFret)
 
-        let createGuitarScale:CreateGuitarScale = fun minFret maxFret scale ->
+        let guitarScale:CreateGuitarScale = fun minFret maxFret scale ->
             scale
             |> scaleToGuitarScale (fun f -> f.Fret >= minFret && f.Fret <= maxFret)
 
@@ -364,7 +364,7 @@ namespace Vaughan
             (guitarChord |> shapifyChord |> List.fold (+) "") + Environment.NewLine
 
         let (|~) chord bassString =
-            createGuitarChord bassString chord
+            guitarChord bassString chord
 
         let (>|<) (chords:GuitarChord list) (chord:GuitarChord) =
             chord :: chords |> rotateByOne

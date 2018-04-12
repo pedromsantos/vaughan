@@ -161,7 +161,7 @@
                 "A Major"
                 |> parseChord
                 |> toTriad
-                |> createGuitarChord SixthString
+                |> guitarChord SixthString
                 |> tabifyChord |> should equal (
                             "e||-----||" + Environment.NewLine +
                             "B||-----||" + Environment.NewLine +

@@ -11,11 +11,11 @@ namespace Vaughan
 
         let createArpeggiosFromChords minFret maxFret chords =
             chords
-            |> List.map (fun c -> createGuitarArpeggio minFret maxFret c) 
+            |> List.map (fun c -> guitarArpeggio minFret maxFret c) 
 
         let createScalesForChords minFret maxFret chords =
             chords
-            |> List.map (scalesFitting >> (fun sl -> sl |> List.map (fun s -> createGuitarScale minFret maxFret s)))
+            |> List.map (scalesFitting >> (fun sl -> sl |> List.map (fun s -> guitarScale minFret maxFret s)))
         
         let tabifyArpeggiosFromChords minFret maxFret chords =
             let arpeggios = chords |> createArpeggiosFromChords minFret maxFret

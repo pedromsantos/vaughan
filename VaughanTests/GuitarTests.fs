@@ -21,14 +21,14 @@ namespace VaughanTests
                 ==> lazy (
                             let scale = createScaleNotes scaleType root
                             let chord = triadsHarmonizer scaleDegree scale
-                            let guitarChord = createGuitarChord bassString chord
+                            let guitarChord = guitarChord bassString chord
                             let maxFret = guitarChord.Frets |> List.map (fun f -> f.Fret) |> List.max
                             let minFret = guitarChord.Frets |> List.map (fun f -> f.Fret) |> List.min
                             maxFret - minFret < 6)
 
         [<Fact>]
         let ``Should map c major to guitar fretboard``() =
-            (createGuitarChord SixthString cMaj).Frets |> should equal [
+            (guitarChord SixthString cMaj).Frets |> should equal [
                         {GuitarString=SixthString; Fret=8; Note=C};
                         {GuitarString=FifthString; Fret=7; Note=E};
                         {GuitarString=FourthString; Fret=5; Note=G};
@@ -36,7 +36,7 @@ namespace VaughanTests
 
         [<Fact>]
         let ``Should map c major open to guitar fretboard on fifth string``() =
-            (createGuitarChord FifthString (cMaj |> toOpen)).Frets |> should equal [
+            (guitarChord FifthString (cMaj |> toOpen)).Frets |> should equal [
                         {GuitarString=FifthString; Fret=3; Note=C};
                         {GuitarString=FourthString; Fret=2; Note=E};
                         {GuitarString=ThirdString; Fret=0; Note=G};
@@ -46,7 +46,7 @@ namespace VaughanTests
 
         [<Fact>]
         let ``Should map c major to guitar fretboard on fourth string``() =
-            (createGuitarChord FourthString cMaj).Frets |> should equal [
+            (guitarChord FourthString cMaj).Frets |> should equal [
                         {GuitarString=FourthString; Fret=10; Note=C};
                         {GuitarString=ThirdString; Fret=9; Note=E};
                         {GuitarString=SecondString; Fret=8; Note=G};
@@ -54,7 +54,7 @@ namespace VaughanTests
 
         [<Fact>]
         let ``Should map c major to guitar fretboard on third string``() =
-            (createGuitarChord ThirdString cMaj).Frets |> should equal [
+            (guitarChord ThirdString cMaj).Frets |> should equal [
                         {GuitarString=ThirdString; Fret=5; Note=C};
                         {GuitarString=SecondString; Fret=5; Note=E};
                         {GuitarString=FirstString; Fret=3; Note=G};
@@ -63,7 +63,7 @@ namespace VaughanTests
         [<Fact>]
         let ``Should map F major to guitar fretboard on sixth string``() =
             let fMaj = triadsHarmonizer ScaleDegree.IV cIonian
-            (createGuitarChord SixthString fMaj).Frets |> should equal [
+            (guitarChord SixthString fMaj).Frets |> should equal [
                         {GuitarString=SixthString; Fret=13; Note=F};
                         {GuitarString=FifthString; Fret=12; Note=A};
                         {GuitarString=FourthString; Fret=10; Note=C};
@@ -75,7 +75,7 @@ namespace VaughanTests
                 ==> lazy (
                             let scale = createScaleNotes scaleType root
                             let chord = seventhsHarmonizer scaleDegree scale
-                            let guitarChord = createGuitarChord bassString chord
+                            let guitarChord = guitarChord bassString chord
                             let maxFret = guitarChord.Frets |> List.map (fun f -> f.Fret) |> List.max
                             let minFret = guitarChord.Frets |> List.map (fun f -> f.Fret) |> List.min
                             maxFret - minFret < 6)
@@ -86,7 +86,7 @@ namespace VaughanTests
                 ==> lazy (
                             let scale = createScaleNotes scaleType root
                             let chord = seventhsHarmonizer scaleDegree scale |> toDrop2
-                            let guitarChord = createGuitarChord bassString chord
+                            let guitarChord = guitarChord bassString chord
                             let maxFret = guitarChord.Frets |> List.map (fun f -> f.Fret) |> List.max
                             let minFret = guitarChord.Frets |> List.map (fun f -> f.Fret) |> List.min
                             maxFret - minFret < 6)
@@ -94,7 +94,7 @@ namespace VaughanTests
         [<Fact>]
         let ``Should map C major 7 drop 2 to guitar fretboard on fifth string closed``() =
             let chord = seventhsHarmonizer ScaleDegree.I cIonian |> toDrop2
-            (createGuitarChord FifthString chord).Frets |> should equal [
+            (guitarChord FifthString chord).Frets |> should equal [
                         {GuitarString=FifthString; Fret=3; Note=C};
                         {GuitarString=FourthString; Fret=5; Note=G};
                         {GuitarString=ThirdString; Fret=4; Note=B};
@@ -105,7 +105,7 @@ namespace VaughanTests
         let ``Should map A major 7 drop 2 to guitar fretboard on fifth string closed``() =
             let scale = createScaleNotes Ionian A
             let chord = seventhsHarmonizer ScaleDegree.I scale |> toDrop2
-            (createGuitarChord FifthString chord).Frets |> should equal [
+            (guitarChord FifthString chord).Frets |> should equal [
                         {GuitarString=FifthString; Fret=12; Note=A};
                         {GuitarString=FourthString; Fret=14; Note=E};
                         {GuitarString=ThirdString; Fret=13; Note=GSharp};
@@ -118,7 +118,7 @@ namespace VaughanTests
                 ==> lazy (
                             let scale = createScaleNotes scaleType root
                             let chord = seventhsHarmonizer scaleDegree scale |> toDrop3
-                            let guitarChord = createGuitarChord bassString chord
+                            let guitarChord = guitarChord bassString chord
                             let maxFret = guitarChord.Frets |> List.map (fun f -> f.Fret) |> List.max
                             let minFret = guitarChord.Frets |> List.map (fun f -> f.Fret) |> List.filter (fun f -> f <> -1) |> List.min
                             maxFret - minFret < 6)
@@ -126,7 +126,7 @@ namespace VaughanTests
         [<Fact>]
         let ``Should map C major 7 drop 3 to guitar fretboard on sixth string closed``() =
             let chord = seventhsHarmonizer ScaleDegree.I cIonian |> toDrop3
-            (createGuitarChord SixthString chord).Frets |> should equal [
+            (guitarChord SixthString chord).Frets |> should equal [
                         {GuitarString=SixthString; Fret=8; Note=C};
                         {GuitarString=FifthString; Fret=(-1); Note=A};
                         {GuitarString=FourthString; Fret=9; Note=B};
@@ -139,7 +139,7 @@ namespace VaughanTests
             let chord = chord C Major9
                         |> skipFunction Fifth
 
-            (createGuitarChord FifthString chord).Frets |> should equal [
+            (guitarChord FifthString chord).Frets |> should equal [
                         {GuitarString=FifthString; Fret=3; Note=C};
                         {GuitarString=FourthString; Fret=2; Note=E};
                         {GuitarString=ThirdString; Fret=4; Note=B};
@@ -151,7 +151,7 @@ namespace VaughanTests
             let chord = chord C Dominant9
                         |> skipFunction Fifth
 
-            (createGuitarChord FifthString chord).Frets |> should equal [
+            (guitarChord FifthString chord).Frets |> should equal [
                         {GuitarString=FifthString; Fret=3; Note=C};
                         {GuitarString=FourthString; Fret=2; Note=E};
                         {GuitarString=ThirdString; Fret=3; Note=BFlat};
@@ -161,7 +161,7 @@ namespace VaughanTests
         [<Fact>]
         let ``Should map C major triad arpeggio to guitar fretboard on first position``() =
             cMaj
-            |> (createGuitarArpeggio 1 4)
+            |> (guitarArpeggio 1 4)
             |> should equal 
                             {
                                 BaseChord = {
@@ -181,7 +181,7 @@ namespace VaughanTests
         let ``Should map diatonic closed triad arpeggios to guitar fretboard first position`` (scaleType: ScaleType) (scaleDegree: ScaleDegree) (root: Note) () =
             let scale = createScaleNotes scaleType root
             let chord = triadsHarmonizer scaleDegree scale
-            let guitarArpeggio = createGuitarArpeggio 1 4 chord
+            let guitarArpeggio = guitarArpeggio 1 4 chord
             let unmutedFrets = guitarArpeggio.ArpeggioFrets |> List.filter (fun f -> f.Fret > -1)
             let maxFret = unmutedFrets |> List.map (fun f -> f.Fret) |> List.max
             let minFret = unmutedFrets |> List.map (fun f -> f.Fret) |> List.min
@@ -207,12 +207,12 @@ namespace VaughanTests
         let createTriad (scaleType: ScaleType) (scaleDegree: ScaleDegree) (root: Note) (bassString: GuitarString) =
             let scale = createScaleNotes scaleType root
             let chord = triadsHarmonizer scaleDegree scale
-            createGuitarChord bassString chord
+            guitarChord bassString chord
 
         let createSeventhChord (scaleType: ScaleType) (scaleDegree: ScaleDegree) (root: Note) (bassString: GuitarString) =
             let scale = createScaleNotes scaleType root
             let chord = seventhsHarmonizer scaleDegree scale
-            createGuitarChord bassString chord
+            guitarChord bassString chord
 
         [<Property(Arbitrary = [| typeof<DiatonicScales> |])>]
         let ``Should map diatonic closed triad to guitar tab`` (scaleType: ScaleType) (scaleDegree: ScaleDegree) (root: Note) (bassString: GuitarString) () =
@@ -242,7 +242,7 @@ namespace VaughanTests
             cIonian
             |> seventhsHarmonizer ScaleDegree.I
             |> toDrop2
-            |> createGuitarChord FifthString
+            |> guitarChord FifthString
             |> tabifyChord |> should equal (
                                             "e||-----||" + Environment.NewLine +
                                             "B||--5--||" + Environment.NewLine +
@@ -256,7 +256,7 @@ namespace VaughanTests
             createScaleNotes Ionian A
             |> seventhsHarmonizer ScaleDegree.I
             |> toDrop2
-            |> createGuitarChord FifthString
+            |> guitarChord FifthString
             |> tabifyChord |> should equal (
                                             "e||------||" + Environment.NewLine +
                                             "B||--14--||" + Environment.NewLine +
@@ -267,7 +267,7 @@ namespace VaughanTests
 
         [<Fact>]
         let ``Should draw c major to guitar fretboard on sixth string``() =
-            let guitarChord = createGuitarChord SixthString cMaj
+            let guitarChord = guitarChord SixthString cMaj
             guitarChord |> tabifyChord |> should equal (
                                             "e||-----||" + Environment.NewLine +
                                             "B||-----||" + Environment.NewLine +
@@ -281,7 +281,7 @@ namespace VaughanTests
             cIonian
             |> seventhsHarmonizer ScaleDegree.I
             |> toDrop3
-            |> createGuitarChord SixthString
+            |> guitarChord SixthString
             |> tabifyChord |> should equal (
                                             "e||-----||" + Environment.NewLine +
                                             "B||--8--||" + Environment.NewLine +
@@ -295,7 +295,7 @@ namespace VaughanTests
             cIonian
             |> seventhsHarmonizer ScaleDegree.I
             |> toDrop3
-            |> createGuitarChord FifthString
+            |> guitarChord FifthString
             |> tabifyChord |> should equal (
                                             "e||--3--||" + Environment.NewLine +
                                             "B||--5--||" + Environment.NewLine +
@@ -308,7 +308,7 @@ namespace VaughanTests
         let ``Should map C9 ignoring 5th to guitar fretboard on fifth string closed``() =
             (chord C Dominant9)
             |> skipFunction Fifth
-            |> createGuitarChord FifthString
+            |> guitarChord FifthString
             |> tabifyChord |> should equal (
                                             "e||-----||" + Environment.NewLine +
                                             "B||--3--||" + Environment.NewLine +
@@ -328,7 +328,7 @@ namespace VaughanTests
             let guitarChords =
                 [cMaj7; dMin7; eMin7; fMaj7]
                 |> List.map (
-                    toDrop2 >> (createGuitarChord FifthString))
+                    toDrop2 >> (guitarChord FifthString))
 
             tabifyAll guitarChords |> should equal
                                 (
@@ -342,7 +342,7 @@ namespace VaughanTests
         [<Fact>]
         let ``Should tabify multiple chained chords using operators``() =
             [(G=>Major)] /./ (C=>Major) /./ (A=>Minor) /./ (D=>Major)
-            |> List.map (fun c -> createGuitarChord SixthString (toOpen c))
+            |> List.map (fun c -> guitarChord SixthString (toOpen c))
             |> tabifyAll |> should equal
                                 (
                                 "e||--3--0--0--2--||" + Environment.NewLine +
@@ -373,7 +373,7 @@ namespace VaughanTests
                 (cIonian
                 |> seventhsHarmonizer ScaleDegree.I
                 |> toDrop3
-                |> createGuitarChord SixthString)
+                |> guitarChord SixthString)
             guitarChord |> shapify |> should equal ("CMaj7" + Environment.NewLine +
                                             "EADGBE" + Environment.NewLine +
                                             "8X998X" + Environment.NewLine)
@@ -385,7 +385,7 @@ namespace VaughanTests
                 (cIonian
                 |> seventhsHarmonizer ScaleDegree.I
                 |> toDrop2
-                |> createGuitarChord FifthString)
+                |> guitarChord FifthString)
             guitarChord |> shapify |> should equal ("CMaj7" + Environment.NewLine +
                                             "EADGBE" + Environment.NewLine +
                                             "X3545X" + Environment.NewLine)
@@ -406,7 +406,7 @@ namespace VaughanTests
 
         [<Fact>]
         let ``Should render c major to guitar fretboard on sixth string``() =
-            let guitarChord = createGuitarChord SixthString cMaj
+            let guitarChord = guitarChord SixthString cMaj
             [StandardTunning; Start; Chord(guitarChord); End]
             |> renderTab 
             |> should equal (
@@ -422,11 +422,11 @@ namespace VaughanTests
             [
                 StandardTunning; 
                 Start
-                Chord(chord D Minor7 |> toDrop3 |> createGuitarChord SixthString);
+                Chord(chord D Minor7 |> toDrop3 |> guitarChord SixthString);
                 Bar;
-                Chord(chord G Dominant7 |> toDrop3 |> createGuitarChord SixthString);
+                Chord(chord G Dominant7 |> toDrop3 |> guitarChord SixthString);
                 Bar;
-                Chord(chord C Major7 |> toDrop3 |> createGuitarChord SixthString);
+                Chord(chord C Major7 |> toDrop3 |> guitarChord SixthString);
                 End
             ]
             |> renderTab 
@@ -440,7 +440,7 @@ namespace VaughanTests
 
         [<Fact>]
         let ``Should render C major arpeggio to guitar fretboard on open position ``() =
-            [StandardTunning; Start; Arpeggio(createGuitarArpeggio 0 3 cMaj); End]
+            [StandardTunning; Start; Arpeggio(guitarArpeggio 0 3 cMaj); End]
             |> renderTab 
             |> should equal (
                              "e||--------------------0--3--||" + Environment.NewLine +
@@ -452,7 +452,7 @@ namespace VaughanTests
 
         [<Fact>]
         let ``Should render C major arpeggio to guitar fretboard on second position ``() =
-            [StandardTunning; Start; Arpeggio(cIonian |> triadsHarmonizer ScaleDegree.I |> createGuitarArpeggio 2 5); End]
+            [StandardTunning; Start; Arpeggio(cIonian |> triadsHarmonizer ScaleDegree.I |> guitarArpeggio 2 5); End]
             |> renderTab 
             |> should equal (
                              "e||--------------------3--||" + Environment.NewLine +
@@ -464,7 +464,7 @@ namespace VaughanTests
         
         [<Fact>]
         let ``Should render C major arpeggio to guitar fretboard on seventh position ``() =
-            [StandardTunning; Start; Arpeggio(cIonian |> triadsHarmonizer ScaleDegree.I |> createGuitarArpeggio 7 10); End]
+            [StandardTunning; Start; Arpeggio(cIonian |> triadsHarmonizer ScaleDegree.I |> guitarArpeggio 7 10); End]
             |> renderTab
             |> should equal (
                              "e||----------------------8--||" + Environment.NewLine +
@@ -476,7 +476,7 @@ namespace VaughanTests
 
         [<Fact>]
         let ``Should render C major7 arpeggio to guitar fretboard on seventh position ``() =
-            [StandardTunning; Start; Arpeggio(cIonian |> seventhsHarmonizer ScaleDegree.I |> createGuitarArpeggio 7 10); End]
+            [StandardTunning; Start; Arpeggio(cIonian |> seventhsHarmonizer ScaleDegree.I |> guitarArpeggio 7 10); End]
             |> renderTab
             |> should equal (
                              "e||----------------------------7--8--||" + Environment.NewLine +
@@ -488,7 +488,7 @@ namespace VaughanTests
 
         [<Fact>]
         let ``Should render C major triad arpeggio to guitar fretboard from ninth fret to twenty second fret ``() =
-            [StandardTunning; Start; Arpeggio(cIonian |> triadsHarmonizer ScaleDegree.I |> createGuitarArpeggio 9 22); End]
+            [StandardTunning; Start; Arpeggio(cIonian |> triadsHarmonizer ScaleDegree.I |> guitarArpeggio 9 22); End]
             |> renderTab
             |> should equal (
                              "e||-------------------------------------------------------------12--15--20--||" + Environment.NewLine +
@@ -501,7 +501,7 @@ namespace VaughanTests
 
         [<Fact>]
         let ``Should render C ionian scale to guitar fretboard on second position ``() =
-            [StandardTunning; Start; Scale(createScale Ionian C |> createGuitarScale 2 6); End]
+            [StandardTunning; Start; Scale(createScale Ionian C |> guitarScale 2 6); End]
             |> renderTab 
             |> should equal (
                              "e||--------------------------------------------3--5--||" + Environment.NewLine +
