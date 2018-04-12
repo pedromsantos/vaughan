@@ -523,6 +523,19 @@ namespace VaughanTests
 
 
         [<Fact>]
+        let ``Should render c note to guitar fretboard on sixth string``() =
+            let guitarNote = Note({GuitarString=SixthString; Fret=8; Note=C})
+            [guitarNote]
+            |> renderTab 
+            |> should equal (
+                             "---" + Environment.NewLine +
+                             "---" + Environment.NewLine +
+                             "---" + Environment.NewLine +
+                             "---" + Environment.NewLine +
+                             "---" + Environment.NewLine +
+                             "-8-" + Environment.NewLine)
+
+        [<Fact>]
         let ``Should render c major to guitar fretboard on sixth string``() =
             let guitarChord = createGuitarChord SixthString cMaj
             [Chord(guitarChord)]
@@ -534,3 +547,19 @@ namespace VaughanTests
                              "-5-" + Environment.NewLine +
                              "-7-" + Environment.NewLine +
                              "-8-" + Environment.NewLine)
+
+        [<Fact>]
+        let ``Should render II V I in c major to guitar fretboard on sixth string``() =
+            [
+                Chord(chord D Minor7 |> toDrop3 |> createGuitarChord SixthString);
+                Chord(chord G Dominant7 |> toDrop3 |> createGuitarChord SixthString);
+                Chord(chord C Major7 |> toDrop3 |> createGuitarChord SixthString);
+            ]
+            |> renderTab 
+            |> should equal (
+                             "---------" + Environment.NewLine +
+                             "-10--3--8-" + Environment.NewLine +
+                             "-10--4--9-" + Environment.NewLine +
+                             "-10--3--9-" + Environment.NewLine +
+                             "---------" + Environment.NewLine +
+                             "-10--3--8-" + Environment.NewLine)

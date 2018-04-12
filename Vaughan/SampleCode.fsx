@@ -21,6 +21,12 @@ open Vaughan.ImprovisationGuitar
 open Vaughan.ChordVoiceLeading
 
 [
+    Note({GuitarString=FirstString; Fret=8; Note=C})
+]
+|> renderTab
+|> printf "\n%s"
+
+[
     StandardTunning;
     Start;
     Chord(chord D Minor7 |> toDrop3 |> createGuitarChord SixthString);
