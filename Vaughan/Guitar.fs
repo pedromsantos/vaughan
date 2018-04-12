@@ -242,6 +242,10 @@ namespace Vaughan
 
         let private startTab = "||-" |> List.replicate 6
 
+        let private emptyTab = "---" |> List.replicate 6
+
+        let private barTab = "|" |> List.replicate 6
+
         let private endTab =  ("-||" + Environment.NewLine) |> List.replicate 6
 
         [<AutoOpen>]
@@ -365,6 +369,62 @@ namespace Vaughan
                     guitarChords |> List.map (fun guitarChord -> chordNameSeparator + guitarChord.Chord.Name)
                 [chordNameSeparator] @ separatedChordNames @ [chordNameSeparator; Environment.NewLine;]
 
+            let mapToTab (fret:Fret) =
+                if fret.Fret = -1 then Mute(fret) else Note(fret)
+
+            let mapScaleToTab (guitarScale:GuitarScale) =
+                guitarScale.Frets
+                |> List.map mapToTab
+
+            let mapChordToTab (guitarChord:GuitarChord) =
+                Chord(guitarChord)
+
+            let mutedHighStrings fret =
+                match fret.GuitarString with
+                    | SecondString -> 1
+                    | ThirdString -> 2
+                    | FourthString -> 3
+                    | _ -> 0
+
+            let mutedLowStrings fret =
+                match fret.GuitarString with
+                | FifthString -> 1
+                | FourthString  -> 2
+                | ThirdString  -> 3
+                | _ -> 0
+
+            let renderNote (fret:Fret) =
+                (List.replicate (mutedHighStrings fret) "---")
+                @
+                [sprintf "-%i-" fret.Fret] 
+                @
+                (List.replicate (mutedLowStrings fret) "---")
+
+            let private renderMutedHigherStrings (mutedStringTab:string) (frets: Fret list) =
+                let mutedStrings = numberOfMutedHighStrings frets
+                List.replicate mutedStrings mutedStringTab
+
+            let private renderMutedLowerStrings (mutedStringTab:string) (frets: Fret list) =
+                let mutedStrings = numberOfMutedLowStrings frets
+                List.replicate mutedStrings mutedStringTab
+
+            let private renderFret (mutedStringTab:string) (fret:Fret) =
+                if fret.Fret = -1 then
+                    mutedStringTab
+                else
+                    sprintf "-%i-" fret.Fret
+
+            let private renderFrets mutedStringTab frets =
+                frets
+                |> List.map (fun fret -> renderFret mutedStringTab fret)
+                |> List.rev
+
+            let renderChord (chord:GuitarChord) =
+                let mutedStringTab = "---"
+                (renderMutedHigherStrings mutedStringTab chord.Frets)
+                @ (renderFrets mutedStringTab chord.Frets)
+                @ (renderMutedLowerStrings mutedStringTab chord.Frets)
+
         [<AutoOpen>]
         module private Shapify =
             let private shapifyMutedLowerStrings frets =
@@ -388,6 +448,29 @@ namespace Vaughan
                 (shapifyMutedLowerStrings guitarChord.Frets)
                 @ (shapifyFrets guitarChord.Frets)
                 @ (shapifyMutedHigherStrings guitarChord.Frets)
+
+        let private mapTabColumsToTabLines stringOrdinal (tabifiedChords: TabColumns) =
+                tabifiedChords |> List.map (fun f -> f.[stringOrdinal])
+
+        let private mapTabToGuitarStrings (tabifiedChords: TabColumns) =
+            [0 .. 5]
+            |> List.map (fun stringOrdinal -> mapTabColumsToTabLines stringOrdinal tabifiedChords)
+
+        let private renderTabPart = function
+            | Rest -> emptyTab
+            | Bar -> barTab
+            | Start -> startTab
+            | End -> endTab
+            | Note n -> renderNote n
+            | Chord c -> renderChord c
+            | Mute m -> ["-x-"]
+            | PalmMute pm -> ["-_-"]
+            | Harmonic h -> ["-*-"]
+            | Vibrato v -> ["-~-"]
+            | HammerOn (fs, fe) -> ["-h-"]
+            | PullOff (fs, fe) -> ["-p-"]
+            | Bend (fs, fe) -> ["-b-"]
+            | StandardTunning -> standardTunningTab 
 
         let tabifyAll:TabifyAll = fun guitarChords ->
             (tabifyChordNames guitarChords) @ (tabifyChords guitarChords)
@@ -423,3 +506,10 @@ namespace Vaughan
 
         let (>|<) (chords:GuitarChord list) (chord:GuitarChord) =
             chord :: chords |> rotateByOne
+
+        let renderTab tab = 
+            tab 
+            |> List.map renderTabPart
+            |> mapTabToGuitarStrings
+            |> List.map (fun gss -> gss |> List.fold (fun acc gs -> gs + acc) Environment.NewLine)
+            |> List.fold (+) ""

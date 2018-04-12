@@ -520,3 +520,17 @@ namespace VaughanTests
             guitarChord |> shapify |> should equal ("CMaj7" + Environment.NewLine +
                                             "EADGBE" + Environment.NewLine +
                                             "X3545X" + Environment.NewLine)
+
+
+        [<Fact>]
+        let ``Should render c major to guitar fretboard on sixth string``() =
+            let guitarChord = createGuitarChord SixthString cMaj
+            [Chord(guitarChord)]
+            |> renderTab 
+            |> should equal (
+                             "---" + Environment.NewLine +
+                             "---" + Environment.NewLine +
+                             "---" + Environment.NewLine +
+                             "-5-" + Environment.NewLine +
+                             "-7-" + Environment.NewLine +
+                             "-8-" + Environment.NewLine)

@@ -172,3 +172,20 @@ namespace Vaughan
         type ParseScale = string -> Scale
         type ParseNote = string -> Note
         type ParseMidiNote = string -> MidiNote
+
+        type TabColumn = 
+                | Note of Fret
+                | Chord of GuitarChord
+                | Mute of Fret
+                | PalmMute of Fret
+                | Harmonic of Fret
+                | Vibrato of Fret
+                | HammerOn of Fret * Fret
+                | PullOff of Fret * Fret
+                | Bend of Fret * Fret
+                | Rest
+                | Bar
+                | Start
+                | StandardTunning
+                | End
+                | Tab of TabColumn seq

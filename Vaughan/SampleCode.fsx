@@ -20,6 +20,17 @@ open Vaughan.GuitarTab
 open Vaughan.ImprovisationGuitar
 open Vaughan.ChordVoiceLeading
 
+[
+    StandardTunning;
+    Start;
+    Chord(chord D Minor7 |> toDrop3 |> createGuitarChord SixthString);
+    Chord(chord G Dominant7 |> toDrop3 |> createGuitarChord SixthString);
+    Chord(chord C Major7 |> toDrop3 |> createGuitarChord SixthString);
+    End
+]
+|> renderTab
+|> printf "\n%s"
+
 [chord C Minor7; chord F Dominant7; chord BFlat Major7]
 |> tabifyArpeggiosFromChords 5 8
 |> List.map (fun t -> printf "\n%s" t)
