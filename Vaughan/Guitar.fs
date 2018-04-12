@@ -448,8 +448,7 @@ namespace Vaughan
 
         let private renderNotes (frets:Fret list) =
             frets
-            |> List.sortBy (fun f -> f.GuitarString, f.Fret)
-            |> List.rev
+            |> List.sortByDescending (fun f -> f.GuitarString, f.Fret)
             |> List.map renderNote
             |> mapTabToGuitarStrings 
             |> List.map (fun gss -> gss |> List.fold (fun acc gs -> gs + acc) "") 
@@ -462,6 +461,7 @@ namespace Vaughan
             | Note n -> renderNote n
             | Chord c -> renderChord c
             | Arpeggio a -> renderNotes a.ArpeggioFrets
+            | Scale s -> renderNotes s.Frets
             | Mute m -> ["-x-"]
             | PalmMute pm -> ["-_-"]
             | Harmonic h -> ["-*-"]

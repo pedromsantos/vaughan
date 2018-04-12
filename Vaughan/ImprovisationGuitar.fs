@@ -8,7 +8,6 @@ namespace Vaughan
         open Scales
         open Guitar
         open GuitarTab
-        open Infrastructure
 
         let createArpeggioGuitarMelodicLineFromChords minFret maxFret chords =
             chords

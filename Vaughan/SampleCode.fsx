@@ -20,6 +20,10 @@ open Vaughan.GuitarTab
 open Vaughan.ImprovisationGuitar
 open Vaughan.ChordVoiceLeading
 
+[StandardTunning; Start; Scale(createScale Ionian C |> createGuitarScale 2 6); End]
+|> renderTab
+|> printf "\n%s"
+
 [StandardTunning; Start; Arpeggio(createGuitarArpeggio 9 22 (chord C Major)); End]
 |> renderTab 
 |> printf "\n%s"

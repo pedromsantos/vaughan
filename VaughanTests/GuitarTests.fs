@@ -631,15 +631,14 @@ namespace VaughanTests
                              "E||--12--15--20-------------------------------------------------------------||" + Environment.NewLine)
 
 
-        // [<Fact>]
-        // let ``Should render C ionian scale to guitar fretboard on second position ``() =
-        //     createScale Ionian C
-        //     |> createGuitarScale 2 6
-        //     |> tabifyScale 
-        //     |> should equal (
-        //                      "e||---------------------------------------------3--5-||" + Environment.NewLine +
-        //                      "B||------------------------------------3--5--6-------||" + Environment.NewLine +
-        //                      "G||---------------------------2--4--5----------------||" + Environment.NewLine +
-        //                      "D||------------------2--3--5-------------------------||" + Environment.NewLine +
-        //                      "A||---------2--3--5----------------------------------||" + Environment.NewLine +
-        //                      "E||---3--5-------------------------------------------||" + Environment.NewLine)
+        [<Fact>]
+        let ``Should render C ionian scale to guitar fretboard on second position ``() =
+            [StandardTunning; Start; Scale(createScale Ionian C |> createGuitarScale 2 6); End]
+            |> renderTab 
+            |> should equal (
+                             "e||--------------------------------------------3--5--||" + Environment.NewLine +
+                             "B||-----------------------------------3--5--6--------||" + Environment.NewLine +
+                             "G||--------------------------2--4--5-----------------||" + Environment.NewLine +
+                             "D||-----------------2--3--5--------------------------||" + Environment.NewLine +
+                             "A||--------2--3--5-----------------------------------||" + Environment.NewLine +
+                             "E||--3--5--------------------------------------------||" + Environment.NewLine)
