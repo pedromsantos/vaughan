@@ -188,4 +188,3 @@ namespace Vaughan
                 | Start
                 | StandardTunning
                 | End
-                | Tab of TabColumn seq
