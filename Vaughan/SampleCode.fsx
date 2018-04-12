@@ -48,24 +48,6 @@ open Vaughan.ChordVoiceLeading
 |> renderTab
 |> printf "\n%s"
 
-[chord C Minor7; chord F Dominant7; chord BFlat Major7]
-|> tabifyArpeggiosFromChords 5 8
-|> List.map (fun t -> printf "\n%s" t)
-
-[chord BFlat Dominant7; chord EFlat Dominant7; chord F Dominant7]
-|> tabifyArpeggiosFromChords 5 8
-|> List.map (fun t -> printf "\n%s" t)
-
-[chord C Minor7; chord F Dominant7;chord BFlat Major7]
-|> tabifyScalesFromChords 5 8
-|> List.map (fun t -> printf "\n%s" t)
-
-createScale Ionian BFlat 
-|> createGuitarScale 2 6
-|> createGuitarMelodicLineFromScale
-|> tabifyMelodicLine
-|> printf "\n%s"
-
 createScale Ionian C 
 |> createGuitarScale 4 8
 |> tabifyScale

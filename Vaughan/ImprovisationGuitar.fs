@@ -9,34 +9,20 @@ namespace Vaughan
         open Guitar
         open GuitarTab
 
-        let createArpeggioGuitarMelodicLineFromChords minFret maxFret chords =
+        let createArpeggiosFromChords minFret maxFret chords =
             chords
-            |> List.map ((fun c -> createGuitarArpeggio minFret maxFret c) 
-                                   >> createGuitarMelodicLineFromArpeggio)
+            |> List.map (fun c -> createGuitarArpeggio minFret maxFret c) 
 
-        let createScaleGuitarMelodicLineFromChords minFret maxFret chords =
+        let createScalesForChords minFret maxFret chords =
             chords
-            |> List.map (scalesFitting 
-                            >> ((fun sl -> sl |> List.map (fun s -> createGuitarScale minFret maxFret s)) 
-                            >> (fun sl -> sl |> List.map (fun s -> sprintf "%s %A" (noteName s.Scale.Notes.[0]) s.Scale.Scale, createGuitarMelodicLineFromScale s))))
+            |> List.map (scalesFitting >> (fun sl -> sl |> List.map (fun s -> createGuitarScale minFret maxFret s)))
         
-        let createGuitarMelodicLineFromNotes minFret maxFret notes =
-            notes
-            |> createGuitarNotes minFret maxFret
-            |> createGuitarMelodicLineFromNotes
-
         let tabifyArpeggiosFromChords minFret maxFret chords =
-            chords
-            |> createArpeggioGuitarMelodicLineFromChords minFret maxFret
-            |> List.map tabifyMelodicLine
-            |> List.mapi (fun i ml -> (name chords.[i]) + Environment.NewLine + ml)
-
+            let arpeggios = chords |> createArpeggiosFromChords minFret maxFret
+            [StandardTunning; Start] @ (arpeggios |> List.map (fun a -> Arpeggio(a))) @ [End]
+            |> renderTab
+            
         let tabifyScalesFromChords minFret maxFret chords =
-            chords
-            |> createScaleGuitarMelodicLineFromChords minFret maxFret
-            |> List.map (fun mls -> mls |> List.map (fun ml -> (fst ml) + Environment.NewLine + (snd ml |> tabifyMelodicLine)))
-            |> List.mapi (fun i mls -> (name chords.[i])::mls)
-            |> List.collect id
-
-
-
+            chords 
+            |> createScalesForChords minFret maxFret
+            |> List.map (fun ss -> [StandardTunning; Start] @ (ss |> List.map (fun s -> Scale(s))) @ [End] |> renderTab)

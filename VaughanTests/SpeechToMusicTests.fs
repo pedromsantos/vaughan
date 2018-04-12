@@ -162,17 +162,17 @@
                 |> parseChord
                 |> toTriad
                 |> createGuitarChord SixthString
-                |> tabifyChord |> should equal ("      AMaj   " + Environment.NewLine+
-                            "e||------------||" + Environment.NewLine +
-                            "B||------------||" + Environment.NewLine +
-                            "G||------------||" + Environment.NewLine +
-                            "D||----2-------||" + Environment.NewLine +
-                            "A||----4-------||" + Environment.NewLine +
-                            "E||----5-------||" + Environment.NewLine)
+                |> tabifyChord |> should equal (
+                            "e||-----||" + Environment.NewLine +
+                            "B||-----||" + Environment.NewLine +
+                            "G||-----||" + Environment.NewLine +
+                            "D||--2--||" + Environment.NewLine +
+                            "A||--4--||" + Environment.NewLine +
+                            "E||--5--||" + Environment.NewLine)
 
-            [<Fact>]
-            let ``Should tabify arpeggios from chord names`` () =
-                ["Cm7"; "F7"; "CMaj7"]
-                |> tabifyArpeggiosFromChordNames 2 5
-                |> List.length 
-                |> should equal 3 
+            // [<Fact>]
+            // let ``Should tabify arpeggios from chord names`` () =
+            //     ["Cm7"; "F7"; "CMaj7"]
+            //     |> tabifyArpeggiosFromChordNames 2 5
+            //     |> List.length 
+            //     |> should equal 3 

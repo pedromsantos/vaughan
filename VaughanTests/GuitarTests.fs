@@ -1,5 +1,4 @@
 namespace VaughanTests
-    open NHamcrest
     module GuitarTests =
         open Xunit
         open FsUnit.Xunit
@@ -178,38 +177,6 @@ namespace VaughanTests
                                                     {GuitarString = SixthString; Fret = 3; Note = G;}
                                                 ];}
         
-        [<Fact>]
-        let ``Should create arpeggio melodic line for C major triad``() =
-            cMaj
-            |> (createGuitarArpeggio 1 4)
-            |> createGuitarMelodicLineFromArpeggio
-            |> should equal [[3]; [1]; [-1]; [2]; [3]; [3]]
-
-        [<Fact>]
-        let ``Should create arpeggio melodic line for C major 7 chord``() =
-            cIonian
-            |> seventhsHarmonizer ScaleDegree.I
-            |> createGuitarArpeggio 2 5
-            |> createGuitarMelodicLineFromArpeggio
-            |> should equal [[3]; [5]; [4; 5]; [2; 5]; [2; 3]; [3]]
-
-        [<Fact>]
-        let ``Should create scale melodic line for C Ionian scale``() =
-            createScale Ionian C
-            |> createGuitarScale 2 6
-            |> createGuitarMelodicLineFromScale
-            |> should equal [[3; 5]; [3; 5; 6]; [2; 4; 5]; [2; 3; 5]; [2; 3; 5]; [3; 5]]
-
-        [<Property>]
-        let ``Should create scale melodic line for scale on second position`` (scaleType: ScaleType) (root: Note) () =
-            let melodicLine = 
-                            createScale scaleType root
-                            |> createGuitarScale 2 6
-                            |> createGuitarMelodicLineFromScale
-            let maxFret = (melodicLine |> List.collect id |> List.max) 
-            let minFret = (melodicLine |> List.collect id |> List.min)
-            minFret > 1 && maxFret < 7
-
         [<Property(Arbitrary = [| typeof<DiatonicScales> |])>]
         let ``Should map diatonic closed triad arpeggios to guitar fretboard first position`` (scaleType: ScaleType) (scaleDegree: ScaleDegree) (root: Note) () =
             let scale = createScaleNotes scaleType root
@@ -276,137 +243,38 @@ namespace VaughanTests
             |> seventhsHarmonizer ScaleDegree.I
             |> toDrop2
             |> createGuitarChord FifthString
-            |> tabifyChord |> should equal ("      CMaj7   " + Environment.NewLine +
-                                            "e||-------------||" + Environment.NewLine +
-                                            "B||----5--------||" + Environment.NewLine +
-                                            "G||----4--------||" + Environment.NewLine +
-                                            "D||----5--------||" + Environment.NewLine +
-                                            "A||----3--------||" + Environment.NewLine +
-                                            "E||-------------||" + Environment.NewLine)
+            |> tabifyChord |> should equal (
+                                            "e||-----||" + Environment.NewLine +
+                                            "B||--5--||" + Environment.NewLine +
+                                            "G||--4--||" + Environment.NewLine +
+                                            "D||--5--||" + Environment.NewLine +
+                                            "A||--3--||" + Environment.NewLine +
+                                            "E||-----||" + Environment.NewLine)
         
-                                            
-        [<Fact>]
-        let ``Should draw C major arpeggio to guitar fretboard on open position ``() =
-            cIonian
-            |> triadsHarmonizer ScaleDegree.I
-            |> createGuitarArpeggio 0 3
-            |> tabifyArpeggio 
-            |> should equal (
-                             "e||---------------------0--3-||" + Environment.NewLine +
-                             "B||------------------1-------||" + Environment.NewLine +
-                             "G||---------------0----------||" + Environment.NewLine +
-                             "D||------------2-------------||" + Environment.NewLine +
-                             "A||---------3----------------||" + Environment.NewLine +
-                             "E||---0--3-------------------||" + Environment.NewLine)
-
-        [<Fact>]
-        let ``Should draw C major arpeggio to guitar fretboard on first position ``() =
-            cIonian
-            |> triadsHarmonizer ScaleDegree.I
-            |> createGuitarArpeggio 1 4
-            |> tabifyArpeggio 
-            |> should equal (
-                             "e||------------------3-||" + Environment.NewLine +
-                             "B||---------------1----||" + Environment.NewLine +
-                             "G||-------------1------||" + Environment.NewLine +
-                             "D||---------2----------||" + Environment.NewLine +
-                             "A||------3-------------||" + Environment.NewLine +
-                             "E||---3----------------||" + Environment.NewLine)
-        
-        [<Fact>]
-        let ``Should draw C major arpeggio to guitar fretboard on second position ``() =
-            cIonian
-            |> triadsHarmonizer ScaleDegree.I
-            |> createGuitarArpeggio 2 5
-            |> tabifyArpeggio 
-            |> should equal (
-                             "e||---------------------3-||" + Environment.NewLine +
-                             "B||------------------5----||" + Environment.NewLine +
-                             "G||---------------5-------||" + Environment.NewLine +
-                             "D||---------2--5----------||" + Environment.NewLine +
-                             "A||------3----------------||" + Environment.NewLine +
-                             "E||---3-------------------||" + Environment.NewLine)
-        
-        [<Fact>]
-        let ``Should draw C major arpeggio to guitar fretboard on seventh position ``() =
-            cIonian
-            |> triadsHarmonizer ScaleDegree.I
-            |> createGuitarArpeggio 7 10
-            |> tabifyArpeggio 
-            |> should equal (
-                             "e||---------------------8-||" + Environment.NewLine +
-                             "B||------------------8----||" + Environment.NewLine +
-                             "G||---------------9-------||" + Environment.NewLine +
-                             "D||------------10---------||" + Environment.NewLine +
-                             "A||------7--10------------||" + Environment.NewLine +
-                             "E||---8-------------------||" + Environment.NewLine)
-
-        [<Fact>]
-        let ``Should draw C major7 arpeggio to guitar fretboard on seventh position ``() =
-            cIonian
-            |> seventhsHarmonizer ScaleDegree.I
-            |> createGuitarArpeggio 7 10
-            |> tabifyArpeggio 
-            |> should equal (
-                             "e||---------------------------7--8-||" + Environment.NewLine +
-                             "B||------------------------8-------||" + Environment.NewLine +
-                             "G||---------------------9----------||" + Environment.NewLine +
-                             "D||---------------9--10------------||" + Environment.NewLine +
-                             "A||---------7--10------------------||" + Environment.NewLine +
-                             "E||---7--8-------------------------||" + Environment.NewLine)
-
-        [<Fact>]
-        let ``Should tab C major triad arpeggio to guitar fretboard from ninth fret to twenty second fret ``() =
-            cIonian
-            |> triadsHarmonizer ScaleDegree.I
-            |> createGuitarArpeggio 9 22
-            |> tabifyArpeggio
-            |> should equal (
-                             "e||------------------------------------------------12--15--20-||" + Environment.NewLine +
-                             "B||---------------------------------------13--17--20----------||" + Environment.NewLine +
-                             "G||------------------------------9--12--17--------------------||" + Environment.NewLine +
-                             "D||---------------------10--14--17----------------------------||" + Environment.NewLine +
-                             "A||------------10--15--19-------------------------------------||" + Environment.NewLine +
-                             "E||---12--15--20----------------------------------------------||" + Environment.NewLine)
-
-
-        [<Fact>]
-        let ``Should tab C ionian scale to guitar fretboard on second position ``() =
-            createScale Ionian C
-            |> createGuitarScale 2 6
-            |> tabifyScale 
-            |> should equal (
-                             "e||---------------------------------------------3--5-||" + Environment.NewLine +
-                             "B||------------------------------------3--5--6-------||" + Environment.NewLine +
-                             "G||---------------------------2--4--5----------------||" + Environment.NewLine +
-                             "D||------------------2--3--5-------------------------||" + Environment.NewLine +
-                             "A||---------2--3--5----------------------------------||" + Environment.NewLine +
-                             "E||---3--5-------------------------------------------||" + Environment.NewLine)
-
         [<Fact>]
         let ``Should draw A major 7 to guitar fretboard on fifth string closed ``() =
             createScaleNotes Ionian A
             |> seventhsHarmonizer ScaleDegree.I
             |> toDrop2
             |> createGuitarChord FifthString
-            |> tabifyChord |> should equal ("      AMaj7   " + Environment.NewLine +
-                                            "e||-------------||" + Environment.NewLine +
-                                            "B||----14-------||" + Environment.NewLine +
-                                            "G||----13-------||" + Environment.NewLine +
-                                            "D||----14-------||" + Environment.NewLine +
-                                            "A||----12-------||" + Environment.NewLine +
-                                            "E||-------------||" + Environment.NewLine)
+            |> tabifyChord |> should equal (
+                                            "e||------||" + Environment.NewLine +
+                                            "B||--14--||" + Environment.NewLine +
+                                            "G||--13--||" + Environment.NewLine +
+                                            "D||--14--||" + Environment.NewLine +
+                                            "A||--12--||" + Environment.NewLine +
+                                            "E||------||" + Environment.NewLine)
 
         [<Fact>]
         let ``Should draw c major to guitar fretboard on sixth string``() =
             let guitarChord = createGuitarChord SixthString cMaj
-            guitarChord |> tabifyChord |> should equal ("      CMaj   " + Environment.NewLine +
-                                            "e||------------||" + Environment.NewLine +
-                                            "B||------------||" + Environment.NewLine +
-                                            "G||------------||" + Environment.NewLine +
-                                            "D||----5-------||" + Environment.NewLine +
-                                            "A||----7-------||" + Environment.NewLine +
-                                            "E||----8-------||" + Environment.NewLine)
+            guitarChord |> tabifyChord |> should equal (
+                                            "e||-----||" + Environment.NewLine +
+                                            "B||-----||" + Environment.NewLine +
+                                            "G||-----||" + Environment.NewLine +
+                                            "D||--5--||" + Environment.NewLine +
+                                            "A||--7--||" + Environment.NewLine +
+                                            "E||--8--||" + Environment.NewLine)
 
         [<Fact>]
         let ``Should draw C major 7 drop 3 to guitar fretboard on sixth string closed``() =
@@ -414,13 +282,13 @@ namespace VaughanTests
             |> seventhsHarmonizer ScaleDegree.I
             |> toDrop3
             |> createGuitarChord SixthString
-            |> tabifyChord |> should equal ("      CMaj7   " + Environment.NewLine +
-                                            "e||-------------||" + Environment.NewLine +
-                                            "B||----8--------||" + Environment.NewLine +
-                                            "G||----9--------||" + Environment.NewLine +
-                                            "D||----9--------||" + Environment.NewLine +
-                                            "A||-------------||" + Environment.NewLine +
-                                            "E||----8--------||" + Environment.NewLine)
+            |> tabifyChord |> should equal (
+                                            "e||-----||" + Environment.NewLine +
+                                            "B||--8--||" + Environment.NewLine +
+                                            "G||--9--||" + Environment.NewLine +
+                                            "D||--9--||" + Environment.NewLine +
+                                            "A||-----||" + Environment.NewLine +
+                                            "E||--8--||" + Environment.NewLine)
 
         [<Fact>]
         let ``Should draw C major 7 drop 3 to guitar fretboard on fifth string closed``() =
@@ -428,26 +296,26 @@ namespace VaughanTests
             |> seventhsHarmonizer ScaleDegree.I
             |> toDrop3
             |> createGuitarChord FifthString
-            |> tabifyChord |> should equal ("      CMaj7   " + Environment.NewLine +
-                                            "e||----3--------||" + Environment.NewLine +
-                                            "B||----5--------||" + Environment.NewLine +
-                                            "G||----4--------||" + Environment.NewLine +
-                                            "D||-------------||" + Environment.NewLine +
-                                            "A||----3--------||" + Environment.NewLine +
-                                            "E||-------------||" + Environment.NewLine)
+            |> tabifyChord |> should equal (
+                                            "e||--3--||" + Environment.NewLine +
+                                            "B||--5--||" + Environment.NewLine +
+                                            "G||--4--||" + Environment.NewLine +
+                                            "D||-----||" + Environment.NewLine +
+                                            "A||--3--||" + Environment.NewLine +
+                                            "E||-----||" + Environment.NewLine)
 
         [<Fact>]
         let ``Should map C9 ignoring 5th to guitar fretboard on fifth string closed``() =
             (chord C Dominant9)
             |> skipFunction Fifth
             |> createGuitarChord FifthString
-            |> tabifyChord |> should equal ("      C9   " + Environment.NewLine +
-                                            "e||----------||" + Environment.NewLine +
-                                            "B||----3-----||" + Environment.NewLine +
-                                            "G||----3-----||" + Environment.NewLine +
-                                            "D||----2-----||" + Environment.NewLine +
-                                            "A||----3-----||" + Environment.NewLine +
-                                            "E||----------||" + Environment.NewLine)
+            |> tabifyChord |> should equal (
+                                            "e||-----||" + Environment.NewLine +
+                                            "B||--3--||" + Environment.NewLine +
+                                            "G||--3--||" + Environment.NewLine +
+                                            "D||--2--||" + Environment.NewLine +
+                                            "A||--3--||" + Environment.NewLine +
+                                            "E||-----||" + Environment.NewLine)
 
         [<Fact>]
         let ``Should tabify multiple chords``() =
@@ -463,26 +331,26 @@ namespace VaughanTests
                     toDrop2 >> (createGuitarChord FifthString))
 
             tabifyAll guitarChords |> should equal
-                                ("      CMaj7   DMin7   EMin7   FMaj7   " + Environment.NewLine +
-                                "e||-------------------------------------||" + Environment.NewLine +
-                                "B||----5-------6-------8-------10-------||" + Environment.NewLine +
-                                "G||----4-------5-------7-------9--------||" + Environment.NewLine +
-                                "D||----5-------7-------9-------10-------||" + Environment.NewLine +
-                                "A||----3-------5-------7-------8--------||" + Environment.NewLine +
-                                "E||-------------------------------------||" + Environment.NewLine)
+                                (
+                                "e||---------------||" + Environment.NewLine +
+                                "B||--5--6--8--10--||" + Environment.NewLine +
+                                "G||--4--5--7--9--||" + Environment.NewLine +
+                                "D||--5--7--9--10--||" + Environment.NewLine +
+                                "A||--3--5--7--8--||" + Environment.NewLine +
+                                "E||---------------||" + Environment.NewLine)
 
         [<Fact>]
         let ``Should tabify multiple chained chords using operators``() =
             [(G=>Major)] /./ (C=>Major) /./ (A=>Minor) /./ (D=>Major)
             |> List.map (fun c -> createGuitarChord SixthString (toOpen c))
             |> tabifyAll |> should equal
-                                ("      GMaj   CMaj   AMin   DMaj   " + Environment.NewLine +
-                                "e||----3------0------0------2-------||" + Environment.NewLine +
-                                "B||----0------1------1------3-------||" + Environment.NewLine +
-                                "G||----0------0------2------2-------||" + Environment.NewLine +
-                                "D||----0------2------2------0-------||" + Environment.NewLine +
-                                "A||----2------3------0------0-------||" + Environment.NewLine +
-                                "E||----3------0------0------2-------||" + Environment.NewLine)
+                                (
+                                "e||--3--0--0--2--||" + Environment.NewLine +
+                                "B||--0--1--1--3--||" + Environment.NewLine +
+                                "G||--0--0--2--2--||" + Environment.NewLine +
+                                "D||--0--2--2--0--||" + Environment.NewLine +
+                                "A||--2--3--0--0--||" + Environment.NewLine +
+                                "E||--3--0--0--2--||" + Environment.NewLine)
 
         [<Fact>]
         let ``Should tabify multiple chained chords using only operators``() =
@@ -491,13 +359,13 @@ namespace VaughanTests
              (!*(A=>Minor) |~ FifthString);
              (!*(D=>Major) |~ FourthString)]
             |> tabifyAll |> should equal
-                                ("      GMaj   CMaj   AMin   DMaj   " + Environment.NewLine +
-                                "e||----3------0------0------2-------||" + Environment.NewLine +
-                                "B||----0------1------1------3-------||" + Environment.NewLine +
-                                "G||----0------0------2------2-------||" + Environment.NewLine +
-                                "D||----0------2------2------0-------||" + Environment.NewLine +
-                                "A||----2------3------0--------------||" + Environment.NewLine +
-                                "E||----3----------------------------||" + Environment.NewLine)
+                                (
+                                "e||--3--0--0--2--||" + Environment.NewLine +
+                                "B||--0--1--1--3--||" + Environment.NewLine +
+                                "G||--0--0--2--2--||" + Environment.NewLine +
+                                "D||--0--2--2--0--||" + Environment.NewLine +
+                                "A||--2--3--0-----||" + Environment.NewLine +
+                                "E||--3-----------||" + Environment.NewLine)
 
         [<Fact>]
         let ``Should draw shape of C major 7 drop 3 on sixth string``() =
