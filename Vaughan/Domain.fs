@@ -173,6 +173,7 @@ namespace Vaughan
 
         type TabColumn = 
                 | Note of Fret
+                | Notes of Fret list
                 | Chord of GuitarChord
                 | Arpeggio of GuitarArpeggio
                 | Scale of GuitarScale

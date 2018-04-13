@@ -185,9 +185,6 @@ namespace Vaughan
                     Frets = generateAllFretCombinations allowedFrets (scale.Notes)
                 }
 
-            let notesGuitarNotes allowedFrets (notes:Note list) =
-                notes |> generateAllFretCombinations allowedFrets
-            
         let guitarChord:CreateGuitarChord = fun bassString chord ->
             match chord.ChordType with
             | Drop2 | Drop3 | Triad -> dropChordToGuitarChord bassString chord
@@ -313,6 +310,7 @@ namespace Vaughan
                 | Rest -> emptyTab
                 | Start -> startTab
                 | Note n -> renderNote (sprintf "-%i-") "" n
+                | Notes ns -> renderNotesPredefinedOrder (sprintf "-%i-") "" ns
                 | Chord c -> renderChord c
                 | Scale s -> renderNotes (sprintf "-%i-") "" s.Frets
                 | StandardTunning -> standardTunningTab
