@@ -274,13 +274,13 @@ namespace Vaughan
                 |> List.map (fun fret -> renderChordNote mutedStringTab fret)
                 |> List.rev
 
-            let renderNote (fret:Fret) =
+            let private renderNote (fret:Fret) =
                 let mutedStringTab = sprintf "-%s-" (if fret.Fret > 9 then "--" else "-")
                 (renderMutedHigherStrings mutedStringTab [fret])
                 @ ([sprintf "-%i-" fret.Fret])
                 @ (renderMutedLowerStrings mutedStringTab [fret])
 
-            let renderChord (chord:GuitarChord) =
+            let private renderChord (chord:GuitarChord) =
                 let highestFet = chord.Frets |> List.map (fun f -> f.Fret) |> List.max
                 let mutedStringTab = sprintf "-%s-" (if highestFet > 9 then "--" else "-")
                 (renderMutedHigherStrings mutedStringTab chord.Frets)
@@ -292,14 +292,14 @@ namespace Vaughan
 
             let mapTabToGuitarStrings (tabifiedChords: TabColumns) =
                 [0 .. 5]
-                |> List.map (fun stringOrdinal -> mapTabColumsToTabLines stringOrdinal tabifiedChords)
+                |> List.map ((fun stringOrdinal -> mapTabColumsToTabLines stringOrdinal tabifiedChords) 
+                                >> (fun gss -> gss |> List.fold (fun acc gs -> gs + acc) ""))
 
             let private renderNotes (frets:Fret list) =
                 frets
                 |> List.sortByDescending (fun f -> f.GuitarString, f.Fret)
                 |> List.map renderNote
                 |> mapTabToGuitarStrings 
-                |> List.map (fun gss -> gss |> List.fold (fun acc gs -> gs + acc) "") 
 
             let renderTabPart = function
                 | Rest -> emptyTab
@@ -348,7 +348,6 @@ namespace Vaughan
             |> List.map renderTabPart
             |> List.rev
             |> mapTabToGuitarStrings
-            |> List.map (fun gss -> gss |> List.fold (fun acc gs -> gs + acc) "")
             |> List.fold (+) ""
 
         let tabifyAll:TabifyAll = fun guitarChords ->
