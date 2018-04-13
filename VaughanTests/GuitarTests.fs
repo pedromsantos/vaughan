@@ -449,6 +449,32 @@ namespace VaughanTests
                              "E||--8--||" + Environment.NewLine)
 
         [<Fact>]
+        let ``Should render muted c note to guitar fretboard on sixth string``() =
+            let guitarNote = Note({GuitarString=SixthString; Fret=8; Note=C})
+            [StandardTunning; Start; guitarNote; End]
+            |> renderTab 
+            |> should equal (
+                             "e||-----||" + Environment.NewLine +
+                             "B||-----||" + Environment.NewLine +
+                             "G||-----||" + Environment.NewLine +
+                             "D||-----||" + Environment.NewLine +
+                             "A||-----||" + Environment.NewLine +
+                             "E||--x8--||" + Environment.NewLine)
+        
+        [<Fact>]
+        let ``Should render palm muted c note to guitar fretboard on sixth string``() =
+            let guitarNote = Note({GuitarString=SixthString; Fret=8; Note=C})
+            [StandardTunning; Start; guitarNote; End]
+            |> renderTab 
+            |> should equal (
+                             "e||-----||" + Environment.NewLine +
+                             "B||-----||" + Environment.NewLine +
+                             "G||-----||" + Environment.NewLine +
+                             "D||-----||" + Environment.NewLine +
+                             "A||-----||" + Environment.NewLine +
+                             "E||--_8--||" + Environment.NewLine)
+
+        [<Fact>]
         let ``Should render c major to guitar fretboard on sixth string``() =
             let guitarChord = guitarChord SixthString cMaj
             [StandardTunning; Start; Chord(guitarChord); End]

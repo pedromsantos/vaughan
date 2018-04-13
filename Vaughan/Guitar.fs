@@ -274,10 +274,10 @@ namespace Vaughan
                 |> List.map (fun fret -> renderChordNote mutedStringTab fret)
                 |> List.rev
 
-            let private renderNote (fret:Fret) =
+            let private renderNote (noteRenderer: int -> string) (fret:Fret) =
                 let mutedStringTab = sprintf "-%s-" (if fret.Fret > 9 then "--" else "-")
                 (renderMutedHigherStrings mutedStringTab [fret])
-                @ ([sprintf "-%i-" fret.Fret])
+                @ ([noteRenderer fret.Fret])
                 @ (renderMutedLowerStrings mutedStringTab [fret])
 
             let private renderChord (chord:GuitarChord) =
@@ -298,7 +298,7 @@ namespace Vaughan
             let private renderNotes (frets:Fret list) =
                 frets
                 |> List.sortByDescending (fun f -> f.GuitarString, f.Fret)
-                |> List.map renderNote
+                |> List.map (fun n -> renderNote (sprintf "-%i-") n)
                 |> mapTabToGuitarStrings 
 
             let renderTabPart = function
@@ -306,15 +306,15 @@ namespace Vaughan
                 | Bar -> barTab
                 | Rest -> emptyTab
                 | Start -> startTab
-                | Note n -> renderNote n
+                | Note n -> renderNote (sprintf "-%i-") n
                 | Chord c -> renderChord c
                 | Scale s -> renderNotes s.Frets
                 | StandardTunning -> standardTunningTab
                 | Arpeggio a -> renderNotes a.ArpeggioFrets
-                | Mute m -> "-x-" |> List.replicate 6 // Not implemented yet
-                | PalmMute pm -> "-_-" |> List.replicate 6 // Not implemented yet
-                | Harmonic h -> "-*-" |> List.replicate 6 // Not implemented yet
-                | Vibrato v -> "-~-" |> List.replicate 6 // Not implemented yet
+                | Mute m -> renderNote (sprintf "-x%i-") m
+                | PalmMute pm -> renderNote (sprintf "-_%i-") pm
+                | Harmonic h -> renderNote (sprintf "-*%i-") h
+                | Vibrato v -> renderNote (sprintf "-~%i-") v
                 | HammerOn (fs, fe) -> "-h-" |> List.replicate 6 // Not implemented yet
                 | PullOff (fs, fe) -> "-p-" |> List.replicate 6 // Not implemented yet
                 | Bend (fs, fe) -> "-b-" |> List.replicate 6 // Not implemented yet
