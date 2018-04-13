@@ -1,13 +1,8 @@
 namespace Vaughan
 
     module ImprovisationGuitar =
-        open System
-
-        open Notes
-        open Chords
         open Scales
         open Guitar
-        open GuitarTab
 
         let createArpeggiosFromChords minFret maxFret chords =
             chords
@@ -16,13 +11,15 @@ namespace Vaughan
         let createScalesForChords minFret maxFret chords =
             chords
             |> List.map (scalesFitting >> (fun sl -> sl |> List.map (fun s -> guitarScale minFret maxFret s)))
-        
-        let tabifyArpeggiosFromChords minFret maxFret chords =
-            let arpeggios = chords |> createArpeggiosFromChords minFret maxFret
-            [StandardTunning; Start] @ (arpeggios |> List.map (fun a -> Arpeggio(a))) @ [End]
-            |> renderTab
-            
-        let tabifyScalesFromChords minFret maxFret chords =
-            chords 
+
+        let createTabArpeggiosFromChords minFret maxFret chords =
+            chords
+            |> createArpeggiosFromChords minFret maxFret
+            |> List.map (fun a -> Arpeggio(a))
+
+        let createTabScalesFromChords minFret maxFret scales =
+            scales
             |> createScalesForChords minFret maxFret
-            |> List.map (fun ss -> [StandardTunning; Start] @ (ss |> List.map (fun s -> Scale(s))) @ [End] |> renderTab)
+            |> List.map (fun ss -> ss |> List.map (fun s -> Scale(s)))
+
+

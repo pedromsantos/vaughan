@@ -272,10 +272,9 @@ namespace Vaughan
             | Success(chordDefinition, _, _) -> createChordFrom chordDefinition
             | Failure(errorMsg, _, _) -> invalidOp errorMsg
 
-        // let tabifyArpeggiosFromChordNames (minFret:int) (maxFret:int) (chords:string list) =
-        //     let parsedChords = chords |> List.map parseChord
-
-        //     parsedChords
-        //     |> createArpeggioGuitarMelodicLineFromChords minFret maxFret
-        //     |> List.map tabifyMelodicLine
-        //     |> List.mapi (fun i ml -> (name parsedChords.[i]) + Environment.NewLine + ml)
+        let tabifyArpeggiosFromChordNames (minFret:int) (maxFret:int) (chords:string list) =
+            chords 
+            |> List.map parseChord
+            |> createArpeggiosFromChords minFret maxFret
+            |> List.map (fun a -> Arpeggio(a))
+            |> renderTab
