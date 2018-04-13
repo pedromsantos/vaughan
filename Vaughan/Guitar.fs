@@ -274,10 +274,10 @@ namespace Vaughan
                 |> List.map (fun fret -> renderChordNote mutedStringTab fret)
                 |> List.rev
 
-            let private renderNote (noteRenderer: int -> string) (fret:Fret) =
+            let private renderNote (noteRenderer: int -> string) (ornament:string) (fret:Fret) =
                 let mutedStringTab = sprintf "-%s-" (if fret.Fret > 9 then "--" else "-")
                 (renderMutedHigherStrings mutedStringTab [fret])
-                @ ([noteRenderer fret.Fret])
+                @ ([noteRenderer fret.Fret + ornament])
                 @ (renderMutedLowerStrings mutedStringTab [fret])
 
             let private renderChord (chord:GuitarChord) =
@@ -295,29 +295,33 @@ namespace Vaughan
                 |> List.map ((fun stringOrdinal -> mapTabColumsToTabLines stringOrdinal tabifiedChords) 
                                 >> (fun gss -> gss |> List.fold (fun acc gs -> gs + acc) ""))
 
-            let private renderNotes (noteRenderer: int -> string) (frets:Fret list) =
+            let private renderNotesPredefinedOrder (noteRenderer: int -> string) (ornament:string) (frets:Fret list) =
+                frets
+                |> List.mapi (fun i n -> if i < frets.Length - 1 then renderNote noteRenderer "" n else renderNote noteRenderer ornament n)
+                |> mapTabToGuitarStrings
+
+            let private renderNotes (noteRenderer: int -> string) (ornament:string) (frets:Fret list) =
                 frets
                 |> List.sortByDescending (fun f -> f.GuitarString, f.Fret)
-                |> List.map (fun n -> renderNote noteRenderer n)
-                |> mapTabToGuitarStrings 
+                |> renderNotesPredefinedOrder noteRenderer ornament
 
             let renderTabPart = function
                 | End -> endTab
                 | Bar -> barTab
                 | Rest -> emptyTab
                 | Start -> startTab
-                | Note n -> renderNote (sprintf "-%i-") n
+                | Note n -> renderNote (sprintf "-%i-") "" n
                 | Chord c -> renderChord c
-                | Scale s -> renderNotes (sprintf "-%i-") s.Frets
+                | Scale s -> renderNotes (sprintf "-%i-") "" s.Frets
                 | StandardTunning -> standardTunningTab
-                | Arpeggio a -> renderNotes (sprintf "-%i-") a.ArpeggioFrets
-                | Mute m -> renderNote (sprintf "-x%i-") m
-                | PalmMute pm -> renderNote (sprintf "-_%i-") pm
-                | Harmonic h -> renderNote (sprintf "-*%i-") h
-                | Vibrato v -> renderNote (sprintf "-~%i-") v
-                | HammerOn (fs, fe) -> "-h-" |> List.replicate 6 // Not implemented yet
-                | PullOff (fs, fe) -> "-p-" |> List.replicate 6 // Not implemented yet
-                | Bend (fs, fe) -> "-b-" |> List.replicate 6 // Not implemented yet
+                | Arpeggio a -> renderNotes (sprintf "-%i-") "" a.ArpeggioFrets
+                | Mute m -> renderNote (sprintf "-x%i-") "" m
+                | PalmMute pm -> renderNote (sprintf "-_%i-") "" pm
+                | Harmonic h -> renderNote (sprintf "-*%i-") "" h
+                | Vibrato v -> renderNote (sprintf "-~%i-") "" v
+                | HammerOn (fs, fe) -> renderNotes (sprintf "-%i-") "h" [fs; fe] 
+                | PullOff (fs, fe) -> renderNotesPredefinedOrder (sprintf "-%i-") "p" [fe; fs]
+                | Bend (fs, fe) -> renderNotes (sprintf "-%i-") "b" [fs; fe] 
 
         [<AutoOpen>]
         module private Shapify =

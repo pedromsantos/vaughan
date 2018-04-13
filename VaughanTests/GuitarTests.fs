@@ -475,6 +475,58 @@ namespace VaughanTests
                              "E||--_8--||" + Environment.NewLine)
 
         [<Fact>]
+        let ``Should render vibrato c note to guitar fretboard on sixth string``() =
+            let guitarNote = Vibrato({GuitarString=SixthString; Fret=8; Note=C})
+            [StandardTunning; Start; guitarNote; End]
+            |> renderTab 
+            |> should equal (
+                             "e||-----||" + Environment.NewLine +
+                             "B||-----||" + Environment.NewLine +
+                             "G||-----||" + Environment.NewLine +
+                             "D||-----||" + Environment.NewLine +
+                             "A||-----||" + Environment.NewLine +
+                             "E||--~8--||" + Environment.NewLine)
+
+        [<Fact>]
+        let ``Should render hammer on from c note to d note guitar fretboard on sixth string``() =
+            let guitarNote = HammerOn({GuitarString=SixthString; Fret=8; Note=C}, {GuitarString=SixthString; Fret=10; Note=D})
+            [StandardTunning; Start; guitarNote; End]
+            |> renderTab 
+            |> should equal (
+                             "e||---------||" + Environment.NewLine +
+                             "B||---------||" + Environment.NewLine +
+                             "G||---------||" + Environment.NewLine +
+                             "D||---------||" + Environment.NewLine +
+                             "A||---------||" + Environment.NewLine +
+                             "E||--8-h-10--||" + Environment.NewLine)
+
+        [<Fact>]
+        let ``Should render pull of from d note to c note guitar fretboard on sixth string``() =
+            let guitarNote = PullOff({GuitarString=SixthString; Fret=10; Note=D}, {GuitarString=SixthString; Fret=8; Note=C})
+            [StandardTunning; Start; guitarNote; End]
+            |> renderTab 
+            |> should equal (
+                             "e||---------||" + Environment.NewLine +
+                             "B||---------||" + Environment.NewLine +
+                             "G||---------||" + Environment.NewLine +
+                             "D||---------||" + Environment.NewLine +
+                             "A||---------||" + Environment.NewLine +
+                             "E||--10-p-8--||" + Environment.NewLine)
+
+        [<Fact>]
+        let ``Should rende c note bended to d guitar fretboard on sixth string``() =
+            let guitarNote = Bend({GuitarString=SixthString; Fret=8; Note=C}, {GuitarString=SixthString; Fret=10; Note=D})
+            [StandardTunning; Start; guitarNote; End]
+            |> renderTab 
+            |> should equal (
+                             "e||---------||" + Environment.NewLine +
+                             "B||---------||" + Environment.NewLine +
+                             "G||---------||" + Environment.NewLine +
+                             "D||---------||" + Environment.NewLine +
+                             "A||---------||" + Environment.NewLine +
+                             "E||--8-b-10--||" + Environment.NewLine)
+
+        [<Fact>]
         let ``Should render c major to guitar fretboard on sixth string``() =
             let guitarChord = guitarChord SixthString cMaj
             [StandardTunning; Start; Chord(guitarChord); End]
