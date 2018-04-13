@@ -20,9 +20,6 @@ open Vaughan.GuitarTab
 open Vaughan.ImprovisationGuitar
 open Vaughan.ChordVoiceLeading
 
-enclosedArpeggioFrom root (guitarArpeggio 2 5 (chord C Major))
-enclosedArpeggioFrom third (guitarArpeggio 2 5 (chord C Major))
-
 [StandardTunning; Start; Notes(enclosedArpeggioFrom root (guitarArpeggio 2 5 (chord C Major7))); End]
 |> renderTab
 |> printf "\n%s"
