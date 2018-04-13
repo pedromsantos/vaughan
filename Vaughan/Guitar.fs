@@ -295,10 +295,10 @@ namespace Vaughan
                 |> List.map ((fun stringOrdinal -> mapTabColumsToTabLines stringOrdinal tabifiedChords) 
                                 >> (fun gss -> gss |> List.fold (fun acc gs -> gs + acc) ""))
 
-            let private renderNotes (frets:Fret list) =
+            let private renderNotes (noteRenderer: int -> string) (frets:Fret list) =
                 frets
                 |> List.sortByDescending (fun f -> f.GuitarString, f.Fret)
-                |> List.map (fun n -> renderNote (sprintf "-%i-") n)
+                |> List.map (fun n -> renderNote noteRenderer n)
                 |> mapTabToGuitarStrings 
 
             let renderTabPart = function
@@ -308,9 +308,9 @@ namespace Vaughan
                 | Start -> startTab
                 | Note n -> renderNote (sprintf "-%i-") n
                 | Chord c -> renderChord c
-                | Scale s -> renderNotes s.Frets
+                | Scale s -> renderNotes (sprintf "-%i-") s.Frets
                 | StandardTunning -> standardTunningTab
-                | Arpeggio a -> renderNotes a.ArpeggioFrets
+                | Arpeggio a -> renderNotes (sprintf "-%i-") a.ArpeggioFrets
                 | Mute m -> renderNote (sprintf "-x%i-") m
                 | PalmMute pm -> renderNote (sprintf "-_%i-") pm
                 | Harmonic h -> renderNote (sprintf "-*%i-") h

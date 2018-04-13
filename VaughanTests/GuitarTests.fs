@@ -450,7 +450,7 @@ namespace VaughanTests
 
         [<Fact>]
         let ``Should render muted c note to guitar fretboard on sixth string``() =
-            let guitarNote = Note({GuitarString=SixthString; Fret=8; Note=C})
+            let guitarNote = Mute({GuitarString=SixthString; Fret=8; Note=C})
             [StandardTunning; Start; guitarNote; End]
             |> renderTab 
             |> should equal (
@@ -463,7 +463,7 @@ namespace VaughanTests
         
         [<Fact>]
         let ``Should render palm muted c note to guitar fretboard on sixth string``() =
-            let guitarNote = Note({GuitarString=SixthString; Fret=8; Note=C})
+            let guitarNote = PalmMute({GuitarString=SixthString; Fret=8; Note=C})
             [StandardTunning; Start; guitarNote; End]
             |> renderTab 
             |> should equal (
