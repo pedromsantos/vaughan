@@ -165,13 +165,6 @@ createScaleNotes HarmonicMinor C
 |> tabifyChord
 |> printf "\n%A"
 
-[(!*(G=>Major) |~ SixthString);
-(!*(C=>Major) |~ FifthString);
-(!*(A=>Minor) |~ FifthString);
-(!*(D=>Major) |~ FourthString)]
-|> tabifyAll
-|> printf "\n%s"
-
 noteName C |> printf "\n%A"
 noteName CSharp |> printf "\n%A"
 noteName DFlat |> printf "\n%A"

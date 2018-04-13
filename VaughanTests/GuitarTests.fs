@@ -353,21 +353,6 @@ namespace VaughanTests
                                 "E||--3--0--0--2--||" + Environment.NewLine)
 
         [<Fact>]
-        let ``Should tabify multiple chained chords using only operators``() =
-            [(!*(G=>Major) |~ SixthString);
-             (!*(C=>Major) |~ FifthString);
-             (!*(A=>Minor) |~ FifthString);
-             (!*(D=>Major) |~ FourthString)]
-            |> tabifyAll |> should equal
-                                (
-                                "e||--3--0--0--2--||" + Environment.NewLine +
-                                "B||--0--1--1--3--||" + Environment.NewLine +
-                                "G||--0--0--2--2--||" + Environment.NewLine +
-                                "D||--0--2--2--0--||" + Environment.NewLine +
-                                "A||--2--3--0-----||" + Environment.NewLine +
-                                "E||--3-----------||" + Environment.NewLine)
-
-        [<Fact>]
         let ``Should draw shape of C major 7 drop 3 on sixth string``() =
             let guitarChord =
                 (cIonian

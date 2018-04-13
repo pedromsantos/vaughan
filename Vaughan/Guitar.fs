@@ -361,9 +361,3 @@ namespace Vaughan
             guitarChord.Chord.Name + Environment.NewLine +
             "EADGBE" + Environment.NewLine +
             (guitarChord |> shapifyChord |> List.fold (+) "") + Environment.NewLine
-
-        let (|~) chord bassString =
-            guitarChord bassString chord
-
-        let (>|<) (chords:GuitarChord list) (chord:GuitarChord) =
-            chord :: chords |> rotateByOne
