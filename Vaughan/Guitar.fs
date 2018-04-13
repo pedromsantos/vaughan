@@ -225,7 +225,7 @@ namespace Vaughan
 
         let private emptyTab = "---" |> List.replicate 6
 
-        let private barTab = "|" |> List.replicate 6
+        let private barTab = "-|-" |> List.replicate 6
 
         let private endTab =  ("-||" + Environment.NewLine) |> List.replicate 6
 
@@ -302,14 +302,15 @@ namespace Vaughan
                 |> mapTabToGuitarStrings 
 
             let renderTabPart = function
-                | Rest -> emptyTab
-                | Bar -> barTab
-                | Start -> startTab
                 | End -> endTab
+                | Bar -> barTab
+                | Rest -> emptyTab
+                | Start -> startTab
                 | Note n -> renderNote n
                 | Chord c -> renderChord c
-                | Arpeggio a -> renderNotes a.ArpeggioFrets
                 | Scale s -> renderNotes s.Frets
+                | StandardTunning -> standardTunningTab
+                | Arpeggio a -> renderNotes a.ArpeggioFrets
                 | Mute m -> "-x-" |> List.replicate 6 // Not implemented yet
                 | PalmMute pm -> "-_-" |> List.replicate 6 // Not implemented yet
                 | Harmonic h -> "-*-" |> List.replicate 6 // Not implemented yet
@@ -317,7 +318,6 @@ namespace Vaughan
                 | HammerOn (fs, fe) -> "-h-" |> List.replicate 6 // Not implemented yet
                 | PullOff (fs, fe) -> "-p-" |> List.replicate 6 // Not implemented yet
                 | Bend (fs, fe) -> "-b-" |> List.replicate 6 // Not implemented yet
-                | StandardTunning -> standardTunningTab
 
         [<AutoOpen>]
         module private Shapify =

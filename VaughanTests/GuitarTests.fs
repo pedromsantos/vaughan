@@ -375,6 +375,65 @@ namespace VaughanTests
                                             "EADGBE" + Environment.NewLine +
                                             "X3545X" + Environment.NewLine)
 
+        [<Fact>]
+        let ``Should render end of tab as tab``() =
+            [End]
+            |> renderTab 
+            |> should equal (
+                             "-||" + Environment.NewLine +
+                             "-||" + Environment.NewLine +
+                             "-||" + Environment.NewLine +
+                             "-||" + Environment.NewLine +
+                             "-||" + Environment.NewLine +
+                             "-||" + Environment.NewLine)
+
+        [<Fact>]
+        let ``Should render start of tab as tab``() =
+            [Start; End]
+            |> renderTab 
+            |> should equal (
+                             "||--||" + Environment.NewLine +
+                             "||--||" + Environment.NewLine +
+                             "||--||" + Environment.NewLine +
+                             "||--||" + Environment.NewLine +
+                             "||--||" + Environment.NewLine +
+                             "||--||" + Environment.NewLine)
+
+        [<Fact>]
+        let ``Should render standart tuning as tab``() =
+            [StandardTunning; End]
+            |> renderTab 
+            |> should equal (
+                             "e-||" + Environment.NewLine +
+                             "B-||" + Environment.NewLine +
+                             "G-||" + Environment.NewLine +
+                             "D-||" + Environment.NewLine +
+                             "A-||" + Environment.NewLine +
+                             "E-||" + Environment.NewLine)
+
+        [<Fact>]
+        let ``Should render rest as tab``() =
+            [StandardTunning; Start; Rest; End]
+            |> renderTab 
+            |> should equal (
+                             "e||-----||" + Environment.NewLine +
+                             "B||-----||" + Environment.NewLine +
+                             "G||-----||" + Environment.NewLine +
+                             "D||-----||" + Environment.NewLine +
+                             "A||-----||" + Environment.NewLine +
+                             "E||-----||" + Environment.NewLine)
+        
+        [<Fact>]
+        let ``Should render bar as tab``() =
+            [StandardTunning; Start; Bar; End]
+            |> renderTab 
+            |> should equal (
+                             "e||--|--||" + Environment.NewLine +
+                             "B||--|--||" + Environment.NewLine +
+                             "G||--|--||" + Environment.NewLine +
+                             "D||--|--||" + Environment.NewLine +
+                             "A||--|--||" + Environment.NewLine +
+                             "E||--|--||" + Environment.NewLine)
 
         [<Fact>]
         let ``Should render c note to guitar fretboard on sixth string``() =
@@ -416,12 +475,12 @@ namespace VaughanTests
             ]
             |> renderTab 
             |> should equal (
-                             "e||-----|---|----||" + Environment.NewLine +
-                             "B||--10-|-3-|-8--||" + Environment.NewLine +
-                             "G||--10-|-4-|-9--||" + Environment.NewLine +
-                             "D||--10-|-3-|-9--||" + Environment.NewLine +
-                             "A||-----|---|----||" + Environment.NewLine +
-                             "E||--10-|-3-|-8--||" + Environment.NewLine)
+                             "e||------|-----|-----||" + Environment.NewLine +
+                             "B||--10--|--3--|--8--||" + Environment.NewLine +
+                             "G||--10--|--4--|--9--||" + Environment.NewLine +
+                             "D||--10--|--3--|--9--||" + Environment.NewLine +
+                             "A||------|-----|-----||" + Environment.NewLine +
+                             "E||--10--|--3--|--8--||" + Environment.NewLine)
 
         [<Fact>]
         let ``Should render C major arpeggio to guitar fretboard on open position ``() =
