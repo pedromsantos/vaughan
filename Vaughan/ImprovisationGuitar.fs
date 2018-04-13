@@ -3,7 +3,6 @@ namespace Vaughan
     module ImprovisationGuitar =
         open Notes
         open Scales
-        open Chords
         open Guitar
 
         let createArpeggiosFromChords minFret maxFret chords =
