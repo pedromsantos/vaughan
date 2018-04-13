@@ -5,6 +5,20 @@ namespace Vaughan
         open Scales
         open Guitar
 
+        let private enclosureAbove fret =
+            {
+                GuitarString = fret.GuitarString; 
+                Fret = fret.Fret + 1; 
+                Note = sharp fret.Note
+            }
+        
+        let private enclosureBelow fret =
+            {
+                GuitarString = fret.GuitarString; 
+                Fret = fret.Fret - 1; 
+                Note = flat fret.Note
+            }
+            
         let createArpeggiosFromChords minFret maxFret chords =
             chords
             |> List.map (fun c -> guitarArpeggio minFret maxFret c) 
@@ -29,20 +43,6 @@ namespace Vaughan
             {
                 BaseChord = arpeggio.BaseChord;
                 ArpeggioFrets = arpeggio.ArpeggioFrets |> List.take (positionFirstRoot + 1)
-            }
-
-        let private enclosureAbove fret =
-            {
-                GuitarString = fret.GuitarString; 
-                Fret = fret.Fret + 1; 
-                Note = sharp fret.Note
-            }
-        
-        let private enclosureBelow fret =
-            {
-                GuitarString = fret.GuitarString; 
-                Fret = fret.Fret - 1; 
-                Note = flat fret.Note
             }
 
         let enclosedArpeggioFrom tone (arpeggio:GuitarArpeggio) =
