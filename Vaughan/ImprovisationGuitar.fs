@@ -19,33 +19,33 @@ namespace Vaughan
             |> createArpeggiosFromChords minFret maxFret
             |> List.map (fun a -> Arpeggio(a))
 
-        let arpeggioFromRoot (arpeggio:GuitarArpeggio) =
-            let firstRoot = arpeggio.ArpeggioFrets |> List.filter (fun f -> f.Note = root arpeggio.BaseChord) |> List.last
+        let arpeggioFrom tone (arpeggio:GuitarArpeggio) =
+            let firstRoot = arpeggio.ArpeggioFrets |> List.filter (fun f -> f.Note = tone arpeggio.BaseChord) |> List.last
             let positionFirstRoot = arpeggio.ArpeggioFrets |> List.findIndex (fun af -> af = firstRoot)
             {
                 BaseChord = arpeggio.BaseChord;
                 ArpeggioFrets = arpeggio.ArpeggioFrets |> List.take (positionFirstRoot + 1)
             }
 
-        let enclosedArpeggioRoot (arpeggio:GuitarArpeggio) =
-            let rootArpeggioFrets = (arpeggio |> arpeggioFromRoot).ArpeggioFrets |> List.rev
-            
+        let private enclosureAbove fret =
+            {
+                GuitarString = fret.GuitarString; 
+                Fret = fret.Fret + 1; 
+                Note = sharp fret.Note
+            }
+        
+        let private enclosureBelow fret =
+            {
+                GuitarString = fret.GuitarString; 
+                Fret = fret.Fret - 1; 
+                Note = flat fret.Note
+            }
+
+        let enclosedArpeggioFrom tone (arpeggio:GuitarArpeggio) =
+            let rootArpeggioFrets = (arpeggio |> arpeggioFrom tone).ArpeggioFrets |> List.rev
             (rootArpeggioFrets.Tail |> List.sortByDescending (fun f -> f.GuitarString, f.Fret))
             @
-            [rootArpeggioFrets.Head]
-            @
-            [{
-                GuitarString = rootArpeggioFrets.Head.GuitarString; 
-                Fret = rootArpeggioFrets.Head.Fret - 1; 
-                Note = sharp rootArpeggioFrets.Head.Note
-            }]
-            @ 
-            [{
-                GuitarString = rootArpeggioFrets.Head.GuitarString; 
-                Fret = rootArpeggioFrets.Head.Fret + 1; 
-                Note = flat rootArpeggioFrets.Head.Note
-            }]
-
+            [rootArpeggioFrets.Head] @ [enclosureBelow rootArpeggioFrets.Head] @ [enclosureAbove rootArpeggioFrets.Head]
 
         let createTabScalesFromChords minFret maxFret scales =
             scales

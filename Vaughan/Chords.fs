@@ -142,6 +142,12 @@ namespace Vaughan
         let root:Root = fun chord ->
             noteForFunction chord Root
 
+        let third chord =
+            noteForFunction chord Third
+
+        let seventh chord =
+            noteForFunction chord Seventh
+
         let bass:Bass = fun chord ->
             note (chord.Notes |> List.head)
 
