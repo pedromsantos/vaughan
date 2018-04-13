@@ -17,6 +17,11 @@ namespace Vaughan
             chords
             |> createArpeggiosFromChords minFret maxFret
             |> List.map (fun a -> Arpeggio(a))
+        
+        let createTabScalesFromChords minFret maxFret scales =
+            scales
+            |> createScalesForChords minFret maxFret
+            |> List.map (fun ss -> ss |> List.map (fun s -> Scale(s)))
 
         let arpeggioFrom tone (arpeggio:GuitarArpeggio) =
             let firstRoot = arpeggio.ArpeggioFrets |> List.filter (fun f -> f.Note = tone arpeggio.BaseChord) |> List.last
@@ -45,8 +50,3 @@ namespace Vaughan
             (rootArpeggioFrets.Tail |> List.sortByDescending (fun f -> f.GuitarString, f.Fret))
             @
             [rootArpeggioFrets.Head] @ [enclosureBelow rootArpeggioFrets.Head] @ [enclosureAbove rootArpeggioFrets.Head]
-
-        let createTabScalesFromChords minFret maxFret scales =
-            scales
-            |> createScalesForChords minFret maxFret
-            |> List.map (fun ss -> ss |> List.map (fun s -> Scale(s)))
