@@ -310,13 +310,13 @@ namespace Vaughan
                 | Chord c -> renderChord c
                 | Arpeggio a -> renderNotes a.ArpeggioFrets
                 | Scale s -> renderNotes s.Frets
-                | Mute m -> ["-x-"]
-                | PalmMute pm -> ["-_-"]
-                | Harmonic h -> ["-*-"]
-                | Vibrato v -> ["-~-"]
-                | HammerOn (fs, fe) -> ["-h-"]
-                | PullOff (fs, fe) -> ["-p-"]
-                | Bend (fs, fe) -> ["-b-"]
+                | Mute m -> "-x-" |> List.replicate 6 // Not implemented yet
+                | PalmMute pm -> "-_-" |> List.replicate 6 // Not implemented yet
+                | Harmonic h -> "-*-" |> List.replicate 6 // Not implemented yet
+                | Vibrato v -> "-~-" |> List.replicate 6 // Not implemented yet
+                | HammerOn (fs, fe) -> "-h-" |> List.replicate 6 // Not implemented yet
+                | PullOff (fs, fe) -> "-p-" |> List.replicate 6 // Not implemented yet
+                | Bend (fs, fe) -> "-b-" |> List.replicate 6 // Not implemented yet
                 | StandardTunning -> standardTunningTab
 
         [<AutoOpen>]
