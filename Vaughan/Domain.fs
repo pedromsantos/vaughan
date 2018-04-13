@@ -154,6 +154,7 @@ namespace Vaughan
         type CreateGuitarChord = GuitarString -> Chord -> GuitarChord
         type CreateGuitarArpeggio = int -> int -> Chord -> GuitarArpeggio
         type CreateGuitarScale = int -> int -> Scale -> GuitarScale
+        type CreateGuitarNote = GuitarString -> Note -> Fret 
 
         type Shapify = GuitarChord -> string
         type TabifyAll = GuitarChord list -> string

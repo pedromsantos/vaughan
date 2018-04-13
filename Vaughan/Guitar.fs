@@ -206,6 +206,8 @@ namespace Vaughan
             scale
             |> scaleToGuitarScale (fun f -> f.Fret >= minFret && f.Fret <= maxFret)
 
+        let guitarNote:CreateGuitarNote = createStringFret
+
     module GuitarTab =
         open System
         open Guitar

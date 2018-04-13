@@ -476,7 +476,7 @@ namespace VaughanTests
 
         [<Fact>]
         let ``Should render vibrato c note to guitar fretboard on sixth string``() =
-            let guitarNote = Vibrato({GuitarString=SixthString; Fret=8; Note=C})
+            let guitarNote = Vibrato(C |> guitarNote SixthString)
             [StandardTunning; Start; guitarNote; End]
             |> renderTab 
             |> should equal (
@@ -489,7 +489,7 @@ namespace VaughanTests
 
         [<Fact>]
         let ``Should render hammer on from c note to d note guitar fretboard on sixth string``() =
-            let guitarNote = HammerOn({GuitarString=SixthString; Fret=8; Note=C}, {GuitarString=SixthString; Fret=10; Note=D})
+            let guitarNote = HammerOn(C |> guitarNote SixthString, D |> guitarNote SixthString)
             [StandardTunning; Start; guitarNote; End]
             |> renderTab 
             |> should equal (
@@ -502,7 +502,7 @@ namespace VaughanTests
 
         [<Fact>]
         let ``Should render pull of from d note to c note guitar fretboard on sixth string``() =
-            let guitarNote = PullOff({GuitarString=SixthString; Fret=10; Note=D}, {GuitarString=SixthString; Fret=8; Note=C})
+            let guitarNote = PullOff(D |> guitarNote SixthString, C |> guitarNote SixthString)
             [StandardTunning; Start; guitarNote; End]
             |> renderTab 
             |> should equal (
@@ -515,7 +515,7 @@ namespace VaughanTests
 
         [<Fact>]
         let ``Should rende c note bended to d guitar fretboard on sixth string``() =
-            let guitarNote = Bend({GuitarString=SixthString; Fret=8; Note=C}, {GuitarString=SixthString; Fret=10; Note=D})
+            let guitarNote = Bend(C |> guitarNote SixthString, D |> guitarNote SixthString)
             [StandardTunning; Start; guitarNote; End]
             |> renderTab 
             |> should equal (
