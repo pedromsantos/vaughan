@@ -98,7 +98,7 @@ namespace Vaughan
             |> limitNoteLineTo maxNotes
 
         let ascEightsRootEnclosed = enclosedAscendingArpeggioFrom root 8
-        let descEightsRootEnclosed = enclosedAscendingArpeggioFrom root 8
+        let descEightsRootEnclosed = enclosedDescendingArpeggioFrom root 8
         let ascEightsThirdEnclosed = enclosedAscendingArpeggioFrom third 8
         let descEightsThirdEnclosed = enclosedDescendingArpeggioFrom third 8
         let ascEightsSeventhEnclosed = enclosedAscendingArpeggioFrom seventh 8

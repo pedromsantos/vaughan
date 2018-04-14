@@ -20,6 +20,63 @@ open Vaughan.GuitarTab
 open Vaughan.ImprovisationGuitar
 open Vaughan.ChordVoiceLeading
 
+let generateArpeggioExercise arpeggio =
+    [
+        ascEightsRootAbove, "Root above"; ascEightsRootBelow, "Root below"; 
+        ascEightsThirdAbove, "Third above"; ascEightsThirdBelow, "Third below"; 
+        ascEightsSeventhAbove, "Seventh above"; ascEightsSeventhBelow, "Seventh below";
+        descEightsRootAbove, "Root above"; descEightsRootBelow, "Root below"; 
+        descEightsThirdAbove, "Third above"; descEightsThirdBelow, "Third below"; 
+        descEightsSeventhAbove, "Seventh above"; descEightsSeventhBelow, "Seventh below"
+        ascEightsRootEnclosed, "Root enclosed"; descEightsRootEnclosed, "Root enclosed"; 
+        ascEightsThirdEnclosed, "Third enclosed"; descEightsThirdEnclosed, "Third enclosed"; 
+        ascEightsSeventhEnclosed, "Seventh enclosed"; descEightsSeventhEnclosed, "Seventh enclosed"; 
+    ]
+    |> List.map (fun form ->  
+                    [StandardTunning; Start; Notes((fst form) arpeggio); End]
+                    |> renderTab
+                    |> printf "\n\n%s\n%s" (snd form))
+
+let CMinor7 = chord C Minor7
+let CMinor7Arpeggio = guitarArpeggio 5 8 CMinor7
+printf "\n\n====== Cm7 ======\n"
+
+printf "\n=== Arpeggio ===\n"
+[StandardTunning; Start; Arpeggio(CMinor7Arpeggio); End]
+|> renderTab
+|> printf "\n%s"
+
+printf "\n=== Exercises ==="
+generateArpeggioExercise CMinor7Arpeggio
+
+
+let F7 = chord F Dominant7
+let F7Arpeggio = guitarArpeggio 5 8 F7
+printf "\n\n====== F7 ======\n"
+
+printf "\n=== Arpeggio ===\n"
+[StandardTunning; Start; Arpeggio(F7Arpeggio); End]
+|> renderTab
+|> printf "\n%s"
+
+printf "\n=== Exercises ==="
+generateArpeggioExercise F7Arpeggio
+
+let BbMajor7 = chord BFlat Major7
+let BbMajor7Arpeggio = guitarArpeggio 5 8 BbMajor7
+printf "\n\n====== BbMaj7 ======\n"
+
+printf "\n=== Arpeggio ===\n"
+[StandardTunning; Start; Arpeggio(BbMajor7Arpeggio); End]
+|> renderTab
+|> printf "\n%s"
+
+printf "\n=== Exercises ==="
+generateArpeggioExercise BbMajor7Arpeggio 
+
+
+
+
 [StandardTunning; Start; Notes(ascEightsRootAbove (guitarArpeggio 5 8 (chord BFlat Major7))); End]
 |> renderTab
 |> printf "\n%s"
