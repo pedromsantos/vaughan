@@ -83,7 +83,7 @@ namespace VaughanTests
 
         [<Fact>]
         let ``Should render tab for C Major 7 arpeggio enclosing the root on position 2`` () =
-            [StandardTunning; Start; Notes(enclosedAscendingArpeggioFrom root (guitarArpeggio 2 5 (chord C Major7))); End]
+            [StandardTunning; Start; Notes(enclosedAscendingArpeggioFrom root 12 (guitarArpeggio 2 5 (chord C Major7))); End]
             |> renderTab
             |> should equal (
                              "e||--------------------------3--||" + Environment.NewLine +
@@ -95,7 +95,7 @@ namespace VaughanTests
         
         [<Fact>]
         let ``Should render tab for C Major 7 arpeggio enclosing the third on position 2`` () =
-            [StandardTunning; Start; Notes(enclosedAscendingArpeggioFrom third (guitarArpeggio 2 5 (chord C Major7))); End]
+            [StandardTunning; Start; Notes(enclosedAscendingArpeggioFrom third 12 (guitarArpeggio 2 5 (chord C Major7))); End]
             |> renderTab
             |> should equal (
                              "e||--------------------3--||" + Environment.NewLine +
@@ -107,7 +107,7 @@ namespace VaughanTests
 
         [<Fact>]
         let ``Should render tab for C Major 7 arpeggio enclosing the root on position 5`` () =
-            [StandardTunning; Start; Notes(enclosedAscendingArpeggioFrom root (guitarArpeggio 5 8 (chord C Minor7))); End]
+            [StandardTunning; Start; Notes(enclosedAscendingArpeggioFrom root 12 (guitarArpeggio 5 8 (chord C Minor7))); End]
             |> renderTab
             |> should equal (
                              "e||-----------------------------6--8--||" + Environment.NewLine +
@@ -119,7 +119,7 @@ namespace VaughanTests
         
         [<Fact>]
         let ``Should render tab for C Major 7 arpeggio enclosing the third on position 5`` () =
-            [StandardTunning; Start; Notes(enclosedAscendingArpeggioFrom third (guitarArpeggio 5 8 (chord C Minor7))); End]
+            [StandardTunning; Start; Notes(enclosedAscendingArpeggioFrom third 12 (guitarArpeggio 5 8 (chord C Minor7))); End]
             |> renderTab
             |> should equal (
                              "e||--------------------------6--8--||" + Environment.NewLine +
@@ -132,7 +132,7 @@ namespace VaughanTests
         
         [<Fact>]
         let ``Should render tab for C Major 7 descending arpeggio enclosing the root on position 2`` () =
-            [StandardTunning; Start; Notes(enclosedDescendingArpeggioFrom root (guitarArpeggio 2 5 (chord C Major7))); End]
+            [StandardTunning; Start; Notes(enclosedDescendingArpeggioFrom root 12 (guitarArpeggio 2 5 (chord C Major7))); End]
             |> renderTab
             |> should equal (
                              "e||-----------------------------||" + Environment.NewLine +
@@ -144,7 +144,7 @@ namespace VaughanTests
         
         [<Fact>]
         let ``Should render tab for C Major 7 descending arpeggio enclosing the third on position 2`` () =
-            [StandardTunning; Start; Notes(enclosedDescendingArpeggioFrom third (guitarArpeggio 2 5 (chord C Major7))); End]
+            [StandardTunning; Start; Notes(enclosedDescendingArpeggioFrom third 12 (guitarArpeggio 2 5 (chord C Major7))); End]
             |> renderTab
             |> should equal (
                              "e||--------------------------------||" + Environment.NewLine +
@@ -153,3 +153,27 @@ namespace VaughanTests
                              "D||-----------------5--2-----------||" + Environment.NewLine +
                              "A||-----------------------3--2-----||" + Environment.NewLine +
                              "E||-----------------------------3--||" + Environment.NewLine)
+
+        [<Fact>]
+        let ``Should render tab for C Major 7 asscending arpeggio aproched from above the root on position 5`` () =
+            [StandardTunning; Start; Notes(ascEightsRootAbove (guitarArpeggio 5 8 (chord BFlat Major7))); End]
+            |> renderTab
+            |> should equal (
+                             "e||--------------------------||" + Environment.NewLine +
+                             "B||-----------------------6--||" + Environment.NewLine +
+                             "G||--------------------7-----||" + Environment.NewLine +
+                             "D||--------------7--8--------||" + Environment.NewLine +
+                             "A||--------5--8--------------||" + Environment.NewLine +
+                             "E||--7--6--------------------||" + Environment.NewLine)
+
+        [<Fact>]
+        let ``Should render tab for C Major 7 descending arpeggio aproched from below the root on position 5`` () =
+            [StandardTunning; Start; Notes(descEightsRootBelow (guitarArpeggio 5 8 (chord BFlat Major7))); End]
+            |> renderTab
+            |> should equal (
+                             "e||--5--6--5-----------------||" + Environment.NewLine +
+                             "B||-----------6--------------||" + Environment.NewLine +
+                             "G||--------------7-----------||" + Environment.NewLine +
+                             "D||-----------------8--7-----||" + Environment.NewLine +
+                             "A||-----------------------8--||" + Environment.NewLine +
+                             "E||--------------------------||" + Environment.NewLine)

@@ -20,31 +20,39 @@ open Vaughan.GuitarTab
 open Vaughan.ImprovisationGuitar
 open Vaughan.ChordVoiceLeading
 
-[StandardTunning; Start; Notes(enclosedDescendingArpeggioFrom root (guitarArpeggio 2 5 (chord C Major7))); End]
+[StandardTunning; Start; Notes(ascEightsRootAbove (guitarArpeggio 5 8 (chord BFlat Major7))); End]
 |> renderTab
 |> printf "\n%s"
 
-[StandardTunning; Start; Notes(enclosedDescendingArpeggioFrom third (guitarArpeggio 2 5 (chord C Major7))); End]
+[StandardTunning; Start; Notes(descEightsRootBelow (guitarArpeggio 5 8 (chord BFlat Major7))); End]
 |> renderTab
 |> printf "\n%s"
 
-[StandardTunning; Start; Notes(enclosedAscendingArpeggioFrom root (guitarArpeggio 2 5 (chord C Major7))); End]
+[StandardTunning; Start; Notes(ascEightsRootEnclosed (guitarArpeggio 5 8 (chord BFlat Major7))); End]
 |> renderTab
 |> printf "\n%s"
 
-[StandardTunning; Start; Notes(enclosedAscendingArpeggioFrom third (guitarArpeggio 2 5 (chord C Major7))); End]
+[StandardTunning; Start; Notes(descEightsThirdEnclosed (guitarArpeggio 2 5 (chord C Major7))); End]
 |> renderTab
 |> printf "\n%s"
 
-[StandardTunning; Start; Notes(enclosedAscendingArpeggioFrom root (guitarArpeggio 5 8 (chord C Minor7))); End]
+[StandardTunning; Start; Notes(ascEightsRootEnclosed (guitarArpeggio 2 5 (chord C Major7))); End]
 |> renderTab
 |> printf "\n%s"
 
-[StandardTunning; Start; Notes(enclosedAscendingArpeggioFrom seventh (guitarArpeggio 5 8 (chord C Minor7))); End]
+[StandardTunning; Start; Notes(ascEightsThirdEnclosed (guitarArpeggio 2 5 (chord C Major7))); End]
 |> renderTab
 |> printf "\n%s"
 
-[StandardTunning; Start; Notes(enclosedAscendingArpeggioFrom third (guitarArpeggio 5 8 (chord C Minor7))); End]
+[StandardTunning; Start; Notes(ascEightsRootEnclosed (guitarArpeggio 5 8 (chord C Minor7))); End]
+|> renderTab
+|> printf "\n%s"
+
+[StandardTunning; Start; Notes(ascEightsSeventhEnclosed (guitarArpeggio 5 8 (chord C Minor7))); End]
+|> renderTab
+|> printf "\n%s"
+
+[StandardTunning; Start; Notes(ascEightsThirdEnclosed (guitarArpeggio 5 8 (chord C Minor7))); End]
 |> renderTab
 |> printf "\n%s"
 
