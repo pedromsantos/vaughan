@@ -20,31 +20,43 @@ open Vaughan.GuitarTab
 open Vaughan.ImprovisationGuitar
 open Vaughan.ChordVoiceLeading
 
-[StandardTunning; Start; Notes(enclosedArpeggioFrom root (guitarArpeggio 2 5 (chord C Major7))); End]
+[StandardTunning; Start; Notes(enclosedDescendingArpeggioFrom root (guitarArpeggio 2 5 (chord C Major7))); End]
 |> renderTab
 |> printf "\n%s"
 
-[StandardTunning; Start; Notes(enclosedArpeggioFrom third (guitarArpeggio 2 5 (chord C Major7))); End]
+[StandardTunning; Start; Notes(enclosedDescendingArpeggioFrom third (guitarArpeggio 2 5 (chord C Major7))); End]
 |> renderTab
 |> printf "\n%s"
 
-[StandardTunning; Start; Notes(enclosedArpeggioFrom root (guitarArpeggio 5 8 (chord C Minor7))); End]
+[StandardTunning; Start; Notes(enclosedAscendingArpeggioFrom root (guitarArpeggio 2 5 (chord C Major7))); End]
 |> renderTab
 |> printf "\n%s"
 
-[StandardTunning; Start; Notes(enclosedArpeggioFrom seventh (guitarArpeggio 5 8 (chord C Minor7))); End]
+[StandardTunning; Start; Notes(enclosedAscendingArpeggioFrom third (guitarArpeggio 2 5 (chord C Major7))); End]
 |> renderTab
 |> printf "\n%s"
 
-[StandardTunning; Start; Notes(enclosedArpeggioFrom third (guitarArpeggio 5 8 (chord C Minor7))); End]
+[StandardTunning; Start; Notes(enclosedAscendingArpeggioFrom root (guitarArpeggio 5 8 (chord C Minor7))); End]
 |> renderTab
 |> printf "\n%s"
 
-[StandardTunning; Start; Arpeggio(arpeggioFrom root (guitarArpeggio 2 5 (chord C Major))); End]
+[StandardTunning; Start; Notes(enclosedAscendingArpeggioFrom seventh (guitarArpeggio 5 8 (chord C Minor7))); End]
 |> renderTab
 |> printf "\n%s"
 
-[StandardTunning; Start; Arpeggio(arpeggioFrom root (guitarArpeggio 2 5 (chord G Major))); End]
+[StandardTunning; Start; Notes(enclosedAscendingArpeggioFrom third (guitarArpeggio 5 8 (chord C Minor7))); End]
+|> renderTab
+|> printf "\n%s"
+
+[StandardTunning; Start; ArbArpeggio(descendingArpeggioFrom root (guitarArpeggio 2 5 (chord C Major7))); End]
+|> renderTab
+|> printf "\n%s"
+
+[StandardTunning; Start; Arpeggio(ascendingArpeggioFrom root (guitarArpeggio 2 5 (chord C Major))); End]
+|> renderTab
+|> printf "\n%s"
+
+[StandardTunning; Start; Arpeggio(ascendingArpeggioFrom root (guitarArpeggio 2 5 (chord G Major))); End]
 |> renderTab
 |> printf "\n%s"
 

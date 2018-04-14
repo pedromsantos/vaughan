@@ -47,7 +47,7 @@ namespace VaughanTests
 
         [<Fact>]
         let ``Should render tab for C arpeggio starting from root on position 2`` () =
-            [StandardTunning; Start; Arpeggio(arpeggioFrom root (guitarArpeggio 2 5 (chord C Major))); End]
+            [StandardTunning; Start; Arpeggio(ascendingArpeggioFrom root (guitarArpeggio 2 5 (chord C Major))); End]
             |> renderTab
             |> should equal (
                              "e||-----------------3--||" + Environment.NewLine +
@@ -59,7 +59,7 @@ namespace VaughanTests
 
         [<Fact>]
         let ``Should render tab for G arpeggio starting from root on position 2`` () =
-            [StandardTunning; Start; Arpeggio(arpeggioFrom root (guitarArpeggio 2 5 (chord G Major))); End]
+            [StandardTunning; Start; Arpeggio(ascendingArpeggioFrom root (guitarArpeggio 2 5 (chord G Major))); End]
             |> renderTab
             |> should equal (
                              "e||--------------------3--||" + Environment.NewLine +
@@ -68,10 +68,22 @@ namespace VaughanTests
                              "D||-----------5-----------||" + Environment.NewLine +
                              "A||-----2--5--------------||" + Environment.NewLine +
                              "E||--3--------------------||" + Environment.NewLine)
+        
+        [<Fact>]
+        let ``Should render tab for C major 7 arpeggio descending starting from root on position 2`` () =
+            [StandardTunning; Start; ArbArpeggio(descendingArpeggioFrom root (guitarArpeggio 2 5 (chord C Major7))); End]
+            |> renderTab
+            |> should equal (
+                             "e||-----------------------||" + Environment.NewLine +
+                             "B||-----------------------||" + Environment.NewLine +
+                             "G||--5--4-----------------||" + Environment.NewLine +
+                             "D||--------5--2-----------||" + Environment.NewLine +
+                             "A||--------------3--2-----||" + Environment.NewLine +
+                             "E||--------------------3--||" + Environment.NewLine)
 
         [<Fact>]
         let ``Should render tab for C Major 7 arpeggio enclosing the root on position 2`` () =
-            [StandardTunning; Start; Notes(enclosedArpeggioFrom root (guitarArpeggio 2 5 (chord C Major7))); End]
+            [StandardTunning; Start; Notes(enclosedAscendingArpeggioFrom root (guitarArpeggio 2 5 (chord C Major7))); End]
             |> renderTab
             |> should equal (
                              "e||--------------------------3--||" + Environment.NewLine +
@@ -83,7 +95,7 @@ namespace VaughanTests
         
         [<Fact>]
         let ``Should render tab for C Major 7 arpeggio enclosing the third on position 2`` () =
-            [StandardTunning; Start; Notes(enclosedArpeggioFrom third (guitarArpeggio 2 5 (chord C Major7))); End]
+            [StandardTunning; Start; Notes(enclosedAscendingArpeggioFrom third (guitarArpeggio 2 5 (chord C Major7))); End]
             |> renderTab
             |> should equal (
                              "e||--------------------3--||" + Environment.NewLine +
@@ -95,7 +107,7 @@ namespace VaughanTests
 
         [<Fact>]
         let ``Should render tab for C Major 7 arpeggio enclosing the root on position 5`` () =
-            [StandardTunning; Start; Notes(enclosedArpeggioFrom root (guitarArpeggio 5 8 (chord C Minor7))); End]
+            [StandardTunning; Start; Notes(enclosedAscendingArpeggioFrom root (guitarArpeggio 5 8 (chord C Minor7))); End]
             |> renderTab
             |> should equal (
                              "e||-----------------------------6--8--||" + Environment.NewLine +
@@ -107,7 +119,7 @@ namespace VaughanTests
         
         [<Fact>]
         let ``Should render tab for C Major 7 arpeggio enclosing the third on position 5`` () =
-            [StandardTunning; Start; Notes(enclosedArpeggioFrom third (guitarArpeggio 5 8 (chord C Minor7))); End]
+            [StandardTunning; Start; Notes(enclosedAscendingArpeggioFrom third (guitarArpeggio 5 8 (chord C Minor7))); End]
             |> renderTab
             |> should equal (
                              "e||--------------------------6--8--||" + Environment.NewLine +
@@ -116,3 +128,28 @@ namespace VaughanTests
                              "D||-----------5--8-----------------||" + Environment.NewLine +
                              "A||--7--5--6-----------------------||" + Environment.NewLine +
                              "E||--------------------------------||" + Environment.NewLine)
+
+        
+        [<Fact>]
+        let ``Should render tab for C Major 7 descending arpeggio enclosing the root on position 2`` () =
+            [StandardTunning; Start; Notes(enclosedDescendingArpeggioFrom root (guitarArpeggio 2 5 (chord C Major7))); End]
+            |> renderTab
+            |> should equal (
+                             "e||-----------------------------||" + Environment.NewLine +
+                             "B||-----------------------------||" + Environment.NewLine +
+                             "G||--6--4--5--4-----------------||" + Environment.NewLine +
+                             "D||--------------5--2-----------||" + Environment.NewLine +
+                             "A||--------------------3--2-----||" + Environment.NewLine +
+                             "E||--------------------------3--||" + Environment.NewLine)
+        
+        [<Fact>]
+        let ``Should render tab for C Major 7 descending arpeggio enclosing the third on position 2`` () =
+            [StandardTunning; Start; Notes(enclosedDescendingArpeggioFrom third (guitarArpeggio 2 5 (chord C Major7))); End]
+            |> renderTab
+            |> should equal (
+                             "e||--------------------------------||" + Environment.NewLine +
+                             "B||--6--4--5-----------------------||" + Environment.NewLine +
+                             "G||-----------5--4-----------------||" + Environment.NewLine +
+                             "D||-----------------5--2-----------||" + Environment.NewLine +
+                             "A||-----------------------3--2-----||" + Environment.NewLine +
+                             "E||-----------------------------3--||" + Environment.NewLine)

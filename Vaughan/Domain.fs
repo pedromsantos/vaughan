@@ -176,6 +176,7 @@ namespace Vaughan
                 | Notes of Fret list
                 | Chord of GuitarChord
                 | Arpeggio of GuitarArpeggio
+                | ArbArpeggio of GuitarArpeggio
                 | Scale of GuitarScale
                 | Mute of Fret
                 | PalmMute of Fret

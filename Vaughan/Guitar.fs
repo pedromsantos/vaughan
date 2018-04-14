@@ -315,6 +315,7 @@ namespace Vaughan
                 | Scale s -> renderNotes (sprintf "-%i-") "" s.Frets
                 | StandardTunning -> standardTunningTab
                 | Arpeggio a -> renderNotes (sprintf "-%i-") "" a.ArpeggioFrets
+                | ArbArpeggio a -> renderNotesPredefinedOrder (sprintf "-%i-") "" a.ArpeggioFrets
                 | Mute m -> renderNote (sprintf "-x%i-") "" m
                 | PalmMute pm -> renderNote (sprintf "-_%i-") "" pm
                 | Harmonic h -> renderNote (sprintf "-*%i-") "" h
