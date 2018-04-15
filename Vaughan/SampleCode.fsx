@@ -35,96 +35,96 @@ let generateArpeggioExercise arpeggio =
     |> List.map (fun form ->  
                     [StandardTunning; Start; Notes((fst form) arpeggio); End]
                     |> renderTab
-                    |> printf "#### %s\n```\n%s\n```\n" (snd form))
+                    |> printf "### %s\n```\n%s```\n" (snd form))
 
 let CMinor7 = chord C Minor7
 let CMinor7Arpeggio = guitarArpeggio 5 8 CMinor7
-printf "## ====== Cm7 ======\n"
+printf "# ====== Cm7 ======\n"
 
-printf "### === Arpeggio ==="
+printf "## === Arpeggio ==="
 [StandardTunning; Start; Arpeggio(CMinor7Arpeggio); End]
 |> renderTab
-|> printf "\n```\n%s\n```\n"
+|> printf "\n```\n%s```\n"
 
-printf "### === Exercises ===\n"
+printf "## === Exercises ===\n"
 generateArpeggioExercise CMinor7Arpeggio
 
 
 let F7 = chord F Dominant7
 let F7Arpeggio = guitarArpeggio 5 8 F7
-printf "## ====== F7 ======\n"
+printf "# ====== F7 ======\n"
 
-printf "### === Arpeggio ==="
+printf "## === Arpeggio ==="
 [StandardTunning; Start; Arpeggio(F7Arpeggio); End]
 |> renderTab
-|> printf "\n```\n%s\n```\n"
+|> printf "\n```\n%s```\n"
 
-printf "### === Exercises ===\n"
+printf "## === Exercises ===\n"
 generateArpeggioExercise F7Arpeggio
 
 
 let BbMajor7 = chord BFlat Major7
 let BbMajor7Arpeggio = guitarArpeggio 5 8 BbMajor7
-printf "## ====== BbMaj7 ======\n"
+printf "# ====== BbMaj7 ======\n"
 
-printf "### === Arpeggio ==="
+printf "## === Arpeggio ==="
 [StandardTunning; Start; Arpeggio(BbMajor7Arpeggio); End]
 |> renderTab
-|> printf "\n```\n%s\n```\n"
+|> printf "\n```\n%s```\n"
 
-printf "### === Exercises ===\n"
+printf "## === Exercises ===\n"
 generateArpeggioExercise BbMajor7Arpeggio
 
 
 let EbMajor7 = chord EFlat Major7
 let EbMajor7Arpeggio = guitarArpeggio 5 8 EbMajor7
-printf "## ====== EbMaj7 ======\n"
+printf "# ====== EbMaj7 ======\n"
 
-printf "### === Arpeggio ==="
+printf "## === Arpeggio ==="
 [StandardTunning; Start; Arpeggio(EbMajor7Arpeggio); End]
 |> renderTab
-|> printf "\n```\n%s\n```\n"
+|> printf "\n```\n%s```\n"
 
-printf "### === Exercises ===\n"
+printf "## === Exercises ===\n"
 generateArpeggioExercise EbMajor7Arpeggio
 
 
 let Am7b5 = chord A Minor7b5
 let Am7b5Arpeggio = guitarArpeggio 5 8 Am7b5
-printf "## ====== Am7b5 ======\n"
+printf "# ====== Am7b5 ======\n"
 
-printf "### === Arpeggio ==="
+printf "## === Arpeggio ==="
 [StandardTunning; Start; Arpeggio(Am7b5Arpeggio); End]
 |> renderTab
-|> printf "\n```\n%s\n```\n"
+|> printf "\n```\n%s```\n"
 
-printf "### === Exercises ===\n"
+printf "## === Exercises ===\n"
 generateArpeggioExercise Am7b5Arpeggio
 
 
 let D7 = chord D Dominant7
-let D7Arpeggio = guitarArpeggio 5 8 D7
-printf "## ====== D7 ======\n"
+let D7Arpeggio = guitarArpeggio 5 9 D7
+printf "# ====== D7 ======\n"
 
-printf "### === Arpeggio ==="
+printf "## === Arpeggio ==="
 [StandardTunning; Start; Arpeggio(D7Arpeggio); End]
 |> renderTab
-|> printf "\n```\n%s\n```\n"
+|> printf "\n```\n%s```\n"
 
-printf "### === Exercises ===\n"
+printf "## === Exercises ===\n"
 generateArpeggioExercise D7Arpeggio
 
 
 let Gm7 = chord G Minor7
 let Gm7Arpeggio = guitarArpeggio 5 8 Gm7
-printf "## ====== Gm7 ======\n"
+printf "# ====== Gm7 ======\n"
 
-printf "### === Arpeggio ==="
+printf "## === Arpeggio ==="
 [StandardTunning; Start; Arpeggio(Gm7Arpeggio); End]
 |> renderTab
-|> printf "\n```\n%s\n```\n"
+|> printf "\n```\n%s```\n"
 
-printf "### === Exercises ===\n"
+printf "## === Exercises ===\n"
 generateArpeggioExercise Gm7Arpeggio
 
 
