@@ -167,10 +167,10 @@ namespace Vaughan
             | Unisson | PerfectOctave
                 -> [noteToTranspose]
             | MinorSecond | MinorThird | DiminishedFifth | MinorSixth | DiminishedSeventh
-            | MinorSeventh | MinorNinth | MajorNinth | MinorThirteenth
+            | MinorSeventh | MinorNinth | MajorNinth | MinorThirteenth | PerfectFifth
                 -> [C; DFlat; D; EFlat; E; F; GFlat; G; AFlat; A; BFlat; B]
             | MajorSecond | AugmentedSecond | MajorThird | PerfectFourth
-            | AugmentedFourth | PerfectFifth | AugmentedFifth | MajorSixth | MajorSeventh
+            | AugmentedFourth | AugmentedFifth | MajorSixth | MajorSeventh
             | AugmentedNinth | PerfectEleventh | AugmentedEleventh | MajorThirteenth
                 -> [C; CSharp; D; DSharp; E; F; FSharp; G; GSharp; A; ASharp; B]
             |> List.filter (fun n -> isSameInterval (intervalBetween noteToTranspose n) transposingInterval)

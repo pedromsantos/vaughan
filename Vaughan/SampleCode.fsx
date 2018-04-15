@@ -20,6 +20,56 @@ open Vaughan.GuitarTab
 open Vaughan.ImprovisationGuitar
 open Vaughan.ChordVoiceLeading
 
+let scaleName scale = 
+    sprintf "%s %A" (noteName (scale.Scale.Notes.[0])) scale.Scale.Scale 
+
+let chordToneNames (chord:Chord) = 
+    sprintf "%s" (chord.Notes 
+                    |> List.map (fst >> noteName) 
+                    |> List.fold (fun r s -> r + s + " ") "")
+
+let scaleNoteNames scale = 
+    sprintf "%s" (scale.Scale.Notes 
+                    |> List.map noteName 
+                    |> List.fold (fun r s -> r + s + " ") "") 
+let chords = [
+              chord C Minor7; 
+              chord F Dominant7; 
+              chord BFlat Major7;
+              chord EFlat Major7; 
+              chord A Minor7b5; 
+              chord D Dominant7; 
+              chord G Minor7
+             ]
+
+(createScalesForChords 5 8 chords)
+|> List.map (fun scalesPerChord -> scalesPerChord |> List.map scaleName)
+|> Seq.map Set.ofList
+|> Seq.reduce Set.intersect
+|> Seq.fold (fun r s -> r + s + " ") ""
+|> printf "Common scales for all chords: %s\n"
+
+(createScalesForChords 5 8 chords)
+|> List.mapi (fun i scalesPerChord -> (name chords.[i], scalesPerChord |> List.map scaleName))
+|> List.map (fun sc -> 
+                printf "# Scales than include all chord tones of %s\n" (fst sc)
+                snd sc |> List.map (fun s -> printf "* %s\n" s)
+                )
+
+(createScalesForChords 5 8 chords)
+|> List.mapi (fun i scalesPerChord ->  
+                printf "# Scales than include all chord tones of %s\n" (name chords.[i])
+                scalesPerChord 
+                |> List.map (fun scale -> 
+                                printf "## %s\n" (scaleName scale)
+                                printf "* Chord notes %s\n" (chordToneNames chords.[i])
+                                printf "* Scale notes %s\n" (scaleNoteNames scale)
+                                [StandardTunning; Start; Scale(scale); End]
+                                |> renderTab
+                                |> printf "```\n%s```\n")
+                )
+
+
 let generateArpeggioExercise arpeggio =
     [
         ascEightsRootAbove, "Root above"; ascEightsRootBelow, "Root below"; 
@@ -37,95 +87,23 @@ let generateArpeggioExercise arpeggio =
                     |> renderTab
                     |> printf "### %s\n```\n%s```\n" (snd form))
 
-let CMinor7 = chord C Minor7
-let CMinor7Arpeggio = guitarArpeggio 5 8 CMinor7
-printf "# ====== Cm7 ======\n"
-
-printf "## === Arpeggio ==="
-[StandardTunning; Start; Arpeggio(CMinor7Arpeggio); End]
-|> renderTab
-|> printf "\n```\n%s```\n"
-
-printf "## === Exercises ===\n"
-generateArpeggioExercise CMinor7Arpeggio
-
-
-let F7 = chord F Dominant7
-let F7Arpeggio = guitarArpeggio 5 8 F7
-printf "# ====== F7 ======\n"
-
-printf "## === Arpeggio ==="
-[StandardTunning; Start; Arpeggio(F7Arpeggio); End]
-|> renderTab
-|> printf "\n```\n%s```\n"
-
-printf "## === Exercises ===\n"
-generateArpeggioExercise F7Arpeggio
-
-
-let BbMajor7 = chord BFlat Major7
-let BbMajor7Arpeggio = guitarArpeggio 5 8 BbMajor7
-printf "# ====== BbMaj7 ======\n"
-
-printf "## === Arpeggio ==="
-[StandardTunning; Start; Arpeggio(BbMajor7Arpeggio); End]
-|> renderTab
-|> printf "\n```\n%s```\n"
-
-printf "## === Exercises ===\n"
-generateArpeggioExercise BbMajor7Arpeggio
-
-
-let EbMajor7 = chord EFlat Major7
-let EbMajor7Arpeggio = guitarArpeggio 5 8 EbMajor7
-printf "# ====== EbMaj7 ======\n"
-
-printf "## === Arpeggio ==="
-[StandardTunning; Start; Arpeggio(EbMajor7Arpeggio); End]
-|> renderTab
-|> printf "\n```\n%s```\n"
-
-printf "## === Exercises ===\n"
-generateArpeggioExercise EbMajor7Arpeggio
-
-
-let Am7b5 = chord A Minor7b5
-let Am7b5Arpeggio = guitarArpeggio 5 8 Am7b5
-printf "# ====== Am7b5 ======\n"
-
-printf "## === Arpeggio ==="
-[StandardTunning; Start; Arpeggio(Am7b5Arpeggio); End]
-|> renderTab
-|> printf "\n```\n%s```\n"
-
-printf "## === Exercises ===\n"
-generateArpeggioExercise Am7b5Arpeggio
-
-
-let D7 = chord D Dominant7
-let D7Arpeggio = guitarArpeggio 5 9 D7
-printf "# ====== D7 ======\n"
-
-printf "## === Arpeggio ==="
-[StandardTunning; Start; Arpeggio(D7Arpeggio); End]
-|> renderTab
-|> printf "\n```\n%s```\n"
-
-printf "## === Exercises ===\n"
-generateArpeggioExercise D7Arpeggio
-
-
-let Gm7 = chord G Minor7
-let Gm7Arpeggio = guitarArpeggio 5 8 Gm7
-printf "# ====== Gm7 ======\n"
-
-printf "## === Arpeggio ==="
-[StandardTunning; Start; Arpeggio(Gm7Arpeggio); End]
-|> renderTab
-|> printf "\n```\n%s```\n"
-
-printf "## === Exercises ===\n"
-generateArpeggioExercise Gm7Arpeggio
+[
+    guitarArpeggio 5 8 (chord C Minor7);
+    guitarArpeggio 5 8 (chord F Dominant7);
+    guitarArpeggio 5 8 (chord BFlat Major7);
+    guitarArpeggio 5 8 (chord EFlat Major7);
+    guitarArpeggio 5 8 (chord A Minor7b5);
+    guitarArpeggio 5 9 (chord D Dominant7);
+    guitarArpeggio 5 8 (chord G Minor7) 
+]
+|> List.map (fun a -> 
+                        printf "# ====== %s ======\n" (name a.BaseChord)
+                        printf "## === Arpeggio ==="
+                        [StandardTunning; Start; Arpeggio(a); End]
+                        |> renderTab
+                        |> printf "\n```\n%s```\n"
+                        printf "## === Exercises ===\n"
+                        generateArpeggioExercise a)
 
 
 [StandardTunning; Start; Notes(ascEightsRootAbove (guitarArpeggio 5 8 (chord BFlat Major7))); End]
