@@ -33,6 +33,23 @@ let scaleNoteNames scale =
                     |> List.map noteName 
                     |> List.fold (fun r s -> r + s + " ") "")
 
+let progression = [
+              chord C Minor7;
+              chord F Dominant7;
+              chord BFlat Major7;
+              chord EFlat Major7;
+              chord A Minor7b5;
+              chord D Minor7;
+              chord G Minor7
+             ]
+
+(createScalesForChords 5 8 progression)
+|> List.map (fun scalesPerChord -> scalesPerChord |> List.map scaleName)
+|> Seq.map Set.ofList
+|> Seq.reduce Set.intersect
+|> Seq.fold (fun r s -> r + s + " ") ""
+|> printf "Common scales for all chords: %s\n"
+
 let chords = [
               chord C Minor7;
               chord F Dominant7;
@@ -42,13 +59,6 @@ let chords = [
               chord D Dominant7;
               chord G Minor7
              ]
-
-(createScalesForChords 5 8 chords)
-|> List.map (fun scalesPerChord -> scalesPerChord |> List.map scaleName)
-|> Seq.map Set.ofList
-|> Seq.reduce Set.intersect
-|> Seq.fold (fun r s -> r + s + " ") ""
-|> printf "Common scales for all chords: %s\n"
 
 (createScalesForChords 5 8 chords)
 |> List.mapi (fun i scalesPerChord -> (name chords.[i], scalesPerChord |> List.map scaleName))
