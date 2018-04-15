@@ -20,10 +20,10 @@ open Vaughan.GuitarTab
 open Vaughan.ImprovisationGuitar
 open Vaughan.ChordVoiceLeading
 
-let scaleName scale = 
+let scaleName scale =
     sprintf "%s %A" (noteName (scale.Scale.Notes.[0])) scale.Scale.Scale 
 
-let chordToneNames (chord:Chord) = 
+let chordToneNames (chord:Chord) =
     sprintf "%s" (chord.Notes 
                     |> List.map (fst >> noteName) 
                     |> List.fold (fun r s -> r + s + " ") "")
@@ -31,14 +31,15 @@ let chordToneNames (chord:Chord) =
 let scaleNoteNames scale = 
     sprintf "%s" (scale.Scale.Notes 
                     |> List.map noteName 
-                    |> List.fold (fun r s -> r + s + " ") "") 
+                    |> List.fold (fun r s -> r + s + " ") "")
+
 let chords = [
-              chord C Minor7; 
-              chord F Dominant7; 
+              chord C Minor7;
+              chord F Dominant7;
               chord BFlat Major7;
-              chord EFlat Major7; 
-              chord A Minor7b5; 
-              chord D Dominant7; 
+              chord EFlat Major7;
+              chord A Minor7b5;
+              chord D Dominant7;
               chord G Minor7
              ]
 
@@ -57,10 +58,10 @@ let chords = [
                 )
 
 (createScalesForChords 5 8 chords)
-|> List.mapi (fun i scalesPerChord ->  
+|> List.mapi (fun i scalesPerChord ->
                 printf "# Scales than include all chord tones of %s\n" (name chords.[i])
                 scalesPerChord 
-                |> List.map (fun scale -> 
+                |> List.map (fun scale ->
                                 printf "## %s\n" (scaleName scale)
                                 printf "* Chord notes %s\n" (chordToneNames chords.[i])
                                 printf "* Scale notes %s\n" (scaleNoteNames scale)
@@ -69,20 +70,19 @@ let chords = [
                                 |> printf "```\n%s```\n")
                 )
 
-
 let generateArpeggioExercise arpeggio =
     [
-        ascEightsRootAbove, "Root above"; ascEightsRootBelow, "Root below"; 
-        ascEightsThirdAbove, "Third above"; ascEightsThirdBelow, "Third below"; 
+        ascEightsRootAbove, "Root above"; ascEightsRootBelow, "Root below";
+        ascEightsThirdAbove, "Third above"; ascEightsThirdBelow, "Third below";
         ascEightsSeventhAbove, "Seventh above"; ascEightsSeventhBelow, "Seventh below";
-        descEightsRootAbove, "Root above"; descEightsRootBelow, "Root below"; 
-        descEightsThirdAbove, "Third above"; descEightsThirdBelow, "Third below"; 
+        descEightsRootAbove, "Root above"; descEightsRootBelow, "Root below";
+        descEightsThirdAbove, "Third above"; descEightsThirdBelow, "Third below";
         descEightsSeventhAbove, "Seventh above"; descEightsSeventhBelow, "Seventh below"
-        ascEightsRootEnclosed, "Root enclosed"; descEightsRootEnclosed, "Root enclosed"; 
-        ascEightsThirdEnclosed, "Third enclosed"; descEightsThirdEnclosed, "Third enclosed"; 
-        ascEightsSeventhEnclosed, "Seventh enclosed"; descEightsSeventhEnclosed, "Seventh enclosed"; 
+        ascEightsRootEnclosed, "Root enclosed"; descEightsRootEnclosed, "Root enclosed";
+        ascEightsThirdEnclosed, "Third enclosed"; descEightsThirdEnclosed, "Third enclosed";
+        ascEightsSeventhEnclosed, "Seventh enclosed"; descEightsSeventhEnclosed, "Seventh enclosed";
     ]
-    |> List.map (fun form ->  
+    |> List.map (fun form ->
                     [StandardTunning; Start; Notes((fst form) arpeggio); End]
                     |> renderTab
                     |> printf "### %s\n```\n%s```\n" (snd form))
