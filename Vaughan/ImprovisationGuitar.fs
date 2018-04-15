@@ -47,40 +47,29 @@ namespace Vaughan
             |> createScalesForChords minFret maxFret
             |> List.map (fun ss -> ss |> List.map (fun s -> Scale(s)))
 
-        let ascendingArpeggioFrom tone (arpeggio:GuitarArpeggio)  =
-            let firstTone = arpeggio.ArpeggioFrets |> List.filter (fun f -> f.Note = tone arpeggio.BaseChord) |> List.last
-            let positionFirstTone = arpeggio.ArpeggioFrets |> List.findIndex (fun af -> af = firstTone)
+        let private arpeggioFromArpeggio chord arpeggioNotes start =
             {
-                BaseChord = arpeggio.BaseChord;
-                ArpeggioFrets = arpeggio.ArpeggioFrets 
-                                |> List.take (positionFirstTone + 1)
-                                |> List.sortByDescending (fun f -> f.GuitarString, f.Fret)
+                BaseChord = chord;
+                ArpeggioFrets = arpeggioNotes |> List.take (start + 1)
             }
+
+        let ascendingArpeggioFrom tone (arpeggio:GuitarArpeggio)  =
+            let sortedArpeggioNotes = 
+                arpeggio.ArpeggioFrets 
+                |> List.sortByDescending (fun f -> f.GuitarString, f.Fret)
+
+            let firstTone = sortedArpeggioNotes |> List.filter (fun f -> f.Note = tone arpeggio.BaseChord) |> List.last
+            let positionFirstTone = sortedArpeggioNotes |> List.findIndex (fun af -> af = firstTone)
+            arpeggioFromArpeggio arpeggio.BaseChord sortedArpeggioNotes positionFirstTone
 
         let descendingArpeggioFrom tone (arpeggio:GuitarArpeggio) =
-            let firstTone = arpeggio.ArpeggioFrets |> List.filter (fun f -> f.Note = tone arpeggio.BaseChord) |> List.head
-            let positionFirstTone = arpeggio.ArpeggioFrets |> List.findIndex (fun af -> af = firstTone)
-            {
-                BaseChord = arpeggio.BaseChord;
-                ArpeggioFrets = arpeggio.ArpeggioFrets 
-                                |> List.skip (positionFirstTone)
-                                |> List.sortBy (fun f -> f.GuitarString, f.Fret)
-            }
-
-        let enclosedAscendingArpeggioFrom tone maxNotes (arpeggio:GuitarArpeggio) =
-            let arpeggioFrets = (arpeggio |> ascendingArpeggioFrom tone).ArpeggioFrets |> List.rev
-            (arpeggioFrets.Tail |> List.sortByDescending (fun f -> f.GuitarString, f.Fret))
-            @
-            [arpeggioFrets.Head] @ [passingToneBelow arpeggioFrets.Head] @ [passingToneAbove arpeggioFrets.Head]
-            |> limitNoteLineTo maxNotes
+            let sortedArpeggioNotes = 
+                arpeggio.ArpeggioFrets 
+                |> List.sortBy (fun f -> f.GuitarString, f.Fret)
             
-        let enclosedDescendingArpeggioFrom tone maxNotes (arpeggio:GuitarArpeggio) =
-            let arpeggioFrets = (arpeggio |> descendingArpeggioFrom tone).ArpeggioFrets
-            let enclosedTone = arpeggioFrets |> List.last
-            (arpeggioFrets |> List.rev |> List.tail |> List.rev)
-            @ 
-            [enclosedTone] @ [passingToneBelow enclosedTone] @ [passingToneAbove enclosedTone]
-            |> limitNoteLineTo maxNotes
+            let firstTone = sortedArpeggioNotes |> List.filter (fun f -> f.Note = tone arpeggio.BaseChord) |> List.last
+            let positionFirstTone = sortedArpeggioNotes |> List.findIndex (fun af -> af = firstTone)
+            arpeggioFromArpeggio arpeggio.BaseChord sortedArpeggioNotes positionFirstTone
 
         let aproachAscendingArpeggioFrom tone passing maxNotes (arpeggio:GuitarArpeggio) =
             let arpeggioFrets = (arpeggio |> ascendingArpeggioFrom tone).ArpeggioFrets |> List.rev
@@ -95,6 +84,21 @@ namespace Vaughan
             (arpeggioFrets |> List.rev |> List.tail |> List.rev)
             @ 
             [enclosedTone] @ [passing enclosedTone]
+            |> limitNoteLineTo maxNotes
+
+        let enclosedAscendingArpeggioFrom tone maxNotes (arpeggio:GuitarArpeggio) =
+            let arpeggioFrets = (arpeggio |> ascendingArpeggioFrom tone).ArpeggioFrets |> List.rev
+            (arpeggioFrets.Tail |> List.sortByDescending (fun f -> f.GuitarString, f.Fret))
+            @
+            [arpeggioFrets.Head] @ [passingToneBelow arpeggioFrets.Head] @ [passingToneAbove arpeggioFrets.Head]
+            |> limitNoteLineTo maxNotes
+            
+        let enclosedDescendingArpeggioFrom tone maxNotes (arpeggio:GuitarArpeggio) =
+            let arpeggioFrets = (arpeggio |> descendingArpeggioFrom tone).ArpeggioFrets
+            let enclosedTone = arpeggioFrets |> List.last
+            (arpeggioFrets |> List.rev |> List.tail |> List.rev)
+            @ 
+            [enclosedTone] @ [passingToneBelow enclosedTone] @ [passingToneAbove enclosedTone]
             |> limitNoteLineTo maxNotes
 
         let ascEightsRootEnclosed = enclosedAscendingArpeggioFrom root 8

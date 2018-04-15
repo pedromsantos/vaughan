@@ -98,12 +98,12 @@ namespace VaughanTests
             [StandardTunning; Start; Notes(enclosedAscendingArpeggioFrom third 12 (guitarArpeggio 2 5 (chord C Major7))); End]
             |> renderTab
             |> should equal (
-                             "e||--------------------3--||" + Environment.NewLine +
-                             "B||-----------------5-----||" + Environment.NewLine +
-                             "G||-----------4--5--------||" + Environment.NewLine +
-                             "D||--3--1--2--------------||" + Environment.NewLine +
-                             "A||-----------------------||" + Environment.NewLine +
-                             "E||-----------------------||" + Environment.NewLine)
+                             "e||-----------------------3--||" + Environment.NewLine +
+                             "B||--------------------5-----||" + Environment.NewLine +
+                             "G||--------------4--5--------||" + Environment.NewLine +
+                             "D||--3--1--2--5--------------||" + Environment.NewLine +
+                             "A||--------------------------||" + Environment.NewLine +
+                             "E||--------------------------||" + Environment.NewLine)
 
         [<Fact>]
         let ``Should render tab for C Major 7 arpeggio enclosing the root on position 5`` () =
