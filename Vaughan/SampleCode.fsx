@@ -32,9 +32,9 @@ let chords = [
 
 let voiceleadingChords guitarString form =
     (voiceLead lead (chords |> List.map form))
-    |> List.map (fun c -> guitarChord guitarString c)
+    |> List.map ((fun c -> guitarChord guitarString c) >> Chord)
 
-[StandardTunning; Start] @ (voiceleadingChords FourthString toDrop2 |> List.map Chord) @ [End]
+[StandardTunning; Start] @ (voiceleadingChords FourthString toDrop2) @ [End]
 |> renderTab
 |> printf "\n%s"
 
