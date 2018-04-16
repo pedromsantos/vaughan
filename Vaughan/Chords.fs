@@ -156,6 +156,11 @@ namespace Vaughan
 
         let noteNames:NoteNames = fun chord ->
             chord.Notes |> List.map (note >> noteName)
+        
+        let chordToneNames (chord:Chord) =
+            sprintf "%s" (chord.Notes 
+                            |> List.map (fst >> noteName) 
+                            |> List.fold (fun r s -> r + s + " ") "")
 
         let notesMidiNumbers = fun (chord:Chord) octave ->
             chord.Notes |> List.map (fun n -> midiNumber (fst n) octave)

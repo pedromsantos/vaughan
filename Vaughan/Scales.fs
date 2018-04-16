@@ -2,7 +2,6 @@ namespace Vaughan
 
     module Scales =
         open Notes
-        open Chords
 
         type private ScalePattern = Interval list
         type private IScalePattern = ScaleType -> ScalePattern
@@ -75,6 +74,14 @@ namespace Vaughan
             ( scale |> List.filter (fun x ->
                                          (List.contains x chordTones)) |> List.sort) 
                                          = (chordTones |> List.sort)
+
+        let scaleName scale =
+            sprintf "%s %A" (noteName (scale.Notes.[0])) scale.Scale
+
+        let scaleNoteNames scale = 
+            sprintf "%s" (scale.Notes 
+                            |> List.map noteName 
+                            |> List.fold (fun r s -> r + s + " ") "")
 
         let scalesFitting (chord:Chord) =
             let chordTones = chord.Notes |> List.map fst

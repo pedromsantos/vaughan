@@ -20,19 +20,6 @@ open Vaughan.GuitarTab
 open Vaughan.ImprovisationGuitar
 open Vaughan.ChordVoiceLeading
 
-let scaleName scale =
-    sprintf "%s %A" (noteName (scale.Scale.Notes.[0])) scale.Scale.Scale 
-
-let chordToneNames (chord:Chord) =
-    sprintf "%s" (chord.Notes 
-                    |> List.map (fst >> noteName) 
-                    |> List.fold (fun r s -> r + s + " ") "")
-
-let scaleNoteNames scale = 
-    sprintf "%s" (scale.Scale.Notes 
-                    |> List.map noteName 
-                    |> List.fold (fun r s -> r + s + " ") "")
-
 let chords = [
               chord C Minor7;
               chord F Dominant7;
@@ -44,13 +31,13 @@ let chords = [
              ]
 
 (createScalesForChords 5 8 chords)
-|> Seq.map ((fun scalesPerChord -> scalesPerChord |> List.map scaleName) >> Set.ofList)
+|> Seq.map ((fun scalesPerChord -> scalesPerChord |> List.map (fun s -> scaleName s.Scale)) >> Set.ofList)
 |> Seq.reduce Set.intersect
 |> Seq.fold (fun r s -> r + s + "\n") ""
 |> printf "Common scales for all chords: \n%s\n"
 
 (createScalesForChords 5 8 chords)
-|> List.mapi (fun i scalesPerChord -> (name chords.[i], scalesPerChord |> List.map scaleName))
+|> List.mapi (fun i scalesPerChord -> (name chords.[i], scalesPerChord |> List.map (fun s -> scaleName s.Scale)))
 |> List.map (fun sc -> 
                 printf "# Scales than include all chord tones of %s\n" (fst sc)
                 snd sc |> List.map (fun s -> printf "* %s\n" s)
@@ -58,12 +45,12 @@ let chords = [
 
 (createScalesForChords 5 8 chords)
 |> List.mapi (fun i scalesPerChord ->
-                printf "# Scales than include all chord tones of %s\n" (name chords.[i])
+                printf "# Scales than include all chord tones of %s with tab\n" (name chords.[i])
                 scalesPerChord 
                 |> List.map (fun scale ->
-                                printf "## %s\n" (scaleName scale)
+                                printf "## %s\n" (scaleName scale.Scale)
                                 printf "* Chord notes %s\n" (chordToneNames chords.[i])
-                                printf "* Scale notes %s\n" (scaleNoteNames scale)
+                                printf "* Scale notes %s\n" (scaleNoteNames scale.Scale)
                                 [StandardTunning; Start; Scale(scale); End]
                                 |> renderTab
                                 |> printf "```\n%s```\n")
