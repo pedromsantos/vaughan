@@ -80,7 +80,7 @@ namespace Vaughan
                     (stringCIReturn "AlteredDominant" AlteredDominant);
                     (stringCIReturn "HalfWholeDiminished" HalfWholeDiminished);
                     (stringCIReturn "WholeTone" WholeTone);
-                    (stringCIReturn "SixthDiminishedScale" SixthDiminishedScale);
+                    (stringCIReturn "SixthDiminishedScale" MajorSixthDiminishedScale);
                     (stringCIReturn "MinorSixthDiminishedScale" MinorSixthDiminishedScale);
                     (stringCIReturn "DominantDiminishedScale" DominantDiminishedScale);
                     (stringCIReturn "Dominantb5DiminishedScale" Dominantb5DiminishedScale);

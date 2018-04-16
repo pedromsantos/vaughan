@@ -30,7 +30,7 @@ namespace Vaughan
             | AlteredDominant -> [Unisson; MinorSecond; AugmentedSecond; MajorThird; DiminishedFifth;  AugmentedFifth; MinorSeventh]
             | HalfWholeDiminished -> [Unisson; MinorSecond; MinorThird; MajorThird; AugmentedFourth;  PerfectFifth; MajorSixth; MinorSeventh]
             | WholeTone -> [Unisson; MajorSecond; MajorThird; DiminishedFifth; AugmentedFifth; MinorSeventh]
-            | SixthDiminishedScale -> [Unisson; MajorSecond; MajorThird; PerfectFourth; PerfectFifth; AugmentedFifth; MajorSixth; MajorSeventh]
+            | MajorSixthDiminishedScale -> [Unisson; MajorSecond; MajorThird; PerfectFourth; PerfectFifth; AugmentedFifth; MajorSixth; MajorSeventh]
             | MinorSixthDiminishedScale -> [Unisson; MajorSecond; MinorThird; PerfectFourth; PerfectFifth; AugmentedFifth; MajorSixth; MajorSeventh]
             | DominantDiminishedScale -> [Unisson; MajorSecond; MajorThird; PerfectFourth; PerfectFifth; AugmentedFifth; MinorSeventh; MajorSeventh]
             | Dominantb5DiminishedScale -> [Unisson; MajorSecond; MajorThird; PerfectFourth; DiminishedFifth; AugmentedFifth; MinorSeventh; MajorSeventh]
@@ -65,7 +65,7 @@ namespace Vaughan
                 createScale AlteredDominant root;
                 createScale HalfWholeDiminished root;
                 createScale WholeTone root;
-                createScale SixthDiminishedScale root;
+                createScale MajorSixthDiminishedScale root;
                 createScale MinorSixthDiminishedScale root;
                 createScale DominantDiminishedScale root;
                 createScale Dominantb5DiminishedScale root;

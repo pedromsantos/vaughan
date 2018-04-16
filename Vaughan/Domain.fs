@@ -127,7 +127,7 @@ namespace Vaughan
             | Blues | HarmonicMinor | MelodicMinor | Dorianb2 | LydianAugmented | NeapolitanMinor
             | LydianDominant | Bebop | Mixolydianb6 | LocrianSharp2
             | AlteredDominant | HalfWholeDiminished | WholeTone
-            | SixthDiminishedScale | MinorSixthDiminishedScale
+            | MajorSixthDiminishedScale | MinorSixthDiminishedScale
             | DominantDiminishedScale | Dominantb5DiminishedScale
 
         type ScaleNotes = Note list
