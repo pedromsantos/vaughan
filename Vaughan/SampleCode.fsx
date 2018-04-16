@@ -40,12 +40,11 @@ let chords = [
               chord EFlat Major7;
               chord A Minor7b5;
               chord D Dominant7;
-              chord G Minor7
+              chord G Minor7;
              ]
 
 (createScalesForChords 5 8 chords)
-|> List.map (fun scalesPerChord -> scalesPerChord |> List.map scaleName)
-|> Seq.map Set.ofList
+|> Seq.map ((fun scalesPerChord -> scalesPerChord |> List.map scaleName) >> Set.ofList)
 |> Seq.reduce Set.intersect
 |> Seq.fold (fun r s -> r + s + "\n") ""
 |> printf "Common scales for all chords: \n%s\n"
