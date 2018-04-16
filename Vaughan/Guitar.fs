@@ -207,8 +207,6 @@ namespace Vaughan
 
     module GuitarTab =
         open System
-        open Guitar
-        open Infrastructure
 
         type private TabColumn = string list
 
@@ -262,15 +260,22 @@ namespace Vaughan
                 let mutedStrings = numberOfMutedLowStrings frets
                 List.replicate mutedStrings mutedStringTab
 
-            let private renderChordNote (mutedStringTab:string) (fret:Fret) =
+            let private renderChordNote (mutedStringTab:string) (fret:Fret) highestFet =
                 if fret.Fret = -1 then
                     mutedStringTab
                 else
-                    sprintf "-%i-" fret.Fret
+                    if highestFet > 9 then
+                        if fret.Fret > 9 then
+                            sprintf "-%i-" fret.Fret
+                        else
+                            sprintf "-%i--" fret.Fret  
+                    else
+                        sprintf "-%i-" fret.Fret
 
             let private renderChordNotes mutedStringTab frets =
+                let highestFet = frets |> List.map (fun f -> f.Fret) |> List.max
                 frets
-                |> List.map (fun fret -> renderChordNote mutedStringTab fret)
+                |> List.map (fun fret -> renderChordNote mutedStringTab fret highestFet)
                 |> List.rev
 
             let private renderNote (noteRenderer: int -> string) (ornament:string) (fret:Fret) =

@@ -6,8 +6,8 @@
 #load "Scales.fs"
 #load "ScaleHarmonizer.fs"
 #load "Guitar.fs"
-#load "ImprovisationGuitar.fs"
 #load "ChordVoiceLeading.fs"
+#load "ImprovisationGuitar.fs"
 
 open Vaughan.Domain
 open Vaughan.Notes
@@ -29,6 +29,14 @@ let chords = [
               chord D Dominant7;
               chord G Minor7;
              ]
+
+let voiceleadingChords guitarString form =
+    (voiceLead lead (chords |> List.map form))
+    |> List.map (fun c -> guitarChord guitarString c)
+
+[StandardTunning; Start] @ (voiceleadingChords FourthString toDrop2 |> List.map Chord) @ [End]
+|> renderTab
+|> printf "\n%s"
 
 (createScalesForChords 5 8 chords)
 |> Seq.map ((fun scalesPerChord -> scalesPerChord |> List.map (fun s -> scaleName s.Scale)) >> Set.ofList)
@@ -82,7 +90,7 @@ let generateArpeggioExercise arpeggio =
     guitarArpeggio 5 9 (chord D Dominant7);
     guitarArpeggio 5 8 (chord G Minor7) 
 ]
-|> List.map (fun a -> 
+|> List.map (fun a ->
                         printf "# ====== %s ======\n" (name a.BaseChord)
                         printf "## === Arpeggio ==="
                         [StandardTunning; Start; Arpeggio(a); End]
@@ -90,7 +98,6 @@ let generateArpeggioExercise arpeggio =
                         |> printf "\n```\n%s```\n"
                         printf "## === Exercises ===\n"
                         generateArpeggioExercise a)
-
 
 [StandardTunning; Start; Notes(ascEightsRootAbove (guitarArpeggio 5 8 (chord BFlat Major7))); End]
 |> renderTab
