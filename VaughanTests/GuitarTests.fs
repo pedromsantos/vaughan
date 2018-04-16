@@ -334,9 +334,9 @@ namespace VaughanTests
                                 (
                                 "e||---------------||" + Environment.NewLine +
                                 "B||--5--6--8--10--||" + Environment.NewLine +
-                                "G||--4--5--7--9--||" + Environment.NewLine +
+                                "G||--4--5--7--9---||" + Environment.NewLine +
                                 "D||--5--7--9--10--||" + Environment.NewLine +
-                                "A||--3--5--7--8--||" + Environment.NewLine +
+                                "A||--3--5--7--8---||" + Environment.NewLine +
                                 "E||---------------||" + Environment.NewLine)
 
         [<Fact>]
