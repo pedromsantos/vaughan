@@ -39,8 +39,7 @@ let voiceleadingChords guitarString form =
 |> printf "\n%s"
 
 (createScalesForChords 5 8 chords)
-|> Seq.map ((fun scalesPerChord -> scalesPerChord |> List.map (fun s -> scaleName s.Scale)) >> Set.ofList)
-|> Seq.reduce Set.intersect
+|> commonElements (fun scalesPerChord -> scalesPerChord |> List.map (fun s -> scaleName s.Scale) 
 |> Seq.fold (fun r s -> r + s + "\n") ""
 |> printf "Common scales for all chords: \n%s\n"
 

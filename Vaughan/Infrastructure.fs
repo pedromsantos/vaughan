@@ -34,7 +34,6 @@ namespace Vaughan
             |> Seq.filter (fun (i, _) -> i % 2 = 0)
             |> Seq.map snd
 
-
         let cappedMinimum number cap =
             if number < cap then cap else number
 
@@ -49,3 +48,8 @@ namespace Vaughan
             let prefixWith pfxs fs = List.map (prefix fs) pfxs
             let prefixAll pfxs fs = List.collect (prefixWith pfxs) fs
             List.foldBack prefixAll listOfLists [[]]
+
+        let commonElements mapFunction listOfLists =
+            listOfLists
+            |> Seq.map (mapFunction >> Set.ofList)
+            |> Seq.reduce Set.intersect
