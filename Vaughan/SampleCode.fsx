@@ -17,6 +17,7 @@ open Vaughan.Scales
 open Vaughan.ScaleHarmonizer
 open Vaughan.Guitar
 open Vaughan.GuitarTab
+open Vaughan.Infrastructure
 open Vaughan.ImprovisationGuitar
 open Vaughan.ChordVoiceLeading
 
@@ -39,12 +40,12 @@ let voiceleadingChords guitarString form =
 |> printf "\n%s"
 
 (createScalesForChords 5 8 chords)
-|> commonElements (fun scalesPerChord -> scalesPerChord |> List.map (fun s -> scaleName s.Scale) 
+|> commonElements (fun scalesPerChord -> scalesPerChord |> List.map guitarScaleName)
 |> Seq.fold (fun r s -> r + s + "\n") ""
 |> printf "Common scales for all chords: \n%s\n"
 
 (createScalesForChords 5 8 chords)
-|> List.mapi (fun i scalesPerChord -> (name chords.[i], scalesPerChord |> List.map (fun s -> scaleName s.Scale)))
+|> List.mapi (fun i scalesPerChord -> (name chords.[i], scalesPerChord |> List.map guitarScaleName))
 |> List.map (fun sc -> 
                 printf "# Scales than include all chord tones of %s\n" (fst sc)
                 snd sc |> List.map (fun s -> printf "* %s\n" s)
@@ -55,9 +56,9 @@ let voiceleadingChords guitarString form =
                 printf "# Scales than include all chord tones of %s with tab\n" (name chords.[i])
                 scalesPerChord 
                 |> List.map (fun scale ->
-                                printf "## %s\n" (scaleName scale.Scale)
+                                printf "## %s\n" (guitarScaleName scale)
                                 printf "* Chord notes %s\n" (chordToneNames chords.[i])
-                                printf "* Scale notes %s\n" (scaleNoteNames scale.Scale)
+                                printf "* Scale notes %s\n" (guitarScaleNoteNames scale)
                                 [StandardTunning; Start; Scale(scale); End]
                                 |> renderTab
                                 |> printf "```\n%s```\n")

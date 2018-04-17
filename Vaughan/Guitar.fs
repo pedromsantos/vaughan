@@ -193,6 +193,7 @@ namespace Vaughan
             | Closed -> chordToGuitarClosedChord bassString chord
         
         open Chords
+        open Scales
         
         let guitarArpeggio:CreateGuitarArpeggio = fun minFret maxFret chord ->
             chord
@@ -204,6 +205,12 @@ namespace Vaughan
             |> scaleToGuitarScale (fun f -> f.Fret >= minFret && f.Fret <= maxFret)
 
         let guitarNote:CreateGuitarNote = createStringFret
+
+        let guitarScaleName (scale:GuitarScale) =
+            scaleName scale.Scale
+
+        let guitarScaleNoteNames (scale:GuitarScale) =
+            scaleNoteNames scale.Scale
 
     module GuitarTab =
         open System
