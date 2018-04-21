@@ -122,6 +122,7 @@ let handleChord (chordArguments:ParseResults<ChordArguments>) (parser:ArgumentPa
     try
         let root = chordArguments.GetResult ChordArguments.Root
         let quality = chordArguments.GetResult ChordArguments.Quality
+        
         parseChord (sprintf "%s %s" root quality)
     with | :? ArguParseException as e ->
         printf "%s" e.Message
@@ -170,6 +171,7 @@ let handleTabScale (scaleArguments:ParseResults<ScaleArguments>) (parser:Argumen
         let maxFret = scaleArguments.GetResult ScaleArguments.MaxFret
 
         let scale = parseScale (sprintf "%s %s" root scaleType)
+        
         Vaughan.Domain.Scale(guitarScale minFret maxFret scale)
     with | :? ArguParseException as e ->
         printf "%s" e.Message
