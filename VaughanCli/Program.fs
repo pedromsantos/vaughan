@@ -118,17 +118,20 @@ let handleChordInversion (inversion:ChordInversions) =
     | ChordInversions.Third -> invert >> invert >> invert
     | _ -> id
 
-let handleChord (chordArguments:ParseResults<ChordArguments>) (parser:ArgumentParser<TabArguments>)= 
+let handleError (e:ArguParseException) (parser:ArgumentParser<_>) subCommand =
+    printf "%s" e.Message
+    let parser = parser.GetSubCommandParser subCommand
+    parser.PrintCommandLineSyntax(usageStringCharacterWidth = 20) |> printf "%s\n\n"
+    Environment.Exit(-1) 
+
+let handleChord (chordArguments:ParseResults<ChordArguments>) (parser:ArgumentParser<TabArguments>) = 
     try
         let root = chordArguments.GetResult ChordArguments.Root
         let quality = chordArguments.GetResult ChordArguments.Quality
         
         parseChord (sprintf "%s %s" root quality)
     with | :? ArguParseException as e ->
-        printf "%s" e.Message
-        let parser = parser.GetSubCommandParser Chord
-        parser.PrintCommandLineSyntax(usageStringCharacterWidth = 20) |> printf "%s\n\n"
-        Environment.Exit(-1)
+        handleError e parser Chord 
         chord C Major
 
 let handleTabChord (chordArguments:ParseResults<ChordArguments>) (parser:ArgumentParser<TabArguments>)=
@@ -142,10 +145,7 @@ let handleTabChord (chordArguments:ParseResults<ChordArguments>) (parser:Argumen
 
         Vaughan.Domain.Chord(guitarChord (handleGuitarString bass) chord)
     with | :? ArguParseException as e ->
-        printf "%s" e.Message
-        let parser = parser.GetSubCommandParser Chord
-        parser.PrintCommandLineSyntax(usageStringCharacterWidth = 20) |> printf "%s\n\n"
-        Environment.Exit(-1)
+        handleError e parser Chord
         Rest
 
 let handleTabArpeggio (arpeggioArguments:ParseResults<ArpeggioArguments>) (parser:ArgumentParser<TabArguments>) = 
@@ -157,10 +157,7 @@ let handleTabArpeggio (arpeggioArguments:ParseResults<ArpeggioArguments>) (parse
 
         Vaughan.Domain.Arpeggio(guitarArpeggio minFret maxFret chord)
     with | :? ArguParseException as e ->
-        printf "%s" e.Message
-        let parser = parser.GetSubCommandParser Arpeggio
-        parser.PrintCommandLineSyntax(usageStringCharacterWidth = 20) |> printf "%s\n\n"
-        Environment.Exit(-1)
+        handleError e parser Arpeggio
         Rest
 
 let handleTabScale (scaleArguments:ParseResults<ScaleArguments>) (parser:ArgumentParser<TabArguments>) = 
@@ -174,10 +171,7 @@ let handleTabScale (scaleArguments:ParseResults<ScaleArguments>) (parser:Argumen
         
         Vaughan.Domain.Scale(guitarScale minFret maxFret scale)
     with | :? ArguParseException as e ->
-        printf "%s" e.Message
-        let parser = parser.GetSubCommandParser Scale
-        parser.PrintCommandLineSyntax(usageStringCharacterWidth = 20) |> printf "%s\n\n"
-        Environment.Exit(-1)
+        handleError e parser Scale
         Rest
 
 let handleTab (tabArguments:ParseResults<TabArguments>) (parser:ArgumentParser<CLIArguments>) =
@@ -188,10 +182,7 @@ let handleTab (tabArguments:ParseResults<TabArguments>) (parser:ArgumentParser<C
         | Scale s -> handleTabScale s tabParser
         | Arpeggio a -> handleTabArpeggio a tabParser
     with | :? ArguParseException as e ->
-        printf "%s" e.Message
-        let parser = parser.GetSubCommandParser Tab
-        parser.PrintCommandLineSyntax(usageStringCharacterWidth = 20) |> printf "%s\n\n"
-        Environment.Exit(-1)
+        handleError e parser Tab
         Rest
 
 [<EntryPoint>]
