@@ -118,42 +118,78 @@ let handleChordInversion (inversion:ChordInversions) =
     | ChordInversions.Third -> invert >> invert >> invert
     | _ -> id
 
-let handleChord (chordArguments:ParseResults<ChordArguments>) = 
-    let root = chordArguments.GetResult ChordArguments.Root
-    let form = chordArguments.GetResult ChordArguments.Form
-    let quality = chordArguments.GetResult ChordArguments.Quality
-    let inversion = chordArguments.GetResult ChordArguments.Inversion
+let handleChord (chordArguments:ParseResults<ChordArguments>) (parser:ArgumentParser<TabArguments>)= 
+    try
+        let root = chordArguments.GetResult ChordArguments.Root
+        let form = chordArguments.GetResult ChordArguments.Form
+        let quality = chordArguments.GetResult ChordArguments.Quality
+        let inversion = chordArguments.GetResult ChordArguments.Inversion
 
-    (chord root quality) |> handleChordForm form |> (handleChordInversion inversion)
+        (chord root quality) |> handleChordForm form |> (handleChordInversion inversion)
+    with | :? ArguParseException as e ->
+        printf "%s" e.Message
+        let parser = parser.GetSubCommandParser <@ Chord @>
+        parser.PrintCommandLineSyntax(usageStringCharacterWidth = 20) |> printf "%s\n\n"
+        Environment.Exit(-1)
+        chord C Major
 
-let handleTabChord (chordArguments:ParseResults<ChordArguments>) =
-    let bass = chordArguments.GetResult Bass 
-    let chord = guitarChord (handleGuitarString bass) (handleChord chordArguments)
+let handleTabChord (chordArguments:ParseResults<ChordArguments>) (parser:ArgumentParser<TabArguments>)=
+    try
+        let bass = chordArguments.GetResult Bass
+        let chord = guitarChord (handleGuitarString bass) (handleChord chordArguments parser)
 
-    Vaughan.Domain.Chord(chord)
+        Vaughan.Domain.Chord(chord)
+    with | :? ArguParseException as e ->
+        printf "%s" e.Message
+        let parser = parser.GetSubCommandParser <@ Chord @>
+        parser.PrintCommandLineSyntax(usageStringCharacterWidth = 20) |> printf "%s\n\n"
+        Environment.Exit(-1)
+        Rest
 
-let handleTabArpeggio (arpeggioArguments:ParseResults<ArpeggioArguments>) = 
-    let chordArguments = arpeggioArguments.GetResult ArpeggioArguments.Chord
-    let minFret = arpeggioArguments.GetResult ArpeggioArguments.MinFret
-    let maxFret = arpeggioArguments.GetResult ArpeggioArguments.MaxFret
+let handleTabArpeggio (arpeggioArguments:ParseResults<ArpeggioArguments>) (parser:ArgumentParser<TabArguments>) = 
+    try
+        let chordArguments = arpeggioArguments.GetResult ArpeggioArguments.Chord
+        let minFret = arpeggioArguments.GetResult ArpeggioArguments.MinFret
+        let maxFret = arpeggioArguments.GetResult ArpeggioArguments.MaxFret
 
-    let chord = handleChord chordArguments
+        let chord = handleChord chordArguments parser
 
-    Vaughan.Domain.Arpeggio(guitarArpeggio minFret maxFret chord)
+        Vaughan.Domain.Arpeggio(guitarArpeggio minFret maxFret chord)
+    with | :? ArguParseException as e ->
+        printf "%s" e.Message
+        let parser = parser.GetSubCommandParser <@ Arpeggio @>
+        parser.PrintCommandLineSyntax(usageStringCharacterWidth = 20) |> printf "%s\n\n"
+        Environment.Exit(-1)
+        Rest
 
-let handleTabScale (scaleArguments:ParseResults<ScaleArguments>) = 
-    let root = scaleArguments.GetResult ScaleArguments.Root
-    let scaleType = scaleArguments.GetResult ScaleArguments.Type
-    let minFret = scaleArguments.GetResult ScaleArguments.MinFret
-    let maxFret = scaleArguments.GetResult ScaleArguments.MaxFret
+let handleTabScale (scaleArguments:ParseResults<ScaleArguments>) (parser:ArgumentParser<TabArguments>) = 
+    try
+        let root = scaleArguments.GetResult ScaleArguments.Root
+        let scaleType = scaleArguments.GetResult ScaleArguments.Type
+        let minFret = scaleArguments.GetResult ScaleArguments.MinFret
+        let maxFret = scaleArguments.GetResult ScaleArguments.MaxFret
 
-    Vaughan.Domain.Scale(guitarScale minFret maxFret (createScale scaleType root))
+        Vaughan.Domain.Scale(guitarScale minFret maxFret (createScale scaleType root))
+    with | :? ArguParseException as e ->
+        printf "%s" e.Message
+        let parser = parser.GetSubCommandParser <@ Scale @>
+        parser.PrintCommandLineSyntax(usageStringCharacterWidth = 20) |> printf "%s\n\n"
+        Environment.Exit(-1)
+        Rest
 
-let handleTab (tabArguments:ParseResults<TabArguments>) =
-    match tabArguments.GetSubCommand() with
-    | Chord c -> handleTabChord c
-    | Scale s -> handleTabScale s
-    | Arpeggio a -> handleTabArpeggio a
+let handleTab (tabArguments:ParseResults<TabArguments>) (parser:ArgumentParser<CLIArguments>) =
+    try 
+        let tabParser = parser.GetSubCommandParser <@ Tab @>
+        match tabArguments.GetSubCommand() with
+        | Chord c -> handleTabChord c tabParser
+        | Scale s -> handleTabScale s tabParser
+        | Arpeggio a -> handleTabArpeggio a tabParser
+    with | :? ArguParseException as e ->
+        printf "%s" e.Message
+        let parser = parser.GetSubCommandParser <@ Tab @>
+        parser.PrintCommandLineSyntax(usageStringCharacterWidth = 20) |> printf "%s\n\n"
+        Environment.Exit(-1)
+        Rest
 
 let handleUsage (parser:ArgumentParser<CLIArguments>) = 
     let tabParser = parser.GetSubCommandParser <@ Tab @>
@@ -173,10 +209,9 @@ let main argv =
         let results = parser.ParseCommandLine(argv)
 
         match results.GetSubCommand() with
-        | Tab t -> [StandardTunning; Start] @ [handleTab t] @ [End] |> renderTab |> printf "%s\n"
+        | Tab t -> [StandardTunning; Start] @ [handleTab t parser] @ [End] |> renderTab |> printf "%s\n"
 
         0
-    with 
-    | _ ->
+    with _ ->
         (handleUsage parser) |> ignore
         0
