@@ -122,7 +122,6 @@ let handleChord (chordArguments:ParseResults<ChordArguments>) (parser:ArgumentPa
     try
         let root = chordArguments.GetResult ChordArguments.Root
         let quality = chordArguments.GetResult ChordArguments.Quality
-
         parseChord (sprintf "%s %s" root quality)
     with | :? ArguParseException as e ->
         printf "%s" e.Message
@@ -153,7 +152,6 @@ let handleTabArpeggio (arpeggioArguments:ParseResults<ArpeggioArguments>) (parse
         let chordArguments = arpeggioArguments.GetResult ArpeggioArguments.Chord
         let minFret = arpeggioArguments.GetResult ArpeggioArguments.MinFret
         let maxFret = arpeggioArguments.GetResult ArpeggioArguments.MaxFret
-
         let chord = handleChord chordArguments parser
 
         Vaughan.Domain.Arpeggio(guitarArpeggio minFret maxFret chord)
