@@ -1,9 +1,22 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
+    <TargetFramework>netcoreapp2.0</TargetFramework>
+    <PackageId>VaughanCLI</PackageId>
+    <Title>VaughanCLI</Title>
+    <Authors>Pedro Moreira Santos</Authors>
+    <PackageLicenseUrl>https://github.com/pedromsantos/vaughan/blob/master/LICENSE</PackageLicenseUrl>
+    <PackageProjectUrl>https://github.com/pedromsantos/vaughan</PackageProjectUrl>
+    <Description>Guitar tab console app, generate scales, chords and arpeggios tab in the console</Description>
+    <PackageReleaseNotes></PackageReleaseNotes>
+    <Copyright>Copyright 2018</Copyright>
+    <PackageTags>Music Guitar Tab CLI</PackageTags>
+    <Owners>Pedro Moreira Santos</Owners>
+    <Summary>Guitar tab console app</Summary>
+  </PropertyGroup>
+  <PropertyGroup>
     <OutputType>Exe</OutputType>
     <TargetFramework>netcoreapp2.0</TargetFramework>
     <FSharpCoreImplicitPackageVersion>4.3.*</FSharpCoreImplicitPackageVersion>
-    <IsPackable>false</IsPackable>
   </PropertyGroup>
   <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugType>Full</DebugType>

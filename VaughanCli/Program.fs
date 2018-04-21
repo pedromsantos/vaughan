@@ -1,19 +1,10 @@
 ﻿open Vaughan.Domain
-open Vaughan.Notes
 open Vaughan.Chords
-open Vaughan.Keys
-open Vaughan.Scales
-open Vaughan.ScaleHarmonizer
 open Vaughan.Guitar
 open Vaughan.GuitarTab
-open Vaughan.Infrastructure
-open Vaughan.ImprovisationGuitar
-open Vaughan.ChordVoiceLeading
 open Vaughan.SpeechToMusic
 
 open System
-open System.IO
-open System.Diagnostics
 open Argu
 
 type ChordForms =
