@@ -118,7 +118,7 @@ let handleError (e:ArguParseException) (parser:ArgumentParser<_>) subCommand =
 let handleChord (chordArguments:ParseResults<ChordArguments>) (parser:ArgumentParser<TabArguments>) = 
     try
         let root = chordArguments.GetResult ChordArguments.Root
-        let quality = chordArguments.GetResult ChordArguments.Quality
+        let quality = chordArguments.GetResult(ChordArguments.Quality, defaultValue = "Major")
         
         parseChord (sprintf "%s %s" root quality)
     with | :? ArguParseException as e ->
@@ -127,9 +127,9 @@ let handleChord (chordArguments:ParseResults<ChordArguments>) (parser:ArgumentPa
 
 let handleTabChord (chordArguments:ParseResults<ChordArguments>) (parser:ArgumentParser<TabArguments>)=
     try
-        let bass = chordArguments.GetResult Bass
-        let form = chordArguments.GetResult ChordArguments.Form
-        let inversion = chordArguments.GetResult ChordArguments.Inversion
+        let bass = chordArguments.GetResult(Bass, defaultValue = BassStrings.Sixth)
+        let form = chordArguments.GetResult(ChordArguments.Form, defaultValue = ChordForms.Closed) 
+        let inversion = chordArguments.GetResult(ChordArguments.Inversion, defaultValue = ChordInversions.Root) 
         let chord = (handleChord chordArguments parser) 
                     |> handleChordForm form 
                     |> (handleChordInversion inversion)
@@ -142,8 +142,8 @@ let handleTabChord (chordArguments:ParseResults<ChordArguments>) (parser:Argumen
 let handleTabArpeggio (arpeggioArguments:ParseResults<ArpeggioArguments>) (parser:ArgumentParser<TabArguments>) = 
     try
         let chordArguments = arpeggioArguments.GetResult ArpeggioArguments.Chord
-        let minFret = arpeggioArguments.GetResult ArpeggioArguments.MinFret
-        let maxFret = arpeggioArguments.GetResult ArpeggioArguments.MaxFret
+        let minFret = arpeggioArguments.GetResult(ArpeggioArguments.MinFret, defaultValue = 0)
+        let maxFret = arpeggioArguments.GetResult(ArpeggioArguments.MaxFret, defaultValue = 3)
         let chord = handleChord chordArguments parser
 
         Vaughan.Domain.Arpeggio(guitarArpeggio minFret maxFret chord)
@@ -154,9 +154,9 @@ let handleTabArpeggio (arpeggioArguments:ParseResults<ArpeggioArguments>) (parse
 let handleTabScale (scaleArguments:ParseResults<ScaleArguments>) (parser:ArgumentParser<TabArguments>) = 
     try
         let root = scaleArguments.GetResult ScaleArguments.Root
-        let scaleType = scaleArguments.GetResult ScaleArguments.Type
-        let minFret = scaleArguments.GetResult ScaleArguments.MinFret
-        let maxFret = scaleArguments.GetResult ScaleArguments.MaxFret
+        let scaleType = scaleArguments.GetResult(ScaleArguments.Type, defaultValue = "ionian")
+        let minFret = scaleArguments.GetResult(ScaleArguments.MinFret, defaultValue = 0)
+        let maxFret = scaleArguments.GetResult(ScaleArguments.MaxFret, defaultValue = 3)
 
         let scale = parseScale (sprintf "%s %s" root scaleType)
         
