@@ -74,9 +74,8 @@ with
             | Bass _ -> "specify a guitar bass string for the chords."
             | Shape _ -> "Specify a shape for the chords."
 and VoiceLeadArguments =
-    | [<AltCommandLine("-c")>]Chords of string list
+    | Chords of ParseResults<ChordsArguments>
     | [<AltCommandLine("-b")>]Bass of BassStrings
-    | [<AltCommandLine("-s")>]Shape of ChordShapes
     | [<AltCommandLine("-v")>]Voice of VoiceLeadOptions
 with
     interface IArgParserTemplate with
@@ -84,7 +83,6 @@ with
             match s with
             | Chords _ -> "Specify a list of chords."
             | Bass _ -> "specify a guitar bass string for the chords."
-            | Shape _ -> "Specify a shape for the chords."
             | Voice _ -> "Specify a chord voice to use as lead."
 and ArpeggioArguments =
     | [<AltCommandLine("-c")>]Chord of ParseResults<ChordArguments>
@@ -204,17 +202,28 @@ let handleTabScale (arguments:ParseResults<ScaleArguments>) (parser:ArgumentPars
         handleError e parser Scale
         Rest
 
-let handleTabChords (arguments:ParseResults<ChordsArguments>) (parser:ArgumentParser<TabArguments>) =
+let handleChords (arguments:ParseResults<ChordsArguments>) (parser:ArgumentParser<TabArguments>) =
     try
-        let bass = arguments.GetResult(ChordsArguments.Bass, defaultValue = BassStrings.Sixth)
         let shape = arguments.GetResult(ChordsArguments.Shape, defaultValue = ChordShapes.Closed)
         let chordNames = arguments.GetResult(ChordsArguments.Chords, defaultValue = [""])
 
         let toShape = handleChordShape shape
-        let toGuitarChord = guitarChord (handleGuitarString bass) 
 
         chordNames
-        |> List.map (parseChord >> toShape >> toGuitarChord >> Vaughan.Domain.Chord)
+        |> List.map (parseChord >> toShape)
+
+    with | :? ArguParseException as e ->
+        handleError e parser Chords
+        []
+
+let handleTabChords (arguments:ParseResults<ChordsArguments>) (parser:ArgumentParser<TabArguments>) =
+    try
+        let bass = arguments.GetResult(ChordsArguments.Bass, defaultValue = BassStrings.Sixth)
+        let toGuitarChord = guitarChord (handleGuitarString bass)
+        let chords = handleChords arguments parser
+
+        chords
+        |> List.map (toGuitarChord >> Vaughan.Domain.Chord)
 
     with | :? ArguParseException as e ->
         handleError e parser Chords
@@ -223,16 +232,14 @@ let handleTabChords (arguments:ParseResults<ChordsArguments>) (parser:ArgumentPa
 let handleTabVoiceLeadChords (arguments:ParseResults<VoiceLeadArguments>) (parser:ArgumentParser<TabArguments>) =
     try
         let bass = arguments.GetResult(VoiceLeadArguments.Bass, defaultValue = BassStrings.Sixth)
-        let shape = arguments.GetResult(VoiceLeadArguments.Shape, defaultValue = ChordShapes.Closed)
-        let chordNames = arguments.GetResult(VoiceLeadArguments.Chords, defaultValue = [""])
         let leadingVoice = arguments.GetResult(VoiceLeadArguments.Voice, defaultValue = VoiceLeadOptions.Lead) 
-        
-        let toShape = handleChordShape shape
+        let chordArguments = arguments.GetResult VoiceLeadArguments.Chords
+
+        let chords = handleChords chordArguments parser
         let toGuitarChord = guitarChord (handleGuitarString bass)
         let voiceLeadStrategy = handleVoiceLead leadingVoice
 
-        chordNames
-        |> List.map (parseChord >> toShape)
+        chords
         |> voiceLead voiceLeadStrategy 
         |> List.map (toGuitarChord >> Vaughan.Domain.Chord)
 
