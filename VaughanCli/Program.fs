@@ -154,22 +154,22 @@ let handleError (e:ArguParseException) (parser:ArgumentParser<_>) subCommand =
     parser.PrintCommandLineSyntax(usageStringCharacterWidth = 20) |> printf "%s\n\n"
     Environment.Exit(-1) 
 
-let handleChord (chordArguments:ParseResults<ChordArguments>) (parser:ArgumentParser<TabArguments>) = 
+let handleChord (arguments:ParseResults<ChordArguments>) (parser:ArgumentParser<TabArguments>) = 
     try
-        let root = chordArguments.GetResult ChordArguments.Root
-        let quality = chordArguments.GetResult(ChordArguments.Quality, defaultValue = "Major")
+        let root = arguments.GetResult ChordArguments.Root
+        let quality = arguments.GetResult(ChordArguments.Quality, defaultValue = "Major")
         
         parseChord (sprintf "%s %s" root quality)
     with | :? ArguParseException as e ->
         handleError e parser Chord 
         chord C Major
 
-let handleTabChord (chordArguments:ParseResults<ChordArguments>) (parser:ArgumentParser<TabArguments>) =
+let handleTabChord (arguments:ParseResults<ChordArguments>) (parser:ArgumentParser<TabArguments>) =
     try
-        let bass = chordArguments.GetResult(ChordArguments.Bass, defaultValue = BassStrings.Sixth)
-        let shape = chordArguments.GetResult(ChordArguments.Shape, defaultValue = ChordShapes.Closed)
-        let inversion = chordArguments.GetResult(ChordArguments.Inversion, defaultValue = ChordInversions.Root)
-        let chord = (handleChord chordArguments parser) 
+        let bass = arguments.GetResult(ChordArguments.Bass, defaultValue = BassStrings.Sixth)
+        let shape = arguments.GetResult(ChordArguments.Shape, defaultValue = ChordShapes.Closed)
+        let inversion = arguments.GetResult(ChordArguments.Inversion, defaultValue = ChordInversions.Root)
+        let chord = (handleChord arguments parser) 
                     |> handleChordShape shape 
                     |> (handleChordInversion inversion)
 
@@ -178,11 +178,11 @@ let handleTabChord (chordArguments:ParseResults<ChordArguments>) (parser:Argumen
         handleError e parser Chord
         Rest
 
-let handleTabArpeggio (arpeggioArguments:ParseResults<ArpeggioArguments>) (parser:ArgumentParser<TabArguments>) = 
+let handleTabArpeggio (arguments:ParseResults<ArpeggioArguments>) (parser:ArgumentParser<TabArguments>) = 
     try
-        let chordArguments = arpeggioArguments.GetResult ArpeggioArguments.Chord
-        let minFret = arpeggioArguments.GetResult(ArpeggioArguments.MinFret, defaultValue = 0)
-        let maxFret = arpeggioArguments.GetResult(ArpeggioArguments.MaxFret, defaultValue = 3)
+        let chordArguments = arguments.GetResult ArpeggioArguments.Chord
+        let minFret = arguments.GetResult(ArpeggioArguments.MinFret, defaultValue = 0)
+        let maxFret = arguments.GetResult(ArpeggioArguments.MaxFret, defaultValue = 3)
         let chord = handleChord chordArguments parser
 
         Vaughan.Domain.Arpeggio(guitarArpeggio minFret maxFret chord)
@@ -190,12 +190,12 @@ let handleTabArpeggio (arpeggioArguments:ParseResults<ArpeggioArguments>) (parse
         handleError e parser Arpeggio
         Rest
 
-let handleTabScale (scaleArguments:ParseResults<ScaleArguments>) (parser:ArgumentParser<TabArguments>) = 
+let handleTabScale (arguments:ParseResults<ScaleArguments>) (parser:ArgumentParser<TabArguments>) = 
     try
-        let root = scaleArguments.GetResult ScaleArguments.Root
-        let scaleType = scaleArguments.GetResult(ScaleArguments.Type, defaultValue = "ionian")
-        let minFret = scaleArguments.GetResult(ScaleArguments.MinFret, defaultValue = 0)
-        let maxFret = scaleArguments.GetResult(ScaleArguments.MaxFret, defaultValue = 3)
+        let root = arguments.GetResult ScaleArguments.Root
+        let scaleType = arguments.GetResult(ScaleArguments.Type, defaultValue = "ionian")
+        let minFret = arguments.GetResult(ScaleArguments.MinFret, defaultValue = 0)
+        let maxFret = arguments.GetResult(ScaleArguments.MaxFret, defaultValue = 3)
 
         let scale = parseScale (sprintf "%s %s" root scaleType)
         
@@ -204,28 +204,28 @@ let handleTabScale (scaleArguments:ParseResults<ScaleArguments>) (parser:Argumen
         handleError e parser Scale
         Rest
 
-let handleTabChords (chordsArguments:ParseResults<ChordsArguments>) (parser:ArgumentParser<TabArguments>) =
+let handleTabChords (arguments:ParseResults<ChordsArguments>) (parser:ArgumentParser<TabArguments>) =
     try
-        let bass = chordsArguments.GetResult(ChordsArguments.Bass, defaultValue = BassStrings.Sixth)
-        let shape = chordsArguments.GetResult(ChordsArguments.Shape, defaultValue = ChordShapes.Closed)
-        let chordNames = chordsArguments.GetResult(ChordsArguments.Chords, defaultValue = [""]) 
-        
-        let shape = handleChordShape shape
-        let guitarChord = guitarChord (handleGuitarString bass) 
+        let bass = arguments.GetResult(ChordsArguments.Bass, defaultValue = BassStrings.Sixth)
+        let shape = arguments.GetResult(ChordsArguments.Shape, defaultValue = ChordShapes.Closed)
+        let chordNames = arguments.GetResult(ChordsArguments.Chords, defaultValue = [""])
+
+        let toShape = handleChordShape shape
+        let toGuitarChord = guitarChord (handleGuitarString bass) 
 
         chordNames
-        |> List.map (parseChord >> shape >> guitarChord >> Vaughan.Domain.Chord)
+        |> List.map (parseChord >> toShape >> toGuitarChord >> Vaughan.Domain.Chord)
 
     with | :? ArguParseException as e ->
         handleError e parser Chords
         []
 
-let handleTabVoiceLeadChords (voiceLeadArguments:ParseResults<VoiceLeadArguments>) (parser:ArgumentParser<TabArguments>) =
+let handleTabVoiceLeadChords (arguments:ParseResults<VoiceLeadArguments>) (parser:ArgumentParser<TabArguments>) =
     try
-        let bass = voiceLeadArguments.GetResult(VoiceLeadArguments.Bass, defaultValue = BassStrings.Sixth)
-        let shape = voiceLeadArguments.GetResult(VoiceLeadArguments.Shape, defaultValue = ChordShapes.Closed)
-        let chordNames = voiceLeadArguments.GetResult(VoiceLeadArguments.Chords, defaultValue = [""])
-        let leadingVoice = voiceLeadArguments.GetResult(VoiceLeadArguments.Voice, defaultValue = VoiceLeadOptions.Lead) 
+        let bass = arguments.GetResult(VoiceLeadArguments.Bass, defaultValue = BassStrings.Sixth)
+        let shape = arguments.GetResult(VoiceLeadArguments.Shape, defaultValue = ChordShapes.Closed)
+        let chordNames = arguments.GetResult(VoiceLeadArguments.Chords, defaultValue = [""])
+        let leadingVoice = arguments.GetResult(VoiceLeadArguments.Voice, defaultValue = VoiceLeadOptions.Lead) 
         
         let toShape = handleChordShape shape
         let toGuitarChord = guitarChord (handleGuitarString bass)
@@ -240,10 +240,10 @@ let handleTabVoiceLeadChords (voiceLeadArguments:ParseResults<VoiceLeadArguments
         handleError e parser Chords
         []
 
-let handleTab (tabArguments:ParseResults<TabArguments>) (parser:ArgumentParser<CLIArguments>) =
+let handleTab (arguments:ParseResults<TabArguments>) (parser:ArgumentParser<CLIArguments>) =
     try
         let tabParser = parser.GetSubCommandParser <@ Tab @>
-        match tabArguments.GetSubCommand() with
+        match arguments.GetSubCommand() with
         | Chord c -> [handleTabChord c tabParser]
         | Chords cs -> handleTabChords cs tabParser 
         | VoiceLead v -> handleTabVoiceLeadChords v tabParser 
