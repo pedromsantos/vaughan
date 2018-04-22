@@ -168,8 +168,8 @@ namespace Vaughan
 
         let private qualityParser: Parser<_> =
             any [
-                    parseMinorQuality
                     parseMajorQuality
+                    parseMinorQuality
                     parseAugmentedQuality
                     parseDiminishedQuality
                     parseDominantQuality

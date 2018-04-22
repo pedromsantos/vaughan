@@ -31,8 +31,8 @@ let chords = [
               chord G Minor7;
              ]
 
-let voiceleadingChords guitarString form =
-    (voiceLead lead (chords |> List.map form))
+let voiceleadingChords guitarString shape =
+    (voiceLead lead (chords |> List.map shape))
     |> List.map ((fun c -> guitarChord guitarString c) >> Chord)
 
 [StandardTunning; Start] @ (voiceleadingChords FourthString toDrop2) @ [End]

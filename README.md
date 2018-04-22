@@ -4,6 +4,9 @@
 
 Vaughan, named after blues guitarist [Stevie Ray Vaughan](https://en.wikipedia.org/wiki/Stevie_Ray_Vaughan), is a library for working with music theory concepts, music notation, guitar tab notation and programmatically creating music.
 
+## Maintainers
+* Pedro Santos ([@pedromsantos](https://twitter.com/pedromsantos))
+
 ## NuGet package
 
 [![NuGet](http://img.shields.io/nuget/v/Vaughan.svg)](https://www.nuget.org/packages/Vaughan)
