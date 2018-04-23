@@ -1,9 +1,12 @@
 ﻿open Vaughan.Domain
 open Vaughan.Chords
+open Vaughan.Scales
 open Vaughan.Guitar
 open Vaughan.GuitarTab
 open Vaughan.SpeechToMusic
+open Vaughan.Infrastructure
 open Vaughan.ChordVoiceLeading
+open Vaughan.ImprovisationGuitar
 
 open System
 open Argu
@@ -47,7 +50,8 @@ with
             | Type _ -> "Specify a scale type." 
             | MinFret _ -> "specify the minimum fret for the scale."
             | MaxFret _ -> "specify the maximum fret for the scale."
-and ChordArguments =
+
+type ChordArguments =
     | [<AltCommandLine("-r")>]Root of string
     | [<AltCommandLine("-b")>]Bass of BassStrings
     | [<AltCommandLine("-q")>]Quality of string
@@ -62,7 +66,8 @@ with
             | Shape _ -> "Specify a chord form."
             | Inversion _ -> "specify a chord inversion."
             | Bass _ -> "specify a guitar bass string for the chord."
-and ChordsArguments =
+
+type ChordsArguments =
     | [<AltCommandLine("-c")>]Chords of string list
     | [<AltCommandLine("-b")>]Bass of BassStrings
     | [<AltCommandLine("-s")>]Shape of ChordShapes 
@@ -73,7 +78,8 @@ with
             | Chords _ -> "Specify a list of chords."
             | Bass _ -> "specify a guitar bass string for the chords."
             | Shape _ -> "Specify a shape for the chords."
-and VoiceLeadArguments =
+
+type VoiceLeadArguments =
     | Chords of ParseResults<ChordsArguments>
     | [<AltCommandLine("-b")>]Bass of BassStrings
     | [<AltCommandLine("-v")>]Voice of VoiceLeadOptions
@@ -84,7 +90,8 @@ with
             | Chords _ -> "Specify a list of chords."
             | Bass _ -> "specify a guitar bass string for the chords."
             | Voice _ -> "Specify a chord voice to use as lead."
-and ArpeggioArguments =
+
+type ArpeggioArguments =
     | [<AltCommandLine("-c")>]Chord of ParseResults<ChordArguments>
     | [<AltCommandLine("-min")>]MinFret of int
     | [<AltCommandLine("-max")>]MaxFret of int
@@ -95,12 +102,26 @@ with
             | Chord _ -> "Specify a chord." 
             | MinFret _ -> "specify the minimum fret for the arpeggio."
             | MaxFret _ -> "specify the maximum fret for the arpeggio."
-and CLIArguments =
+
+type CommonScalesArguments =
+    | [<AltCommandLine("-c")>]Chords of string list
+    | [<AltCommandLine("-min")>]MinFret of int
+    | [<AltCommandLine("-max")>]MaxFret of int
+with
+    interface IArgParserTemplate with
+        member s.Usage =
+            match s with
+            | Chords _ -> "Specify a list of chords." 
+            | MinFret _ -> "specify the minimum fret for the arpeggio."
+            | MaxFret _ -> "specify the maximum fret for the arpeggio."
+
+type CLIArguments =
     | [<CliPrefix(CliPrefix.None)>][<AltCommandLine("-c")>]Chord of ParseResults<ChordArguments>
     | [<CliPrefix(CliPrefix.None)>][<AltCommandLine("-cs")>]Chords of ParseResults<ChordsArguments>
     | [<CliPrefix(CliPrefix.None)>][<AltCommandLine("-v")>]VoiceLead of ParseResults<VoiceLeadArguments>
     | [<CliPrefix(CliPrefix.None)>][<AltCommandLine("-s")>]Scale of ParseResults<ScaleArguments>
     | [<CliPrefix(CliPrefix.None)>][<AltCommandLine("-a")>]Arpeggio of ParseResults<ArpeggioArguments>
+    | [<CliPrefix(CliPrefix.None)>][<AltCommandLine("-sf")>]CommonScales of ParseResults<CommonScalesArguments>
 with
     interface IArgParserTemplate with
         member s.Usage =
@@ -110,6 +131,7 @@ with
             | VoiceLead _ -> "Specify a list of chords" 
             | Scale _ -> "Specify a scale"
             | Arpeggio _ -> "Specify an arpeggio"
+            | CommonScales _ -> "Find common scales for a specified a list of chords" 
 
 let handleGuitarString bass = 
     match bass with
@@ -240,13 +262,35 @@ let handleTabVoiceLeadChords (arguments:ParseResults<VoiceLeadArguments>) (parse
         handleError e parser Chords
         []
 
+let handleTabCommonScales (arguments:ParseResults<CommonScalesArguments>) (parser:ArgumentParser<CLIArguments>) =
+    try
+        let chordNames = arguments.GetResult(CommonScalesArguments.Chords, defaultValue = [""])
+        let minFret = arguments.GetResult(CommonScalesArguments.MinFret, defaultValue = 0)
+        let maxFret = arguments.GetResult(CommonScalesArguments.MaxFret, defaultValue = 3)
+
+        let printScaleName scaleName =
+            printf "%s\n" scaleName
+            scaleName
+
+        chordNames
+        |> List.map (parseChord >> scalesFitting)
+        |> commonElements (fun scalesPerChord -> scalesPerChord |> List.map scaleName)
+        |> Seq.fold (fun r s -> s::r) []
+        |> Seq.toList
+        |> List.map (printScaleName >> parseScale >> guitarScale minFret maxFret >> Vaughan.Domain.Scale)
+        
+    with | :? ArguParseException as e ->
+        handleError e parser Chords
+        []
+
 let handleTab (arguments:ParseResults<CLIArguments>) (parser:ArgumentParser<CLIArguments>) =
     match arguments.GetSubCommand() with
     | Chord c -> [handleTabChord c parser]
     | Chords cs -> handleTabChords cs parser 
-    | VoiceLead v -> handleTabVoiceLeadChords v parser 
-    | Scale s -> [handleTabScale s parser]
+    | VoiceLead v -> handleTabVoiceLeadChords v parser
     | Arpeggio a -> [handleTabArpeggio a parser]
+    | Scale s -> [handleTabScale s parser]
+    | CommonScales s -> handleTabCommonScales s parser
 
 [<EntryPoint>]
 let main argv =
