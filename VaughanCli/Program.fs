@@ -95,7 +95,7 @@ with
             | Chord _ -> "Specify a chord." 
             | MinFret _ -> "specify the minimum fret for the arpeggio."
             | MaxFret _ -> "specify the maximum fret for the arpeggio."
-and TabArguments =
+and CLIArguments =
     | [<CliPrefix(CliPrefix.None)>][<AltCommandLine("-c")>]Chord of ParseResults<ChordArguments>
     | [<CliPrefix(CliPrefix.None)>][<AltCommandLine("-cs")>]Chords of ParseResults<ChordsArguments>
     | [<CliPrefix(CliPrefix.None)>][<AltCommandLine("-v")>]VoiceLead of ParseResults<VoiceLeadArguments>
@@ -110,13 +110,6 @@ with
             | VoiceLead _ -> "Specify a list of chords" 
             | Scale _ -> "Specify a scale"
             | Arpeggio _ -> "Specify an arpeggio"
-and CLIArguments =
-    | [<CliPrefix(CliPrefix.None)>]Tab of ParseResults<TabArguments>
-with
-    interface IArgParserTemplate with
-        member s.Usage =
-            match s with
-            | Tab _ -> "Create tab for <option>."
 
 let handleGuitarString bass = 
     match bass with
@@ -152,7 +145,7 @@ let handleError (e:ArguParseException) (parser:ArgumentParser<_>) subCommand =
     parser.PrintCommandLineSyntax(usageStringCharacterWidth = 20) |> printf "%s\n\n"
     Environment.Exit(-1) 
 
-let handleChord (arguments:ParseResults<ChordArguments>) (parser:ArgumentParser<TabArguments>) = 
+let handleChord (arguments:ParseResults<ChordArguments>) (parser:ArgumentParser<CLIArguments>) = 
     try
         let root = arguments.GetResult ChordArguments.Root
         let quality = arguments.GetResult(ChordArguments.Quality, defaultValue = "Major")
@@ -162,7 +155,7 @@ let handleChord (arguments:ParseResults<ChordArguments>) (parser:ArgumentParser<
         handleError e parser Chord 
         chord C Major
 
-let handleTabChord (arguments:ParseResults<ChordArguments>) (parser:ArgumentParser<TabArguments>) =
+let handleTabChord (arguments:ParseResults<ChordArguments>) (parser:ArgumentParser<CLIArguments>) =
     try
         let bass = arguments.GetResult(ChordArguments.Bass, defaultValue = BassStrings.Sixth)
         let shape = arguments.GetResult(ChordArguments.Shape, defaultValue = ChordShapes.Closed)
@@ -176,7 +169,7 @@ let handleTabChord (arguments:ParseResults<ChordArguments>) (parser:ArgumentPars
         handleError e parser Chord
         Rest
 
-let handleTabArpeggio (arguments:ParseResults<ArpeggioArguments>) (parser:ArgumentParser<TabArguments>) = 
+let handleTabArpeggio (arguments:ParseResults<ArpeggioArguments>) (parser:ArgumentParser<CLIArguments>) = 
     try
         let chordArguments = arguments.GetResult ArpeggioArguments.Chord
         let minFret = arguments.GetResult(ArpeggioArguments.MinFret, defaultValue = 0)
@@ -188,7 +181,7 @@ let handleTabArpeggio (arguments:ParseResults<ArpeggioArguments>) (parser:Argume
         handleError e parser Arpeggio
         Rest
 
-let handleTabScale (arguments:ParseResults<ScaleArguments>) (parser:ArgumentParser<TabArguments>) = 
+let handleTabScale (arguments:ParseResults<ScaleArguments>) (parser:ArgumentParser<CLIArguments>) = 
     try
         let root = arguments.GetResult ScaleArguments.Root
         let scaleType = arguments.GetResult(ScaleArguments.Type, defaultValue = "ionian")
@@ -202,7 +195,7 @@ let handleTabScale (arguments:ParseResults<ScaleArguments>) (parser:ArgumentPars
         handleError e parser Scale
         Rest
 
-let handleChords (arguments:ParseResults<ChordsArguments>) (parser:ArgumentParser<TabArguments>) =
+let handleChords (arguments:ParseResults<ChordsArguments>) (parser:ArgumentParser<CLIArguments>) =
     try
         let shape = arguments.GetResult(ChordsArguments.Shape, defaultValue = ChordShapes.Closed)
         let chordNames = arguments.GetResult(ChordsArguments.Chords, defaultValue = [""])
@@ -216,7 +209,7 @@ let handleChords (arguments:ParseResults<ChordsArguments>) (parser:ArgumentParse
         handleError e parser Chords
         []
 
-let handleTabChords (arguments:ParseResults<ChordsArguments>) (parser:ArgumentParser<TabArguments>) =
+let handleTabChords (arguments:ParseResults<ChordsArguments>) (parser:ArgumentParser<CLIArguments>) =
     try
         let bass = arguments.GetResult(ChordsArguments.Bass, defaultValue = BassStrings.Sixth)
         let toGuitarChord = guitarChord (handleGuitarString bass)
@@ -229,7 +222,7 @@ let handleTabChords (arguments:ParseResults<ChordsArguments>) (parser:ArgumentPa
         handleError e parser Chords
         []
 
-let handleTabVoiceLeadChords (arguments:ParseResults<VoiceLeadArguments>) (parser:ArgumentParser<TabArguments>) =
+let handleTabVoiceLeadChords (arguments:ParseResults<VoiceLeadArguments>) (parser:ArgumentParser<CLIArguments>) =
     try
         let bass = arguments.GetResult(VoiceLeadArguments.Bass, defaultValue = BassStrings.Sixth)
         let leadingVoice = arguments.GetResult(VoiceLeadArguments.Voice, defaultValue = VoiceLeadOptions.Lead) 
@@ -247,18 +240,13 @@ let handleTabVoiceLeadChords (arguments:ParseResults<VoiceLeadArguments>) (parse
         handleError e parser Chords
         []
 
-let handleTab (arguments:ParseResults<TabArguments>) (parser:ArgumentParser<CLIArguments>) =
-    try
-        let tabParser = parser.GetSubCommandParser <@ Tab @>
-        match arguments.GetSubCommand() with
-        | Chord c -> [handleTabChord c tabParser]
-        | Chords cs -> handleTabChords cs tabParser 
-        | VoiceLead v -> handleTabVoiceLeadChords v tabParser 
-        | Scale s -> [handleTabScale s tabParser]
-        | Arpeggio a -> [handleTabArpeggio a tabParser]
-    with | :? ArguParseException as e ->
-        handleError e parser Tab
-        [Rest]
+let handleTab (arguments:ParseResults<CLIArguments>) (parser:ArgumentParser<CLIArguments>) =
+    match arguments.GetSubCommand() with
+    | Chord c -> [handleTabChord c parser]
+    | Chords cs -> handleTabChords cs parser 
+    | VoiceLead v -> handleTabVoiceLeadChords v parser 
+    | Scale s -> [handleTabScale s parser]
+    | Arpeggio a -> [handleTabArpeggio a parser]
 
 [<EntryPoint>]
 let main argv =
@@ -266,9 +254,7 @@ let main argv =
     
     try
         let results = parser.ParseCommandLine(argv)
-
-        match results.GetSubCommand() with
-        | Tab t -> [StandardTunning; Start] @ handleTab t parser @ [End] |> renderTab |> printf "%s\n"
+        [StandardTunning; Start] @ handleTab results parser @ [End] |> renderTab |> printf "%s\n"
 
         0
     with e ->
