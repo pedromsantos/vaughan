@@ -111,8 +111,20 @@ with
         member s.Usage =
             match s with
             | Chords _ -> "Specify a list of chords." 
-            | MinFret _ -> "specify the minimum fret for the arpeggio."
-            | MaxFret _ -> "specify the maximum fret for the arpeggio."
+            | MinFret _ -> "specify the minimum fret for the scale."
+            | MaxFret _ -> "specify the maximum fret for the scale."
+
+type ScalesForChordArguments =
+    | [<AltCommandLine("-c")>]Chord of string
+    | [<AltCommandLine("-min")>]MinFret of int
+    | [<AltCommandLine("-max")>]MaxFret of int
+with
+    interface IArgParserTemplate with
+        member s.Usage =
+            match s with
+            | Chord _ -> "Specify a chord." 
+            | MinFret _ -> "specify the minimum fret for the scale."
+            | MaxFret _ -> "specify the maximum fret for the scale."
 
 type CLIArguments =
     | [<CliPrefix(CliPrefix.None)>][<AltCommandLine("-c")>]Chord of ParseResults<ChordArguments>
@@ -120,7 +132,8 @@ type CLIArguments =
     | [<CliPrefix(CliPrefix.None)>][<AltCommandLine("-v")>]VoiceLead of ParseResults<VoiceLeadArguments>
     | [<CliPrefix(CliPrefix.None)>][<AltCommandLine("-s")>]Scale of ParseResults<ScaleArguments>
     | [<CliPrefix(CliPrefix.None)>][<AltCommandLine("-a")>]Arpeggio of ParseResults<ArpeggioArguments>
-    | [<CliPrefix(CliPrefix.None)>][<AltCommandLine("-sf")>]CommonScales of ParseResults<CommonScalesArguments>
+    | [<CliPrefix(CliPrefix.None)>][<AltCommandLine("-scs")>]CommonScales of ParseResults<CommonScalesArguments>
+    | [<CliPrefix(CliPrefix.None)>][<AltCommandLine("-sc")>]ScalesForChord of ParseResults<ScalesForChordArguments>
 with
     interface IArgParserTemplate with
         member s.Usage =
@@ -131,6 +144,7 @@ with
             | Scale _ -> "Specify a scale"
             | Arpeggio _ -> "Specify an arpeggio"
             | CommonScales _ -> "Find common scales for a specified a list of chords" 
+            | ScalesForChord _ -> "Find scales that contain all chord tones of a chord"
 
 let handleGuitarString bass = 
     match bass with
@@ -261,6 +275,23 @@ let handleTabVoiceLeadChords (arguments:ParseResults<VoiceLeadArguments>) (parse
         handleError e parser Chords
         []
 
+let handleTabScalesForChord (arguments:ParseResults<ScalesForChordArguments>) (parser:ArgumentParser<CLIArguments>) =
+    try
+        let chordName = arguments.GetResult(ScalesForChordArguments.Chord, defaultValue = "")
+        let minFret = arguments.GetResult(ScalesForChordArguments.MinFret, defaultValue = 0)
+        let maxFret = arguments.GetResult(ScalesForChordArguments.MaxFret, defaultValue = 3)
+
+        let scaleNamePair scale =
+            scaleName scale.Scale, Vaughan.Domain.Scale scale
+
+        chordName
+        |> (parseChord >> scalesFitting)
+        |> List.map (guitarScale minFret maxFret >> scaleNamePair)
+        
+    with | :? ArguParseException as e ->
+        handleError e parser Chords
+        [("", Rest)]
+
 let handleTabCommonScales (arguments:ParseResults<CommonScalesArguments>) (parser:ArgumentParser<CLIArguments>) =
     try
         let chordNames = arguments.GetResult(CommonScalesArguments.Chords, defaultValue = [""])
@@ -282,24 +313,26 @@ let handleTabCommonScales (arguments:ParseResults<CommonScalesArguments>) (parse
         handleError e parser Chords
         []
 
-let handleTab (arguments:ParseResults<CLIArguments>) (parser:ArgumentParser<CLIArguments>) =
+let renderTab tab =
+    [StandardTunning; Start] @ tab @ [End] |> renderTab |> printf "%s\n"
+
+let handleTab (arguments:ParseResults<CLIArguments>) (parser:ArgumentParser<CLIArguments>) renderer =
     match arguments.GetSubCommand() with
-    | Chord c -> [handleTabChord c parser]
-    | Chords cs -> handleTabChords cs parser 
-    | VoiceLead v -> handleTabVoiceLeadChords v parser
-    | Arpeggio a -> [handleTabArpeggio a parser]
-    | Scale s -> [handleTabScale s parser]
-    | CommonScales s -> handleTabCommonScales s parser
+    | Chord c -> renderer [handleTabChord c parser]
+    | Chords cs -> renderer (handleTabChords cs parser)
+    | VoiceLead v -> renderer (handleTabVoiceLeadChords v parser)
+    | Arpeggio a -> renderer ([handleTabArpeggio a parser])
+    | Scale s -> renderer ([handleTabScale s parser])
+    | CommonScales s -> renderer (handleTabCommonScales s parser)
+    | ScalesForChord sc -> (handleTabScalesForChord sc parser) |> List.iter (fun t -> printf "%s\n" (fst t); renderer [snd t])
+    0
 
 [<EntryPoint>]
 let main argv =
     let parser = ArgumentParser.Create<CLIArguments>(programName = "VaughanCLI", helpTextMessage = "Guitar tab CLI")
     
     try
-        let results = parser.ParseCommandLine(argv)
-        [StandardTunning; Start] @ handleTab results parser @ [End] |> renderTab |> printf "%s\n"
-
-        0
+        handleTab (parser.ParseCommandLine(argv)) parser renderTab
     with e ->
         printf "%s\n" e.Message
         0
