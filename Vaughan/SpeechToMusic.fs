@@ -154,6 +154,10 @@ namespace Vaughan
             any [
                     (stringCIReturn "diminished" Diminished);
                     (stringCIReturn "dim" Diminished)
+                    (stringCIReturn "Minor7b5" Minor7b5);
+                    (stringCIReturn "minor7b5" Minor7b5);
+                    (stringCIReturn "min7b5" Minor7b5);
+                    (stringReturn "m7b5" Minor7b5);
                 ] |> skipSpaces
 
         let private parseDominantQuality: Parser<_> =
@@ -168,10 +172,10 @@ namespace Vaughan
 
         let private qualityParser: Parser<_> =
             any [
-                    parseMajorQuality
-                    parseMinorQuality
                     parseAugmentedQuality
                     parseDiminishedQuality
+                    parseMajorQuality
+                    parseMinorQuality
                     parseDominantQuality
                 ] |> skipSpaces
 
