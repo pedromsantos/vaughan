@@ -6,7 +6,6 @@ open Vaughan.GuitarTab
 open Vaughan.SpeechToMusic
 open Vaughan.Infrastructure
 open Vaughan.ChordVoiceLeading
-open Vaughan.ImprovisationGuitar
 
 open System
 open Argu
