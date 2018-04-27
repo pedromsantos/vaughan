@@ -37,16 +37,14 @@ type TabSubCommands =
     | Arpeggio = 2
 
 type ScaleArguments =
-    | [<AltCommandLine("-r")>]Root of string
-    | [<AltCommandLine("-t")>]Type of string
+    | [<AltCommandLine("-s")>]Scale of string
     | [<AltCommandLine("-min")>]MinFret of int
     | [<AltCommandLine("-max")>]MaxFret of int
 with
     interface IArgParserTemplate with
         member s.Usage =
             match s with
-            | Root _ -> "Specify a root note." 
-            | Type _ -> "Specify a scale type." 
+            | Scale _ -> "Specify a scale." 
             | MinFret _ -> "specify the minimum fret for the scale."
             | MaxFret _ -> "specify the maximum fret for the scale."
 
@@ -215,12 +213,11 @@ let handleTabArpeggio (arguments:ParseResults<ArpeggioArguments>) (parser:Argume
 
 let handleTabScale (arguments:ParseResults<ScaleArguments>) (parser:ArgumentParser<CLIArguments>) = 
     try
-        let root = arguments.GetResult ScaleArguments.Root
-        let scaleType = arguments.GetResult(ScaleArguments.Type, defaultValue = "ionian")
+        let scaleArguments = arguments.GetResult ScaleArguments.Scale
         let minFret = arguments.GetResult(ScaleArguments.MinFret, defaultValue = 0)
         let maxFret = arguments.GetResult(ScaleArguments.MaxFret, defaultValue = 3)
 
-        let scale = parseScale (sprintf "%s %s" root scaleType)
+        let scale = parseScale scaleArguments 
         
         Vaughan.Domain.Scale(guitarScale minFret maxFret scale)
     with | :? ArguParseException as e ->
