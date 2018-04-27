@@ -2,11 +2,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio 15
 VisualStudioVersion = 15.0.27428.2037
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Vaughan", "Vaughan\Vaughan.fsproj", "{675750F0-C479-4274-B47B-00DADB6096EF}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "Vaughan", "Vaughan/Vaughan.fsproj", "{675750F0-C479-4274-B47B-00DADB6096EF}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "VaughanTests", "VaughanTests\VaughanTests.fsproj", "{95DFF539-C1B0-487A-A6E4-F0CD70D2FF32}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "VaughanTests", "VaughanTests/VaughanTests.fsproj", "{95DFF539-C1B0-487A-A6E4-F0CD70D2FF32}"
 EndProject
-Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "VaughanCli", "VaughanCli\VaughanCli.fsproj", "{5C9D03B5-5EF2-4BB3-AC39-952C7A4D73FD}"
+Project("{6EC3EE1D-3C4E-46DD-8F32-0CC8E7565705}") = "VaughanCli", "VaughanCli/VaughanCli.fsproj", "{5C9D03B5-5EF2-4BB3-AC39-952C7A4D73FD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
