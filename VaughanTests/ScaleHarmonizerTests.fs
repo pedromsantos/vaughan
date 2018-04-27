@@ -43,7 +43,7 @@ namespace VaughanTests
         let eFlatAug7 = {chord with Notes= [(EFlat, Root); (G, Third); (B, Fifth); (D, Seventh)]}
         let fMin7 = {chord with Notes= [(F, Root); (AFlat, Third); (C, Fifth); (EFlat, Seventh)]}
         let aFlatMaj7 = {chord with Notes= [(AFlat, Root); (C, Third); (EFlat, Fifth); (G, Seventh)]}
-        let bDim7 = {chord with Notes= [(B, Root); (D, Third); (F, Fifth); (AFlat, Seventh)]} 
+        let bDim7 = {chord with Notes= [(B, Root); (D, Third); (F, Fifth); (AFlat, Seventh)]}
 
         [<Fact>]
         let ``Should create triads for Ionian scale`` () =

@@ -50,6 +50,6 @@ namespace Vaughan
 
         let voiceLead:VoiceLead = fun strategy (chords:Chord List) ->
             chords
-            |> List.fold (fun acc chord -> 
+            |> List.fold (fun acc chord ->
                             if acc.Length = 0 then acc @ [chord]
                             else acc @ [invertionWithNoteClosestToNote chord (strategy (acc |> List.last)) strategy]) []

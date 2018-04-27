@@ -72,25 +72,25 @@ namespace Vaughan
 
         let private scaleContainAllChordTones scale chordTones =
             ( scale |> List.filter (fun x ->
-                                         (List.contains x chordTones)) |> List.sort) 
+                                         (List.contains x chordTones)) |> List.sort)
                                          = (chordTones |> List.sort)
 
         let scaleName scale =
             sprintf "%s %A" (noteName (scale.Notes.[0])) scale.Scale
 
-        let scaleNoteNames scale = 
-            sprintf "%s" (scale.Notes 
-                            |> List.map noteName 
+        let scaleNoteNames scale =
+            sprintf "%s" (scale.Notes
+                            |> List.map noteName
                             |> List.fold (fun r s -> r + s + " ") "")
 
         let scalesFitting (chord:Chord) =
             let chordTones = chord.Notes |> List.map fst
 
             [C; CSharp; DFlat; D; DSharp; EFlat; E; F; FSharp; GFlat; G; GSharp; AFlat; A; ASharp; BFlat; B]
-            |> List.map (createAllScalesFrom 
+            |> List.map (createAllScalesFrom
                             >> (fun scls -> scls
-                                            |> List.choose (fun scale -> 
-                                                (if scaleContainAllChordTones scale.Notes chordTones 
-                                                 then Some(scale) 
-                                                 else None)))) 
+                                            |> List.choose (fun scale ->
+                                                (if scaleContainAllChordTones scale.Notes chordTones
+                                                 then Some(scale)
+                                                 else None))))
             |> List.collect id

@@ -20,12 +20,12 @@
 
         [<Fact>]
         let ``Should generate SonicPi DSL for synth block with one instruction block``() =
-            WithSynth(Fm, [PlayNote(C, OneLine, [])]) 
+            WithSynth(Fm, [PlayNote(C, OneLine, [])])
             |> toSonicPiScript |> should equal "with_synth :fm do\nplay 48\nend"
 
         [<Fact>]
         let ``Should generate SonicPi DSL for synth block with two instructions block``() =
-            WithSynth(Fm, [PlayNote(C, OneLine, []); PlayNote(C, OneLine, [])]) 
+            WithSynth(Fm, [PlayNote(C, OneLine, []); PlayNote(C, OneLine, [])])
             |> toSonicPiScript |> should equal "with_synth :fm do\nplay 48\nplay 48\nend"
 
         [<Fact>]
@@ -34,8 +34,8 @@
 
         [<Fact>]
         let ``Should generate SonicPi DSL for play note``() =
-            PlayNote(C, OneLine, [])|> toSonicPiScript |> should equal "play 48" 
-        
+            PlayNote(C, OneLine, [])|> toSonicPiScript |> should equal "play 48"
+
         [<Fact>]
         let ``Should generate SonicPi DSL for play chord``() =
             PlayChord(chord C Major, TwoLine, []) |> toSonicPiScript |> should equal "play [60,64,67]"
@@ -50,22 +50,22 @@
 
         [<Fact>]
         let ``Should generate SonicPi DSL for fx one instruction block``() =
-            WithFx(Reverb, [], [PlayNote(C, OneLine, [])]) 
+            WithFx(Reverb, [], [PlayNote(C, OneLine, [])])
             |> toSonicPiScript |> should equal "with_fx :reverb do\nplay 48\nend"
 
         [<Fact>]
         let ``Should generate SonicPi DSL for fx two instructions block``() =
-            WithFx(Reverb, [], [PlayNote(C, OneLine, []); PlayNote(C, OneLine, [])]) 
+            WithFx(Reverb, [], [PlayNote(C, OneLine, []); PlayNote(C, OneLine, [])])
             |> toSonicPiScript |> should equal "with_fx :reverb do\nplay 48\nplay 48\nend"
 
         [<Fact>]
         let ``Should generate SonicPi DSL with one instruction block``() =
-            Statments([PlayNote(C, OneLine, []);]) 
+            Statments([PlayNote(C, OneLine, []);])
             |> toSonicPiScript |> should equal "play 48\n"
 
         [<Fact>]
         let ``Should generate SonicPi DSL with two instructions block``() =
-            Statments([UseSynth(Fm); PlayNote(C, OneLine, []);]) 
+            Statments([UseSynth(Fm); PlayNote(C, OneLine, []);])
             |> toSonicPiScript |> should equal "use_synth :fm\nplay 48\n"
 
         [<Fact>]
@@ -110,42 +110,42 @@
 
         [<Fact>]
         let ``Should generate SonicPi DSL for fx with amplitude``() =
-            WithFx(Reverb, [Amp(1.0<loud>)], [PlayNote(C, OneLine, [])]) 
+            WithFx(Reverb, [Amp(1.0<loud>)], [PlayNote(C, OneLine, [])])
             |> toSonicPiScript |> should equal "with_fx :reverb,amp:1.00 do\nplay 48\nend"
 
         [<Fact>]
         let ``Should generate SonicPi DSL for fx with pre amplitude``() =
-            WithFx(Reverb, [PreAmp(1.0<loud>)], [PlayNote(C, OneLine, [])]) 
+            WithFx(Reverb, [PreAmp(1.0<loud>)], [PlayNote(C, OneLine, [])])
             |> toSonicPiScript |> should equal "with_fx :reverb,pre_amp:1.00 do\nplay 48\nend"
 
         [<Fact>]
         let ``Should generate SonicPi DSL for fx with mix``() =
-            WithFx(Reverb, [Mix(1.0)], [PlayNote(C, OneLine, [])]) 
+            WithFx(Reverb, [Mix(1.0)], [PlayNote(C, OneLine, [])])
             |> toSonicPiScript |> should equal "with_fx :reverb,mix:1.00 do\nplay 48\nend"
 
         [<Fact>]
         let ``Should generate SonicPi DSL for fx with pre mix``() =
-            WithFx(Reverb, [PreMix(1.0)], [PlayNote(C, OneLine, [])]) 
+            WithFx(Reverb, [PreMix(1.0)], [PlayNote(C, OneLine, [])])
             |> toSonicPiScript |> should equal "with_fx :reverb,pre_mix:1.00 do\nplay 48\nend"
 
         [<Fact>]
         let ``Should generate SonicPi DSL for play pattern timed``() =
             PlayArpeggio([C; E; G; B], OneLine, [0.5<beat>], [])
-            |> toSonicPiScript |> should equal "play_pattern_timed [48,52,55,59],[0.50]" 
+            |> toSonicPiScript |> should equal "play_pattern_timed [48,52,55,59],[0.50]"
 
         [<Fact>]
         let ``Should generate SonicPi DSL for play pattern timed different times``() =
             PlayArpeggio([C; E; G; B], OneLine, [0.5<beat>; 0.75<beat>], [])
-            |> toSonicPiScript |> should equal "play_pattern_timed [48,52,55,59],[0.50,0.75]" 
+            |> toSonicPiScript |> should equal "play_pattern_timed [48,52,55,59],[0.50,0.75]"
 
         [<Fact>]
         let ``Should generate SonicPi iteration DSL with empty block``() =
-            Repeat(2, []) 
+            Repeat(2, [])
             |> toSonicPiScript |> should equal "2.times do\nend"
 
         [<Fact>]
         let ``Should generate SonicPi iteration DSL with non empty block``() =
-            Repeat(2, [PlayNote(C, OneLine, [])]) 
+            Repeat(2, [PlayNote(C, OneLine, [])])
             |> toSonicPiScript |> should equal "2.times do\nplay 48\nend"
 
         [<Fact>]
@@ -158,7 +158,7 @@
 
         [<Fact>]
         let ``Should generate SonicPi DSL for live loop block with non empty block``() =
-            LiveLoop("foo", [PlayNote(C, OneLine, [])]) 
+            LiveLoop("foo", [PlayNote(C, OneLine, [])])
             |> toSonicPiScript |> should equal (sprintf "live_loop :foo do\nplay 48\nend")
 
         [<Fact>]

@@ -157,26 +157,26 @@ namespace VaughanTests
                         {GuitarString=ThirdString; Fret=3; Note=BFlat};
                         {GuitarString=SecondString; Fret=3; Note=D};
                     ]
-                    
+
         [<Fact>]
         let ``Should map C major triad arpeggio to guitar fretboard on first position``() =
             cMaj
             |> (guitarArpeggio 1 4)
-            |> should equal 
+            |> should equal
                             {
                                 BaseChord = {
-                                                Notes = [(C, Root); (E, Third); (G, Fifth)]; 
-                                                ChordType = Closed; 
+                                                Notes = [(C, Root); (E, Third); (G, Fifth)];
+                                                ChordType = Closed;
                                                 Name = "CMaj";};
                                 ArpeggioFrets = [
-                                                    {GuitarString = FirstString; Fret = 3; Note = G;}; 
-                                                    {GuitarString = SecondString; Fret = 1; Note = C;}; 
-                                                    {GuitarString = ThirdString; Fret = -1; Note = G;}; 
+                                                    {GuitarString = FirstString; Fret = 3; Note = G;};
+                                                    {GuitarString = SecondString; Fret = 1; Note = C;};
+                                                    {GuitarString = ThirdString; Fret = -1; Note = G;};
                                                     {GuitarString = FourthString; Fret = 2; Note = E;};
-                                                    {GuitarString = FifthString; Fret = 3; Note = C;}; 
+                                                    {GuitarString = FifthString; Fret = 3; Note = C;};
                                                     {GuitarString = SixthString; Fret = 3; Note = G;}
                                                 ];}
-        
+
         [<Property(Arbitrary = [| typeof<DiatonicScales> |])>]
         let ``Should map diatonic closed triad arpeggios to guitar fretboard first position`` (scaleType: ScaleType) (scaleDegree: ScaleDegree) (root: Note) () =
             let scale = createScaleNotes scaleType root
@@ -224,7 +224,7 @@ namespace VaughanTests
                             tab.Contains (string frets.[0].Fret)
                             && tab.Contains (string frets.[1].Fret)
                             && tab.Contains (string frets.[2].Fret))
-                            
+
         [<Property(Arbitrary = [| typeof<DiatonicScales> |])>]
         let ``Should map diatonic closed seventh chord to guitar tab`` (scaleType: ScaleType) (scaleDegree: ScaleDegree) (root: Note) (bassString: GuitarString) () =
             (bassString <> ThirdString && bassString <> SecondString && bassString <> FirstString)
@@ -250,7 +250,7 @@ namespace VaughanTests
                                             "D||--5--||" + Environment.NewLine +
                                             "A||--3--||" + Environment.NewLine +
                                             "E||-----||" + Environment.NewLine)
-        
+
         [<Fact>]
         let ``Should draw A major 7 to guitar fretboard on fifth string closed ``() =
             createScaleNotes Ionian A
@@ -363,7 +363,6 @@ namespace VaughanTests
                                             "EADGBE" + Environment.NewLine +
                                             "8X998X" + Environment.NewLine)
 
-
         [<Fact>]
         let ``Should draw shape of C major 7 drop 2 on fifth string``() =
             let guitarChord =
@@ -378,7 +377,7 @@ namespace VaughanTests
         [<Fact>]
         let ``Should render end of tab as tab``() =
             [End]
-            |> renderTab 
+            |> renderTab
             |> should equal (
                              "-||" + Environment.NewLine +
                              "-||" + Environment.NewLine +
@@ -390,7 +389,7 @@ namespace VaughanTests
         [<Fact>]
         let ``Should render start of tab as tab``() =
             [Start; End]
-            |> renderTab 
+            |> renderTab
             |> should equal (
                              "||--||" + Environment.NewLine +
                              "||--||" + Environment.NewLine +
@@ -402,7 +401,7 @@ namespace VaughanTests
         [<Fact>]
         let ``Should render standart tuning as tab``() =
             [StandardTunning; End]
-            |> renderTab 
+            |> renderTab
             |> should equal (
                              "e-||" + Environment.NewLine +
                              "B-||" + Environment.NewLine +
@@ -414,7 +413,7 @@ namespace VaughanTests
         [<Fact>]
         let ``Should render rest as tab``() =
             [StandardTunning; Start; Rest; End]
-            |> renderTab 
+            |> renderTab
             |> should equal (
                              "e||-----||" + Environment.NewLine +
                              "B||-----||" + Environment.NewLine +
@@ -422,11 +421,11 @@ namespace VaughanTests
                              "D||-----||" + Environment.NewLine +
                              "A||-----||" + Environment.NewLine +
                              "E||-----||" + Environment.NewLine)
-        
+
         [<Fact>]
         let ``Should render bar as tab``() =
             [StandardTunning; Start; Bar; End]
-            |> renderTab 
+            |> renderTab
             |> should equal (
                              "e||--|--||" + Environment.NewLine +
                              "B||--|--||" + Environment.NewLine +
@@ -439,7 +438,7 @@ namespace VaughanTests
         let ``Should render c note to guitar fretboard on sixth string``() =
             let guitarNote = Note({GuitarString=SixthString; Fret=8; Note=C})
             [StandardTunning; Start; guitarNote; End]
-            |> renderTab 
+            |> renderTab
             |> should equal (
                              "e||-----||" + Environment.NewLine +
                              "B||-----||" + Environment.NewLine +
@@ -452,7 +451,7 @@ namespace VaughanTests
         let ``Should render muted c note to guitar fretboard on sixth string``() =
             let guitarNote = Mute({GuitarString=SixthString; Fret=8; Note=C})
             [StandardTunning; Start; guitarNote; End]
-            |> renderTab 
+            |> renderTab
             |> should equal (
                              "e||-----||" + Environment.NewLine +
                              "B||-----||" + Environment.NewLine +
@@ -460,12 +459,12 @@ namespace VaughanTests
                              "D||-----||" + Environment.NewLine +
                              "A||-----||" + Environment.NewLine +
                              "E||--x8--||" + Environment.NewLine)
-        
+
         [<Fact>]
         let ``Should render palm muted c note to guitar fretboard on sixth string``() =
             let guitarNote = PalmMute({GuitarString=SixthString; Fret=8; Note=C})
             [StandardTunning; Start; guitarNote; End]
-            |> renderTab 
+            |> renderTab
             |> should equal (
                              "e||-----||" + Environment.NewLine +
                              "B||-----||" + Environment.NewLine +
@@ -478,7 +477,7 @@ namespace VaughanTests
         let ``Should render vibrato c note to guitar fretboard on sixth string``() =
             let guitarNote = Vibrato(C |> guitarNote SixthString)
             [StandardTunning; Start; guitarNote; End]
-            |> renderTab 
+            |> renderTab
             |> should equal (
                              "e||-----||" + Environment.NewLine +
                              "B||-----||" + Environment.NewLine +
@@ -491,7 +490,7 @@ namespace VaughanTests
         let ``Should render hammer on from c note to d note guitar fretboard on sixth string``() =
             let guitarNote = HammerOn(C |> guitarNote SixthString, D |> guitarNote SixthString)
             [StandardTunning; Start; guitarNote; End]
-            |> renderTab 
+            |> renderTab
             |> should equal (
                              "e||---------||" + Environment.NewLine +
                              "B||---------||" + Environment.NewLine +
@@ -504,7 +503,7 @@ namespace VaughanTests
         let ``Should render pull of from d note to c note guitar fretboard on sixth string``() =
             let guitarNote = PullOff(D |> guitarNote SixthString, C |> guitarNote SixthString)
             [StandardTunning; Start; guitarNote; End]
-            |> renderTab 
+            |> renderTab
             |> should equal (
                              "e||---------||" + Environment.NewLine +
                              "B||---------||" + Environment.NewLine +
@@ -517,7 +516,7 @@ namespace VaughanTests
         let ``Should rende c note bended to d guitar fretboard on sixth string``() =
             let guitarNote = Bend(C |> guitarNote SixthString, D |> guitarNote SixthString)
             [StandardTunning; Start; guitarNote; End]
-            |> renderTab 
+            |> renderTab
             |> should equal (
                              "e||---------||" + Environment.NewLine +
                              "B||---------||" + Environment.NewLine +
@@ -530,7 +529,7 @@ namespace VaughanTests
         let ``Should render c major to guitar fretboard on sixth string``() =
             let guitarChord = guitarChord SixthString cMaj
             [StandardTunning; Start; Chord(guitarChord); End]
-            |> renderTab 
+            |> renderTab
             |> should equal (
                              "e||-----||" + Environment.NewLine +
                              "B||-----||" + Environment.NewLine +
@@ -542,7 +541,7 @@ namespace VaughanTests
         [<Fact>]
         let ``Should render II V I in c major to guitar fretboard on sixth string``() =
             [
-                StandardTunning; 
+                StandardTunning;
                 Start
                 Chord(chord D Minor7 |> toDrop3 |> guitarChord SixthString);
                 Bar;
@@ -551,7 +550,7 @@ namespace VaughanTests
                 Chord(chord C Major7 |> toDrop3 |> guitarChord SixthString);
                 End
             ]
-            |> renderTab 
+            |> renderTab
             |> should equal (
                              "e||------|-----|-----||" + Environment.NewLine +
                              "B||--10--|--3--|--8--||" + Environment.NewLine +
@@ -563,7 +562,7 @@ namespace VaughanTests
         [<Fact>]
         let ``Should render C major arpeggio to guitar fretboard on open position ``() =
             [StandardTunning; Start; Arpeggio(guitarArpeggio 0 3 cMaj); End]
-            |> renderTab 
+            |> renderTab
             |> should equal (
                              "e||--------------------0--3--||" + Environment.NewLine +
                              "B||-----------------1--------||" + Environment.NewLine +
@@ -575,7 +574,7 @@ namespace VaughanTests
         [<Fact>]
         let ``Should render C major arpeggio to guitar fretboard on second position ``() =
             [StandardTunning; Start; Arpeggio(cIonian |> triadsHarmonizer ScaleDegree.I |> guitarArpeggio 2 5); End]
-            |> renderTab 
+            |> renderTab
             |> should equal (
                              "e||--------------------3--||" + Environment.NewLine +
                              "B||-----------------5-----||" + Environment.NewLine +
@@ -583,7 +582,7 @@ namespace VaughanTests
                              "D||--------2--5-----------||" + Environment.NewLine +
                              "A||-----3-----------------||" + Environment.NewLine +
                              "E||--3--------------------||" + Environment.NewLine)
-        
+
         [<Fact>]
         let ``Should render C major arpeggio to guitar fretboard on seventh position ``() =
             [StandardTunning; Start; Arpeggio(cIonian |> triadsHarmonizer ScaleDegree.I |> guitarArpeggio 7 10); End]
@@ -620,11 +619,10 @@ namespace VaughanTests
                              "A||--------------10--15--19-------------------------------------------------||" + Environment.NewLine +
                              "E||--12--15--20-------------------------------------------------------------||" + Environment.NewLine)
 
-
         [<Fact>]
         let ``Should render C ionian scale to guitar fretboard on second position ``() =
             [StandardTunning; Start; Scale(createScale Ionian C |> guitarScale 2 6); End]
-            |> renderTab 
+            |> renderTab
             |> should equal (
                              "e||--------------------------------------------3--5--||" + Environment.NewLine +
                              "B||-----------------------------------3--5--6--------||" + Environment.NewLine +

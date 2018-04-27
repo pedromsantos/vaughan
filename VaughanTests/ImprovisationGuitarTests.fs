@@ -21,28 +21,28 @@ namespace VaughanTests
         let ``Should create guitar arpeggios from chords`` () =
             [chord C Minor7; chord F Dominant7; chord BFlat Major7]
             |> createArpeggiosFromChords 2 5
-            |> List.length 
+            |> List.length
             |> should equal 3
 
         [<Fact>]
         let ``Should create guitar scales from chords`` () =
             [chord C Minor7; chord F Dominant7; chord BFlat Major7]
             |> createScalesForChords 2 5
-            |> List.length 
+            |> List.length
             |> should equal 3
 
         [<Fact>]
         let ``Should create guitar tab arpeggios from chords`` () =
             [chord C Minor7; chord F Dominant7; chord BFlat Major7]
             |> createTabArpeggiosFromChords 2 5
-            |> List.length 
+            |> List.length
             |> should equal 3
 
         [<Fact>]
         let ``Should create guitar tab scales from chords`` () =
             [chord C Minor7; chord F Dominant7; chord BFlat Major7]
             |> createTabScalesFromChords 2 5
-            |> List.length 
+            |> List.length
             |> should equal 3
 
         [<Fact>]
@@ -68,7 +68,7 @@ namespace VaughanTests
                              "D||-----------5-----------||" + Environment.NewLine +
                              "A||-----2--5--------------||" + Environment.NewLine +
                              "E||--3--------------------||" + Environment.NewLine)
-        
+
         [<Fact>]
         let ``Should render tab for C major 7 arpeggio descending starting from root on position 2`` () =
             [StandardTunning; Start; ArbArpeggio(descendingArpeggioFrom root (guitarArpeggio 2 5 (chord C Major7))); End]
@@ -92,7 +92,7 @@ namespace VaughanTests
                              "D||-----------2--5--------------||" + Environment.NewLine +
                              "A||--4--2--3--------------------||" + Environment.NewLine +
                              "E||-----------------------------||" + Environment.NewLine)
-        
+
         [<Fact>]
         let ``Should render tab for C Major 7 arpeggio enclosing the third on position 2`` () =
             [StandardTunning; Start; Notes(enclosedAscendingArpeggioFrom third 12 (guitarArpeggio 2 5 (chord C Major7))); End]
@@ -116,7 +116,7 @@ namespace VaughanTests
                              "D||--------------5--8-----------------||" + Environment.NewLine +
                              "A||-----------6-----------------------||" + Environment.NewLine +
                              "E||--9--7--8--------------------------||" + Environment.NewLine)
-        
+
         [<Fact>]
         let ``Should render tab for C Major 7 arpeggio enclosing the third on position 5`` () =
             [StandardTunning; Start; Notes(enclosedAscendingArpeggioFrom third 12 (guitarArpeggio 5 8 (chord C Minor7))); End]
@@ -129,7 +129,6 @@ namespace VaughanTests
                              "A||--7--5--6-----------------------||" + Environment.NewLine +
                              "E||--------------------------------||" + Environment.NewLine)
 
-        
         [<Fact>]
         let ``Should render tab for C Major 7 descending arpeggio enclosing the root on position 2`` () =
             [StandardTunning; Start; Notes(enclosedDescendingArpeggioFrom root 12 (guitarArpeggio 2 5 (chord C Major7))); End]
@@ -141,7 +140,7 @@ namespace VaughanTests
                              "D||--------------5--2-----------||" + Environment.NewLine +
                              "A||--------------------3--2-----||" + Environment.NewLine +
                              "E||--------------------------3--||" + Environment.NewLine)
-        
+
         [<Fact>]
         let ``Should render tab for C Major 7 descending arpeggio enclosing the third on position 2`` () =
             [StandardTunning; Start; Notes(enclosedDescendingArpeggioFrom third 12 (guitarArpeggio 2 5 (chord C Major7))); End]

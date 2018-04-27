@@ -176,7 +176,6 @@ namespace VaughanTests
             let chord = chord root quality
             snd (chord |> invert |> invert).Notes.Head = Fifth
 
-
         [<Fact>]
         let ``Should invert chord for third inversion``() =
             (cMaj7 |> invert |> invert |> invert).Notes |> should equal [(B, Seventh); (C, Root); (E, Third); (G, Fifth)]
@@ -192,7 +191,6 @@ namespace VaughanTests
             ( chord.Notes.Length > 3)
                 ==> lazy (snd (chord |> invert |> invert |> invert).Notes.Head = Seventh
                             || snd (chord |> invert |> invert |> invert).Notes.Head = Sixth)
-
 
         [<Fact>]
         let ``Should loop inversions``() =
@@ -434,7 +432,6 @@ namespace VaughanTests
 
             (quality = Major7 || quality = Dominant7 || quality = Minor7 || quality = Minor7b5)
                 ==> lazy ((chordsFitting chordNotes) |> List.contains chord)
-
 
         [<Property>]
         let ``It should return the chord for list of notes from seventh chord in first inversion`` (root :Note) (quality :ChordQuality) =

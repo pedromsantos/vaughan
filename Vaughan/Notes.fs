@@ -170,7 +170,7 @@ namespace Vaughan
             | MinorSeventh | MinorNinth | MajorNinth | MinorThirteenth | PerfectFifth
             | PerfectFourth
                 -> [C; DFlat; D; EFlat; E; F; GFlat; G; AFlat; A; BFlat; B]
-            | MajorSecond | AugmentedSecond | MajorThird 
+            | MajorSecond | AugmentedSecond | MajorThird
             | AugmentedFourth | AugmentedFifth | MajorSixth | MajorSeventh
             | AugmentedNinth | PerfectEleventh | AugmentedEleventh | MajorThirteenth
                 -> [C; CSharp; D; DSharp; E; F; FSharp; G; GSharp; A; ASharp; B]

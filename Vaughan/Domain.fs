@@ -150,20 +150,20 @@ namespace Vaughan
         type GuitarChord = {Chord:Chord; Frets:Frets}
         type GuitarArpeggio = {BaseChord:Chord; ArpeggioFrets:Frets}
         type GuitarScale = {Scale:Scale; Frets:Frets}
-        type GuitarMelodicLine = int list list 
-        
+        type GuitarMelodicLine = int list list
+
         type CreateGuitarChord = GuitarString -> Chord -> GuitarChord
         type CreateGuitarArpeggio = int -> int -> Chord -> GuitarArpeggio
         type CreateGuitarScale = int -> int -> Scale -> GuitarScale
-        type CreateGuitarNote = GuitarString -> Note -> Fret 
+        type CreateGuitarNote = GuitarString -> Note -> Fret
 
         type Shapify = GuitarChord -> string
         type TabifyAll = GuitarChord list -> string
-        
+
         type TabifyChord = GuitarChord -> string
         type TabifyArpeggio = GuitarArpeggio -> string
         type TabifyScale = GuitarScale -> string
-        type TabifyMelodicLine = GuitarMelodicLine -> string 
+        type TabifyMelodicLine = GuitarMelodicLine -> string
 
         type ParseChord = string -> Chord
         type ParseInterval = string -> Interval
@@ -172,7 +172,7 @@ namespace Vaughan
         type ParseNote = string -> Note
         type ParseMidiNote = string -> MidiNote
 
-        type TabColumn = 
+        type TabColumn =
                 | Note of Fret
                 | Notes of Fret list
                 | Chord of GuitarChord

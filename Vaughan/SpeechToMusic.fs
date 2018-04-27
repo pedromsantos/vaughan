@@ -277,7 +277,7 @@ namespace Vaughan
             | Failure(errorMsg, _, _) -> invalidOp errorMsg
 
         let tabifyArpeggiosFromChordNames (minFret:int) (maxFret:int) (chords:string list) =
-            chords 
+            chords
             |> List.map parseChord
             |> createArpeggiosFromChords minFret maxFret
             |> List.map (fun a -> Arpeggio(a))
