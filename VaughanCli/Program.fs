@@ -51,17 +51,15 @@ with
             | MaxFret _ -> "specify the maximum fret for the scale."
 
 type ChordArguments =
-    | [<AltCommandLine("-r")>]Root of string
+    | [<AltCommandLine("-c")>]Chord of string
     | [<AltCommandLine("-b")>]Bass of BassStrings
-    | [<AltCommandLine("-q")>]Quality of string
     | [<AltCommandLine("-s")>]Shape of ChordShapes
     | [<AltCommandLine("-i")>]Inversion of ChordInversions
 with
     interface IArgParserTemplate with
         member s.Usage =
             match s with
-            | Root _ -> "Specify a root note."
-            | Quality  _ -> "Specify a chord quality." 
+            | Chord _ -> "Specify a root note."
             | Shape _ -> "Specify a chord form."
             | Inversion _ -> "specify a chord inversion."
             | Bass _ -> "specify a guitar bass string for the chord."
@@ -91,7 +89,7 @@ with
             | Voice _ -> "Specify a chord voice to use as lead."
 
 type ArpeggioArguments =
-    | [<AltCommandLine("-c")>]Chord of ParseResults<ChordArguments>
+    | [<AltCommandLine("-c")>]Chord of string
     | [<AltCommandLine("-min")>]MinFret of int
     | [<AltCommandLine("-max")>]MaxFret of int
 with
@@ -182,10 +180,9 @@ let handleError (e:ArguParseException) (parser:ArgumentParser<_>) subCommand =
 
 let handleChord (arguments:ParseResults<ChordArguments>) (parser:ArgumentParser<CLIArguments>) = 
     try
-        let root = arguments.GetResult ChordArguments.Root
-        let quality = arguments.GetResult(ChordArguments.Quality, defaultValue = "Major")
+        let chordArguments = arguments.GetResult ChordArguments.Chord
         
-        parseChord (sprintf "%s %s" root quality)
+        parseChord chordArguments
     with | :? ArguParseException as e ->
         handleError e parser Chord 
         chord C Major
@@ -209,7 +206,7 @@ let handleTabArpeggio (arguments:ParseResults<ArpeggioArguments>) (parser:Argume
         let chordArguments = arguments.GetResult ArpeggioArguments.Chord
         let minFret = arguments.GetResult(ArpeggioArguments.MinFret, defaultValue = 0)
         let maxFret = arguments.GetResult(ArpeggioArguments.MaxFret, defaultValue = 3)
-        let chord = handleChord chordArguments parser
+        let chord = parseChord chordArguments
 
         Vaughan.Domain.Arpeggio(guitarArpeggio minFret maxFret chord)
     with | :? ArguParseException as e ->
