@@ -15,14 +15,22 @@ namespace Vaughan
                 |> List.take maxNotes
                 |> List.rev
 
-        let passingToneAbove fret =
+        let private createAprpeggioSequence tone chord arpeggioNotes = 
+            let firstTone = arpeggioNotes |> List.filter (fun f -> f.Note = tone chord) |> List.last
+            let positionFirstTone = arpeggioNotes |> List.findIndex (fun af -> af = firstTone)
+            {
+                BaseChord = chord;
+                ArpeggioFrets = arpeggioNotes |> List.take (positionFirstTone + 1)
+            }
+
+        let approachFromAbove fret =
             {
                 GuitarString = fret.GuitarString;
                 Fret = fret.Fret + 1;
                 Note = sharp fret.Note
             }
 
-        let passingToneBelow fret =
+        let approachFromBelow fret =
             {
                 GuitarString = fret.GuitarString;
                 Fret = fret.Fret - 1;
@@ -47,58 +55,45 @@ namespace Vaughan
             |> createScalesForChords minFret maxFret
             |> List.map (fun ss -> ss |> List.map (fun s -> Scale(s)))
 
-        let private arpeggioSequenceFromArpeggio chord arpeggioNotes startNoteIndex =
-            {
-                BaseChord = chord;
-                ArpeggioFrets = arpeggioNotes |> List.take (startNoteIndex + 1)
-            }
-
         let ascendingArpeggioFrom tone (arpeggio:GuitarArpeggio)  =
-            let sortedArpeggioNotes =
-                arpeggio.ArpeggioFrets
-                |> List.sortByDescending (fun f -> f.GuitarString, f.Fret)
-
-            let firstTone = sortedArpeggioNotes |> List.filter (fun f -> f.Note = tone arpeggio.BaseChord) |> List.last
-            let positionFirstTone = sortedArpeggioNotes |> List.findIndex (fun af -> af = firstTone)
-            arpeggioSequenceFromArpeggio arpeggio.BaseChord sortedArpeggioNotes positionFirstTone
+            arpeggio.ArpeggioFrets
+            |> List.sortByDescending (fun f -> f.GuitarString, f.Fret)
+            |> createAprpeggioSequence tone arpeggio.BaseChord
 
         let descendingArpeggioFrom tone (arpeggio:GuitarArpeggio) =
-            let sortedArpeggioNotes =
-                arpeggio.ArpeggioFrets
-                |> List.sortBy (fun f -> f.GuitarString, f.Fret)
+            arpeggio.ArpeggioFrets
+            |> List.sortBy (fun f -> f.GuitarString, f.Fret)
+            |> createAprpeggioSequence tone arpeggio.BaseChord 
 
-            let firstTone = sortedArpeggioNotes |> List.filter (fun f -> f.Note = tone arpeggio.BaseChord) |> List.last
-            let positionFirstTone = sortedArpeggioNotes |> List.findIndex (fun af -> af = firstTone)
-            arpeggioSequenceFromArpeggio arpeggio.BaseChord sortedArpeggioNotes positionFirstTone
-
-        let aproachAscendingArpeggioFrom tone passing maxNotes (arpeggio:GuitarArpeggio) =
-            let arpeggioFrets = (arpeggio |> ascendingArpeggioFrom tone).ArpeggioFrets |> List.rev
-            (arpeggioFrets.Tail |> List.sortByDescending (fun f -> f.GuitarString, f.Fret))
+        let aproachAscendingArpeggioFrom tone approachNote maxNotes (arpeggio:GuitarArpeggio) =
+            let arpeggioNotes = (arpeggio |> ascendingArpeggioFrom tone).ArpeggioFrets |> List.rev
+            let aprochedTone = arpeggioNotes.Head
+            (arpeggioNotes.Tail |> List.sortByDescending (fun f -> f.GuitarString, f.Fret))
             @
-            [arpeggioFrets.Head] @ [passing arpeggioFrets.Head]
+            [aprochedTone] @ [approachNote aprochedTone]
             |> limitNoteLineTo maxNotes
 
-        let aproachDescendingArpeggioFrom tone passing maxNotes (arpeggio:GuitarArpeggio) =
-            let arpeggioFrets = (arpeggio |> descendingArpeggioFrom tone).ArpeggioFrets
-            let enclosedTone = arpeggioFrets |> List.last
-            (arpeggioFrets |> List.rev |> List.tail |> List.rev)
+        let aproachDescendingArpeggioFrom tone approachNote maxNotes (arpeggio:GuitarArpeggio) =
+            let arpeggioNotes = (arpeggio |> descendingArpeggioFrom tone).ArpeggioFrets
+            let aprochedTone = arpeggioNotes |> List.last
+            (arpeggioNotes |> List.rev |> List.tail |> List.rev)
             @
-            [enclosedTone] @ [passing enclosedTone]
+            [aprochedTone] @ [approachNote aprochedTone]
             |> limitNoteLineTo maxNotes
 
         let enclosedAscendingArpeggioFrom tone maxNotes (arpeggio:GuitarArpeggio) =
-            let arpeggioFrets = (arpeggio |> ascendingArpeggioFrom tone).ArpeggioFrets |> List.rev
-            (arpeggioFrets.Tail |> List.sortByDescending (fun f -> f.GuitarString, f.Fret))
+            let arpeggioNotes = (arpeggio |> ascendingArpeggioFrom tone).ArpeggioFrets |> List.rev
+            (arpeggioNotes.Tail |> List.sortByDescending (fun f -> f.GuitarString, f.Fret))
             @
-            [arpeggioFrets.Head] @ [passingToneBelow arpeggioFrets.Head] @ [passingToneAbove arpeggioFrets.Head]
+            [arpeggioNotes.Head] @ [approachFromBelow arpeggioNotes.Head] @ [approachFromAbove arpeggioNotes.Head]
             |> limitNoteLineTo maxNotes
 
         let enclosedDescendingArpeggioFrom tone maxNotes (arpeggio:GuitarArpeggio) =
-            let arpeggioFrets = (arpeggio |> descendingArpeggioFrom tone).ArpeggioFrets
-            let enclosedTone = arpeggioFrets |> List.last
-            (arpeggioFrets |> List.rev |> List.tail |> List.rev)
+            let arpeggioNotes = (arpeggio |> descendingArpeggioFrom tone).ArpeggioFrets
+            let enclosedTone = arpeggioNotes |> List.last
+            (arpeggioNotes |> List.rev |> List.tail |> List.rev)
             @
-            [enclosedTone] @ [passingToneBelow enclosedTone] @ [passingToneAbove enclosedTone]
+            [enclosedTone] @ [approachFromBelow enclosedTone] @ [approachFromAbove enclosedTone]
             |> limitNoteLineTo maxNotes
 
         let ascEightsRootEnclosed = enclosedAscendingArpeggioFrom root 8
@@ -108,17 +103,17 @@ namespace Vaughan
         let ascEightsSeventhEnclosed = enclosedAscendingArpeggioFrom seventh 8
         let descEightsSeventhEnclosed = enclosedDescendingArpeggioFrom seventh 8
 
-        let ascEightsRootAbove = aproachAscendingArpeggioFrom root passingToneAbove 8
-        let descEightsRootAbove = aproachDescendingArpeggioFrom root passingToneAbove 8
-        let ascEightsRootBelow = aproachAscendingArpeggioFrom root passingToneBelow 8
-        let descEightsRootBelow = aproachDescendingArpeggioFrom root passingToneBelow 8
+        let ascEightsRootAbove = aproachAscendingArpeggioFrom root approachFromAbove 8
+        let descEightsRootAbove = aproachDescendingArpeggioFrom root approachFromAbove 8
+        let ascEightsRootBelow = aproachAscendingArpeggioFrom root approachFromBelow 8
+        let descEightsRootBelow = aproachDescendingArpeggioFrom root approachFromBelow 8
 
-        let ascEightsThirdAbove = aproachAscendingArpeggioFrom third passingToneAbove 8
-        let descEightsThirdAbove = aproachDescendingArpeggioFrom third passingToneAbove 8
-        let ascEightsThirdBelow = aproachAscendingArpeggioFrom third passingToneBelow 8
-        let descEightsThirdBelow = aproachDescendingArpeggioFrom third passingToneBelow 8
+        let ascEightsThirdAbove = aproachAscendingArpeggioFrom third approachFromAbove 8
+        let descEightsThirdAbove = aproachDescendingArpeggioFrom third approachFromAbove 8
+        let ascEightsThirdBelow = aproachAscendingArpeggioFrom third approachFromBelow 8
+        let descEightsThirdBelow = aproachDescendingArpeggioFrom third approachFromBelow 8
 
-        let ascEightsSeventhAbove = aproachAscendingArpeggioFrom seventh passingToneAbove 8
-        let descEightsSeventhAbove = aproachDescendingArpeggioFrom seventh passingToneAbove 8
-        let ascEightsSeventhBelow = aproachAscendingArpeggioFrom seventh passingToneBelow 8
-        let descEightsSeventhBelow = aproachDescendingArpeggioFrom seventh passingToneBelow 8
+        let ascEightsSeventhAbove = aproachAscendingArpeggioFrom seventh approachFromAbove 8
+        let descEightsSeventhAbove = aproachDescendingArpeggioFrom seventh approachFromAbove 8
+        let ascEightsSeventhBelow = aproachAscendingArpeggioFrom seventh approachFromBelow 8
+        let descEightsSeventhBelow = aproachDescendingArpeggioFrom seventh approachFromBelow 8
