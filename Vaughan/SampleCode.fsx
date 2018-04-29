@@ -76,10 +76,10 @@ let generateArpeggioExercise arpeggio =
         ascEightsThirdEnclosed, "Third enclosed"; descEightsThirdEnclosed, "Third enclosed";
         ascEightsSeventhEnclosed, "Seventh enclosed"; descEightsSeventhEnclosed, "Seventh enclosed";
     ]
-    |> List.map (fun form ->
-                    [StandardTunning; Start; Notes((fst form) arpeggio); End]
+    |> List.map (fun sequence ->
+                    [StandardTunning; Start; Notes((fst sequence) arpeggio); End]
                     |> renderTab
-                    |> printf "### %s\n```\n%s```\n" (snd form))
+                    |> printf "### %s\n```\n%s```\n" (snd sequence))
 
 [
     guitarArpeggio 5 8 (chord C Minor7);
