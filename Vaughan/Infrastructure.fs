@@ -53,3 +53,21 @@ namespace Vaughan
             listOfLists
             |> Seq.map (mapFunction >> Set.ofList)
             |> Seq.reduce Set.intersect
+
+        let rec combinations acc (lst:'a list) = 
+            seq {
+                    match lst.Length, lst with 
+                    | n, x::xs -> 
+                      if n > 0 then yield! combinations (x::acc) xs
+                      if n >= 0 then yield! combinations acc xs 
+                    | 0, [] -> yield acc 
+                    | _, [] -> () 
+                }
+
+        let rec insertions x = function
+        | []             -> [[x]]
+        | (y :: ys) as l -> (x::l)::(List.map (fun x -> y::x) (insertions x ys))
+
+        let rec permutations = function
+            | []      -> seq [ [] ]
+            | x :: xs -> Seq.collect (insertions x) (permutations xs)

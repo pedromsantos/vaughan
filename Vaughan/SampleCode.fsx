@@ -31,6 +31,14 @@ let chords = [
               chord G Minor7;
              ]
 
+let permutations = generateArpeggioPatterns root (guitarArpeggio 5 8 (chord BFlat Major7))
+                    |> List.map (fun l -> [Notes l] @ [Bar])
+                    |> List.collect id
+
+[StandardTunning; Start] @ permutations @ [End]
+|> renderTab
+|> printf "\n%s"
+
 let voiceleadingChords guitarString shape =
     (voiceLead lead (chords |> List.map shape))
     |> List.map ((fun c -> guitarChord guitarString c) >> Chord)
