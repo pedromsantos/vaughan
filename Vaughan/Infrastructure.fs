@@ -71,3 +71,11 @@ namespace Vaughan
         let rec permutations = function
             | []      -> seq [ [] ]
             | x :: xs -> Seq.collect (insertions x) (permutations xs)
+
+        let factorial x =
+            let rec tailRecursiveFactorial x acc =
+                if x <= 1 then 
+                    acc
+                else 
+                    tailRecursiveFactorial (x - 1) (acc * x)
+            tailRecursiveFactorial x 1

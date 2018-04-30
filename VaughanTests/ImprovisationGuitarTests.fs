@@ -15,6 +15,7 @@ namespace VaughanTests
         open Vaughan.ScaleHarmonizer
         open Vaughan.Scales
         open Vaughan.SpeechToMusic
+        open Vaughan.Infrastructure
         open Vaughan.ImprovisationGuitar
 
         [<Fact>]
@@ -45,6 +46,12 @@ namespace VaughanTests
             |> List.length
             |> should equal 3
 
+        [<Property>]
+        let ``Should create patterns for arpeggio`` (chordRoot :Note) (quality: ChordQuality) =
+            let chord = chord chordRoot quality
+            let arpeggio = guitarArpeggio 5 9 chord
+            generateArpeggioPatterns root arpeggio |> List.length = factorial chord.Notes.Length 
+            
         [<Fact>]
         let ``Should render tab for C arpeggio starting from root on position 2`` () =
             [StandardTunning; Start; Arpeggio(ascendingArpeggioFrom root (guitarArpeggio 2 5 (chord C Major))); End]
