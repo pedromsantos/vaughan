@@ -1,9 +1,7 @@
 namespace VaughanTests
     module ScaleTests =
         open Xunit
-        open FsUnit
         open FsUnit.Xunit
-        open FsCheck
         open FsCheck.Xunit
         open Vaughan.Domain
         open Vaughan.Scales

@@ -1,11 +1,9 @@
 ﻿namespace Vaughan
 
     module SonicPi =
-        open System
         open System.Net
         open Bespoke.Common.Osc
         open Notes
-        open Chords
 
         type Synths =
             | Beep | BladeRunnerStyleStrings | BrownNoise
@@ -370,10 +368,10 @@
         let sonicPiRun code =
             OscPacket.LittleEndianByteOrder <- false
 
-            let osc_message = OscMessage(sonicPiEndPoint, RUN_COMMAND)
-            osc_message.Append(ID) |> ignore
-            osc_message.Append(code) |> ignore
-            osc_message.Send(sonicPiEndPoint) |> ignore
+            let oscMessage = OscMessage(sonicPiEndPoint, RUN_COMMAND)
+            oscMessage.Append(ID) |> ignore
+            oscMessage.Append(code) |> ignore
+            oscMessage.Send(sonicPiEndPoint) |> ignore
 
         let sonicPiStop =
             OscPacket.LittleEndianByteOrder <- false

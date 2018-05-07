@@ -1,13 +1,10 @@
 namespace Vaughan
 
     module SpeechToMusic =
-        open System
-
         open FParsec
         open Notes
         open Scales
         open Chords
-        open Guitar
         open GuitarTab
         open ImprovisationGuitar
 

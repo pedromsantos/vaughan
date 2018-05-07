@@ -4,17 +4,11 @@ namespace VaughanTests
         open System
         open Xunit
         open FsUnit.Xunit
-        open FsCheck
         open FsCheck.Xunit
         open Vaughan.Domain
-        open Vaughan.Notes
-        open Vaughan.Scales
         open Vaughan.Chords
         open Vaughan.Guitar
         open Vaughan.GuitarTab
-        open Vaughan.ScaleHarmonizer
-        open Vaughan.Scales
-        open Vaughan.SpeechToMusic
         open Vaughan.Infrastructure
         open Vaughan.ImprovisationGuitar
 

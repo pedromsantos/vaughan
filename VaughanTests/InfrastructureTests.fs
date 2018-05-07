@@ -1,6 +1,5 @@
 module InfrastructureTests
     open Xunit
-    open FsUnit
     open FsUnit.Xunit
     open FsCheck
     open FsCheck.Xunit

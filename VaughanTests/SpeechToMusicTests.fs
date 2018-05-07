@@ -1,10 +1,7 @@
 ﻿namespace VaughanTests
     module SpeechToMusicTests =
             open Xunit
-            open FsUnit
             open FsUnit.Xunit
-            open FsCheck
-            open FsCheck.Xunit
             open System
             open Vaughan.Domain
             open Vaughan.Scales
@@ -12,7 +9,6 @@
             open Vaughan.Chords
             open Vaughan.Guitar
             open Vaughan.GuitarTab
-            open Vaughan.ScaleHarmonizer
 
             [<Fact>]
             let ``Should parse textual representation of notes``() =

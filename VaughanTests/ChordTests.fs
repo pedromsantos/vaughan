@@ -1,7 +1,6 @@
 namespace VaughanTests
     module ChordTests =
         open Xunit
-        open FsUnit
         open FsUnit.Xunit
         open FsCheck
         open FsCheck.Xunit

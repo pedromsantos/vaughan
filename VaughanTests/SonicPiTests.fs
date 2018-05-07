@@ -1,12 +1,8 @@
 ﻿namespace VaughanTests
     module SonicPiTests =
         open Xunit
-        open FsUnit
         open FsUnit.Xunit
-        open FsCheck
-        open FsCheck.Xunit
         open Vaughan.Domain
-        open Vaughan.Notes
         open Vaughan.Chords
         open Vaughan.SonicPi
 
