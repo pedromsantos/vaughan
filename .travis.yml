@@ -4,7 +4,8 @@ dist: trusty
 dotnet: 2.0.0
 sudo: required
 script:
-  - dotnet restore
+  - dotnet restore ./Vaughan
+  - dotnet restore ./VaughanTests
   - dotnet build -c Release
   - dotnet test -c Release ./VaughanTests
   #- dotnet pack -o . /p:Version=0.4.0.$TRAVIS_BUILD_NUMBER-alpha
