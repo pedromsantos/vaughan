@@ -13,7 +13,6 @@
     <Owners>Pedro Moreira Santos</Owners>
     <Summary>Guitar tab console app</Summary>
     <OutputType>Exe</OutputType>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
     <ToolCommandName>VaughanCLI</ToolCommandName>
     <PackAsTool>true</PackAsTool>
     <FSharpCoreImplicitPackageVersion>4.3.*</FSharpCoreImplicitPackageVersion>
@@ -30,6 +29,7 @@
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Domain.fs" />
     <Compile Include="Program.fs" />
   </ItemGroup>
   <ItemGroup>
