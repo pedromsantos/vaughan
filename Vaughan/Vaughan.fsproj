@@ -12,6 +12,8 @@
     <PackageTags>F# Music Guitar</PackageTags>
     <Owners>Pedro Moreira Santos</Owners>
     <Summary>F# music library</Summary>
+    <RepositoryUrl>https://github.com/pedromsantos/vaughan</RepositoryUrl>
+    <GeneratePackageOnBuild>false</GeneratePackageOnBuild>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="Infrastructure.fs" />
