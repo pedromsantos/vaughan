@@ -179,7 +179,7 @@ let handleTabCommonScales (arguments:ParseResults<CommonScalesArguments>) (parse
 let renderTab tab =
     [StandardTunning; Start] @ tab @ [End] |> renderTab |> printf "%s\n"
 
-let handleTab (arguments:ParseResults<CLIArguments>) (parser:ArgumentParser<CLIArguments>) renderer =
+let handleCommand (arguments:ParseResults<CLIArguments>) (parser:ArgumentParser<CLIArguments>) renderer =
     match arguments.GetSubCommand() with
     | Chord c -> renderer [handleTabChord c parser]
     | Chords cs -> renderer (handleTabChords cs parser)
@@ -195,7 +195,7 @@ let main argv =
     let parser = ArgumentParser.Create<CLIArguments>(programName = "VaughanCLI", helpTextMessage = "Guitar tab CLI")
     
     try
-        handleTab (parser.ParseCommandLine(argv)) parser renderTab
+        handleCommand (parser.ParseCommandLine(argv)) parser renderTab
     with e ->
         printf "%s\n" e.Message
         0
