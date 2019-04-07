@@ -138,17 +138,10 @@ namespace Vaughan
             |> List.take (maxNotes)
 
         let createAscendingScaleSequenceFromRootToSeventh minFret maxFret (scale : Scale) = 
-            (guitarScale minFret maxFret scale).Frets
-            |> List.sortBy (fun n -> n.GuitarString, n.Fret)
-            |> List.skipWhile (fun n -> n.Note <> scale.Notes.[0])
-            |> List.sortByDescending (fun n -> n.GuitarString, n.Fret)
-            |> limitLineTo 7
+            createAscendingScaleSequence minFret maxFret 7 scale.Notes.[0] scale
 
         let createDescendingScaleSequenceFromSeventhToRoot minFret maxFret (scale : Scale) = 
-            (guitarScale minFret maxFret scale).Frets
-            |> List.sortBy (fun n -> n.GuitarString, n.Fret)
-            |> List.skipWhile (fun n -> n.Note <> scale.Notes.[0])
-            |> List.take (7)
+            createDescendingScaleSequence minFret maxFret 7 scale.Notes.[0] scale
 
         let createScaleSequenceFromSeventhToRoot minFret maxFret (scale : Scale) = 
             createDescendingScaleSequenceFromSeventhToRoot minFret maxFret scale
