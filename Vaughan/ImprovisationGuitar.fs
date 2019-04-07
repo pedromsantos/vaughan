@@ -24,14 +24,14 @@ namespace Vaughan
                 ArpeggioFrets = arpeggioNotes |> List.take (firstToneIndex + 1)
             }
 
-        let approachFromAbove fret =
+        let private approachFromAbove fret =
             {
                 GuitarString = fret.GuitarString;
                 Fret = fret.Fret + 1;
                 Note = sharp fret.Note
             }
 
-        let approachFromBelow fret =
+        let private approachFromBelow fret =
             {
                 GuitarString = fret.GuitarString;
                 Fret = fret.Fret - 1;
@@ -123,3 +123,35 @@ namespace Vaughan
             (ascendingArpeggioFrom tone arpeggio).ArpeggioFrets |> List.take arpeggio.BaseChord.Notes.Length
             |> permutations
             |> Seq.toList
+
+        let createAscendingScaleSequence minFret maxFret maxNotes startingTone (scale : Scale) = 
+            (guitarScale minFret maxFret scale).Frets
+            |> List.sortBy (fun n -> n.GuitarString, n.Fret)
+            |> List.skipWhile (fun n -> n.Note <> startingTone)
+            |> List.sortByDescending (fun n -> n.GuitarString, n.Fret)
+            |> limitLineTo maxNotes
+
+        let createDescendingScaleSequence minFret maxFret maxNotes startingTone (scale : Scale) = 
+            (guitarScale minFret maxFret scale).Frets
+            |> List.sortBy (fun n -> n.GuitarString, n.Fret)
+            |> List.skipWhile (fun n -> n.Note <> startingTone)
+            |> List.take (maxNotes)
+
+        let createAscendingScaleSequenceFromRootToSeventh minFret maxFret (scale : Scale) = 
+            (guitarScale minFret maxFret scale).Frets
+            |> List.sortBy (fun n -> n.GuitarString, n.Fret)
+            |> List.skipWhile (fun n -> n.Note <> scale.Notes.[0])
+            |> List.sortByDescending (fun n -> n.GuitarString, n.Fret)
+            |> limitLineTo 7
+
+        let createDescendingScaleSequenceFromSeventhToRoot minFret maxFret (scale : Scale) = 
+            (guitarScale minFret maxFret scale).Frets
+            |> List.sortBy (fun n -> n.GuitarString, n.Fret)
+            |> List.skipWhile (fun n -> n.Note <> scale.Notes.[0])
+            |> List.take (7)
+
+        let createScaleSequenceFromSeventhToRoot minFret maxFret (scale : Scale) = 
+            createDescendingScaleSequenceFromSeventhToRoot minFret maxFret scale
+            @
+            (createAscendingScaleSequenceFromRootToSeventh minFret maxFret scale
+            |> List.skip 1)
