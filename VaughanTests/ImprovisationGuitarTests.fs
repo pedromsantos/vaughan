@@ -229,7 +229,7 @@ namespace VaughanTests
 
         [<Fact>]
         let ``Should render tab for C Dominant 7 scale down and up from seventh`` () =
-            [StandardTunning; Start; Notes(createScaleSequenceFromSeventhToRoot 5 8 (createScale Mixolydian C)); End]
+            [StandardTunning; Start; Notes(createScaleSequenceRootToSeventh 5 8 (createScale Mixolydian C)); End]
             |> renderTab
             |> should equal (
                              "e||-----------------------------------------||" + Environment.NewLine +

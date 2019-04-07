@@ -143,7 +143,7 @@ namespace Vaughan
         let createDescendingScaleSequenceFromSeventhToRoot minFret maxFret (scale : Scale) = 
             createDescendingScaleSequence minFret maxFret 7 scale.Notes.[0] scale
 
-        let createScaleSequenceFromSeventhToRoot minFret maxFret (scale : Scale) = 
+        let createScaleSequenceRootToSeventh minFret maxFret (scale : Scale) = 
             createDescendingScaleSequenceFromSeventhToRoot minFret maxFret scale
             @
             (createAscendingScaleSequenceFromRootToSeventh minFret maxFret scale
