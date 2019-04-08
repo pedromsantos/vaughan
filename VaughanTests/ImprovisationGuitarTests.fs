@@ -301,7 +301,7 @@ namespace VaughanTests
                              "E||--------------------------------------------------------------8--||" + Environment.NewLine)
 
         [<Fact>]
-        let ``1Should render tab for C Dominant 7 scale up and down to seventh in triads`` () =
+        let ``Should render tab for C Dominant 7 scale up and down to seventh in triads`` () =
             [StandardTunning; Start; Notes(createScaleSequenceRootToSeventhInTriads 5 8 (createScale Mixolydian C)); End]
             |> renderTab
             |> should equal (
