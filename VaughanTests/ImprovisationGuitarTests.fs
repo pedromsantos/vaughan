@@ -238,3 +238,76 @@ namespace VaughanTests
                              "D||--------------5--7--8--7--5--------------||" + Environment.NewLine +
                              "A||-----5--7--8-----------------8--7--5-----||" + Environment.NewLine +
                              "E||--8-----------------------------------8--||" + Environment.NewLine)
+
+        [<Fact>]
+        let ``Should render tab for C Dominant 7 scale up to seventh in thirds`` () =
+            [StandardTunning; Start; Notes(createAscendingScaleSequenceRootToSeventhInThirds 5 8 (createScale Mixolydian C)); End]
+            |> renderTab
+            |> should equal (
+                             "e||--------------------------------------------||" + Environment.NewLine +
+                             "B||--------------------------------------------||" + Environment.NewLine +
+                             "G||-----------------------------------5-----7--||" + Environment.NewLine +
+                             "D||-----------------5-----7--5--8--7-----8-----||" + Environment.NewLine +
+                             "A||-----7--5--8--7-----8-----------------------||" + Environment.NewLine +
+                             "E||--8-----------------------------------------||" + Environment.NewLine)
+
+        [<Fact>]
+        let ``Should render tab for C Dominant 7 scale down from seventh in thirds`` () =
+            [StandardTunning; Start; Notes(createDescendingScaleSequenceRootToSeventhInThirds 5 8 (createScale Mixolydian C)); End]
+            |> renderTab
+            |> should equal (
+                             "e||--------------------------------------------||" + Environment.NewLine +
+                             "B||--------------------------------------------||" + Environment.NewLine +
+                             "G||--7-----5-----------------------------------||" + Environment.NewLine +
+                             "D||-----8-----7--8--5--7-----5-----------------||" + Environment.NewLine +
+                             "A||-----------------------8-----7--8--5--7-----||" + Environment.NewLine +
+                             "E||-----------------------------------------8--||" + Environment.NewLine)
+
+        [<Fact>]
+        let ``Should render tab for C Dominant 7 scale up and down to seventh in thirds`` () =
+            [StandardTunning; Start; Notes(createScaleSequenceRootToSeventhInThirds 5 8 (createScale Mixolydian C)); End]
+            |> renderTab
+            |> should equal (
+                             "e||-----------------------------------------------------------------------------------||" + Environment.NewLine +
+                             "B||-----------------------------------------------------------------------------------||" + Environment.NewLine +
+                             "G||-----------------------------------5-----7-----5-----------------------------------||" + Environment.NewLine +
+                             "D||-----------------5-----7--5--8--7-----8-----8-----7--8--5--7-----5-----------------||" + Environment.NewLine +
+                             "A||-----7--5--8--7-----8-----------------------------------------8-----7--8--5--7-----||" + Environment.NewLine +
+                             "E||--8-----------------------------------------------------------------------------8--||" + Environment.NewLine)
+
+
+        [<Fact>]
+        let ``Should render tab for C Dominant 7 scale up to seventh in triads`` () =
+            [StandardTunning; Start; Notes(createAscendingScaleSequenceRootToSeventhInTriads 5 8 (createScale Mixolydian C)); End]
+            |> renderTab
+            |> should equal (
+                             "e||-----------------------------------------------------------------||" + Environment.NewLine +
+                             "B||-----------------------------------------------------5--------6--||" + Environment.NewLine +
+                             "G||-----------------------------------5--------7-----5--------7-----||" + Environment.NewLine +
+                             "D||--------5--------7-----5--8-----7-----5--8-----7--------8--------||" + Environment.NewLine +
+                             "A||-----7-----5--8-----7--------8-----------------------------------||" + Environment.NewLine +
+                             "E||--8--------------------------------------------------------------||" + Environment.NewLine)
+
+        [<Fact>]
+        let ``Should render tab for C Dominant 7 scale down from seventh in triads`` () =
+            [StandardTunning; Start; Notes(createDescendingScaleSequenceRootToSeventhInTriads 5 8 (createScale Mixolydian C)); End]
+            |> renderTab
+            |> should equal (
+                             "e||-----------------------------------------------------------------||" + Environment.NewLine +
+                             "B||--6--------5-----------------------------------------------------||" + Environment.NewLine +
+                             "G||-----7--------5-----7--------5-----------------------------------||" + Environment.NewLine +
+                             "D||--------8--------7-----8--5-----7-----8--5-----7--------5--------||" + Environment.NewLine +
+                             "A||-----------------------------------8--------7-----8--5-----7-----||" + Environment.NewLine +
+                             "E||--------------------------------------------------------------8--||" + Environment.NewLine)
+
+        [<Fact>]
+        let ``1Should render tab for C Dominant 7 scale up and down to seventh in triads`` () =
+            [StandardTunning; Start; Notes(createScaleSequenceRootToSeventhInTriads 5 8 (createScale Mixolydian C)); End]
+            |> renderTab
+            |> should equal (
+                             "e||-----------------------------------------------------------------------------------------------------------------------------||" + Environment.NewLine +
+                             "B||-----------------------------------------------------5--------6--------5-----------------------------------------------------||" + Environment.NewLine +
+                             "G||-----------------------------------5--------7-----5--------7-----7--------5-----7--------5-----------------------------------||" + Environment.NewLine +
+                             "D||--------5--------7-----5--8-----7-----5--8-----7--------8-----------8--------7-----8--5-----7-----8--5-----7--------5--------||" + Environment.NewLine +
+                             "A||-----7-----5--8-----7--------8-----------------------------------------------------------------8--------7-----8--5-----7-----||" + Environment.NewLine +
+                             "E||--8-----------------------------------------------------------------------------------------------------------------------8--||" + Environment.NewLine)

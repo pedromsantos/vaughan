@@ -185,6 +185,9 @@ namespace Vaughan
                     Frets = generateAllFretCombinations allowedFrets (scale.Notes)
                 }
 
+            let melodicLineToGuitarMelodicLine allowedFrets notes =
+                generateAllFretCombinations allowedFrets notes 
+
         let guitarChord:CreateGuitarChord = fun bassString chord ->
             match chord.ChordType with
             | Drop2 | Drop3 | Triad -> dropChordToGuitarChord bassString chord
@@ -205,6 +208,10 @@ namespace Vaughan
             |> scaleToGuitarScale (fun f -> f.Fret >= minFret && f.Fret <= maxFret)
 
         let guitarNote:CreateGuitarNote = createStringFret
+
+        let guitarNotes:CreateGuitarNotes = fun minFret maxFret notes ->
+            notes
+            |> melodicLineToGuitarMelodicLine (fun f -> f.Fret >= minFret && f.Fret <= maxFret) 
 
         let guitarScaleName (scale:GuitarScale) =
             scaleName scale.Scale

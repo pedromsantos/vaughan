@@ -79,3 +79,7 @@ namespace Vaughan
                 else 
                     tailRecursiveFactorial (x - 1) (acc * x)
             tailRecursiveFactorial x 1
+
+        let one (c, _, _) = c
+        let two (_, c, _) = c
+        let three (_, _, c) = c
