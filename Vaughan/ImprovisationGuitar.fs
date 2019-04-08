@@ -154,14 +154,14 @@ namespace Vaughan
             let thirds = createAscendingScaleSequence minFret maxFret 7 scale.Notes.[2] scale 
             line
             |> List.zip thirds
-            |> List.collect (fun p -> [fst p; snd p])
+            |> List.collect (fun (p1, p2) -> [p1; p2])
 
         let createDescendingScaleSequenceRootToSeventhInThirds minFret maxFret (scale : Scale) = 
             let line = createDescendingScaleSequenceFromSeventhToRoot minFret maxFret scale
             let thirds = createDescendingScaleSequence minFret maxFret 7 scale.Notes.[2] scale 
             thirds
             |> List.zip line 
-            |> List.collect (fun p -> [fst p; snd p])
+            |> List.collect (fun (p1, p2) -> [p1; p2])
 
         let createScaleSequenceRootToSeventhInThirds minFret maxFret (scale : Scale) = 
             createDescendingScaleSequenceRootToSeventhInThirds minFret maxFret scale
@@ -176,7 +176,7 @@ namespace Vaughan
 
             line
             |> List.zip3 fifths thirds 
-            |> List.collect (fun p -> [one p; two p; three p])
+            |> List.collect (fun (p1, p2, p3) -> [p1; p2; p3])
 
         let createDescendingScaleSequenceRootToSeventhInTriads minFret maxFret (scale : Scale) = 
             let line = createDescendingScaleSequenceFromSeventhToRoot minFret maxFret scale
@@ -185,7 +185,7 @@ namespace Vaughan
             
             fifths
             |> List.zip3 line thirds 
-            |> List.collect (fun p -> [one p; two p; three p])
+            |> List.collect (fun (p1, p2, p3) -> [p1; p2; p3])
 
         let createScaleSequenceRootToSeventhInTriads minFret maxFret (scale : Scale) = 
             createDescendingScaleSequenceRootToSeventhInTriads minFret maxFret scale
