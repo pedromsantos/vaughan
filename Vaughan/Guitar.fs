@@ -186,7 +186,7 @@ namespace Vaughan
                 }
 
             let melodicLineToGuitarMelodicLine allowedFrets notes =
-                generateAllFretCombinations allowedFrets notes 
+                generateAllFretCombinations allowedFrets notes
 
         let guitarChord:CreateGuitarChord = fun bassString chord ->
             match chord.ChordType with
@@ -218,6 +218,10 @@ namespace Vaughan
 
         let guitarScaleNoteNames (scale:GuitarScale) =
             scaleNoteNames scale.Scale
+
+        let raiseOctaveVerticaly minFret maxFret fretedNote =
+            let octaveString = fretedNote.GuitarString |> nextString |> nextString
+            createStringFret octaveString fretedNote.Note
 
     module GuitarTab =
         open System

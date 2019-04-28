@@ -1,4 +1,5 @@
 namespace Vaughan
+    open Guitar
 
     module ImprovisationGuitar =
         open Notes
@@ -125,14 +126,14 @@ namespace Vaughan
             |> Seq.toList
 
         let createAscendingScaleSequence minFret maxFret maxNotes startingTone (scale : Scale) = 
-            (guitarScale minFret maxFret scale).Frets
+            guitarNotes minFret maxFret scale.Notes
             |> List.sortBy (fun n -> n.GuitarString, n.Fret)
             |> List.skipWhile (fun n -> n.Note <> startingTone)
-            |> List.sortByDescending (fun n -> n.GuitarString, n.Fret)
+            |> List.rev
             |> limitLineTo maxNotes
 
         let createDescendingScaleSequence minFret maxFret maxNotes startingTone (scale : Scale) = 
-            (guitarScale minFret maxFret scale).Frets
+            guitarNotes minFret maxFret scale.Notes
             |> List.sortBy (fun n -> n.GuitarString, n.Fret)
             |> List.skipWhile (fun n -> n.Note <> startingTone)
             |> List.take (maxNotes)
@@ -191,4 +192,32 @@ namespace Vaughan
             createDescendingScaleSequenceRootToSeventhInTriads minFret maxFret scale
             @
             (createAscendingScaleSequenceRootToSeventhInTriads minFret maxFret scale
+            |> List.skip 1)
+
+        let createAscendingScaleSequenceRootToSeventhInChords minFret maxFret (scale : Scale) = 
+            let line = createAscendingScaleSequenceFromRootToSeventh minFret maxFret scale
+            let thirds = createAscendingScaleSequence minFret maxFret 7 scale.Notes.[2] scale 
+            let fifths = createAscendingScaleSequence minFret maxFret 7 scale.Notes.[4] scale 
+            let sevenths = createAscendingScaleSequence minFret maxFret 7 scale.Notes.[6] scale 
+
+            line
+            |> List.zip3 fifths thirds
+            |> List.zip sevenths
+            |> List.collect (fun (p1,(p2,p3,p4)) -> [(raiseOctaveVerticaly minFret maxFret p1);p2;p3;p4])
+
+        let createDescendingScaleSequenceRootToSeventhInChords minFret maxFret (scale : Scale) = 
+            let line = createDescendingScaleSequenceFromSeventhToRoot minFret maxFret scale
+            let thirds = createDescendingScaleSequence minFret maxFret 7 scale.Notes.[2] scale
+            let fifths = createDescendingScaleSequence minFret maxFret 7 scale.Notes.[4] scale
+            let sevenths = createDescendingScaleSequence minFret maxFret 7 scale.Notes.[6] scale
+            
+            fifths
+            |> List.zip3 line thirds 
+            |> List.zip sevenths
+            |> List.collect (fun (p1,(p2,p3,p4)) -> [p2;p3;p4;p1])
+
+        let createScaleSequenceRootToSeventhInChords minFret maxFret (scale : Scale) = 
+            createDescendingScaleSequenceRootToSeventhInChords minFret maxFret scale
+            @
+            (createAscendingScaleSequenceRootToSeventhInChords minFret maxFret scale
             |> List.skip 1)
