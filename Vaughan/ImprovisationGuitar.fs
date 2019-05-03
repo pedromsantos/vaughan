@@ -203,7 +203,7 @@ namespace Vaughan
             line
             |> List.zip3 fifths thirds
             |> List.zip sevenths
-            |> List.collect (fun (p1,(p2,p3,p4)) -> [(raiseOctaveVerticaly minFret maxFret p1);p2;p3;p4])
+            |> List.collect (fun (p1,(p2,p3,p4)) -> [(raiseOctaveVerticaly p1);p2;p3;p4])
 
         let createDescendingScaleSequenceRootToSeventhInChords minFret maxFret (scale : Scale) = 
             let line = createDescendingScaleSequenceFromSeventhToRoot minFret maxFret scale
@@ -214,7 +214,7 @@ namespace Vaughan
             fifths
             |> List.zip3 line thirds 
             |> List.zip sevenths
-            |> List.collect (fun (p1,(p2,p3,p4)) -> [p2;p3;p4;p1])
+            |> List.collect (fun (p1,(p2,p3,p4)) -> [p2;p3;p4;(raiseOctaveVerticaly p1)])
 
         let createScaleSequenceRootToSeventhInChords minFret maxFret (scale : Scale) = 
             createDescendingScaleSequenceRootToSeventhInChords minFret maxFret scale

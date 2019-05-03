@@ -154,39 +154,39 @@ namespace Vaughan
 
         [<AutoOpen>]
         module private MapMelodicLines =
-            let private filterAllowedFrets allowedFrets (frets: Fret list) =
-                frets |> List.map (fun f -> if allowedFrets f then f else raiseOctave f)
-                |> List.filter allowedFrets
-
-            let private mapAllNotesToFretsOnString allowedFrets guitarStringIndex (notes:Note list) =
+            let private mapAllNotesToFretsOnString filterFrets guitarStringIndex (notes:Note list) =
                 let guitarString = indexToGuitarString guitarStringIndex
                 let frets =
                     [for noteIndex in 0 .. (notes.Length - 1)
                         do yield (createStringFret guitarString notes.[noteIndex])]
-                    |> filterAllowedFrets allowedFrets
+                    |> filterFrets
                 match frets with
                 | [] -> [createMutedStringFret guitarString]
                 | _ -> frets
 
-            let private generateAllFretCombinations allowedFrets (notes:Note list) =
+            let private generateAllFretCombinations filterFrets (notes:Note list) =
                 [for guitarStringIndex in 1 .. 6
-                    do yield (mapAllNotesToFretsOnString allowedFrets guitarStringIndex notes)]
+                    do yield (mapAllNotesToFretsOnString filterFrets guitarStringIndex notes)]
                 |> List.collect id
+
+            let private filterAllowedFrets allowedFrets (frets: Fret list) =
+                frets |> List.map (fun f -> if allowedFrets f then f else raiseOctave f)
+                |> List.filter allowedFrets
 
             let chordToGuitarArpeggio allowedFrets chord =
                 {
                     BaseChord = chord;
-                    ArpeggioFrets = generateAllFretCombinations allowedFrets (chord.Notes |> List.map fst)
+                    ArpeggioFrets = generateAllFretCombinations (filterAllowedFrets allowedFrets) (chord.Notes |> List.map fst)
                 }
 
             let scaleToGuitarScale allowedFrets scale =
                 {
                     Scale = scale;
-                    Frets = generateAllFretCombinations allowedFrets (scale.Notes)
+                    Frets = generateAllFretCombinations (filterAllowedFrets allowedFrets) (scale.Notes)
                 }
 
             let melodicLineToGuitarMelodicLine allowedFrets notes =
-                generateAllFretCombinations allowedFrets notes
+                generateAllFretCombinations (List.filter allowedFrets) notes
 
         let guitarChord:CreateGuitarChord = fun bassString chord ->
             match chord.ChordType with
@@ -219,7 +219,7 @@ namespace Vaughan
         let guitarScaleNoteNames (scale:GuitarScale) =
             scaleNoteNames scale.Scale
 
-        let raiseOctaveVerticaly minFret maxFret fretedNote =
+        let raiseOctaveVerticaly fretedNote =
             let octaveString = fretedNote.GuitarString |> nextString |> nextString
             createStringFret octaveString fretedNote.Note
 
