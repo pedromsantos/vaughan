@@ -219,9 +219,14 @@ namespace Vaughan
         let guitarScaleNoteNames (scale:GuitarScale) =
             scaleNoteNames scale.Scale
 
-        let raiseOctaveVerticaly fretedNote =
+        let raiseOctaveVerticaly fretedNote minFret maxFret =
             let octaveString = fretedNote.GuitarString |> nextString |> nextString
-            createStringFret octaveString fretedNote.Note
+            let raised = createStringFret octaveString fretedNote.Note
+            if raised.Fret >= minFret && raised.Fret <= maxFret then 
+                raised
+            else
+                let octaveString = fretedNote.GuitarString |> nextString |> nextString |> nextString
+                createStringFret octaveString fretedNote.Note
 
     module GuitarTab =
         open System
