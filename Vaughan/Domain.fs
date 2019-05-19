@@ -141,7 +141,7 @@ namespace Vaughan
         type SeventhsHarmonizer = ScaleDegree -> ScaleNotes -> Chord
         type TriadsHarmonizer = ScaleDegree -> ScaleNotes -> Chord
 
-        type MelodicLine = {Scale:Scale; Pattern:int list}
+        type MelodicLine = {Scale:Scale; Pattern:ScaleDegree list}
 
         type GuitarString =
             | SixthString | FifthString | FourthString

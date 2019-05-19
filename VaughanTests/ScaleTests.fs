@@ -63,21 +63,30 @@ namespace VaughanTests
 
         [<Fact>]
         let ``Should create thirds melodic line from C major scale``() =
-            let melodicLine = {Scale= createScale Ionian C; Pattern=[1;3;2;4;3;5;4;6;5;7]}
+            let melodicLine = {Scale= createScale Ionian C; Pattern=[
+                ScaleDegree.I;ScaleDegree.III;ScaleDegree.II;
+                ScaleDegree.IV;ScaleDegree.III;ScaleDegree.V;
+                ScaleDegree.IV;ScaleDegree.VI;ScaleDegree.V;ScaleDegree.VII]}
             let melodicLineNotes = toNotes melodicLine
 
             melodicLineNotes |> should equal [C;E;D;F;E;G;F;A;G;B]
 
         [<Fact>]
         let ``Should create triads melodic line from C major scale``() =
-            let melodicLine = {Scale= createScale Ionian C; Pattern=[1;3;5;2;4;6;3;5;7]}
+            let melodicLine = {Scale= createScale Ionian C; Pattern=[
+                ScaleDegree.I;ScaleDegree.III;ScaleDegree.V;ScaleDegree.II;
+                ScaleDegree.IV;ScaleDegree.VI;ScaleDegree.III;ScaleDegree.V;
+                ScaleDegree.VII]}
             let melodicLineNotes = toNotes melodicLine
 
             melodicLineNotes |> should equal [C;E;G;D;F;A;E;G;B]
 
         [<Fact>]
         let ``Should create tchords melodic line from C major scale``() =
-            let melodicLine = {Scale= createScale Ionian C; Pattern=[1;3;5;7;2;4;6;1;3;5;7;2]}
+            let melodicLine = {Scale= createScale Ionian C; Pattern=[
+                ScaleDegree.I;ScaleDegree.III;ScaleDegree.V;ScaleDegree.VII;
+                ScaleDegree.II;ScaleDegree.IV;ScaleDegree.VI;ScaleDegree.I;
+                ScaleDegree.III;ScaleDegree.V;ScaleDegree.VII;ScaleDegree.II]}
             let melodicLineNotes = toNotes melodicLine
 
             melodicLineNotes |> should equal [C;E;G;B;D;F;A;C;E;G;B;D]

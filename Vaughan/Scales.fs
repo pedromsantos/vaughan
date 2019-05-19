@@ -97,4 +97,4 @@ namespace Vaughan
 
         let toNotes (melodicLine: MelodicLine) =
             melodicLine.Pattern
-            |> List.map (fun p -> melodicLine.Scale.Notes |> List.item (p - 1))
+            |> List.map (fun p -> melodicLine.Scale.Notes |> List.item (int p))
