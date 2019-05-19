@@ -27,6 +27,7 @@ namespace VaughanCLI
             | Chord = 0
             | Scale = 1
             | Arpeggio = 2
+            | Line = 3
 
         type ScaleArguments =
             | [<AltCommandLine("-s")>]Scale of string

@@ -94,3 +94,7 @@ namespace Vaughan
                                                  then Some(scale)
                                                  else None))))
             |> List.collect id
+
+        let toNotes (melodicLine: MelodicLine) =
+            melodicLine.Pattern
+            |> List.map (fun p -> melodicLine.Scale.Notes |> List.item (p - 1))
