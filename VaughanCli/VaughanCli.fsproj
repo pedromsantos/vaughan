@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp2.1</TargetFramework>
+    <TargetFramework>netcoreapp2.2</TargetFramework>
     <PackageId>VaughanCLI</PackageId>
     <Title>VaughanCLI</Title>
     <Authors>Pedro Moreira Santos</Authors>
@@ -15,7 +15,7 @@
     <OutputType>Exe</OutputType>
     <ToolCommandName>VaughanCLI</ToolCommandName>
     <PackAsTool>true</PackAsTool>
-    <FSharpCoreImplicitPackageVersion>4.3.*</FSharpCoreImplicitPackageVersion>
+    <FSharpCoreImplicitPackageVersion>4.6.*</FSharpCoreImplicitPackageVersion>
     <RepositoryUrl>https://github.com/pedromsantos/vaughan</RepositoryUrl>
     <AssemblyVersion>0.1.0.0</AssemblyVersion>
     <FileVersion>0.1.0.0</FileVersion>
