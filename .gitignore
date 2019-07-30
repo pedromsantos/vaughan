@@ -127,6 +127,7 @@ flycheck_*.el
 
 ### VisualStudioCode ###
 .vscode
+.ionide
 
 ### VisualStudio ###
 ## Ignore Visual Studio temporary files, build results, and
@@ -382,6 +383,5 @@ paket-files/
 
 # JetBrains Rider
 .idea/
-.ionide/
 *.sln.iml
 Vaughan.sln.DotSettings.user
