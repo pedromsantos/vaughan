@@ -105,9 +105,15 @@ module ScaleTests =
         let melodicLine =
             { Scale = createScale Ionian C
               Pattern =
-                  [ ScaleDegree(ScaleDegree.I); ScaleDegree(ScaleDegree.III); ScaleDegree(ScaleDegree.II);
-                    ScaleDegree(ScaleDegree.IV); ScaleDegree(ScaleDegree.III); ScaleDegree(ScaleDegree.V);
-                    ScaleDegree(ScaleDegree.IV); ScaleDegree(ScaleDegree.VI); ScaleDegree(ScaleDegree.V);
+                  [ ScaleDegree(ScaleDegree.I)
+                    ScaleDegree(ScaleDegree.III)
+                    ScaleDegree(ScaleDegree.II)
+                    ScaleDegree(ScaleDegree.IV)
+                    ScaleDegree(ScaleDegree.III)
+                    ScaleDegree(ScaleDegree.V)
+                    ScaleDegree(ScaleDegree.IV)
+                    ScaleDegree(ScaleDegree.VI)
+                    ScaleDegree(ScaleDegree.V)
                     ScaleDegree(ScaleDegree.VII) ] }
 
         let melodicLineNotes = toNotes melodicLine
@@ -118,9 +124,15 @@ module ScaleTests =
         let melodicLine =
             { Scale = createScale Ionian C
               Pattern =
-                  [ ScaleDegree(ScaleDegree.I); ScaleDegree(ScaleDegree.III); ScaleDegree(ScaleDegree.V);
-                    ScaleDegree(ScaleDegree.II); ScaleDegree(ScaleDegree.IV); ScaleDegree(ScaleDegree.VI);
-                    ScaleDegree(ScaleDegree.III); ScaleDegree(ScaleDegree.V); ScaleDegree(ScaleDegree.VII) ] }
+                  [ ScaleDegree(ScaleDegree.I)
+                    ScaleDegree(ScaleDegree.III)
+                    ScaleDegree(ScaleDegree.V)
+                    ScaleDegree(ScaleDegree.II)
+                    ScaleDegree(ScaleDegree.IV)
+                    ScaleDegree(ScaleDegree.VI)
+                    ScaleDegree(ScaleDegree.III)
+                    ScaleDegree(ScaleDegree.V)
+                    ScaleDegree(ScaleDegree.VII) ] }
 
         let melodicLineNotes = toNotes melodicLine
         melodicLineNotes |> should equal [ C; E; G; D; F; A; E; G; B ]
@@ -130,42 +142,68 @@ module ScaleTests =
         let melodicLine =
             { Scale = createScale Ionian C
               Pattern =
-                  [ ScaleDegree(ScaleDegree.I); ScaleDegree(ScaleDegree.III); ScaleDegree(ScaleDegree.V);
-                    ScaleDegree(ScaleDegree.VII); ScaleDegree(ScaleDegree.II); ScaleDegree(ScaleDegree.IV);
-                    ScaleDegree(ScaleDegree.VI); ScaleDegree(ScaleDegree.I); ScaleDegree(ScaleDegree.III);
-                    ScaleDegree(ScaleDegree.V); ScaleDegree(ScaleDegree.VII); ScaleDegree(ScaleDegree.II) ] }
+                  [ ScaleDegree(ScaleDegree.I)
+                    ScaleDegree(ScaleDegree.III)
+                    ScaleDegree(ScaleDegree.V)
+                    ScaleDegree(ScaleDegree.VII)
+                    ScaleDegree(ScaleDegree.II)
+                    ScaleDegree(ScaleDegree.IV)
+                    ScaleDegree(ScaleDegree.VI)
+                    ScaleDegree(ScaleDegree.I)
+                    ScaleDegree(ScaleDegree.III)
+                    ScaleDegree(ScaleDegree.V)
+                    ScaleDegree(ScaleDegree.VII)
+                    ScaleDegree(ScaleDegree.II) ] }
 
         let melodicLineNotes = toNotes melodicLine
         melodicLineNotes |> should equal [ C; E; G; B; D; F; A; C; E; G; B; D ]
-        
+
     [<Fact>]
     let ``Should create melodic line from C major scale with passing tones``() =
         let melodicLine =
             { Scale = createScale Ionian C
               Pattern =
-                  [ ScaleDegree(ScaleDegree.I); ScaleDegree(ScaleDegree.III); ScaleDegree(ScaleDegree.V);
-                    ScaleDegree(ScaleDegree.VII); NonScaleDegree(ScaleDegree.II, flat); ScaleDegree(ScaleDegree.IV);
-                    ScaleDegree(ScaleDegree.VI); NonScaleDegree(ScaleDegree.I, sharp); ScaleDegree(ScaleDegree.III);
-                    ScaleDegree(ScaleDegree.V); ScaleDegree(ScaleDegree.VII); ScaleDegree(ScaleDegree.II) ] }
+                  [ ScaleDegree(ScaleDegree.I)
+                    ScaleDegree(ScaleDegree.III)
+                    ScaleDegree(ScaleDegree.V)
+                    ScaleDegree(ScaleDegree.VII)
+                    NonScaleDegree(ScaleDegree.II, flat)
+                    ScaleDegree(ScaleDegree.IV)
+                    ScaleDegree(ScaleDegree.VI)
+                    NonScaleDegree(ScaleDegree.I, sharp)
+                    ScaleDegree(ScaleDegree.III)
+                    ScaleDegree(ScaleDegree.V)
+                    ScaleDegree(ScaleDegree.VII)
+                    ScaleDegree(ScaleDegree.II) ] }
 
         let melodicLineNotes = toNotes melodicLine
-        melodicLineNotes |> should equal [ C; E; G; B; DFlat; F; A; CSharp; E; G; B; D ]
-        
+        melodicLineNotes
+        |> should equal [ C; E; G; B; DFlat; F; A; CSharp; E; G; B; D ]
+
     [<Fact>]
     let ``Should create melodic lines from C major scale using half step rules for root``() =
-        let melodicLines = halfStepsMajorScale C ScaleDegree.I 
-
+        let melodicLines = halfStepsMajorScale C ScaleDegree.I
         toNotes melodicLines.[0] |> should equal [ C; B; A; AFlat; G; F; E; D ]
-        
-        toNotes melodicLines.[1] |> should equal [ C; B; A; AFlat; G; F; E; EFlat; D; DFlat ]
-        
+        toNotes melodicLines.[1]
+        |> should equal [ C; B; A; AFlat; G; F; E; EFlat; D; DFlat ]
+
     [<Fact>]
     let ``Should create melodic lines from C major scale using half step rules for second``() =
         let melodicLines = halfStepsMajorScale C ScaleDegree.II
-
         toNotes melodicLines.[0] |> should equal [ D; C; B; A; G; F; E ]
-        
-        let melodicLine = toNotes melodicLines.[1] 
-        melodicLine |> should equal [ D; DFlat; C; B; A; AFlat; G; F; E; ]
+        let melodicLine = toNotes melodicLines.[1]
+        melodicLine |> should equal [ D; DFlat; C; B; A; AFlat; G; F; E ]
 
-    
+    [<Fact>]
+    let ``Should create melodic lines from C dominant scale using half step rules for root``() =
+        let melodicLines = halfStepsDominantScale C ScaleDegree.I
+        toNotes melodicLines.[0] |> should equal [ C; B; BFlat; A; G; F; E; D ]
+        toNotes melodicLines.[1]
+        |> should equal [ C; B; BFlat; A; G; F; E; EFlat; D; DFlat ]
+
+    [<Fact>]
+    let ``Should create melodic lines from C dominant scale using half step rules for second``() =
+        let melodicLines = halfStepsDominantScale C ScaleDegree.II
+        toNotes melodicLines.[0] |> should equal [ D; C; BFlat; A; G; F; E ]
+        let melodicLine = toNotes melodicLines.[1]
+        melodicLine |> should equal [ D; DFlat; C; B; BFlat; A; G; F; E ]

@@ -336,8 +336,8 @@ module Domain =
     type MelodicLinePatternElement =
         | ScaleDegree of ScaleDegree
         | NonScaleDegree of (ScaleDegree * (Note -> Note))
-    
-    type MelodicLinePattern =  MelodicLinePatternElement list
+
+    type MelodicLinePattern = MelodicLinePatternElement list
 
     type MelodicLine =
         { Scale : Scale
