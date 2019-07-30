@@ -148,6 +148,10 @@ module Scales =
                              else None))))
         |> List.collect id
 
-    let toNotes (melodicLine : MelodicLine) =
+    let toNotes melodicLine =
         melodicLine.Pattern
-        |> List.map (fun p -> melodicLine.Scale.Notes |> List.item (int p))
+        |> List.map (fun p ->
+            match p with
+            | ScaleDegree(d) -> melodicLine.Scale.Notes |> List.item (int d)
+            | NonScaleDegree(d,f) -> melodicLine.Scale.Notes |> List.item (int d) |> f
+            )

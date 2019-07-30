@@ -333,7 +333,11 @@ module Domain =
 
     type TriadsHarmonizer = ScaleDegree -> ScaleNotes -> Chord
 
-    type MelodicLinePattern = ScaleDegree list
+    type MelodicLinePatternElement =
+        | ScaleDegree of ScaleDegree
+        | NonScaleDegree of (ScaleDegree * (Note -> Note))
+    
+    type MelodicLinePattern =  MelodicLinePatternElement list
 
     type MelodicLine =
         { Scale : Scale

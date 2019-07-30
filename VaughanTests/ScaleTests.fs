@@ -5,6 +5,7 @@ module ScaleTests =
     open FsUnit.Xunit
     open FsCheck.Xunit
     open Vaughan.Domain
+    open Vaughan.Notes
     open Vaughan.Scales
     open Vaughan.Chords
 
@@ -104,10 +105,10 @@ module ScaleTests =
         let melodicLine =
             { Scale = createScale Ionian C
               Pattern =
-                  [ ScaleDegree.I; ScaleDegree.III; ScaleDegree.II;
-                    ScaleDegree.IV; ScaleDegree.III; ScaleDegree.V;
-                    ScaleDegree.IV; ScaleDegree.VI; ScaleDegree.V;
-                    ScaleDegree.VII ] }
+                  [ ScaleDegree(ScaleDegree.I); ScaleDegree(ScaleDegree.III); ScaleDegree(ScaleDegree.II);
+                    ScaleDegree(ScaleDegree.IV); ScaleDegree(ScaleDegree.III); ScaleDegree(ScaleDegree.V);
+                    ScaleDegree(ScaleDegree.IV); ScaleDegree(ScaleDegree.VI); ScaleDegree(ScaleDegree.V);
+                    ScaleDegree(ScaleDegree.VII) ] }
 
         let melodicLineNotes = toNotes melodicLine
         melodicLineNotes |> should equal [ C; E; D; F; E; G; F; A; G; B ]
@@ -117,22 +118,35 @@ module ScaleTests =
         let melodicLine =
             { Scale = createScale Ionian C
               Pattern =
-                  [ ScaleDegree.I; ScaleDegree.III; ScaleDegree.V;
-                    ScaleDegree.II; ScaleDegree.IV; ScaleDegree.VI;
-                    ScaleDegree.III; ScaleDegree.V; ScaleDegree.VII ] }
+                  [ ScaleDegree(ScaleDegree.I); ScaleDegree(ScaleDegree.III); ScaleDegree(ScaleDegree.V);
+                    ScaleDegree(ScaleDegree.II); ScaleDegree(ScaleDegree.IV); ScaleDegree(ScaleDegree.VI);
+                    ScaleDegree(ScaleDegree.III); ScaleDegree(ScaleDegree.V); ScaleDegree(ScaleDegree.VII) ] }
 
         let melodicLineNotes = toNotes melodicLine
         melodicLineNotes |> should equal [ C; E; G; D; F; A; E; G; B ]
 
     [<Fact>]
-    let ``Should create tchords melodic line from C major scale``() =
+    let ``Should create melodic line from C major scale``() =
         let melodicLine =
             { Scale = createScale Ionian C
               Pattern =
-                  [ ScaleDegree.I; ScaleDegree.III; ScaleDegree.V;
-                    ScaleDegree.VII; ScaleDegree.II; ScaleDegree.IV;
-                    ScaleDegree.VI; ScaleDegree.I; ScaleDegree.III;
-                    ScaleDegree.V; ScaleDegree.VII; ScaleDegree.II ] }
+                  [ ScaleDegree(ScaleDegree.I); ScaleDegree(ScaleDegree.III); ScaleDegree(ScaleDegree.V);
+                    ScaleDegree(ScaleDegree.VII); ScaleDegree(ScaleDegree.II); ScaleDegree(ScaleDegree.IV);
+                    ScaleDegree(ScaleDegree.VI); ScaleDegree(ScaleDegree.I); ScaleDegree(ScaleDegree.III);
+                    ScaleDegree(ScaleDegree.V); ScaleDegree(ScaleDegree.VII); ScaleDegree(ScaleDegree.II) ] }
 
         let melodicLineNotes = toNotes melodicLine
         melodicLineNotes |> should equal [ C; E; G; B; D; F; A; C; E; G; B; D ]
+        
+    [<Fact>]
+    let ``Should create melodic line from C major scale with passing tones``() =
+        let melodicLine =
+            { Scale = createScale Ionian C
+              Pattern =
+                  [ ScaleDegree(ScaleDegree.I); ScaleDegree(ScaleDegree.III); ScaleDegree(ScaleDegree.V);
+                    ScaleDegree(ScaleDegree.VII); NonScaleDegree(ScaleDegree.II, flat); ScaleDegree(ScaleDegree.IV);
+                    ScaleDegree(ScaleDegree.VI); NonScaleDegree(ScaleDegree.I, sharp); ScaleDegree(ScaleDegree.III);
+                    ScaleDegree(ScaleDegree.V); ScaleDegree(ScaleDegree.VII); ScaleDegree(ScaleDegree.II) ] }
+
+        let melodicLineNotes = toNotes melodicLine
+        melodicLineNotes |> should equal [ C; E; G; B; DFlat; F; A; CSharp; E; G; B; D ]

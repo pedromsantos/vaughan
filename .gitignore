@@ -382,5 +382,6 @@ paket-files/
 
 # JetBrains Rider
 .idea/
+.ionide/
 *.sln.iml
 Vaughan.sln.DotSettings.user
