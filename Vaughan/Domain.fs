@@ -1,197 +1,423 @@
 namespace Vaughan
 
-    [<AutoOpen>]
-    module Domain =
-        [<Measure>] type s
-        [<Measure>] type hz
-        [<Measure>] type ht
-        [<Measure>] type pan
-        [<Measure>] type bpm
-        [<Measure>] type loud
-        [<Measure>] type beat
-        [<Measure>] type midiNote
+[<AutoOpen>]
+module Domain =
+    [<Measure>]
+    type s
 
-        type Note =
-            | C | CSharp | DFlat | D | DSharp | EFlat | E | F | FSharp
-            | GFlat | G | GSharp | AFlat | A | ASharp | BFlat | B
+    [<Measure>]
+    type hz
 
-        type Duration =
-            | Whole | Half | Quarter | Eigth
-            | Sixteenth | ThirtySecond
-            | SixtyFourth | HundredTwentyEighth
+    [<Measure>]
+    type ht
 
-        type SharpNote = Note -> Note
-        type FlatNote = Note -> Note
-        type NaturalNote = Note -> Note
-        type NoteName = Note -> string
-        type NotePitch = Note -> int
+    [<Measure>]
+    type pan
 
-        type Interval =
-            | Unisson | MinorSecond | MajorSecond | AugmentedSecond | MinorThird
-            | MajorThird | PerfectFourth | AugmentedFourth | DiminishedFifth
-            | PerfectFifth | AugmentedFifth | MinorSixth | MajorSixth
-            | DiminishedSeventh | MinorSeventh | MajorSeventh | PerfectOctave
-            | MajorNinth | MinorNinth | AugmentedNinth
-            | PerfectEleventh | AugmentedEleventh
-            | MinorThirteenth | MajorThirteenth
+    [<Measure>]
+    type bpm
 
-        type IntervalName = Interval -> string
-        type IntervalToDistance = Interval -> int<ht>
-        type IntervalToOctaveDistance = Interval -> int<ht>
-        type IntervalFromDistance = int<ht> -> Interval
-        type MeasureAbsoluteSemitones = Note -> Note -> int<ht>
-        type IntervalBetween = Note -> Note -> Interval
-        type TransposeNote = Note -> Interval -> Note
+    [<Measure>]
+    type loud
 
-        type Octave =
-            | SubContra | Contra | Great | Small
-            | OneLine | TwoLine | ThreeLine | FourLine
-            | FiveLine | SixLine | SevenLine
+    [<Measure>]
+    type beat
 
-        type MidiNote = Note * Octave
+    [<Measure>]
+    type midiNote
 
-        type OctaveName = Octave -> string
-        type OctaveMidiNumber = Octave -> int
-        type Frequency = Note -> Octave -> float<hz>
-        type NoteMidiName = Note -> Octave -> string
-        type NoteMidiNumber = Note -> Octave -> int<midiNote>
+    type Note =
+        | C
+        | CSharp
+        | DFlat
+        | D
+        | DSharp
+        | EFlat
+        | E
+        | F
+        | FSharp
+        | GFlat
+        | G
+        | GSharp
+        | AFlat
+        | A
+        | ASharp
+        | BFlat
+        | B
 
-        type BeatNote = Note * Octave * Duration
-        type BeatNotes = BeatNote list
-        type BarBeat = float<beat> * BeatNotes
-        type TimeSignature = int<beat> * Duration
-        type Bar = BarBeat list
+    type Duration =
+        | Whole
+        | Half
+        | Quarter
+        | Eigth
+        | Sixteenth
+        | ThirtySecond
+        | SixtyFourth
+        | HundredTwentyEighth
 
-        type Key =
-            | AMajor | AFlatMajor | BMajor | BFlatMajor | CMajor
-            | DMajor | DFlatMajor | EMajor | EFlatMajor
-            | FMajor | FSharpMajor | GMajor | GFlatMajor | AMinor
-            | BMinor | BFlatMinor | CMinor | CSharpMinor | DMinor
-            | EMinor | FMinor | FSharpMinor | GMinor
-            | GSharpMinor | EFlatMinor
+    type SharpNote = Note -> Note
 
-        type KeyNotes = Note list
+    type FlatNote = Note -> Note
 
-        type IKeyNotes = Key -> KeyNotes
+    type NaturalNote = Note -> Note
 
-        type Section = TimeSignature * Key * Bar list
+    type NoteName = Note -> string
 
-        type Song = Section list
+    type NotePitch = Note -> int
 
-        type ChordQuality =
-            | Major | Augmented
-            | Major6 | Major6Add9 | Major6Flat5Add9
-            | Major7 | Major9 | Major9Sharp11 | Major11 | Major13 | Major13Sharp11 | Augmented7
-            | Dominant7 | Dominant7Flat5 | Dominant7Flat9 | Dominant7Sharp9
-            | Dominant7Flat5Flat9 | Dominant7Flat5Sharp9
-            | Dominant9 | Dominant11 | Dominant13
-            | Minor | Diminished
-            | Minor7 | Minor6 | Minor6Add9 | Minor9 | Diminished7 | Minor7b5
-            | MinorMaj7 | MinorMaj9
-            | Sus2 | Sus2Diminished | Sus2Augmented
-            | Sus4 | Sus4Diminished | Sus4Augmented
+    type Interval =
+        | Unisson
+        | MinorSecond
+        | MajorSecond
+        | AugmentedSecond
+        | MinorThird
+        | MajorThird
+        | PerfectFourth
+        | AugmentedFourth
+        | DiminishedFifth
+        | PerfectFifth
+        | AugmentedFifth
+        | MinorSixth
+        | MajorSixth
+        | DiminishedSeventh
+        | MinorSeventh
+        | MajorSeventh
+        | PerfectOctave
+        | MajorNinth
+        | MinorNinth
+        | AugmentedNinth
+        | PerfectEleventh
+        | AugmentedEleventh
+        | MinorThirteenth
+        | MajorThirteenth
 
-        type ChordNoteFunction =
-            | Root | Third | Fifth | Sixth | Seventh | Ninth | Eleventh | Thirteenth
+    type IntervalName = Interval -> string
 
-        type ChordNote = Note * ChordNoteFunction
-        type ChordNotes = ChordNote list
-        type ChordType = | Open | Closed | Triad | Drop2 | Drop3
-        type Chord = {Notes:ChordNotes; ChordType:ChordType; Name:string}
+    type IntervalToDistance = Interval -> int<ht>
 
-        type ChordName = Chord -> string
-        type Invert = Chord -> Chord
-        type Root = Chord -> Note
-        type Bass = Chord -> Note
-        type Lead = Chord -> Note
-        type ToOpen = Chord -> Chord
-        type ToDrop2 = Chord -> Chord
-        type ToDrop3 = Chord -> Chord
-        type ToTriad = Chord -> Chord
-        type ToClosed = Chord -> Chord
-        type NoteNames = Chord -> string List
-        type ChordsFitting = Note list -> Chord list
-        type CreateChord = Note -> ChordQuality -> Chord
-        type SkipChordFunction = ChordNoteFunction -> Chord -> Chord
-        type InvertionWithBassClosestToNote = Chord -> Note -> Chord
-        type InvertionWithLeadClosestToNote = Chord -> Note -> Chord
-        type InversionForFunctionAsBass= Chord -> ChordNoteFunction -> Chord
-        type InversionForFunctionAsLead = Chord -> ChordNoteFunction -> Chord
-        type VoiceLead = (Chord -> Note) -> Chord list -> Chord list
+    type IntervalToOctaveDistance = Interval -> int<ht>
 
-        type ScaleDegree =
-            | I = 0 | II = 1 | III = 2 | IV = 3 | V = 4 | VI = 5 | VII = 6
+    type IntervalFromDistance = int<ht> -> Interval
 
-        type ScaleType =
-            | Ionian | Dorian | Phrygian | Lydian | Mixolydian
-            | Aolian | Locrian | MajorPentatonic | MinorPentatonic
-            | Blues | HarmonicMinor | MelodicMinor | Dorianb2 | LydianAugmented | NeapolitanMinor
-            | LydianDominant | Bebop | Mixolydianb6 | LocrianSharp2
-            | AlteredDominant | HalfWholeDiminished | WholeTone
-            | MajorSixthDiminishedScale | MinorSixthDiminishedScale
-            | DominantDiminishedScale | Dominantb5DiminishedScale
+    type MeasureAbsoluteSemitones = Note -> Note -> int<ht>
 
-        type ScaleNotes = Note list
-        type Scale = {Scale:ScaleType; Notes:ScaleNotes}
+    type IntervalBetween = Note -> Note -> Interval
 
-        type ScalesFitting = Chord -> Scale list
-        type CreateScale = ScaleType -> Note -> Scale
-        type CreateScaleNotes = ScaleType -> Note -> ScaleNotes
-        type NinthsHarmonizer = ScaleDegree -> ScaleNotes -> Chord
-        type SeventhsHarmonizer = ScaleDegree -> ScaleNotes -> Chord
-        type TriadsHarmonizer = ScaleDegree -> ScaleNotes -> Chord
+    type TransposeNote = Note -> Interval -> Note
 
-        type MelodicLinePattern = ScaleDegree list
-        type MelodicLine = {Scale:Scale; Pattern:MelodicLinePattern}
+    type Octave =
+        | SubContra
+        | Contra
+        | Great
+        | Small
+        | OneLine
+        | TwoLine
+        | ThreeLine
+        | FourLine
+        | FiveLine
+        | SixLine
+        | SevenLine
 
-        type GuitarString =
-            | SixthString | FifthString | FourthString
-            | ThirdString | SecondString | FirstString
+    type MidiNote = Note * Octave
 
-        type Fret = {GuitarString:GuitarString; Fret:int; Note:Note}
-        type Frets = Fret list
-        type GuitarChord = {Chord:Chord; Frets:Frets}
-        type GuitarArpeggio = {BaseChord:Chord; ArpeggioFrets:Frets}
-        type GuitarScale = {Scale:Scale; Frets:Frets}
-        type GuitarMelodicLine = Fret list
+    type OctaveName = Octave -> string
 
-        type CreateGuitarChord = GuitarString -> Chord -> GuitarChord
-        type CreateGuitarArpeggio = int -> int -> Chord -> GuitarArpeggio
-        type CreateGuitarScale = int -> int -> Scale -> GuitarScale
-        type CreateGuitarNote = GuitarString -> Note -> Fret
-        type CreateGuitarNotes = int -> int -> Note list -> GuitarMelodicLine
+    type OctaveMidiNumber = Octave -> int
 
-        type Shapify = GuitarChord -> string
-        type TabifyAll = GuitarChord list -> string
+    type Frequency = Note -> Octave -> float<hz>
 
-        type TabifyChord = GuitarChord -> string
-        type TabifyArpeggio = GuitarArpeggio -> string
-        type TabifyScale = GuitarScale -> string
-        type TabifyMelodicLine = GuitarMelodicLine -> string
+    type NoteMidiName = Note -> Octave -> string
 
-        type ParseChord = string -> Chord
-        type ParseInterval = string -> Interval
-        type ParseOctave = string -> Octave
-        type ParseScale = string -> Scale
-        type ParseNote = string -> Note
-        type ParseMidiNote = string -> MidiNote
+    type NoteMidiNumber = Note -> Octave -> int<midiNote>
 
-        type TabColumn =
-                | Note of Fret
-                | Notes of Fret list
-                | Chord of GuitarChord
-                | Arpeggio of GuitarArpeggio
-                | ArbArpeggio of GuitarArpeggio
-                | Scale of GuitarScale
-                | Mute of Fret
-                | PalmMute of Fret
-                | Harmonic of Fret
-                | Vibrato of Fret
-                | HammerOn of Fret * Fret
-                | PullOff of Fret * Fret
-                | Bend of Fret * Fret
-                | Rest
-                | Bar
-                | Start
-                | StandardTunning
-                | End
+    type BeatNote = Note * Octave * Duration
+
+    type BeatNotes = BeatNote list
+
+    type BarBeat = float<beat> * BeatNotes
+
+    type TimeSignature = int<beat> * Duration
+
+    type Bar = BarBeat list
+
+    type Key =
+        | AMajor
+        | AFlatMajor
+        | BMajor
+        | BFlatMajor
+        | CMajor
+        | DMajor
+        | DFlatMajor
+        | EMajor
+        | EFlatMajor
+        | FMajor
+        | FSharpMajor
+        | GMajor
+        | GFlatMajor
+        | AMinor
+        | BMinor
+        | BFlatMinor
+        | CMinor
+        | CSharpMinor
+        | DMinor
+        | EMinor
+        | FMinor
+        | FSharpMinor
+        | GMinor
+        | GSharpMinor
+        | EFlatMinor
+
+    type KeyNotes = Note list
+
+    type IKeyNotes = Key -> KeyNotes
+
+    type Section = TimeSignature * Key * Bar list
+
+    type Song = Section list
+
+    type ChordQuality =
+        | Major
+        | Augmented
+        | Major6
+        | Major6Add9
+        | Major6Flat5Add9
+        | Major7
+        | Major9
+        | Major9Sharp11
+        | Major11
+        | Major13
+        | Major13Sharp11
+        | Augmented7
+        | Dominant7
+        | Dominant7Flat5
+        | Dominant7Flat9
+        | Dominant7Sharp9
+        | Dominant7Flat5Flat9
+        | Dominant7Flat5Sharp9
+        | Dominant9
+        | Dominant11
+        | Dominant13
+        | Minor
+        | Diminished
+        | Minor7
+        | Minor6
+        | Minor6Add9
+        | Minor9
+        | Diminished7
+        | Minor7b5
+        | MinorMaj7
+        | MinorMaj9
+        | Sus2
+        | Sus2Diminished
+        | Sus2Augmented
+        | Sus4
+        | Sus4Diminished
+        | Sus4Augmented
+
+    type ChordNoteFunction =
+        | Root
+        | Third
+        | Fifth
+        | Sixth
+        | Seventh
+        | Ninth
+        | Eleventh
+        | Thirteenth
+
+    type ChordNote = Note * ChordNoteFunction
+
+    type ChordNotes = ChordNote list
+
+    type ChordType =
+        | Open
+        | Closed
+        | Triad
+        | Drop2
+        | Drop3
+
+    type Chord =
+        { Notes : ChordNotes
+          ChordType : ChordType
+          Name : string }
+
+    type ChordName = Chord -> string
+
+    type Invert = Chord -> Chord
+
+    type Root = Chord -> Note
+
+    type Bass = Chord -> Note
+
+    type Lead = Chord -> Note
+
+    type ToOpen = Chord -> Chord
+
+    type ToDrop2 = Chord -> Chord
+
+    type ToDrop3 = Chord -> Chord
+
+    type ToTriad = Chord -> Chord
+
+    type ToClosed = Chord -> Chord
+
+    type NoteNames = Chord -> string List
+
+    type ChordsFitting = Note list -> Chord list
+
+    type CreateChord = Note -> ChordQuality -> Chord
+
+    type SkipChordFunction = ChordNoteFunction -> Chord -> Chord
+
+    type InvertionWithBassClosestToNote = Chord -> Note -> Chord
+
+    type InvertionWithLeadClosestToNote = Chord -> Note -> Chord
+
+    type InversionForFunctionAsBass = Chord -> ChordNoteFunction -> Chord
+
+    type InversionForFunctionAsLead = Chord -> ChordNoteFunction -> Chord
+
+    type VoiceLead = (Chord -> Note) -> Chord list -> Chord list
+
+    type ScaleDegree =
+        | I = 0
+        | II = 1
+        | III = 2
+        | IV = 3
+        | V = 4
+        | VI = 5
+        | VII = 6
+
+    type ScaleType =
+        | Ionian
+        | Dorian
+        | Phrygian
+        | Lydian
+        | Mixolydian
+        | Aolian
+        | Locrian
+        | MajorPentatonic
+        | MinorPentatonic
+        | Blues
+        | HarmonicMinor
+        | MelodicMinor
+        | Dorianb2
+        | LydianAugmented
+        | NeapolitanMinor
+        | LydianDominant
+        | Bebop
+        | Mixolydianb6
+        | LocrianSharp2
+        | AlteredDominant
+        | HalfWholeDiminished
+        | WholeTone
+        | MajorSixthDiminishedScale
+        | MinorSixthDiminishedScale
+        | DominantDiminishedScale
+        | Dominantb5DiminishedScale
+
+    type ScaleNotes = Note list
+
+    type Scale =
+        { Scale : ScaleType
+          Notes : ScaleNotes }
+
+    type ScalesFitting = Chord -> Scale list
+
+    type CreateScale = ScaleType -> Note -> Scale
+
+    type CreateScaleNotes = ScaleType -> Note -> ScaleNotes
+
+    type NinthsHarmonizer = ScaleDegree -> ScaleNotes -> Chord
+
+    type SeventhsHarmonizer = ScaleDegree -> ScaleNotes -> Chord
+
+    type TriadsHarmonizer = ScaleDegree -> ScaleNotes -> Chord
+
+    type MelodicLinePattern = ScaleDegree list
+
+    type MelodicLine =
+        { Scale : Scale
+          Pattern : MelodicLinePattern }
+
+    type GuitarString =
+        | SixthString
+        | FifthString
+        | FourthString
+        | ThirdString
+        | SecondString
+        | FirstString
+
+    type Fret =
+        { GuitarString : GuitarString
+          Fret : int
+          Note : Note }
+
+    type Frets = Fret list
+
+    type GuitarChord =
+        { Chord : Chord
+          Frets : Frets }
+
+    type GuitarArpeggio =
+        { BaseChord : Chord
+          ArpeggioFrets : Frets }
+
+    type GuitarScale =
+        { Scale : Scale
+          Frets : Frets }
+
+    type GuitarMelodicLine = Fret list
+
+    type CreateGuitarChord = GuitarString -> Chord -> GuitarChord
+
+    type CreateGuitarArpeggio = int -> int -> Chord -> GuitarArpeggio
+
+    type CreateGuitarScale = int -> int -> Scale -> GuitarScale
+
+    type CreateGuitarNote = GuitarString -> Note -> Fret
+
+    type CreateGuitarNotes = int -> int -> Note list -> GuitarMelodicLine
+
+    type Shapify = GuitarChord -> string
+
+    type TabifyAll = GuitarChord list -> string
+
+    type TabifyChord = GuitarChord -> string
+
+    type TabifyArpeggio = GuitarArpeggio -> string
+
+    type TabifyScale = GuitarScale -> string
+
+    type TabifyMelodicLine = GuitarMelodicLine -> string
+
+    type ParseChord = string -> Chord
+
+    type ParseInterval = string -> Interval
+
+    type ParseOctave = string -> Octave
+
+    type ParseScale = string -> Scale
+
+    type ParseNote = string -> Note
+
+    type ParseMidiNote = string -> MidiNote
+
+    type TabColumn =
+        | Note of Fret
+        | Notes of Fret list
+        | Chord of GuitarChord
+        | Arpeggio of GuitarArpeggio
+        | ArbArpeggio of GuitarArpeggio
+        | Scale of GuitarScale
+        | Mute of Fret
+        | PalmMute of Fret
+        | Harmonic of Fret
+        | Vibrato of Fret
+        | HammerOn of Fret * Fret
+        | PullOff of Fret * Fret
+        | Bend of Fret * Fret
+        | Rest
+        | Bar
+        | Start
+        | StandardTunning
+        | End

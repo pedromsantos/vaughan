@@ -21,21 +21,21 @@ open Vaughan.Infrastructure
 open Vaughan.ImprovisationGuitar
 open Vaughan.ChordVoiceLeading
 
-let chords = [
-              chord C Minor7;
-              chord F Dominant7;
-              chord BFlat Major7;
-              chord EFlat Major7;
-              chord A Minor7b5;
-              chord D Dominant7;
-              chord G Minor7;
-             ]
+let chords =
+    [ chord C Minor7
+      chord F Dominant7
+      chord BFlat Major7
+      chord EFlat Major7
+      chord A Minor7b5
+      chord D Dominant7
+      chord G Minor7 ]
 
-let permutations = generateArpeggioPatterns root (guitarArpeggio 5 8 (chord BFlat Major7))
-                    |> List.map (fun l -> [Notes l] @ [Bar])
-                    |> List.collect id
+let permutations =
+    generateArpeggioPatterns root (guitarArpeggio 5 8 (chord BFlat Major7))
+    |> List.map (fun l -> [ Notes l ] @ [ Bar ])
+    |> List.collect id
 
-[StandardTunning; Start] @ permutations @ [End]
+[ StandardTunning; Start ] @ permutations @ [ End ]
 |> renderTab
 |> printf "\n%s"
 
@@ -43,308 +43,395 @@ let voiceleadingChords guitarString shape =
     (voiceLead lead (chords |> List.map shape))
     |> List.map ((fun c -> guitarChord guitarString c) >> Chord)
 
-[StandardTunning; Start] @ (voiceleadingChords FourthString toDrop2) @ [End]
+[ StandardTunning; Start ] @ (voiceleadingChords FourthString toDrop2) @ [ End ]
 |> renderTab
 |> printf "\n%s"
-
 (createScalesForChords 5 8 chords)
-|> commonElements (fun scalesPerChord -> scalesPerChord |> List.map guitarScaleName)
+|> commonElements
+       (fun scalesPerChord -> scalesPerChord |> List.map guitarScaleName)
 |> Seq.fold (fun r s -> r + s + "\n") ""
 |> printf "Common scales for all chords: \n%s\n"
-
 (createScalesForChords 5 8 chords)
-|> List.mapi (fun i scalesPerChord -> (name chords.[i], scalesPerChord |> List.map guitarScaleName))
-|> List.map (fun sc -> 
-                printf "# Scales than include all chord tones of %s\n" (fst sc)
-                snd sc |> List.map (fun s -> printf "* %s\n" s)
-                )
-
+|> List.mapi
+       (fun i scalesPerChord ->
+       (name chords.[i], scalesPerChord |> List.map guitarScaleName))
+|> List.map (fun sc ->
+       printf "# Scales than include all chord tones of %s\n" (fst sc)
+       snd sc
+       |> List.map (fun s ->
+              printf "* %s\n" s))
 (createScalesForChords 5 8 chords)
 |> List.mapi (fun i scalesPerChord ->
-                printf "# Scales than include all chord tones of %s with tab\n" (name chords.[i])
-                scalesPerChord 
-                |> List.map (fun scale ->
-                                printf "## %s\n" (guitarScaleName scale)
-                                printf "* Chord notes %s\n" (chordToneNames chords.[i])
-                                printf "* Scale notes %s\n" (guitarScaleNoteNames scale)
-                                [StandardTunning; Start; Scale(scale); End]
-                                |> renderTab
-                                |> printf "```\n%s```\n")
-                )
+       printf "# Scales than include all chord tones of %s with tab\n"
+           (name chords.[i])
+       scalesPerChord
+       |> List.map (fun scale ->
+              printf "## %s\n" (guitarScaleName scale)
+              printf "* Chord notes %s\n" (chordToneNames chords.[i])
+              printf "* Scale notes %s\n" (guitarScaleNoteNames scale)
+              [ StandardTunning
+                Start
+                Scale(scale)
+                End ]
+              |> renderTab
+              |> printf "```\n%s```\n"))
 
 let generateArpeggioExercise arpeggio =
-    [
-        ascEightsRootAbove, "Root above"; ascEightsRootBelow, "Root below";
-        ascEightsThirdAbove, "Third above"; ascEightsThirdBelow, "Third below";
-        ascEightsSeventhAbove, "Seventh above"; ascEightsSeventhBelow, "Seventh below";
-        descEightsRootAbove, "Root above"; descEightsRootBelow, "Root below";
-        descEightsThirdAbove, "Third above"; descEightsThirdBelow, "Third below";
-        descEightsSeventhAbove, "Seventh above"; descEightsSeventhBelow, "Seventh below"
-        ascEightsRootEnclosed, "Root enclosed"; descEightsRootEnclosed, "Root enclosed";
-        ascEightsThirdEnclosed, "Third enclosed"; descEightsThirdEnclosed, "Third enclosed";
-        ascEightsSeventhEnclosed, "Seventh enclosed"; descEightsSeventhEnclosed, "Seventh enclosed";
-    ]
+    [ ascEightsRootAbove, "Root above"
+      ascEightsRootBelow, "Root below"
+      ascEightsThirdAbove, "Third above"
+      ascEightsThirdBelow, "Third below"
+      ascEightsSeventhAbove, "Seventh above"
+      ascEightsSeventhBelow, "Seventh below"
+      descEightsRootAbove, "Root above"
+      descEightsRootBelow, "Root below"
+      descEightsThirdAbove, "Third above"
+      descEightsThirdBelow, "Third below"
+      descEightsSeventhAbove, "Seventh above"
+      descEightsSeventhBelow, "Seventh below"
+      ascEightsRootEnclosed, "Root enclosed"
+      descEightsRootEnclosed, "Root enclosed"
+      ascEightsThirdEnclosed, "Third enclosed"
+      descEightsThirdEnclosed, "Third enclosed"
+      ascEightsSeventhEnclosed, "Seventh enclosed"
+      descEightsSeventhEnclosed, "Seventh enclosed" ]
     |> List.map (fun sequence ->
-                    [StandardTunning; Start; Notes((fst sequence) arpeggio); End]
-                    |> renderTab
-                    |> printf "### %s\n```\n%s```\n" (snd sequence))
+           [ StandardTunning
+             Start
+             Notes((fst sequence) arpeggio)
+             End ]
+           |> renderTab
+           |> printf "### %s\n```\n%s```\n" (snd sequence))
 
-[
-    guitarArpeggio 5 8 (chord C Minor7);
-    guitarArpeggio 5 8 (chord F Dominant7);
-    guitarArpeggio 5 8 (chord BFlat Major7);
-    guitarArpeggio 5 8 (chord EFlat Major7);
-    guitarArpeggio 5 8 (chord A Minor7b5);
-    guitarArpeggio 5 9 (chord D Dominant7);
-    guitarArpeggio 5 8 (chord G Minor7) 
-]
+[ guitarArpeggio 5 8 (chord C Minor7)
+  guitarArpeggio 5 8 (chord F Dominant7)
+  guitarArpeggio 5 8 (chord BFlat Major7)
+  guitarArpeggio 5 8 (chord EFlat Major7)
+  guitarArpeggio 5 8 (chord A Minor7b5)
+  guitarArpeggio 5 9 (chord D Dominant7)
+  guitarArpeggio 5 8 (chord G Minor7) ]
 |> List.map (fun a ->
-                        printf "# ====== %s ======\n" (name a.BaseChord)
-                        printf "## === Arpeggio ==="
-                        [StandardTunning; Start; Arpeggio(a); End]
-                        |> renderTab
-                        |> printf "\n```\n%s```\n"
-                        printf "## === Exercises ===\n"
-                        generateArpeggioExercise a)
-
-[StandardTunning; Start; Notes(ascEightsRootAbove (guitarArpeggio 5 8 (chord BFlat Major7))); End]
+       printf "# ====== %s ======\n" (name a.BaseChord)
+       printf "## === Arpeggio ==="
+       [ StandardTunning
+         Start
+         Arpeggio(a)
+         End ]
+       |> renderTab
+       |> printf "\n```\n%s```\n"
+       printf "## === Exercises ===\n"
+       generateArpeggioExercise a)
+[ StandardTunning
+  Start
+  Notes(ascEightsRootAbove (guitarArpeggio 5 8 (chord BFlat Major7)))
+  End ]
 |> renderTab
 |> printf "\n%s"
-
-[StandardTunning; Start; Notes(descEightsRootBelow (guitarArpeggio 5 8 (chord BFlat Major7))); End]
+[ StandardTunning
+  Start
+  Notes(descEightsRootBelow (guitarArpeggio 5 8 (chord BFlat Major7)))
+  End ]
 |> renderTab
 |> printf "\n%s"
-
-[StandardTunning; Start; Notes(ascEightsRootEnclosed (guitarArpeggio 5 8 (chord BFlat Major7))); End]
+[ StandardTunning
+  Start
+  Notes(ascEightsRootEnclosed (guitarArpeggio 5 8 (chord BFlat Major7)))
+  End ]
 |> renderTab
 |> printf "\n%s"
-
-[StandardTunning; Start; Notes(descEightsThirdEnclosed (guitarArpeggio 2 5 (chord C Major7))); End]
+[ StandardTunning
+  Start
+  Notes(descEightsThirdEnclosed (guitarArpeggio 2 5 (chord C Major7)))
+  End ]
 |> renderTab
 |> printf "\n%s"
-
-[StandardTunning; Start; Notes(ascEightsRootEnclosed (guitarArpeggio 2 5 (chord C Major7))); End]
+[ StandardTunning
+  Start
+  Notes(ascEightsRootEnclosed (guitarArpeggio 2 5 (chord C Major7)))
+  End ]
 |> renderTab
 |> printf "\n%s"
-
-[StandardTunning; Start; Notes(ascEightsThirdEnclosed (guitarArpeggio 2 5 (chord C Major7))); End]
+[ StandardTunning
+  Start
+  Notes(ascEightsThirdEnclosed (guitarArpeggio 2 5 (chord C Major7)))
+  End ]
 |> renderTab
 |> printf "\n%s"
-
-[StandardTunning; Start; Notes(ascEightsRootEnclosed (guitarArpeggio 5 8 (chord C Minor7))); End]
+[ StandardTunning
+  Start
+  Notes(ascEightsRootEnclosed (guitarArpeggio 5 8 (chord C Minor7)))
+  End ]
 |> renderTab
 |> printf "\n%s"
-
-[StandardTunning; Start; Notes(ascEightsSeventhEnclosed (guitarArpeggio 5 8 (chord C Minor7))); End]
+[ StandardTunning
+  Start
+  Notes(ascEightsSeventhEnclosed (guitarArpeggio 5 8 (chord C Minor7)))
+  End ]
 |> renderTab
 |> printf "\n%s"
-
-[StandardTunning; Start; Notes(ascEightsThirdEnclosed (guitarArpeggio 5 8 (chord C Minor7))); End]
+[ StandardTunning
+  Start
+  Notes(ascEightsThirdEnclosed (guitarArpeggio 5 8 (chord C Minor7)))
+  End ]
 |> renderTab
 |> printf "\n%s"
-
-[StandardTunning; Start; ArbArpeggio(descendingArpeggioFrom root (guitarArpeggio 2 5 (chord C Major7))); End]
+[ StandardTunning
+  Start
+  ArbArpeggio(descendingArpeggioFrom root (guitarArpeggio 2 5 (chord C Major7)))
+  End ]
 |> renderTab
 |> printf "\n%s"
-
-[StandardTunning; Start; Arpeggio(ascendingArpeggioFrom root (guitarArpeggio 2 5 (chord C Major))); End]
+[ StandardTunning
+  Start
+  Arpeggio(ascendingArpeggioFrom root (guitarArpeggio 2 5 (chord C Major)))
+  End ]
 |> renderTab
 |> printf "\n%s"
-
-[StandardTunning; Start; Arpeggio(ascendingArpeggioFrom root (guitarArpeggio 2 5 (chord G Major))); End]
+[ StandardTunning
+  Start
+  Arpeggio(ascendingArpeggioFrom root (guitarArpeggio 2 5 (chord G Major)))
+  End ]
 |> renderTab
 |> printf "\n%s"
-
-[StandardTunning; Start; Scale(createScale Ionian C |> guitarScale 2 6); End]
+[ StandardTunning
+  Start
+  Scale(createScale Ionian C |> guitarScale 2 6)
+  End ]
 |> renderTab
 |> printf "\n%s"
-
-[StandardTunning; Start; Arpeggio(guitarArpeggio 9 22 (chord C Major)); End]
-|> renderTab 
-|> printf "\n%s"
-
-[
-    StandardTunning;
-    Start;
-    Note({GuitarString=FirstString; Fret=8; Note=C})
-    End
-]
+[ StandardTunning
+  Start
+  Arpeggio(guitarArpeggio 9 22 (chord C Major))
+  End ]
 |> renderTab
 |> printf "\n%s"
-
-[
-    StandardTunning;
-    Start;
-    Chord(chord D Minor7 |> toDrop3 |> guitarChord SixthString);
-    Chord(chord G Dominant7 |> toDrop3 |> guitarChord SixthString);
-    Chord(chord C Major7 |> toDrop3 |> guitarChord SixthString);
-    End
-]
+[ StandardTunning
+  Start
+  Note({ GuitarString = FirstString
+         Fret = 8
+         Note = C })
+  End ]
 |> renderTab
 |> printf "\n%s"
-
-[StandardTunning; Start; Scale(createScale Ionian C |> guitarScale 4 8); End]
+[ StandardTunning
+  Start
+  Chord(chord D Minor7
+        |> toDrop3
+        |> guitarChord SixthString)
+  Chord(chord G Dominant7
+        |> toDrop3
+        |> guitarChord SixthString)
+  Chord(chord C Major7
+        |> toDrop3
+        |> guitarChord SixthString)
+  End ]
 |> renderTab
 |> printf "\n%s"
-
-[StandardTunning; Start; Scale(createScale Ionian C |> guitarScale 7 10); End]
+[ StandardTunning
+  Start
+  Scale(createScale Ionian C |> guitarScale 4 8)
+  End ]
 |> renderTab
 |> printf "\n%s"
-
-[StandardTunning; Start; Scale(createScale Ionian C |> guitarScale 9 13); End]
+[ StandardTunning
+  Start
+  Scale(createScale Ionian C |> guitarScale 7 10)
+  End ]
 |> renderTab
 |> printf "\n%s"
-
-[StandardTunning; Start; Arpeggio(chord C Major |> guitarArpeggio 9 22); End]
+[ StandardTunning
+  Start
+  Scale(createScale Ionian C |> guitarScale 9 13)
+  End ]
 |> renderTab
 |> printf "\n%s"
-
-[StandardTunning; Start; Arpeggio(chord C Major |> guitarArpeggio 7 10); End]
+[ StandardTunning
+  Start
+  Arpeggio(chord C Major |> guitarArpeggio 9 22)
+  End ]
 |> renderTab
 |> printf "\n%s"
-
-[StandardTunning; Start; Arpeggio(chord C Major |> guitarArpeggio 4 5); End]
+[ StandardTunning
+  Start
+  Arpeggio(chord C Major |> guitarArpeggio 7 10)
+  End ]
 |> renderTab
 |> printf "\n%s"
-
-[StandardTunning; Start; Arpeggio(chord C Major |> guitarArpeggio 1 4); End]
+[ StandardTunning
+  Start
+  Arpeggio(chord C Major |> guitarArpeggio 4 5)
+  End ]
 |> renderTab
 |> printf "\n%s"
-
-[StandardTunning; Start; Arpeggio(chord C Major |> guitarArpeggio 7 10); End]
+[ StandardTunning
+  Start
+  Arpeggio(chord C Major |> guitarArpeggio 1 4)
+  End ]
 |> renderTab
 |> printf "\n%s"
-
-[StandardTunning; Start; Arpeggio(chord C Major |> guitarArpeggio 0 13); End]
+[ StandardTunning
+  Start
+  Arpeggio(chord C Major |> guitarArpeggio 7 10)
+  End ]
 |> renderTab
 |> printf "\n%s"
-
+[ StandardTunning
+  Start
+  Arpeggio(chord C Major |> guitarArpeggio 0 13)
+  End ]
+|> renderTab
+|> printf "\n%s"
 chord C Major7
 |> toDrop3
 |> guitarChord SixthString
 |> tabifyChord
 |> printf "\n%s"
-
 chord C Major7
 |> toDrop2
 |> guitarChord FifthString
 |> tabifyChord
 |> printf "\n%s"
-
 chord C Major
 |> guitarChord FifthString
 |> tabifyChord
 |> printf "\n%s"
-
 chord C Dominant9
 |> skipFunction Fifth
 |> guitarChord FifthString
 |> tabifyChord
 |> printf "\n%s"
-
 chord C Major9
 |> skipFunction Fifth
 |> guitarChord FifthString
 |> tabifyChord
 |> printf "\n%s"
-
 createScaleNotes Aolian DSharp
 |> triadsHarmonizer ScaleDegree.III
 |> guitarChord SixthString
 |> tabifyChord
 |> printf "\n%s"
-
 createScaleNotes Ionian A
 |> seventhsHarmonizer ScaleDegree.I
 |> toDrop2
 |> guitarChord FifthString
 |> tabifyChord
 |> printf "\n%s"
-
 createScaleNotes Ionian C
 |> seventhsHarmonizer ScaleDegree.I
 |> toDrop3
 |> guitarChord FifthString
 |> tabifyChord
 |> printf "\n%s"
-
 createScaleNotes Aolian FSharp
 |> seventhsHarmonizer ScaleDegree.III
 |> toDrop3
 |> guitarChord SixthString
 |> tabifyChord
 |> printf "\n%s"
-
 createScaleNotes HarmonicMinor BFlat
 |> seventhsHarmonizer ScaleDegree.VII
 |> guitarChord SixthString
 |> tabifyChord
 |> printf "\n%s"
-
 createScaleNotes HarmonicMinor C
 |> seventhsHarmonizer ScaleDegree.VII
 |> guitarChord SixthString
 |> tabifyChord
 |> printf "\n%s"
-
 createScaleNotes HarmonicMinor C
 |> seventhsHarmonizer ScaleDegree.VII
 |> guitarChord SixthString
 |> tabifyChord
 |> printf "\n%A"
-
 createScaleNotes HarmonicMinor C
 |> seventhsHarmonizer ScaleDegree.VII
 |> toOpen
 |> guitarChord SixthString
 |> tabifyChord
 |> printf "\n%A"
+noteName C
+|> printf "\n%A"
+noteName CSharp
+|> printf "\n%A"
+noteName DFlat
+|> printf "\n%A"
+sharp EFlat
+|> printf "\n%A"
+flat E
+|> printf "\n%A"
+measureAbsoluteSemitones C G
+|> printf "\n%A"
+intervalBetween C FSharp
+|> printf "\n%A"
+transpose C MajorSixth
+|> printf "\n%A"
+intervalName DiminishedFifth
+|> printf "\n%A"
+fromDistance 6<ht>
+|> printf "\n%A"
+toDistance PerfectFifth
+|> printf "\n%A"
+keyNotes CMajor
+|> printf "\n%A"
+keyNotes EFlatMajor
+|> printf "\n%A"
+keyNotes DMinor
+|> printf "\n%A"
+createScaleNotes Phrygian C
+|> printf "\n%A"
+createScaleNotes LydianAugmented C
+|> printf "\n%A"
 
-noteName C |> printf "\n%A"
-noteName CSharp |> printf "\n%A"
-noteName DFlat |> printf "\n%A"
-sharp EFlat |> printf "\n%A"
-flat E |> printf "\n%A"
-measureAbsoluteSemitones C G |> printf "\n%A"
-intervalBetween C FSharp |> printf "\n%A"
-transpose C MajorSixth |> printf "\n%A"
-intervalName DiminishedFifth |> printf "\n%A"
-fromDistance 6<ht> |> printf "\n%A"
-toDistance PerfectFifth |> printf "\n%A"
+let cMaj7 =
+    { Notes =
+          [ (C, Root)
+            (E, Third)
+            (G, Fifth)
+            (B, Seventh) ]
+      ChordType = Closed
+      Name = "CMaj7" }
 
-keyNotes CMajor |> printf "\n%A"
-keyNotes EFlatMajor |> printf "\n%A"
-keyNotes DMinor |> printf "\n%A"
-
-createScaleNotes Phrygian C |> printf "\n%A"
-createScaleNotes LydianAugmented C  |> printf "\n%A"
-
-let cMaj7 = {Notes= [(C, Root); (E, Third); (G, Fifth); (B, Seventh)]; ChordType=Closed; Name="CMaj7"}
 let cMaj = chord C Major
 
-noteNames cMaj7 |> printf "\n%A"
-bass cMaj7 |> printf "\n%A"
-lead cMaj7 |> printf "\n%A"
-name cMaj7 |> printf "\n%A"
-cMaj7.Notes |> printf "\n%A"
-(cMaj7 |> invert).Notes |> printf "\n%A"
-(cMaj7 |> invert |> invert).Notes |> printf "\n%A"
-(cMaj7 |> invert |> invert |> invert).Notes |> printf "\n%A"
-(cMaj7 |> toDrop2).Notes |> printf "\n%A"
-(cMaj7 |> toDrop3).Notes |> printf "\n%A"
-
-
-inversionForFunctionAsLead cMaj Third |> printf "\n%A"
-inversionForFunctionAsBass cMaj Fifth |> printf "\n%A"
-invertionWithLeadClosestToNote cMaj CSharp |> printf "\n%A"
-invertionWithBassClosestToNote cMaj F |> printf "\n%A"
-
+noteNames cMaj7
+|> printf "\n%A"
+bass cMaj7
+|> printf "\n%A"
+lead cMaj7
+|> printf "\n%A"
+name cMaj7
+|> printf "\n%A"
+cMaj7.Notes
+|> printf "\n%A"
+(cMaj7 |> invert).Notes
+|> printf "\n%A"
+(cMaj7
+ |> invert
+ |> invert).Notes
+|> printf "\n%A"
+(cMaj7
+ |> invert
+ |> invert
+ |> invert).Notes
+|> printf "\n%A"
+(cMaj7 |> toDrop2).Notes
+|> printf "\n%A"
+(cMaj7 |> toDrop3).Notes
+|> printf "\n%A"
+inversionForFunctionAsLead cMaj Third
+|> printf "\n%A"
+inversionForFunctionAsBass cMaj Fifth
+|> printf "\n%A"
+invertionWithLeadClosestToNote cMaj CSharp
+|> printf "\n%A"
+invertionWithBassClosestToNote cMaj F
+|> printf "\n%A"
 printfn "\n"
 printfn "Chords Fitting"
-
-chordsFitting [D; F; A] |> printf "\n%A"
-chordsFitting [C; E; G; B] |> printf "\n%A"
-
+chordsFitting [ D; F; A ]
+|> printf "\n%A"
+chordsFitting [ C; E; G; B ]
+|> printf "\n%A"
 printfn "\n"
 printfn "Scales Fitting"
 
