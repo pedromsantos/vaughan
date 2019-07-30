@@ -150,3 +150,22 @@ module ScaleTests =
 
         let melodicLineNotes = toNotes melodicLine
         melodicLineNotes |> should equal [ C; E; G; B; DFlat; F; A; CSharp; E; G; B; D ]
+        
+    [<Fact>]
+    let ``Should create melodic lines from C major scale using half step rules for root``() =
+        let melodicLines = halfStepsMajorScale C ScaleDegree.I 
+
+        toNotes melodicLines.[0] |> should equal [ C; B; A; AFlat; G; F; E; D ]
+        
+        toNotes melodicLines.[1] |> should equal [ C; B; A; AFlat; G; F; E; EFlat; D; DFlat ]
+        
+    [<Fact>]
+    let ``Should create melodic lines from C major scale using half step rules for second``() =
+        let melodicLines = halfStepsMajorScale C ScaleDegree.II
+
+        toNotes melodicLines.[0] |> should equal [ D; C; B; A; G; F; E ]
+        
+        let melodicLine = toNotes melodicLines.[1] 
+        melodicLine |> should equal [ D; DFlat; C; B; A; AFlat; G; F; E; ]
+
+    

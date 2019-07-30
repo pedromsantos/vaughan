@@ -155,3 +155,86 @@ module Scales =
             | ScaleDegree(d) -> melodicLine.Scale.Notes |> List.item (int d)
             | NonScaleDegree(d,f) -> melodicLine.Scale.Notes |> List.item (int d) |> f
             )
+    
+    let private rotatePattern startingDegree pattern =
+        (pattern |> List.skipWhile (fun e -> match e with
+                                                    | ScaleDegree(d) -> d <> startingDegree
+                                                    | _ -> true))
+        @
+        (pattern |> List.takeWhile (fun e -> match e with
+                                                    | ScaleDegree(d) -> d <> startingDegree
+                                                    | _ -> true))
+    
+    let private scaleNoHalfSteps =
+        [
+            ScaleDegree(ScaleDegree.I);
+            ScaleDegree(ScaleDegree.VII);
+            ScaleDegree(ScaleDegree.VI);
+            ScaleDegree(ScaleDegree.V);
+            ScaleDegree(ScaleDegree.IV);
+            ScaleDegree(ScaleDegree.III);
+            ScaleDegree(ScaleDegree.II)
+        ]
+            
+            
+            
+    let private majorScaleRootThirdFifthSeventhOneHalfStep =
+        [
+          ScaleDegree(ScaleDegree.I);
+          ScaleDegree(ScaleDegree.VII);
+          ScaleDegree(ScaleDegree.VI);
+          NonScaleDegree(ScaleDegree.VI, flat);
+          ScaleDegree(ScaleDegree.V);
+          ScaleDegree(ScaleDegree.IV);
+          ScaleDegree(ScaleDegree.III);
+          ScaleDegree(ScaleDegree.II)
+        ]
+   
+            
+    let private majorScaleRootThirdFifthSeventhThreeHalfSteps =
+        [
+          ScaleDegree(ScaleDegree.I);
+          ScaleDegree(ScaleDegree.VII);
+          ScaleDegree(ScaleDegree.VI);
+          NonScaleDegree(ScaleDegree.VI, flat);
+          ScaleDegree(ScaleDegree.V);
+          ScaleDegree(ScaleDegree.IV);
+          ScaleDegree(ScaleDegree.III);
+          NonScaleDegree(ScaleDegree.III, flat);
+          ScaleDegree(ScaleDegree.II);
+          NonScaleDegree(ScaleDegree.II, flat)
+        ]
+            
+            
+            
+    let private majorScaleSecondFourthSixthTwoHalfSteps =
+        [
+          ScaleDegree(ScaleDegree.I);
+          ScaleDegree(ScaleDegree.VII);
+          ScaleDegree(ScaleDegree.VI);
+          NonScaleDegree(ScaleDegree.VI, flat);
+          ScaleDegree(ScaleDegree.V);
+          ScaleDegree(ScaleDegree.IV);
+          ScaleDegree(ScaleDegree.III);
+          ScaleDegree(ScaleDegree.II);
+          NonScaleDegree(ScaleDegree.II, flat)
+        ] 
+            
+    let halfStepsMajorScale root startingDegree = 
+        match startingDegree with
+            | ScaleDegree.I
+            | ScaleDegree.III
+            | ScaleDegree.V
+            | ScaleDegree.VII -> [
+              { Scale = createScale Ionian root;Pattern = majorScaleRootThirdFifthSeventhOneHalfStep |> rotatePattern startingDegree };
+              { Scale = createScale Ionian root; Pattern = majorScaleRootThirdFifthSeventhThreeHalfSteps |> rotatePattern startingDegree }
+              ]
+            | ScaleDegree.II
+            | ScaleDegree.IV
+            | ScaleDegree.VI -> [
+              { Scale = createScale Ionian root; Pattern = scaleNoHalfSteps |> rotatePattern startingDegree };
+              { Scale = createScale Ionian root; Pattern = majorScaleSecondFourthSixthTwoHalfSteps |> rotatePattern startingDegree }
+              ]
+            | _ -> [ { Scale = createScale Ionian root; Pattern = scaleNoHalfSteps |> rotatePattern startingDegree } ]
+    
+    
