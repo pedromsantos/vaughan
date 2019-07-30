@@ -184,26 +184,22 @@ module ScaleTests =
     let ``Should create melodic lines from C major scale using half step rules for root``() =
         let melodicLines = halfStepsMajorScale C ScaleDegree.I
         toNotes melodicLines.[0] |> should equal [ C; B; A; AFlat; G; F; E; D ]
-        toNotes melodicLines.[1]
-        |> should equal [ C; B; A; AFlat; G; F; E; EFlat; D; DFlat ]
+        toNotes melodicLines.[1] |> should equal [ C; B; A; AFlat; G; F; E; EFlat; D; DFlat ]
 
     [<Fact>]
     let ``Should create melodic lines from C major scale using half step rules for second``() =
         let melodicLines = halfStepsMajorScale C ScaleDegree.II
         toNotes melodicLines.[0] |> should equal [ D; C; B; A; G; F; E ]
-        let melodicLine = toNotes melodicLines.[1]
-        melodicLine |> should equal [ D; DFlat; C; B; A; AFlat; G; F; E ]
+        toNotes melodicLines.[1] |> should equal [ D; DFlat; C; B; A; AFlat; G; F; E ]
 
     [<Fact>]
     let ``Should create melodic lines from C dominant scale using half step rules for root``() =
         let melodicLines = halfStepsDominantScale C ScaleDegree.I
         toNotes melodicLines.[0] |> should equal [ C; B; BFlat; A; G; F; E; D ]
-        toNotes melodicLines.[1]
-        |> should equal [ C; B; BFlat; A; G; F; E; EFlat; D; DFlat ]
+        toNotes melodicLines.[1] |> should equal [ C; B; BFlat; A; G; F; E; EFlat; D; DFlat ]
 
     [<Fact>]
     let ``Should create melodic lines from C dominant scale using half step rules for second``() =
         let melodicLines = halfStepsDominantScale C ScaleDegree.II
         toNotes melodicLines.[0] |> should equal [ D; C; BFlat; A; G; F; E ]
-        let melodicLine = toNotes melodicLines.[1]
-        melodicLine |> should equal [ D; DFlat; C; B; BFlat; A; G; F; E ]
+        toNotes melodicLines.[1] |> should equal [ D; DFlat; C; B; BFlat; A; G; F; E ]
