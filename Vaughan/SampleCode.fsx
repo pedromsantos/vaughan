@@ -21,6 +21,15 @@ open Vaughan.Infrastructure
 open Vaughan.ImprovisationGuitar
 open Vaughan.ChordVoiceLeading
 
+[
+       StandardTunning; 
+       Start; 
+       Notes(createMinimumHalfStepScaleSequenceForMajorScale 5 8 F ScaleDegree.VII); 
+       End
+]
+|> renderTab
+|> printf "\n%s"
+
 let chords =
     [ chord C Minor7
       chord F Dominant7

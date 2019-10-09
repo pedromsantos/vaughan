@@ -276,3 +276,44 @@ module ImprovisationGuitar =
         createDescendingScaleSequenceRootToSeventhInChords minFret maxFret scale
         @ (createAscendingScaleSequenceRootToSeventhInChords minFret maxFret
                scale |> List.skip 1)
+
+    
+    let createMinimumHalfStepScaleSequenceForMajorScale minFret maxFret root scaleDegree =
+        let sequence = (halfStepsMajorScale root scaleDegree).[0] |> toNotes
+        
+        sequence
+        |> guitarNotes minFret maxFret
+        |> List.sortBy (fun n -> n.GuitarString, n.Fret)
+        |> List.rev
+        |> List.skipWhile (fun n -> n.Note <> sequence.Head)
+        |> List.rev
+        
+    let createMaximumHalfStepScaleSequenceForMajorScale minFret maxFret root scaleDegree =
+        let sequence = (halfStepsMajorScale root scaleDegree).[1] |> toNotes
+        
+        sequence
+        |> guitarNotes minFret maxFret
+        |> List.sortBy (fun n -> n.GuitarString, n.Fret)
+        |> List.rev
+        |> List.skipWhile (fun n -> n.Note <> sequence.Head)
+        |> List.rev
+        
+    let createMinimumHalfStepScaleSequenceForDominantScale minFret maxFret root scaleDegree =
+        let sequence = (halfStepsDominantScale root scaleDegree).[0] |> toNotes
+        
+        sequence
+        |> guitarNotes minFret maxFret
+        |> List.sortBy (fun n -> n.GuitarString, n.Fret)
+        |> List.rev
+        |> List.skipWhile (fun n -> n.Note <> sequence.Head)
+        |> List.rev
+        
+    let createMaximumHalfStepScaleSequenceForDominantScale minFret maxFret root scaleDegree =
+        let sequence = (halfStepsDominantScale root scaleDegree).[1] |> toNotes
+        
+        sequence
+        |> guitarNotes minFret maxFret
+        |> List.sortBy (fun n -> n.GuitarString, n.Fret)
+        |> List.rev
+        |> List.skipWhile (fun n -> n.Note <> sequence.Head)
+        |> List.rev
