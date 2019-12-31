@@ -20,6 +20,6 @@ jobs:
     - name: Test
       run: dotnet test ./VaughanTests --configuration Release
     - name: Create package
-      run: dotnet pack -o --configuration Release
+      run: dotnet pack --configuration Release
     - name: Publish the package to GitHub
       run: dotnet nuget push ./Vaughan/Vaughan.*.nupkg
