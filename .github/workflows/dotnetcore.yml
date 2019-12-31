@@ -22,4 +22,4 @@ jobs:
     - name: Create package
       run: dotnet pack --configuration Release
     - name: Publish the package to GitHub
-      run: dotnet nuget push ./Vaughan/Vaughan.*.nupkg
+      run: dotnet nuget push /home/runner/work/vaughan/vaughan/Vaughan/bin/Release/Vaughan.*.nupkg
