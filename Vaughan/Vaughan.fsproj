@@ -31,6 +31,6 @@
   </ItemGroup>
   <ItemGroup>
     <PackageReference Include="Bespoke-OSC-Library" Version="1.0.0" />
-    <PackageReference Include="FParsec" Version="1.1.0" />
+    <PackageReference Include="FParsec" Version="1.1.1" />
   </ItemGroup>
 </Project>
