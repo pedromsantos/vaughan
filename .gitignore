@@ -385,3 +385,5 @@ paket-files/
 .idea/
 *.sln.iml
 Vaughan.sln.DotSettings.user
+Vaughan/replit.fxs
+.ionide/symbolCache.db

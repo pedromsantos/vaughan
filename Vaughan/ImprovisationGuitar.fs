@@ -6,7 +6,6 @@ module ImprovisationGuitar =
     open Notes
     open Chords
     open Scales
-    open Guitar
     open Infrastructure
 
     let private limitLineTo maxNotes notes =
