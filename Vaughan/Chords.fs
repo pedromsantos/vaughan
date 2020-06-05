@@ -252,9 +252,9 @@ module Chords =
             Pattern = [ PerfectFourth; AugmentedFifth ] } ]
 
     let private qualityForPattern pattern =
-        ((chordFormula
-          |> List.filter (fun c -> c.Pattern = pattern)
-          |> List.head)).Quality
+        ((((chordFormula
+            |> List.filter (fun c -> c.Pattern = pattern)
+            |> List.head)))).Quality
 
     let private findQualityForPattern pattern =
         match (chordFormula
@@ -274,14 +274,14 @@ module Chords =
         |> findQualityForPattern
 
     let private intervalsForQuality quality =
-        ((chordFormula
-          |> List.filter (fun c -> c.Quality = quality)
-          |> List.head)).Pattern
+        ((((chordFormula
+            |> List.filter (fun c -> c.Quality = quality)
+            |> List.head)))).Pattern
 
     let private nameForQuality quality =
-        ((chordFormula
-          |> List.filter (fun c -> c.Quality = quality)
-          |> List.head)).Name
+        ((((chordFormula
+            |> List.filter (fun c -> c.Quality = quality)
+            |> List.head)))).Name
 
     let private functionForInterval =
         function
