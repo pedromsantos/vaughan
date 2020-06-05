@@ -2,23 +2,21 @@ namespace Vaughan
 
 module Notes =
     type private NoteAttributes =
-        { Name : string
-          Sharp : Note
-          Flat : Note
-          Pitch : int }
+        { Name: string
+          Sharp: Note
+          Flat: Note
+          Pitch: int }
 
-    type private IntervalAttributes =
-        { Name : string
-          Distance : int<ht> }
+    type private IntervalAttributes = { Name: string; Distance: int<ht> }
 
     type private OctaveAttributes =
-        { Value : float
-          MidiName : string
-          MidiNumber : int<midiNote> }
+        { Value: float
+          MidiName: string
+          MidiNumber: int<midiNote> }
 
     type private INoteAttributes = Note -> NoteAttributes
 
-    let private noteAttributes : INoteAttributes =
+    let private noteAttributes: INoteAttributes =
         function
         | C ->
             { Name = "C"
@@ -108,9 +106,7 @@ module Notes =
 
     let private intervalAttributes interval =
         match interval with
-        | Unisson ->
-            { Name = "Unisson"
-              Distance = 0<ht> }
+        | Unisson -> { Name = "Unisson"; Distance = 0<ht> }
         | MinorSecond ->
             { Name = "MinorSecond"
               Distance = 1<ht> }
@@ -230,18 +226,19 @@ module Notes =
 
     let private octaveValue octave = (octaveProperties octave).Value
     let private octaveMidiName octave = (octaveProperties octave).MidiName
-    let private octaveMidiNoteMultiplier octave =
-        (octaveProperties octave).MidiNumber
+    let private octaveMidiNoteMultiplier octave = (octaveProperties octave).MidiNumber
 
     let private adjustFrequencyForOctave octave frequency =
         let octaveValue = octaveValue octave * 1.0<hz>
 
         let noteFrequency =
-            if octaveValue < 0.0<hz> then frequency / (-1.0</hz> * octaveValue)
+            if octaveValue < 0.0<hz>
+            then frequency / (-1.0<1/hz> * octaveValue)
             else float (frequency * octaveValue) * 1.0<hz>
 
         let roundToThousands = 1000.0
-        (round (roundToThousands * float (noteFrequency)) / roundToThousands)
+        (round (roundToThousands * float (noteFrequency))
+         / roundToThousands)
         * 1.0<hz>
 
     let durationMultipliers timeSignature =
@@ -254,6 +251,7 @@ module Notes =
               1.0 / 32.0
               1.0 / 64.0
               1.0 / 128.0 ]
+
         match (snd timeSignature) with
         | Whole -> durations |> List.map (fun d -> d * 1.0)
         | Half -> durations |> List.map (fun d -> d * 2.0)
@@ -264,29 +262,35 @@ module Notes =
         | SixtyFourth -> durations |> List.map (fun d -> d * 64.0)
         | HundredTwentyEighth -> durations |> List.map (fun d -> d * 128.0)
 
-    let sharp : SharpNote = fun note -> (noteAttributes note).Sharp
-    let flat : FlatNote = fun note -> (noteAttributes note).Flat
-    let natural : NaturalNote = id
-    let noteName : NoteName = fun note -> (noteAttributes note).Name
-    let midiName : NoteMidiName =
+    let sharp: SharpNote = fun note -> (noteAttributes note).Sharp
+    let flat: FlatNote = fun note -> (noteAttributes note).Flat
+    let natural: NaturalNote = id
+    let noteName: NoteName = fun note -> (noteAttributes note).Name
+
+    let midiName: NoteMidiName =
         fun note octave -> noteName note + octaveMidiName octave
-    let pitch : NotePitch = fun note -> (noteAttributes note).Pitch
-    let midiNumber : NoteMidiNumber =
+
+    let pitch: NotePitch = fun note -> (noteAttributes note).Pitch
+
+    let midiNumber: NoteMidiNumber =
         fun note octave ->
-            ((pitch note) + int (octaveMidiNoteMultiplier octave)) * 1<midiNote>
-    let intervalName : IntervalName =
+            ((pitch note)
+             + int (octaveMidiNoteMultiplier octave))
+            * 1<midiNote>
+
+    let intervalName: IntervalName =
         fun interval -> (intervalAttributes interval).Name
-    let toDistance : IntervalToDistance =
+
+    let toDistance: IntervalToDistance =
         fun interval -> (intervalAttributes interval).Distance
 
-    let toOctaveDistance : IntervalToDistance =
+    let toOctaveDistance: IntervalToDistance =
         fun interval ->
             let distance = toDistance interval
             let octaveDistance = toDistance PerfectOctave
-            if distance > octaveDistance then distance - octaveDistance
-            else distance
+            if distance > octaveDistance then distance - octaveDistance else distance
 
-    let fromDistance : IntervalFromDistance =
+    let fromDistance: IntervalFromDistance =
         function
         | 0<ht> -> Unisson
         | 1<ht> -> MinorSecond
@@ -310,19 +314,20 @@ module Notes =
         | 21<ht> -> MajorThirteenth
         | _ -> Unisson
 
-    let measureAbsoluteSemitones : MeasureAbsoluteSemitones =
+    let measureAbsoluteSemitones: MeasureAbsoluteSemitones =
         fun note other ->
             let distance = (pitch other) - (pitch note)
-            if (distance * 1<ht>) < (toOctaveDistance Unisson) then
-                (toDistance PerfectOctave) - distance * -1<ht>
+            if (distance * 1<ht>) < (toOctaveDistance Unisson)
+            then (toDistance PerfectOctave) - distance * -1<ht>
             else (distance * 1<ht>)
 
-    let intervalBetween : IntervalBetween =
+    let intervalBetween: IntervalBetween =
         fun note other -> fromDistance (measureAbsoluteSemitones note other)
+
     let private isSameInterval interval otherInterval =
         toOctaveDistance interval = toOctaveDistance otherInterval
 
-    let transpose : TransposeNote =
+    let transpose: TransposeNote =
         fun noteToTranspose transposingInterval ->
             match transposingInterval with
             | Unisson
@@ -338,7 +343,18 @@ module Notes =
             | MinorThirteenth
             | PerfectFifth
             | PerfectFourth ->
-                [ C; DFlat; D; EFlat; E; F; GFlat; G; AFlat; A; BFlat; B ]
+                [ C
+                  DFlat
+                  D
+                  EFlat
+                  E
+                  F
+                  GFlat
+                  G
+                  AFlat
+                  A
+                  BFlat
+                  B ]
             | MajorSecond
             | AugmentedSecond
             | MajorThird
@@ -350,24 +366,34 @@ module Notes =
             | PerfectEleventh
             | AugmentedEleventh
             | MajorThirteenth ->
-                [ C; CSharp; D; DSharp; E; F; FSharp; G; GSharp; A; ASharp; B ]
-            |> List.filter
-                   (fun n ->
-                   isSameInterval (intervalBetween noteToTranspose n)
-                       transposingInterval)
+                [ C
+                  CSharp
+                  D
+                  DSharp
+                  E
+                  F
+                  FSharp
+                  G
+                  GSharp
+                  A
+                  ASharp
+                  B ]
+            |> List.filter (fun n -> isSameInterval (intervalBetween noteToTranspose n) transposingInterval)
             |> List.head
 
-    let frequency : Frequency =
+    let frequency: Frequency =
         fun note octave ->
             let octaveRange = 12.0
             let a4Frequency = 440.0<hz>
-            let power = double (pitch note - pitch A) / octaveRange
+
+            let power =
+                double (pitch note - pitch A) / octaveRange
+
             let frequency = (2.0 ** power) * a4Frequency
             adjustFrequencyForOctave octave frequency
 
     let notesMidiNumbers =
-        fun (notes : ScaleNotes) octave ->
-            notes |> List.map (fun n -> midiNumber n octave)
+        fun (notes: ScaleNotes) octave -> notes |> List.map (fun n -> midiNumber n octave)
 
     let durationToBeats timeSignature duration =
         (match duration with
@@ -381,8 +407,8 @@ module Notes =
          | HundredTwentyEighth -> (durationMultipliers timeSignature).[7])
         * 1.0<beat>
 
-    let octaveName : OctaveName =
-        fun (octave : Octave) ->
+    let octaveName: OctaveName =
+        fun (octave: Octave) ->
             match octave with
             | SubContra -> "SubContra"
             | Contra -> "Contra"
@@ -396,7 +422,7 @@ module Notes =
             | SixLine -> "SixLine"
             | SevenLine -> "SevenLine"
 
-    let octaveMidiNumber : OctaveMidiNumber =
+    let octaveMidiNumber: OctaveMidiNumber =
         fun octave ->
             match octave with
             | SubContra -> 0

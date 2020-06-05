@@ -10,20 +10,30 @@ module ScaleTests =
     open Vaughan.Chords
 
     [<Fact>]
-    let ``Should have notes for scales``() =
-        createScaleNotes Ionian C |> should equal [ C; D; E; F; G; A; B ]
+    let ``Should have notes for scales`` () =
+        createScaleNotes Ionian C
+        |> should equal [ C; D; E; F; G; A; B ]
         createScaleNotes Dorian C
         |> should equal [ C; D; EFlat; F; G; A; BFlat ]
         createScaleNotes Phrygian C
         |> should equal [ C; DFlat; EFlat; F; G; AFlat; BFlat ]
-        createScaleNotes Lydian C |> should equal [ C; D; E; FSharp; G; A; B ]
+        createScaleNotes Lydian C
+        |> should equal [ C; D; E; FSharp; G; A; B ]
         createScaleNotes Mixolydian C
         |> should equal [ C; D; E; F; G; A; BFlat ]
         createScaleNotes Aolian C
         |> should equal [ C; D; EFlat; F; G; AFlat; BFlat ]
         createScaleNotes Locrian C
-        |> should equal [ C; DFlat; EFlat; F; GFlat; AFlat; BFlat ]
-        createScaleNotes MajorPentatonic C |> should equal [ C; D; E; G; A ]
+        |> should equal
+               [ C
+                 DFlat
+                 EFlat
+                 F
+                 GFlat
+                 AFlat
+                 BFlat ]
+        createScaleNotes MajorPentatonic C
+        |> should equal [ C; D; E; G; A ]
         createScaleNotes MinorPentatonic C
         |> should equal [ C; EFlat; F; G; BFlat ]
         createScaleNotes Blues C
@@ -45,63 +55,68 @@ module ScaleTests =
         createScaleNotes LocrianSharp2 C
         |> should equal [ C; D; EFlat; F; GFlat; AFlat; BFlat ]
         createScaleNotes AlteredDominant C
-        |> should equal [ C; DFlat; DSharp; E; GFlat; GSharp; BFlat ]
+        |> should equal
+               [ C
+                 DFlat
+                 DSharp
+                 E
+                 GFlat
+                 GSharp
+                 BFlat ]
         createScaleNotes HalfWholeDiminished C
-        |> should equal [ C; DFlat; EFlat; E; FSharp; G; A; BFlat ]
+        |> should equal
+               [ C
+                 DFlat
+                 EFlat
+                 E
+                 FSharp
+                 G
+                 A
+                 BFlat ]
         createScaleNotes WholeTone C
         |> should equal [ C; D; E; GFlat; GSharp; BFlat ]
 
     [<Property>]
-    let ``It should return scales fitting a major triad`` (root : Note) =
+    let ``It should return scales fitting a major triad`` (root: Note) =
         let chord = chord root ChordQuality.Major
 
-        let chordNotes =
-            chord.Notes
-            |> List.map fst
-            |> List.sort
+        let chordNotes = chord.Notes |> List.map fst |> List.sort
 
         let scales = scalesFitting chord
         scales
         |> List.forall (fun s ->
-               s.Notes
-               |> List.filter (fun x -> (List.contains x chordNotes))
-               |> List.sort = chordNotes)
+            s.Notes
+            |> List.filter (fun x -> (List.contains x chordNotes))
+            |> List.sort = chordNotes)
 
     [<Property>]
-    let ``It should return scales fitting a minor triad`` (root : Note) =
+    let ``It should return scales fitting a minor triad`` (root: Note) =
         let chord = chord root ChordQuality.Minor
 
-        let chordNotes =
-            chord.Notes
-            |> List.map fst
-            |> List.sort
+        let chordNotes = chord.Notes |> List.map fst |> List.sort
 
         let scales = scalesFitting chord
         scales
         |> List.forall (fun s ->
-               s.Notes
-               |> List.filter (fun x -> (List.contains x chordNotes))
-               |> List.sort = chordNotes)
+            s.Notes
+            |> List.filter (fun x -> (List.contains x chordNotes))
+            |> List.sort = chordNotes)
 
     [<Property>]
-    let ``It should return scales fitting a chord`` (root : Note)
-        (quality : ChordQuality) =
+    let ``It should return scales fitting a chord`` (root: Note) (quality: ChordQuality) =
         let chord = chord root quality
 
-        let chordNotes =
-            chord.Notes
-            |> List.map fst
-            |> List.sort
+        let chordNotes = chord.Notes |> List.map fst |> List.sort
 
         let scales = scalesFitting chord
         scales
         |> List.forall (fun s ->
-               s.Notes
-               |> List.filter (fun x -> (List.contains x chordNotes))
-               |> List.sort = chordNotes)
+            s.Notes
+            |> List.filter (fun x -> (List.contains x chordNotes))
+            |> List.sort = chordNotes)
 
     [<Fact>]
-    let ``Should create thirds melodic line from C major scale``() =
+    let ``Should create thirds melodic line from C major scale`` () =
         let melodicLine =
             { Scale = createScale Ionian C
               Pattern =
@@ -117,10 +132,11 @@ module ScaleTests =
                     ScaleDegree(ScaleDegree.VII) ] }
 
         let melodicLineNotes = toNotes melodicLine
-        melodicLineNotes |> should equal [ C; E; D; F; E; G; F; A; G; B ]
+        melodicLineNotes
+        |> should equal [ C; E; D; F; E; G; F; A; G; B ]
 
     [<Fact>]
-    let ``Should create triads melodic line from C major scale``() =
+    let ``Should create triads melodic line from C major scale`` () =
         let melodicLine =
             { Scale = createScale Ionian C
               Pattern =
@@ -135,10 +151,11 @@ module ScaleTests =
                     ScaleDegree(ScaleDegree.VII) ] }
 
         let melodicLineNotes = toNotes melodicLine
-        melodicLineNotes |> should equal [ C; E; G; D; F; A; E; G; B ]
+        melodicLineNotes
+        |> should equal [ C; E; G; D; F; A; E; G; B ]
 
     [<Fact>]
-    let ``Should create melodic line from C major scale``() =
+    let ``Should create melodic line from C major scale`` () =
         let melodicLine =
             { Scale = createScale Ionian C
               Pattern =
@@ -156,10 +173,11 @@ module ScaleTests =
                     ScaleDegree(ScaleDegree.II) ] }
 
         let melodicLineNotes = toNotes melodicLine
-        melodicLineNotes |> should equal [ C; E; G; B; D; F; A; C; E; G; B; D ]
+        melodicLineNotes
+        |> should equal [ C; E; G; B; D; F; A; C; E; G; B; D ]
 
     [<Fact>]
-    let ``Should create melodic line from C major scale with passing tones``() =
+    let ``Should create melodic line from C major scale with passing tones`` () =
         let melodicLine =
             { Scale = createScale Ionian C
               Pattern =
@@ -178,28 +196,68 @@ module ScaleTests =
 
         let melodicLineNotes = toNotes melodicLine
         melodicLineNotes
-        |> should equal [ C; E; G; B; DFlat; F; A; CSharp; E; G; B; D ]
+        |> should equal
+               [ C
+                 E
+                 G
+                 B
+                 DFlat
+                 F
+                 A
+                 CSharp
+                 E
+                 G
+                 B
+                 D ]
 
     [<Fact>]
-    let ``Should create melodic lines from C major scale using half step rules for root``() =
+    let ``Should create melodic lines from C major scale using half step rules for root`` () =
         let melodicLines = halfStepsMajorScale C ScaleDegree.I
-        toNotes melodicLines.[0] |> should equal [ C; B; A; AFlat; G; F; E; D ]
-        toNotes melodicLines.[1] |> should equal [ C; B; A; AFlat; G; F; E; EFlat; D; DFlat ]
+        toNotes melodicLines.[0]
+        |> should equal [ C; B; A; AFlat; G; F; E; D ]
+        toNotes melodicLines.[1]
+        |> should equal
+               [ C
+                 B
+                 A
+                 AFlat
+                 G
+                 F
+                 E
+                 EFlat
+                 D
+                 DFlat ]
 
     [<Fact>]
-    let ``Should create melodic lines from C major scale using half step rules for second``() =
+    let ``Should create melodic lines from C major scale using half step rules for second`` () =
         let melodicLines = halfStepsMajorScale C ScaleDegree.II
-        toNotes melodicLines.[0] |> should equal [ D; C; B; A; G; F; E ]
-        toNotes melodicLines.[1] |> should equal [ D; DFlat; C; B; A; AFlat; G; F; E ]
+        toNotes melodicLines.[0]
+        |> should equal [ D; C; B; A; G; F; E ]
+        toNotes melodicLines.[1]
+        |> should equal [ D; DFlat; C; B; A; AFlat; G; F; E ]
 
     [<Fact>]
-    let ``Should create melodic lines from C dominant scale using half step rules for root``() =
+    let ``Should create melodic lines from C dominant scale using half step rules for root`` () =
         let melodicLines = halfStepsDominantScale C ScaleDegree.I
-        toNotes melodicLines.[0] |> should equal [ C; B; BFlat; A; G; F; E; D ]
-        toNotes melodicLines.[1] |> should equal [ C; B; BFlat; A; G; F; E; EFlat; D; DFlat ]
+        toNotes melodicLines.[0]
+        |> should equal [ C; B; BFlat; A; G; F; E; D ]
+        toNotes melodicLines.[1]
+        |> should equal
+               [ C
+                 B
+                 BFlat
+                 A
+                 G
+                 F
+                 E
+                 EFlat
+                 D
+                 DFlat ]
 
     [<Fact>]
-    let ``Should create melodic lines from C dominant scale using half step rules for second``() =
+    let ``Should create melodic lines from C dominant scale using half step rules for second`` () =
         let melodicLines = halfStepsDominantScale C ScaleDegree.II
-        toNotes melodicLines.[0] |> should equal [ D; C; BFlat; A; G; F; E ]
-        toNotes melodicLines.[1] |> should equal [ D; DFlat; C; B; BFlat; A; G; F; E ]
+        toNotes melodicLines.[0]
+        |> should equal [ D; C; BFlat; A; G; F; E ]
+        toNotes melodicLines.[1]
+        |> should equal [ D; DFlat; C; B; BFlat; A; G; F; E ]

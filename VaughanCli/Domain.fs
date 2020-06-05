@@ -125,7 +125,5 @@ module Domain =
                 | VoiceLead _ -> "Specify a list of chords"
                 | Scale _ -> "Specify a scale"
                 | Arpeggio _ -> "Specify an arpeggio"
-                | CommonScales _ ->
-                    "Find common scales for a specified a list of chords"
-                | ScalesForChord _ ->
-                    "Find scales that contain all chord tones of a chord"
+                | CommonScales _ -> "Find common scales for a specified a list of chords"
+                | ScalesForChord _ -> "Find scales that contain all chord tones of a chord"

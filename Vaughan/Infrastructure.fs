@@ -18,17 +18,17 @@ module Infrastructure =
         | f :: s :: t :: r -> f :: t :: s :: r
         | f -> f
 
-    let circularSequenceFromList (lst : 'a list) =
-        let rec next() =
+    let circularSequenceFromList (lst: 'a list) =
+        let rec next () =
             seq {
                 for element in lst do
                     yield element
-                yield! next()
+                yield! next ()
             }
-        next()
 
-    let private sequenceToIndexValueTupleSequence sequence =
-        sequence |> Seq.mapi (fun i v -> i, v)
+        next ()
+
+    let private sequenceToIndexValueTupleSequence sequence = sequence |> Seq.mapi (fun i v -> i, v)
 
     let filterOddIndexElements sequence =
         sequence
@@ -36,15 +36,11 @@ module Infrastructure =
         |> Seq.filter (fun (i, _) -> i % 2 = 0)
         |> Seq.map snd
 
-    let cappedMinimum number cap =
-        if number < cap then cap
-        else number
+    let cappedMinimum number cap = if number < cap then cap else number
 
     let minimumPositive number = cappedMinimum number 0
 
-    let cappedMaximum number cap =
-        if number > cap then cap
-        else number
+    let cappedMaximum number cap = if number > cap then cap else number
 
     let combineAll listOfLists =
         let prefix fs pfx = pfx :: fs
@@ -57,7 +53,7 @@ module Infrastructure =
         |> Seq.map (mapFunction >> Set.ofList)
         |> Seq.reduce Set.intersect
 
-    let rec combinations acc (lst : 'a list) =
+    let rec combinations acc (lst: 'a list) =
         seq {
             match lst.Length, lst with
             | n, x :: xs ->
@@ -71,7 +67,8 @@ module Infrastructure =
         function
         | [] -> [ [ x ] ]
         | (y :: ys) as l ->
-            (x :: l) :: (List.map (fun x -> y :: x) (insertions x ys))
+            (x :: l)
+            :: (List.map (fun x -> y :: x) (insertions x ys))
 
     let rec permutations =
         function
@@ -80,6 +77,6 @@ module Infrastructure =
 
     let factorial x =
         let rec tailRecursiveFactorial x acc =
-            if x <= 1 then acc
-            else tailRecursiveFactorial (x - 1) (acc * x)
+            if x <= 1 then acc else tailRecursiveFactorial (x - 1) (acc * x)
+
         tailRecursiveFactorial x 1

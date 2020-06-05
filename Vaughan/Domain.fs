@@ -236,9 +236,9 @@ module Domain =
         | Drop3
 
     type Chord =
-        { Notes : ChordNotes
-          ChordType : ChordType
-          Name : string }
+        { Notes: ChordNotes
+          ChordType: ChordType
+          Name: string }
 
     type ChordName = Chord -> string
 
@@ -317,9 +317,7 @@ module Domain =
 
     type ScaleNotes = Note list
 
-    type Scale =
-        { Scale : ScaleType
-          Notes : ScaleNotes }
+    type Scale = { Scale: ScaleType; Notes: ScaleNotes }
 
     type ScalesFitting = Chord -> Scale list
 
@@ -340,8 +338,8 @@ module Domain =
     type MelodicLinePattern = MelodicLinePatternElement list
 
     type MelodicLine =
-        { Scale : Scale
-          Pattern : MelodicLinePattern }
+        { Scale: Scale
+          Pattern: MelodicLinePattern }
 
     type GuitarString =
         | SixthString
@@ -352,23 +350,19 @@ module Domain =
         | FirstString
 
     type Fret =
-        { GuitarString : GuitarString
-          Fret : int
-          Note : Note }
+        { GuitarString: GuitarString
+          Fret: int
+          Note: Note }
 
     type Frets = Fret list
 
-    type GuitarChord =
-        { Chord : Chord
-          Frets : Frets }
+    type GuitarChord = { Chord: Chord; Frets: Frets }
 
     type GuitarArpeggio =
-        { BaseChord : Chord
-          ArpeggioFrets : Frets }
+        { BaseChord: Chord
+          ArpeggioFrets: Frets }
 
-    type GuitarScale =
-        { Scale : Scale
-          Frets : Frets }
+    type GuitarScale = { Scale: Scale; Frets: Frets }
 
     type GuitarMelodicLine = Fret list
 

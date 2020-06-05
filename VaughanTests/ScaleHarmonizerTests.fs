@@ -16,226 +16,237 @@ module ScalesHormonizerTests =
           Name = "" }
 
     let cMaj =
-        { chord with Notes =
-                         [ (C, Root)
-                           (E, Third)
-                           (G, Fifth) ] }
+        { chord with
+              Notes = [ (C, Root); (E, Third); (G, Fifth) ] }
 
     let dMin =
-        { chord with Notes =
-                         [ (D, Root)
-                           (F, Third)
-                           (A, Fifth) ] }
+        { chord with
+              Notes = [ (D, Root); (F, Third); (A, Fifth) ] }
 
     let eMin =
-        { chord with Notes =
-                         [ (E, Root)
-                           (G, Third)
-                           (B, Fifth) ] }
+        { chord with
+              Notes = [ (E, Root); (G, Third); (B, Fifth) ] }
 
     let fMaj =
-        { chord with Notes =
-                         [ (F, Root)
-                           (A, Third)
-                           (C, Fifth) ] }
+        { chord with
+              Notes = [ (F, Root); (A, Third); (C, Fifth) ] }
 
     let gMaj =
-        { chord with Notes =
-                         [ (G, Root)
-                           (B, Third)
-                           (D, Fifth) ] }
+        { chord with
+              Notes = [ (G, Root); (B, Third); (D, Fifth) ] }
 
     let aMin =
-        { chord with Notes =
-                         [ (A, Root)
-                           (C, Third)
-                           (E, Fifth) ] }
+        { chord with
+              Notes = [ (A, Root); (C, Third); (E, Fifth) ] }
 
     let bDim =
-        { chord with Notes =
-                         [ (B, Root)
-                           (D, Third)
-                           (F, Fifth) ] }
+        { chord with
+              Notes = [ (B, Root); (D, Third); (F, Fifth) ] }
 
     let cMin =
-        { chord with Notes =
-                         [ (C, Root)
-                           (EFlat, Third)
-                           (G, Fifth) ] }
+        { chord with
+              Notes =
+                  [ (C, Root)
+                    (EFlat, Third)
+                    (G, Fifth) ] }
 
     let dDim =
-        { chord with Notes =
-                         [ (D, Root)
-                           (F, Third)
-                           (AFlat, Fifth) ] }
+        { chord with
+              Notes =
+                  [ (D, Root)
+                    (F, Third)
+                    (AFlat, Fifth) ] }
 
     let eFlatAug =
-        { chord with Notes =
-                         [ (EFlat, Root)
-                           (G, Third)
-                           (B, Fifth) ] }
+        { chord with
+              Notes =
+                  [ (EFlat, Root)
+                    (G, Third)
+                    (B, Fifth) ] }
 
     let fMin =
-        { chord with Notes =
-                         [ (F, Root)
-                           (AFlat, Third)
-                           (C, Fifth) ] }
+        { chord with
+              Notes =
+                  [ (F, Root)
+                    (AFlat, Third)
+                    (C, Fifth) ] }
 
     let aFlatMaj =
-        { chord with Notes =
-                         [ (AFlat, Root)
-                           (C, Third)
-                           (EFlat, Fifth) ] }
+        { chord with
+              Notes =
+                  [ (AFlat, Root)
+                    (C, Third)
+                    (EFlat, Fifth) ] }
 
     let cMaj7 =
-        { chord with Notes =
-                         [ (C, Root)
-                           (E, Third)
-                           (G, Fifth)
-                           (B, Seventh) ] }
+        { chord with
+              Notes =
+                  [ (C, Root)
+                    (E, Third)
+                    (G, Fifth)
+                    (B, Seventh) ] }
 
     let dMin7 =
-        { chord with Notes =
-                         [ (D, Root)
-                           (F, Third)
-                           (A, Fifth)
-                           (C, Seventh) ] }
+        { chord with
+              Notes =
+                  [ (D, Root)
+                    (F, Third)
+                    (A, Fifth)
+                    (C, Seventh) ] }
 
     let eMin7 =
-        { chord with Notes =
-                         [ (E, Root)
-                           (G, Third)
-                           (B, Fifth)
-                           (D, Seventh) ] }
+        { chord with
+              Notes =
+                  [ (E, Root)
+                    (G, Third)
+                    (B, Fifth)
+                    (D, Seventh) ] }
 
     let fMaj7 =
-        { chord with Notes =
-                         [ (F, Root)
-                           (A, Third)
-                           (C, Fifth)
-                           (E, Seventh) ] }
+        { chord with
+              Notes =
+                  [ (F, Root)
+                    (A, Third)
+                    (C, Fifth)
+                    (E, Seventh) ] }
 
     let gDom7 =
-        { chord with Notes =
-                         [ (G, Root)
-                           (B, Third)
-                           (D, Fifth)
-                           (F, Seventh) ] }
+        { chord with
+              Notes =
+                  [ (G, Root)
+                    (B, Third)
+                    (D, Fifth)
+                    (F, Seventh) ] }
 
     let aMin7 =
-        { chord with Notes =
-                         [ (A, Root)
-                           (C, Third)
-                           (E, Fifth)
-                           (G, Seventh) ] }
+        { chord with
+              Notes =
+                  [ (A, Root)
+                    (C, Third)
+                    (E, Fifth)
+                    (G, Seventh) ] }
 
     let bMin7b5 =
-        { chord with Notes =
-                         [ (B, Root)
-                           (D, Third)
-                           (F, Fifth)
-                           (A, Seventh) ] }
+        { chord with
+              Notes =
+                  [ (B, Root)
+                    (D, Third)
+                    (F, Fifth)
+                    (A, Seventh) ] }
 
     let cMaj9 =
-        { chord with Notes =
-                         [ (C, Root)
-                           (E, Third)
-                           (G, Fifth)
-                           (B, Seventh)
-                           (D, Ninth) ] }
+        { chord with
+              Notes =
+                  [ (C, Root)
+                    (E, Third)
+                    (G, Fifth)
+                    (B, Seventh)
+                    (D, Ninth) ] }
 
     let dMin9 =
-        { chord with Notes =
-                         [ (D, Root)
-                           (F, Third)
-                           (A, Fifth)
-                           (C, Seventh)
-                           (E, Ninth) ] }
+        { chord with
+              Notes =
+                  [ (D, Root)
+                    (F, Third)
+                    (A, Fifth)
+                    (C, Seventh)
+                    (E, Ninth) ] }
 
     let eMin9 =
-        { chord with Notes =
-                         [ (E, Root)
-                           (G, Third)
-                           (B, Fifth)
-                           (D, Seventh)
-                           (F, Ninth) ] }
+        { chord with
+              Notes =
+                  [ (E, Root)
+                    (G, Third)
+                    (B, Fifth)
+                    (D, Seventh)
+                    (F, Ninth) ] }
 
     let fMaj9 =
-        { chord with Notes =
-                         [ (F, Root)
-                           (A, Third)
-                           (C, Fifth)
-                           (E, Seventh)
-                           (G, Ninth) ] }
+        { chord with
+              Notes =
+                  [ (F, Root)
+                    (A, Third)
+                    (C, Fifth)
+                    (E, Seventh)
+                    (G, Ninth) ] }
 
     let gDom9 =
-        { chord with Notes =
-                         [ (G, Root)
-                           (B, Third)
-                           (D, Fifth)
-                           (F, Seventh)
-                           (A, Ninth) ] }
+        { chord with
+              Notes =
+                  [ (G, Root)
+                    (B, Third)
+                    (D, Fifth)
+                    (F, Seventh)
+                    (A, Ninth) ] }
 
     let aMin9 =
-        { chord with Notes =
-                         [ (A, Root)
-                           (C, Third)
-                           (E, Fifth)
-                           (G, Seventh)
-                           (B, Ninth) ] }
+        { chord with
+              Notes =
+                  [ (A, Root)
+                    (C, Third)
+                    (E, Fifth)
+                    (G, Seventh)
+                    (B, Ninth) ] }
 
     let bMin9b5 =
-        { chord with Notes =
-                         [ (B, Root)
-                           (D, Third)
-                           (F, Fifth)
-                           (A, Seventh)
-                           (C, Ninth) ] }
+        { chord with
+              Notes =
+                  [ (B, Root)
+                    (D, Third)
+                    (F, Fifth)
+                    (A, Seventh)
+                    (C, Ninth) ] }
 
     let cMinMaj7 =
-        { chord with Notes =
-                         [ (C, Root)
-                           (EFlat, Third)
-                           (G, Fifth)
-                           (B, Seventh) ] }
+        { chord with
+              Notes =
+                  [ (C, Root)
+                    (EFlat, Third)
+                    (G, Fifth)
+                    (B, Seventh) ] }
 
     let dMin7b5 =
-        { chord with Notes =
-                         [ (D, Root)
-                           (F, Third)
-                           (AFlat, Fifth)
-                           (C, Seventh) ] }
+        { chord with
+              Notes =
+                  [ (D, Root)
+                    (F, Third)
+                    (AFlat, Fifth)
+                    (C, Seventh) ] }
 
     let eFlatAug7 =
-        { chord with Notes =
-                         [ (EFlat, Root)
-                           (G, Third)
-                           (B, Fifth)
-                           (D, Seventh) ] }
+        { chord with
+              Notes =
+                  [ (EFlat, Root)
+                    (G, Third)
+                    (B, Fifth)
+                    (D, Seventh) ] }
 
     let fMin7 =
-        { chord with Notes =
-                         [ (F, Root)
-                           (AFlat, Third)
-                           (C, Fifth)
-                           (EFlat, Seventh) ] }
+        { chord with
+              Notes =
+                  [ (F, Root)
+                    (AFlat, Third)
+                    (C, Fifth)
+                    (EFlat, Seventh) ] }
 
     let aFlatMaj7 =
-        { chord with Notes =
-                         [ (AFlat, Root)
-                           (C, Third)
-                           (EFlat, Fifth)
-                           (G, Seventh) ] }
+        { chord with
+              Notes =
+                  [ (AFlat, Root)
+                    (C, Third)
+                    (EFlat, Fifth)
+                    (G, Seventh) ] }
 
     let bDim7 =
-        { chord with Notes =
-                         [ (B, Root)
-                           (D, Third)
-                           (F, Fifth)
-                           (AFlat, Seventh) ] }
+        { chord with
+              Notes =
+                  [ (B, Root)
+                    (D, Third)
+                    (F, Fifth)
+                    (AFlat, Seventh) ] }
 
     [<Fact>]
-    let ``Should create triads for Ionian scale``() =
+    let ``Should create triads for Ionian scale`` () =
         let cIonian = createScaleNotes Ionian C
         (triadsHarmonizer ScaleDegree.I cIonian).Notes
         |> should equal cMaj.Notes
@@ -253,35 +264,37 @@ module ScalesHormonizerTests =
         |> should equal bDim.Notes
 
     [<Fact>]
-    let ``Should create triads for Harmonic Minor scale``() =
+    let ``Should create triads for Harmonic Minor scale`` () =
         let cMinor = createScaleNotes HarmonicMinor C
-        (triadsHarmonizer ScaleDegree.I cMinor).Notes |> should equal cMin.Notes
+        (triadsHarmonizer ScaleDegree.I cMinor).Notes
+        |> should equal cMin.Notes
         (triadsHarmonizer ScaleDegree.II cMinor).Notes
         |> should equal dDim.Notes
         (triadsHarmonizer ScaleDegree.III cMinor).Notes
         |> should equal eFlatAug.Notes
         (triadsHarmonizer ScaleDegree.IV cMinor).Notes
         |> should equal fMin.Notes
-        (triadsHarmonizer ScaleDegree.V cMinor).Notes |> should equal gMaj.Notes
+        (triadsHarmonizer ScaleDegree.V cMinor).Notes
+        |> should equal gMaj.Notes
         (triadsHarmonizer ScaleDegree.VI cMinor).Notes
         |> should equal aFlatMaj.Notes
         (triadsHarmonizer ScaleDegree.VII cMinor).Notes
         |> should equal bDim.Notes
 
     [<Property(Arbitrary = [| typeof<DiatonicScales> |])>]
-    let ``Should create triads for scale`` (scaleType : ScaleType)
-        (scaleDegree : ScaleDegree) (root : Note) =
+    let ``Should create triads for scale`` (scaleType: ScaleType) (scaleDegree: ScaleDegree) (root: Note) =
         let scale = createScaleNotes scaleType root
         (triadsHarmonizer scaleDegree scale).Notes
         |> List.pairwise
         |> List.map (fun e -> intervalBetween (fst (fst e)) (fst (snd e)))
-        |> List.forall
-               (fun e ->
-               e = MajorThird || e = MinorThird || e = MajorSecond
-               || e = PerfectFourth)
+        |> List.forall (fun e ->
+            e = MajorThird
+            || e = MinorThird
+            || e = MajorSecond
+            || e = PerfectFourth)
 
     [<Fact>]
-    let ``Should create seventh chords for Ionian scale``() =
+    let ``Should create seventh chords for Ionian scale`` () =
         let cIonian = createScaleNotes Ionian C
         (seventhsHarmonizer ScaleDegree.I cIonian).Notes
         |> should equal cMaj7.Notes
@@ -299,7 +312,7 @@ module ScalesHormonizerTests =
         |> should equal bMin7b5.Notes
 
     [<Fact>]
-    let ``Should create seventh chords for Harmonic Minor scale``() =
+    let ``Should create seventh chords for Harmonic Minor scale`` () =
         let cMinor = createScaleNotes HarmonicMinor C
         (seventhsHarmonizer ScaleDegree.I cMinor).Notes
         |> should equal cMinMaj7.Notes
@@ -317,19 +330,19 @@ module ScalesHormonizerTests =
         |> should equal bDim7.Notes
 
     [<Property(Arbitrary = [| typeof<DiatonicScales> |])>]
-    let ``Should create seventh chords for scale`` (scaleType : ScaleType)
-        (scaleDegree : ScaleDegree) (root : Note) =
+    let ``Should create seventh chords for scale`` (scaleType: ScaleType) (scaleDegree: ScaleDegree) (root: Note) =
         let scale = createScaleNotes scaleType root
         (seventhsHarmonizer scaleDegree scale).Notes
         |> List.pairwise
         |> List.map (fun e -> intervalBetween (fst (fst e)) (fst (snd e)))
-        |> List.forall
-               (fun e ->
-               e = MajorThird || e = MinorThird || e = MajorSecond
-               || e = PerfectFourth)
+        |> List.forall (fun e ->
+            e = MajorThird
+            || e = MinorThird
+            || e = MajorSecond
+            || e = PerfectFourth)
 
     [<Fact>]
-    let ``Should create ninth chords for Ionian scale``() =
+    let ``Should create ninth chords for Ionian scale`` () =
         let cIonian = createScaleNotes Ionian C
         (ninthsHarmonizer ScaleDegree.I cIonian).Notes
         |> should equal cMaj9.Notes

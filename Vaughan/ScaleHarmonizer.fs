@@ -4,7 +4,7 @@ module ScaleHarmonizer =
     open Infrastructure
     open Chords
 
-    let private thirds (fromPosition : ScaleDegree) scale =
+    let private thirds (fromPosition: ScaleDegree) scale =
         let octave = 16
         scale
         |> circularSequenceFromList
@@ -14,10 +14,7 @@ module ScaleHarmonizer =
         |> Seq.toList
 
     let private harmonizer forDegree scale =
-        let thirdsList =
-            scale
-            |> thirds forDegree
-            |> List.take 7
+        let thirdsList = scale |> thirds forDegree |> List.take 7
         { Notes =
               [ (thirdsList.[0], Root)
                 (thirdsList.[1], Third)
@@ -31,7 +28,11 @@ module ScaleHarmonizer =
 
     let private harmonizeScaleDegreeWithNotes forDegree scale notes =
         let complete = harmonizer forDegree scale
-        let chord = { complete with Notes = complete.Notes |> List.take notes }
+
+        let chord =
+            { complete with
+                  Notes = complete.Notes |> List.take notes }
+
         { chord with Name = name chord }
 
     let private harmonize forDegree lastFunction scale =
@@ -40,12 +41,13 @@ module ScaleHarmonizer =
         | Ninth -> harmonizeScaleDegreeWithNotes forDegree scale 5
         | _ -> harmonizeScaleDegreeWithNotes forDegree scale 3
 
-    let ninthsHarmonizer : NinthsHarmonizer =
+    let ninthsHarmonizer: NinthsHarmonizer =
         fun forDegree scale -> harmonize forDegree Ninth scale
-    let seventhsHarmonizer : SeventhsHarmonizer =
+
+    let seventhsHarmonizer: SeventhsHarmonizer =
         fun forDegree scale -> harmonize forDegree Seventh scale
 
-    let triadsHarmonizer : TriadsHarmonizer =
+    let triadsHarmonizer: TriadsHarmonizer =
         fun forDegree scale ->
             let complete = harmonize forDegree Fifth scale
             { complete with ChordType = Triad }
