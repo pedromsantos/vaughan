@@ -13,7 +13,7 @@ Vaughan, named after blues guitarist [Stevie Ray Vaughan](https://en.wikipedia.o
 
 [![Build Status](https://travis-ci.org/pedromsantos/vaughan.svg?branch=master)](https://travis-ci.org/pedromsantos/vaughan)
 
-The library is now a [.NET Standard 2.0](https://blogs.msdn.microsoft.com/dotnet/2017/08/14/announcing-net-standard-2-0/) compatible framework and [.NET Core 2.0](https://blogs.msdn.microsoft.com/dotnet/2017/08/14/announcing-net-core-2-0/) (Only if you want to build the Unit Tests project).
+The library is now a [.NET Standard 2.0](https://blogs.msdn.microsoft.com/dotnet/2017/08/14/announcing-net-standard-2-0/) compatible framework and .NET Core 3.1 (Only if you want to build the Unit Tests project).
 
 ## Getting started
 
