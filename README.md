@@ -32,3 +32,14 @@ Navigate to [repl.it](https://repl.it/FJHh/79) (a bit outdated and no SonicPi in
 ## Documentation
 
 [Documentation](https://github.com/pedromsantos/vaughan/wiki/Documentation)
+
+## 🗣 Activity:
+
+<!--GITHUB_ACTIVITY:{"rows": 5}-->
+
+---
+
+<p align="center">
+  Last refresh: 
+  <b><!--TIMESTAMP--></b>
+</p>
