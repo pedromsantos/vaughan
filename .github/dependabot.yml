@@ -1,0 +1,23 @@
+version: 2
+updates:
+- package-ecosystem: nuget
+  directory: "/"
+  schedule:
+    interval: daily
+  open-pull-requests-limit: 10
+  ignore:
+  - dependency-name: FsCheck.Xunit
+    versions:
+    - 2.14.3
+    - 2.14.4
+    - 2.14.5
+    - 2.14.6
+  - dependency-name: FsUnit.xUnit
+    versions:
+    - 4.0.4
+  - dependency-name: Microsoft.NET.Test.Sdk
+    versions:
+    - 16.8.3
+  - dependency-name: Argu
+    versions:
+    - 6.1.1
