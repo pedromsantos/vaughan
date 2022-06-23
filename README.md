@@ -11,7 +11,7 @@ Vaughan, named after blues guitarist [Stevie Ray Vaughan](https://en.wikipedia.o
 
 [![NuGet](http://img.shields.io/nuget/v/Vaughan.svg)](https://www.nuget.org/packages/Vaughan)
 
-[![Build Status](https://travis-ci.org/pedromsantos/vaughan.svg?branch=master)](https://travis-ci.org/pedromsantos/vaughan)
+![Build Status](https://github.com/github/docs/actions/workflows/dotnetcore.yml/badge.svg)
 
 The library is now a [.NET Standard 2.0](https://blogs.msdn.microsoft.com/dotnet/2017/08/14/announcing-net-standard-2-0/) compatible framework and .NET Core 3.1 (Only if you want to build the Unit Tests project).
 
