@@ -21,3 +21,8 @@ updates:
   - dependency-name: Argu
     versions:
     - 6.1.1
+    
+- package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "daily"
