@@ -11,8 +11,9 @@ jobs:
   build:
     runs-on: windows-latest
     steps:
-      - name: Setup .NET Core SDK
-        uses: actions/setup-dotnet@v2.1.0
       - uses: actions/checkout@v2
         with:
           fetch-depth: 0  # Shallow clones should be disabled for a better relevancy of analysis
+      - name: Setup .NET Core SDK
+        uses: actions/setup-dotnet@v2.1.0
+      - run: dotnet build Vaughan/Vaughan.fsproj
