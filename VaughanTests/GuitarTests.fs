@@ -4,6 +4,7 @@ module GuitarTests =
     open Xunit
     open FsUnit.Xunit
     open FsCheck
+    open FsCheck.FSharp
     open FsCheck.Xunit
     open Vaughan.Domain
     open Vaughan.Chords
@@ -315,6 +316,7 @@ module GuitarTabTests =
     open Xunit
     open FsUnit.Xunit
     open FsCheck
+    open FsCheck.FSharp
     open FsCheck.Xunit
     open System
     open Vaughan.Domain
