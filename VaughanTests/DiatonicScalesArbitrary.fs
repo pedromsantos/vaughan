@@ -2,6 +2,7 @@ namespace VaughanTests
 
 module DiatonicScalesArbitrary =
     open FsCheck
+    open FsCheck.FSharp
     open Vaughan.Domain
 
     let isBlues =
@@ -66,7 +67,8 @@ module DiatonicScalesArbitrary =
 
     type DiatonicScales =
         static member DU() =
-            Arb.Default.Derive()
+            ArbMap.defaults
+            |> ArbMap.arbitrary<ScaleType>
             |> Arb.filter (not << isBlues)
             |> Arb.filter (not << isMajorPentatonic)
             |> Arb.filter (not << isMinorPentatonic)
