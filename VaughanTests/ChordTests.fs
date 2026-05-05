@@ -4,6 +4,7 @@ module ChordTests =
     open Xunit
     open FsUnit.Xunit
     open FsCheck
+    open FsCheck.FSharp
     open FsCheck.Xunit
     open Vaughan.Domain
     open Vaughan.Notes
