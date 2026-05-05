@@ -1,6 +1,6 @@
 ﻿<Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
-    <TargetFramework>netcoreapp6.0</TargetFramework>
+    <TargetFramework>net8.0</TargetFramework>
     <PackageId>VaughanCLI</PackageId>
     <Title>VaughanCLI</Title>
     <Authors>Pedro Moreira Santos</Authors>
