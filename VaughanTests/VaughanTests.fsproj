@@ -24,7 +24,7 @@
     <Compile Include="ImprovisationGuitarTests.fs" />
   </ItemGroup>
   <ItemGroup>
-    <PackageReference Include="xunit.v3" Version="4.0.2" />
+    <PackageReference Include="xunit.v3" Version="4.0.3" />
     <PackageReference Include="FsCheck.Xunit.v3" Version="3.6.0" />
     <PackageReference Include="FsUnit.xUnit" Version="8.0.0" />
   </ItemGroup>
